@@ -29,7 +29,7 @@ local function edgeDraw(w,h,l)
 end
 local function btdraw(ch,w,h,o,t)
     if unlocked[o] then
-        gc.setColor(COLOR.hsv(ch,.6,.6,.15)) gc.rectangle('fill',-w/2,-h/2,w,h)
+        gc.setColor(COLOR.hsv(ch,.6,.6,intro.choose==o and .35 or .15)) gc.rectangle('fill',-w/2,-h/2,w,h)
         gc.setColor(COLOR.hsv(ch,.6,.6,intro.choose==o and .75 or .2+.5*t)) gc.draw(fl,0,0,0,w/5,h/5,2.5,2.5)
     else gc.setColor(.5,.5,.5,.2) gc.rectangle('fill',-w/2,-h/2,w,h) end
 
