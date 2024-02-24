@@ -51,14 +51,14 @@ function bg.sendProgress(n,p)
     bg.progressN=n bg.progressP=p
 end
 
+local rn,gn,bn, rp,gp,bp
 function bg.draw()
     local beat=(offset+scene.time)*BPM/60
-    local r,g,b
-    if beat>loopStartBeat then r,g,b=COLOR.hsv(beat%16*3/8,1,.14)
-    else r,g,b=0,0,0 end
-    gc.clear(r,g,b)
-    local clrN=M.lerp({1,1,1},{0,.25,1},bg.progressN)
-    local clrP=M.lerp({1,1,1},{1,.75,0},bg.progressP)
+    if beat>loopStartBeat then gc.clear(COLOR.hsv(beat%16*3/8,1,.14))
+    else gc.clear(0,0,0) end
+
+    rn,gn,bn=1-bg.progressN,1-.75*bg.progressN,1
+    rp,gp,bp=1,1-.25*bg.progressP,1-bg.progressP
     if beat>=8 then
         local a=max(1.25-(beat-8))/1.25
         gc.setLineWidth(24)
@@ -74,8 +74,8 @@ function bg.draw()
 
         if beat>=40 then--负环
             for i=0,7 do
-                if (beat-i/8)%4<1 then local C=M.lerp(clrN,{1,1,1},1-i/8)
-                    gc.setColor(C[1],C[2],C[3],.5)
+                if (beat-i/8)%4<1 then
+                    gc.setColor(M.lerp(rn,1,1-i/8),M.lerp(gn,1,1-i/8),M.lerp(bn,1,1-i/8),.5)
                     gc.setLineWidth(20)
                     gc.circle('line',-450,0,240+25*i)
                 end
@@ -83,8 +83,8 @@ function bg.draw()
         end
         if beat>=41 then--正环
             for i=0,7 do
-                if (beat+2-i/8)%4<1 then local C=M.lerp(clrP,{1,1,1},1-i/8)
-                    gc.setColor(C[1],C[2],C[3],.5)
+                if (beat+2-i/8)%4<1 then
+                    gc.setColor(M.lerp(rp,1,1-i/8),M.lerp(gp,1,1-i/8),M.lerp(bp,1,1-i/8),.5)
                     gc.setLineWidth(20)
                     gc.circle('line', 450,0,240+25*i)
                 end
