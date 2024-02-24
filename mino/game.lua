@@ -315,7 +315,7 @@ function mino.keyP(k)
         C,A=OP.cur,OP.smoothAnim
         local his=OP.history
         if OP.deadTimer<0 and S.winState==0 then
-            if OP.event[1] then
+            if OP.event[1] then--提前操作
                 if T.include(S.keySet.hold,k) and OP.canInitHold then
                     mino.addEvent(OP,0,function ()
                         mino.hold(OP) mino.sfxPlay.hold(OP)
@@ -325,7 +325,7 @@ function mino.keyP(k)
                     OP.canInitHold=false
                 elseif T.include(S.keySet.ML,k) and OP.canInitMove then
                     mino.addEvent(OP,0,function ()
-                        local success=not coincide(OP,-1,0)
+                        success=not coincide(OP,-1,0)
                         local landed=coincide(OP,0,-1)
                         if success then
                             C.x=C.x-1 C.moveSuccess=true his.spin=false
@@ -339,7 +339,7 @@ function mino.keyP(k)
                     OP.canInitMove=false
                 elseif T.include(S.keySet.MR,k) and OP.canInitMove then
                     mino.addEvent(OP,0,function ()
-                        local success=not coincide(OP,1,0)
+                        success=not coincide(OP,1,0)
                         local landed=coincide(OP,0,-1)
                         if success then
                             C.x=C.x+1 C.moveSuccess=true his.spin=false
@@ -362,7 +362,7 @@ function mino.keyP(k)
                         end
                         OP.canInitRotate=true
 
-                        mino.sfxPlay.rotate(OP,C.kickOrder,mino.rule.allowSpin[C.name] and fLib.isImmobile(OP))
+                        mino.sfxPlay.rotate(OP,C.kickOrder,mino.rule.allowSpin[C.name] and his.spin)
                     end)
                     OP.canInitRotate=false
 
@@ -376,7 +376,7 @@ function mino.keyP(k)
                         end
                         OP.canInitRotate=true
 
-                        mino.sfxPlay.rotate(OP,C.kickOrder,mino.rule.allowSpin[C.name] and fLib.isImmobile(OP))
+                        mino.sfxPlay.rotate(OP,C.kickOrder,mino.rule.allowSpin[C.name] and his.spin)
                     end)
                     OP.canInitRotate=false
                 elseif T.include(S.keySet.flip,k) and OP.canInitRotate then
@@ -389,7 +389,7 @@ function mino.keyP(k)
                         end
                         OP.canInitRotate=true
 
-                        mino.sfxPlay.rotate(OP,C.kickOrder,mino.rule.allowSpin[C.name] and fLib.isImmobile(OP))
+                        mino.sfxPlay.rotate(OP,C.kickOrder,mino.rule.allowSpin[C.name] and his.spin)
                     end)
                     OP.canInitRotate=false
                 end
@@ -431,7 +431,7 @@ function mino.keyP(k)
                         else his.spin,his.mini=false,false end
                     end
 
-                    mino.sfxPlay.rotate(OP,C.kickOrder,mino.rule.allowSpin[C.name] and fLib.isImmobile(OP))
+                    mino.sfxPlay.rotate(OP,C.kickOrder,mino.rule.allowSpin[C.name] and his.spin)
 
                 elseif T.include(S.keySet.CCW,k) then mino.setAnimPrePiece(OP)
                     C.kickOrder=fLib.kick(OP,'L')
@@ -445,7 +445,7 @@ function mino.keyP(k)
                         else his.spin,his.mini=false,false end
                     end
 
-                    mino.sfxPlay.rotate(OP,C.kickOrder,mino.rule.allowSpin[C.name] and fLib.isImmobile(OP))
+                    mino.sfxPlay.rotate(OP,C.kickOrder,mino.rule.allowSpin[C.name] and his.spin)
 
                 elseif T.include(S.keySet.flip,k) then mino.setAnimPrePiece(OP)
                     C.kickOrder=fLib.kick(OP,'F')
@@ -459,7 +459,7 @@ function mino.keyP(k)
                         else his.spin,his.mini=false,false end
                     end
 
-                    mino.sfxPlay.rotate(OP,C.kickOrder,mino.rule.allowSpin[C.name] and fLib.isImmobile(OP))
+                    mino.sfxPlay.rotate(OP,C.kickOrder,mino.rule.allowSpin[C.name] and his.spin)
 
                 elseif T.include(S.keySet.HD,k) then --硬降
                     local xmin,xmax,ymin,ymax=B.edge(C.piece)
