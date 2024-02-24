@@ -22,6 +22,7 @@ do
     for i=.5,4.5 do gc.points(.5,i) gc.points(4.5,i) end
     gc.setCanvas()
 end
+
 local function edgeDraw(w,h,l)
     gc.rectangle('fill',-w/2,-h/2,w,l) gc.rectangle('fill',-w/2,h/2-l,w,l)
     gc.rectangle('fill',-w/2,-h/2,l,h) gc.rectangle('fill',w/2-l,-h/2,l,h)
