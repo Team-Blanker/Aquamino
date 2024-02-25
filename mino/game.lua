@@ -635,6 +635,7 @@ function mino.gameUpdate(dt)
                     mino.sfxPlay.touch(OP,coincide(OP,0,-1))
                 end
                 mino.setAnimPrePiece(OP)
+                OP.ghostY=fLib.getGhostY(OP)
             end
         else OP.DTimer=0 end
 
@@ -671,6 +672,7 @@ function mino.gameUpdate(dt)
                 while P[i].FTimer>=P[i].FDelay and not coincide(P[i],0,-1) do
                     C.y=C.y-1 his.spin=false P[i].FTimer=P[i].FTimer-P[i].FDelay
                     mino.sfxPlay.touch(P[i],coincide(P[i],0,-1))
+                    P[i].ghostY=fLib.getGhostY(P[i])
                 end
             end
             if P[i].LTimer>P[i].LDelay then

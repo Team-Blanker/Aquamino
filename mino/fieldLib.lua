@@ -82,6 +82,9 @@ function fieldLib.isBlock(player,x,y)
     elseif player.field[y][x] and next(player.field[y][x]) then return true
     else return false end
 end
+function fieldLib.isEdge(player,x,y)
+    return x<1 or x>player.w or y<1
+end
 function fieldLib.isAir(player,x,y)
     if x<1 or x>player.w or y<1 then return false end
     if y>#player.field or not next(player.field[y][x]) then return true
@@ -259,12 +262,11 @@ function fieldLib.pushField(player,mode) --loosen[1]={x=1,y=1,name='Z'}
     --第一次检测
 
     for i=#testP,1,-1 do --对于所有检测点
-        local testO=fieldLib.isLoosen(player,testP[i][1],testP[i][2]) --=Test Order,检测松动块序号
-        local testBlock=fieldLib.blockType(player,testP[i][1],testP[i][2])
-        if testBlock=='wall' or testBlock=='bottom' then --如果检测到墙
+        local testO=fieldLib.isLoosen(player,testP[i][1],testP[i][2]) --Test Order,检测松动块序号
+        if fieldLib.isEdge(player,testP[i][1],testP[i][2]) then --如果检测到墙
             canMove=false moreTest=false --不移动松动块，不进行之后的检测
             table.remove(testP,i) --销毁检测点
-        elseif next(testBlock) then --如果检测到了固定块
+        elseif fieldLib.isBlock(player,testP[i][1],testP[i][2]) then --如果检测到了固定块
             canMove=false moreTest=false --不移动松动块，不进行之后的检测
             if P.pushAtt>=3 then --如果旋转计数>=3
                 table.insert(ls,{x=testP[i][1],y=testP[i][2],info=field[testP[i][2]][testP[i][1]]}) --将它加入松动块列表
@@ -281,9 +283,8 @@ function fieldLib.pushField(player,mode) --loosen[1]={x=1,y=1,name='Z'}
 
     if moreTest then  for i=#testP,1,-1 do --如果继续测试，对于所有检测点
         local testO=fieldLib.isLoosen(player,testP[i][1],testP[i][2]) --=Test Order,检测松动块序号
-        local testBlock=fieldLib.blockType(player,testP[i][1],testP[i][2])
-        if testBlock.name=='wall' or testBlock.name=='bottom' then canMove=false --如果检测到墙，不移动松动块
-        elseif next(testBlock) then --如果检测到了固定块
+        if fieldLib.isEdge(player,testP[i][1],testP[i][2]) then canMove=false --如果检测到墙，不移动松动块
+        elseif fieldLib.isBlock(player,testP[i][1],testP[i][2]) then --如果检测到了固定块
             table.insert(ls,{x=testP[i][1],y=testP[i][2],info=field[testP[i][2]][testP[i][1]]}) --将它加入松动块列表
             canMove=false field[testP[i][2]][testP[i][1]]={} --不移动松动块
         elseif testO then --如果检测到了松动块
@@ -292,8 +293,8 @@ function fieldLib.pushField(player,mode) --loosen[1]={x=1,y=1,name='Z'}
                 testP[i]={testP[i][1]+dir[mode][1],testP[i][2]+dir[mode][2]} --移动该检测点
                 testO=fieldLib.isLoosen(player,testP[i][1],testP[i][2]) --看看检测点还在不在松动块上
             end
-            testBlock=fieldLib.blockType(player,testP[i][1],testP[i][2])--检测点动了，所以要刷新
-            if testBlock.name=='wall' or testBlock.name=='bottom' then canMove=false --如果检测到墙，不移动松动块
+            --最终判定
+            if fieldLib.isEdge(player,testP[i][1],testP[i][2]) then canMove=false --如果检测到墙，不移动松动块
             elseif next(fieldLib.blockType(player,testP[i][1],testP[i][2])) then --如果检测到了固定块
                 table.insert(ls,{x=testP[i][1],y=testP[i][2],info=field[testP[i][2]][testP[i][1]]}) --将它加入松动块列表
                 canMove=false field[testP[i][2]][testP[i][1]]={} --不移动松动块并去掉场地上对应的块
