@@ -23,6 +23,7 @@ function fieldLib.newPlayer(arg)
         started=false,gameTimer=0,deadTimer=-1,winTimer=-1,
 
         event={0,'curIns'},
+        initOpQueue={},--I_S操作序列
         posx=0,posy=0,r=0,scale=1,
         field={},w=10,h=20,loosen={},
         moveDir='',pushAtt=0,
