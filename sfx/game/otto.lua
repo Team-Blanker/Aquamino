@@ -49,7 +49,7 @@ end
 function otto.lock(player)
     --if player.history.dropHeight>0 then sfx.play('HD',.3+.7*player.history.dropHeight/player.h)
     --else sfx.play('lock') end
-    sfx.play('HD',.3+.7*player.history.dropHeight/player.h)
+    sfx.play('HD')
 end
 function otto.clear(player)
     local his=player.history

@@ -35,7 +35,7 @@ function DrOcelot.touch(player,touch)
     if touch then sfx.play('touch') end
 end
 function DrOcelot.lock(player)
-    if player.history.dropHeight>0 then sfx.play('HD',.3+.7*player.history.dropHeight/player.h)
+    if player.history.dropHeight>0 then sfx.play('HD')
     else sfx.play('lock') end
 end
 function DrOcelot.clear(player)

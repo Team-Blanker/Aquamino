@@ -43,7 +43,7 @@ function meme.touch(player,touch)
     if touch then sfx.play('touch') end
 end
 function meme.lock(player)
-    sfx.play('lock',.3+.7*player.history.dropHeight/player.h)
+    sfx.play('lock')
 end
 function meme.clear(player)
     local his=player.history
