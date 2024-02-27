@@ -103,6 +103,7 @@ scene={
 }
 
 --scene.cur=require('territory/territory')
+--scene.cur=require('mino/game') scene.cur.mode='bot_test'
 
 love.window.setMode(love.window.getMode()) --看似废话，但是如果去掉的话在我的框架里窗口颜色就会出神秘问题（至少Love 11.4如此）
 

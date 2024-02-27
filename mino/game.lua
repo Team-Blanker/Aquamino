@@ -517,7 +517,6 @@ function mino.keyP(k)
                     end
                     mino.sfxPlay.touch(OP,coincide(OP,0,-1))
 
-
                 elseif T.include(S.keySet.hold,k) and OP.canHold then
                     mino.hold(OP) mino.sfxPlay.hold(OP)
                     if not C.name then local LDR=OP.LDR mino.curIns(OP) OP.LDR=LDR end

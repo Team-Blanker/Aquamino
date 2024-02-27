@@ -1,7 +1,10 @@
 --Use ZZZTOJ wrapper from 26F Studio
 
+local B,SC=require('mino/blocks'),require('mino/spinCheck')
+local M,T=mymath,mytable
 require'zzz'
 local fLib=require('mino/fieldLib')
+
 local bot_zzz={}
 function bot_zzz.renderField(player)
     if player.w~=10 then error('Field width must be 10') end
@@ -17,7 +20,7 @@ function bot_zzz.renderField(player)
     return boolField
 end
 function bot_zzz.getExecution(player,nextLimit)
-    local nq=''
+    local nq=player.cur.name
     for i=1,min(#player.next,nextLimit) do
         nq=nq..player.next[i]
     end
@@ -32,7 +35,7 @@ function bot_zzz.execute(player,eq,mino)
     local C,A=player.cur,player.smoothAnim
     local his=player.history
     local success
-    if player.deadTimer<0 and S.winState==0 then
+    if player.deadTimer<0 and mino.stacker.winState==0 then
         local landed=fLib.coincide(player,0,-1)
         if k=='l' then
             success=not fLib.coincide(player,-1,0)
@@ -54,8 +57,6 @@ function bot_zzz.execute(player,eq,mino)
                 player.ghostY=fLib.getGhostY(player)
                 mino.sfxPlay.move(player,success,landed)
             end
-            if love.keyboard.isDown(S.keySet.MR) then player.MTimer=0 end
-
         elseif k=='r' then
             local success=not fLib.coincide(player,1,0)
             if success then mino.setAnimPrePiece(player) A.timer=A.delay
@@ -76,7 +77,6 @@ function bot_zzz.execute(player,eq,mino)
                 player.ghostY=fLib.getGhostY(player)
                 mino.sfxPlay.move(player,success,landed)
             end
-            if love.keyboard.isDown(S.keySet.MR) then player.MTimer=0 end
         elseif k=='c' then mino.setAnimPrePiece(player)
             C.kickOrder=fLib.kick(player,'R')
             if C.kickOrder then A.timer=A.delay
@@ -149,7 +149,7 @@ function bot_zzz.execute(player,eq,mino)
                 mino.blockLock(player,mino)
             end
 
-            if S.winState==0 then
+            if mino.stacker.winState==0 then
                 if (#player.loosen==0 or player.loosen.fallTPL==0) then
                     if player.EDelay==0 and player.CDelay==0 then mino.curIns(player)
                         else mino.addEvent(player,player.EDelay,'curIns')
@@ -176,14 +176,8 @@ function bot_zzz.execute(player,eq,mino)
             if not C.name then local LDR=player.LDR mino.curIns(player) player.LDR=LDR end
             player.canHold=false
         end
-        --最高下落速度
-        if not T.include(S.keySet.HD,k) and player.FDelay==0 then
-            local h=0
-            while not fLib.coincide(player,0,-1) do C.y=C.y-1 h=h+1 his.spin=false end
-            if h>0 then mino.sfxPlay.touch(player,true) end
-        end
     end
 
-    return eq:sub(1,#eq)--去掉第一个操作
+    return eq:sub(2,#eq)--去掉第一个操作
 end
 return bot_zzz
