@@ -93,6 +93,8 @@ function mino.Ins20GDrop(player)
     while not coincide(player,0,-1) do player.cur.y=player.cur.y-1 end
     if mino.sfxPlay.touch then mino.sfxPlay.touch(player,true) end
 end
+function mino.operate(player,cmd)--准备重构整个操作流程
+end
 function mino.curIns(player)
     if player.next[player.preview+1] then
         local wtf=player.preview+1
@@ -501,21 +503,19 @@ function mino.keyP(k)
                         end
                     end
 
-                elseif T.include(S.keySet.SD,k) then local touch
+                elseif T.include(S.keySet.SD,k) then
                     if S.ctrl.SD_ASD==0 and S.ctrl.SD_ASP==0 then
                         while not coincide(OP,0,-1) do local h=0
                             mino.setAnimPrePiece(OP) A.timer=A.delay
                             C.y=C.y-1 h=h+1 his.spin=false
-                            touch=h>0
                             if mino.sfxPlay.SD then mino.sfxPlay.SD(OP) end
                         end
                     elseif not landed then
                         mino.setAnimPrePiece(OP) A.timer=A.delay
                         C.y=C.y-1 his.spin=false
-                        touch=coincide(OP,0,-1)
                         if mino.sfxPlay.SD then mino.sfxPlay.SD(OP) end
                     end
-                    mino.sfxPlay.touch(OP,touch)
+                    mino.sfxPlay.touch(OP,coincide(OP,0,-1))
 
 
                 elseif T.include(S.keySet.hold,k) and OP.canHold then
