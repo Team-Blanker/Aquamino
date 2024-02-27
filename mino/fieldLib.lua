@@ -35,7 +35,7 @@ function fieldLib.newPlayer(arg)
         },
         RS_name='SRS',
         RS=nil,
-        next={},NO={},NP={},preview=6,
+        next={},NO={},NP={},preview=6,--NO next所有块朝向  NP next所有块“实体”
         hold={mode='S'},canHold=true,
         canInitMove=true,canInitRotate=true,canInitHold=true,
 
