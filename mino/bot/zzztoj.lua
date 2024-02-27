@@ -157,21 +157,20 @@ function bot_zzz.execute(player,eq,mino)
                 end
             end
 
-        elseif k=='d' then local touch
+        elseif k=='d' then
             if not landed then
                 mino.setAnimPrePiece(player) A.timer=A.delay
                 C.y=C.y-1 his.spin=false
-                touch=fLib.coincide(player,0,-1)
                 if mino.sfxPlay.SD then mino.sfxPlay.SD(player) end
             end
-        elseif k=='D' then local touch
+            mino.sfxPlay.touch(player,fLib.coincide(player,0,-1))
+        elseif k=='D' then
             while not fLib.coincide(player,0,-1) do local h=0
                 mino.setAnimPrePiece(player) A.timer=A.delay
                 C.y=C.y-1 h=h+1 his.spin=false
-                touch=h>0
                 if mino.sfxPlay.SD then mino.sfxPlay.SD(player) end
             end
-            mino.sfxPlay.touch(player,touch)
+            mino.sfxPlay.touch(player,fLib.coincide(player,0,-1))
         elseif T.include(S.keySet.hold,k) and player.canHold then
             mino.hold(player) mino.sfxPlay.hold(player)
             if not C.name then local LDR=player.LDR mino.curIns(player) player.LDR=LDR end
@@ -184,7 +183,7 @@ function bot_zzz.execute(player,eq,mino)
             if h>0 then mino.sfxPlay.touch(player,true) end
         end
     end
-    
-    return eq:sub(1,#eq)
+
+    return eq:sub(1,#eq)--去掉第一个操作
 end
 return bot_zzz
