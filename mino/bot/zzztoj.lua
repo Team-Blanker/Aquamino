@@ -25,7 +25,7 @@ function bot_zzz.getExecution(player,nextLimit)
 end
 --[[return:
 l=左一格 L=左到底 r=右一格 R=右到底 d=降一格 D=降到底
-z=逆时针 x=180（不让用……） c=顺时针 v=暂存 V=硬降
+z=逆时针 x=180 c=顺时针 v=暂存 V=硬降
 ]]
 function bot_zzz.execute(player,eq,mino)
     local k=eq:sub(1,1)
