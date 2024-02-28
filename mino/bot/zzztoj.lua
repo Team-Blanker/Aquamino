@@ -7,15 +7,22 @@ local fLib=require('mino/fieldLib')
 
 local bot_zzz={}
 function bot_zzz.renderField(player)
-    if player.w~=10 then error('Field width must be 10') end
+    assert(player.w==10,'Field width must be 10')
     local boolField={}
     for y=1,#player.field do
         for x=1,10 do
             boolField[10*(y-1)+x]=next(player.field[y][x]) and true or false
         end
     end
-    while #boolField < 400 do
+    while #boolField<400 do
         boolField[#boolField+1]=false
+    end
+    for i=39,0,-1 do
+        local l=''
+        for j=1,10 do
+        l=l..(boolField[i*10+j] and '[]' or '  ')
+        end
+        print(l)
     end
     return boolField
 end
@@ -171,7 +178,7 @@ function bot_zzz.execute(player,eq,mino)
                 if mino.sfxPlay.SD then mino.sfxPlay.SD(player) end
             end
             mino.sfxPlay.touch(player,fLib.coincide(player,0,-1))
-        elseif T.include(S.keySet.hold,k) and player.canHold then
+        elseif k=='v' and player.canHold then--hold
             mino.hold(player) mino.sfxPlay.hold(player)
             if not C.name then local LDR=player.LDR mino.curIns(player) player.LDR=LDR end
             player.canHold=false

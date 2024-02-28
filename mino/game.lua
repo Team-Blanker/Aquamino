@@ -249,7 +249,6 @@ function mino.init()
         P[1].smoothAnimAct=pf.smoothAnimAct
         mino.sfxPlay=require('sfx/game/'..pf.sfx)
         mino.sfxPlay.addSFX()
-        print(pf.theme)
 
         local vi=json.decode(fs.newFile('conf/video'):read()) or {unableBG=false}
         mino.unableBG=vi.unableBG
@@ -289,7 +288,6 @@ function mino.init()
         end
         if mino.blockSkin.init then mino.blockSkin.init(P[i]) end
         if mino.theme.init then mino.theme.init(P[i]) end
-        print(P[i].cur.piece)
     end
     curPlayTxt="当前播放 : "..mino.musInfo
 end

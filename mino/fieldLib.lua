@@ -78,6 +78,7 @@ function fieldLib.blockType(player,x,y)--获取特定位置的砖格信息
     elseif player.field[y][x] then return player.field[y][x]
     else return {name='cleared'} end
 end
+
 function fieldLib.isBlock(player,x,y)
     if x<1 or x>player.w or y<1 or y>#player.field then return false
     elseif player.field[y][x] and next(player.field[y][x]) then return true
@@ -207,10 +208,10 @@ function fieldLib.garbage(player,block,atk,hole)
 end
 function fieldLib.insertField(player,field)--导入场地/涨入特定垃圾，field里的砖格均以字符串表示
     for y=1,#field do
-        table.insert(player,1,{})
-        for x=1,#player.w do
-            if field[y][x] and field[y][x]~=' ' then player.field[y][x]={name=field[y][x]}
-            else player.field[y][x]={} end
+        table.insert(player.field,1,{})
+        for x=1,player.w do
+            if field[y][x] and field[y][x]~=' ' then player.field[1][x]={name=field[y][x]}
+            else player.field[1][x]={} end
         end
     end
 end
