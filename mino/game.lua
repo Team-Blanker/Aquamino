@@ -289,7 +289,7 @@ function mino.init()
         if mino.blockSkin.init then mino.blockSkin.init(P[i]) end
         if mino.theme.init then mino.theme.init(P[i]) end
     end
-    curPlayTxt="当前播放 : "..mino.musInfo
+    curPlayTxt=user.lang.game.nowPlaying..mino.musInfo
 end
 
 local success
@@ -819,8 +819,8 @@ function mino.draw()
     gc.rectangle('fill',-1000,-1000,2000,2000)
     if mino.paused then
         pause.draw()
-        --gc.printf("当前播放 : "..mino.musInfo,Exo_2,0,384,65536,'center',0,.4,.4,32848,84)
-        gc.printf(curPlayTxt,Exo_2,0,384,65536,'center',0,.4,.4,32848,84)
+        --gc.printf("当前播放 : "..mino.musInfo,Exo_2,0,384,65536,'center',0,.4,.4,32768,84)
+        gc.printf(curPlayTxt,Exo_2,0,384,65536,'center',0,.4,.4,32768,84)
     end
 end
 function mino.exit()

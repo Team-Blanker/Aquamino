@@ -10,6 +10,8 @@ do
     key.read() key.save()
     local custom=require'scene/game conf/custom'
     custom.read() custom.save()
+    local lang=require'scene/game conf/language'
+    lang.read() lang.save()
 end
 
 do

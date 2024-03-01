@@ -1,3 +1,5 @@
+local cfk=user.lang.conf.keys
+
 local BUTTON=scene.button
 local key={
     keySet={},
@@ -34,10 +36,10 @@ function key.save()
 end
 
 function key.init()
+    cfk=user.lang.conf.keys
     scene.BG=require'BG/space' scene.BG.init()
 
     key.keyName={'ML','MR','CW','CCW','flip','SD','HD','hold','R','pause'}
-    key.name={'左移','右移','顺转','逆转','翻转','软降','硬降','暂存','重开','暂停'}
     key.read()
     key.order=nil
 
@@ -51,7 +53,7 @@ function key.init()
             gc.setLineWidth(3)
             gc.rectangle('line',-w/2,-h/2,w,h,6)
             gc.setColor(1,1,1)
-            gc.printf("返回",Exo_2_SB,0,0,1280,'center',0,.5,.5,640,84)
+            gc.draw(win.UI.back,0,0,0,1,1,60,35)
         end,
         event=function()
             scene.switch({
@@ -96,12 +98,11 @@ function key.draw()
     gc.setColor(1,1,1,.25)
     if key.order then gc.rectangle('fill',key.order>6 and 200 or -600,(key.order-1)%6*100-300,600,100) end
     gc.setColor(1,1,1)
-    gc.printf("键位设置",SYHT,0,-460,1280,'center',0,1,1,640,64)
-    gc.printf("点击添加键位绑定（最多3个）\nBackspace清空选定键位\n按下已绑定键位以删除该绑定",Consolas,
-    800,400,2000,'right',0,.3,.3,2000,192)
+    gc.printf(user.lang.conf.main.keys,Exo_2,0,-460,1280,'center',0,1,1,640,84)
+    gc.printf(cfk.info,Consolas,800,400,8000,'right',0,.3,.3,8000,192)
     for i=0,5 do
-        if key.name[i+1] then gc.printf(key.name[i+1],SYHT,-700,-268+100*i,2000,'center',0,.5,.5,1000,64) end
-        if key.name[i+7] then gc.printf(key.name[i+7],SYHT, 100,-268+100*i,2000,'center',0,.5,.5,1000,64) end
+        if cfk.keyName[i+1] then gc.printf(cfk.keyName[i+1],Exo_2_SB,-700,-250+100*i,2000,'center',0,cfk.kScale,cfk.kScale,1000,84) end
+        if cfk.keyName[i+7] then gc.printf(cfk.keyName[i+7],Exo_2_SB, 100,-250+100*i,2000,'center',0,cfk.kScale,cfk.kScale,1000,84) end
     end
     gc.setColor(.5,1,.75)
     for i=1,#key.keyName do local K=key.keySet[key.keyName[i]]

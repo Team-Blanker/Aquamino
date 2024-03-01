@@ -1,4 +1,5 @@
 local M,T=mymath,mytable
+local cf=user.lang.conf
 
 local video={}
 local BUTTON,SLIDER=scene.button,scene.slider
@@ -14,6 +15,7 @@ function video.save()
     love.window.setVSync(video.info.vsync and 1 or 0)
 end
 function video.init()
+    cf=user.lang.conf
     scene.BG=require'BG/space' scene.BG.init()
     video.info.fullscr=win.fullscr video.save() video.read()
 
@@ -27,7 +29,7 @@ function video.init()
             gc.setLineWidth(3)
             gc.rectangle('line',-w/2,-h/2,w,h,6)
             gc.setColor(1,1,1)
-            gc.printf("返回",Exo_2_SB,0,0,1280,'center',0,.5,.5,640,84)
+            gc.draw(win.UI.back,0,0,0,1,1,60,35)
         end,
         event=function()
             scene.switch({
@@ -58,9 +60,9 @@ function video.init()
             gc.setColor(r,g,b,2*t)
             gc.rectangle('fill',-w/2,-h/2,h,h)
             gc.setColor(1,1,1)
-            gc.printf("禁用游戏背景",Exo_2_SB,w/2+50,0,1200,'left',0,.35,.35,0,84)
+            gc.printf(cf.video.unableBG,Exo_2_SB,w/2+50,0,1200,'left',0,.35,.35,0,84)
             gc.setColor(1,1,1,.75)
-            gc.printf("若游戏背景导致你身体不适，请打开此选项。",Exo_2_SB,-w/2,h/2+60,1840,'left',0,.25,.25,0,152)
+            gc.printf(cf.video.unableTxt,Exo_2_SB,-w/2,h/2+60,1840,'left',0,.25,.25,0,152)
         end,
         event=function()
             video.info.unableBG=not video.info.unableBG
@@ -87,9 +89,9 @@ function video.init()
             gc.setColor(r,g,b,2*t)
             gc.rectangle('fill',-w/2,-h/2,h,h)
             gc.setColor(1,1,1)
-            gc.printf("垂直同步",Exo_2_SB,w/2+50,0,1200,'left',0,.35,.35,0,84)
+            gc.printf(cf.video.vsync,Exo_2_SB,w/2+50,0,1200,'left',0,.35,.35,0,84)
             gc.setColor(1,1,1,.75)
-            gc.printf("若感觉游戏卡顿或有画面撕裂，尝试调整此选项。一般不建议打开。",Exo_2_SB,-w/2,h/2+64,1840,'left',0,.25,.25,0,152)
+            gc.printf(cf.video.vsyncTxt,Exo_2_SB,-w/2,h/2+64,1840,'left',0,.25,.25,0,152)
         end,
         event=function()
             video.info.vsync=not video.info.vsync
@@ -117,9 +119,9 @@ function video.init()
             gc.setColor(r,g,b,2*t)
             gc.rectangle('fill',-w/2,-h/2,h,h)
             gc.setColor(1,1,1)
-            gc.printf("全屏",Exo_2_SB,w/2+50,0,1200,'left',0,.35,.35,0,84)
+            gc.printf(cf.video.fullScr,Exo_2_SB,w/2+50,0,1200,'left',0,.35,.35,0,84)
             gc.setColor(1,1,1,.75)
-            gc.printf("按F11可一键切换。",Exo_2_SB,-w/2,h/2+64,1840,'left',0,.25,.25,0,152)
+            gc.printf(cf.video.fullScrTxt,Exo_2_SB,-w/2,h/2+64,1840,'left',0,.25,.25,0,152)
         end,
         event=function()
             video.info.fullscr=not video.info.fullscr
@@ -144,7 +146,7 @@ function video.update(dt)
 end
 function video.draw()
     gc.setColor(1,1,1)
-    gc.printf("画面设置",SYHT,0,-460,1280,'center',0,1,1,640,64)
+    gc.printf(cf.main.video,Exo_2,0,-430,1280,'center',0,1,1,640,84)
     BUTTON.draw() SLIDER.draw()
 end
 function video.exit()

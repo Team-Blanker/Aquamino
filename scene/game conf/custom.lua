@@ -1,4 +1,5 @@
 local M,T=mymath,mytable
+local cfc=user.lang.conf.custom
 
 local custom={}
 local block=require'mino/blocks'
@@ -17,6 +18,7 @@ function custom.save()
     s:close()
 end
 function custom.init()
+    cfc=user.lang.conf.custom
     scene.BG=require'BG/space' scene.BG.init()
     custom.read()
 
@@ -40,7 +42,7 @@ function custom.init()
             gc.setLineWidth(3)
             gc.rectangle('line',-w/2,-h/2,w,h,6)
             gc.setColor(1,1,1)
-            gc.printf("返回",Exo_2_SB,0,0,1280,'center',0,.5,.5,640,84)
+            gc.draw(win.UI.back,0,0,0,1,1,60,35)
         end,
         event=function()
             scene.switch({
@@ -55,7 +57,7 @@ function custom.init()
             local o,l=custom.bOrder,#custom.blockSkinList
             local w,h=bt.w,bt.h
             gc.setColor(.5,1,.75)
-            gc.printf("方块材质",Exo_2_SB,0,-100,1280,'center',0,.5,.5,640,84)
+            gc.printf(cfc.texture,Exo_2_SB,0,-100,1280,'center',0,.5,.5,640,84)
             gc.setLineWidth(3)
             gc.rectangle('line',-bt.w/2,-bt.h/2,bt.w,bt.h,6)
             gc.setLineWidth(8)
@@ -82,7 +84,7 @@ function custom.init()
             gc.setLineWidth(3)
             gc.rectangle('line',-w/2,-h/2,w,h,6)
             gc.setColor(1,1,1)
-            gc.printf("颜色设置",Exo_2_SB,0,0,1280,'center',0,.5,.5,640,84)
+            gc.printf(cfc.color,Exo_2_SB,0,0,1280,'center',0,.5,.5,640,84)
         end,
         event=function()
             scene.switch({
@@ -112,9 +114,9 @@ function custom.init()
             gc.setColor(r,g,b,2*t)
             gc.rectangle('fill',-w/2,-h/2,h,h)
             gc.setColor(1,1,1)
-            gc.printf("平滑运动\n（测试）",Exo_2_SB,w/2+50,0,1200,'left',0,.35,.35,0,152)
+            gc.printf(cfc.smooth,Exo_2_SB,w/2+20+cfc.smoothOffX,cfc.smoothOffY,1200,'left',0,.3,.3,0,84)
             gc.setColor(1,1,1,.75)
-            gc.printf("注意，移动和旋转没有中间态，只要终点没有障碍，操作就必定可以成功。",Exo_2_SB,-w/2,h/2+64,1600,'left',0,.25,.25,0,152)
+            gc.printf(cfc.smoothTxt,Exo_2_SB,-w/2,h/2+32,1600,'left',0,.25,.25,0,84)
         end,
         event=function()
             custom.info.smoothAnimAct=not custom.info.smoothAnimAct
@@ -122,12 +124,12 @@ function custom.init()
     },.2)
 
     BUTTON.create('themeChoose',{
-        x=0,y=200,type='rect',w=400,h=100,
+        x=0,y=150,type='rect',w=400,h=100,
         draw=function(bt,t)
             local o,l=custom.tOrder,#custom.themeList
             local w,h=bt.w,bt.h
             gc.setColor(1,.5,.5)
-            gc.printf("主题",Exo_2_SB,0,-100,1280,'center',0,.5,.5,640,84)
+            gc.printf(cfc.theme,Exo_2_SB,0,-100,1280,'center',0,.5,.5,640,84)
             gc.setLineWidth(3)
             gc.rectangle('line',-bt.w/2,-bt.h/2,bt.w,bt.h,6)
             gc.setLineWidth(8)
@@ -145,12 +147,12 @@ function custom.init()
         end
     },.2)
     BUTTON.create('sfxChoose',{
-        x=600,y=200,type='rect',w=400,h=100,
+        x=600,y=150,type='rect',w=400,h=100,
         draw=function(bt,t)
             local o,l=custom.sOrder,#custom.sfxList
             local w,h=bt.w,bt.h
             gc.setColor(1,.5,1)
-            gc.printf("音效包",Exo_2_SB,0,-100,1280,'center',0,.5,.5,640,84)
+            gc.printf(cfc.sfx,Exo_2_SB,0,-100,1280,'center',0,.5,.5,640,84)
             gc.setLineWidth(3)
             gc.rectangle('line',-bt.w/2,-bt.h/2,bt.w,bt.h,6)
             gc.setLineWidth(8)
@@ -158,9 +160,8 @@ function custom.init()
             if o<l then gc.line( (w-h)/2,h/2-8, w/2-8,0, (w-h)/2,-h/2+8) end
             gc.setColor(1,1,1)
             gc.printf(custom.sfxList[custom.sOrder],Exo_2_SB,0,0,1280,'center',0,.4,.4,640,84)
-            if custom.sfxList[o]=='otto' then
-            gc.setColor(1,0,0,.75)
-            gc.printf("警告：该音效包包含音量过大内容，请谨慎选择。",Exo_2_SB,-w/2,h/2+48,1600,'left',0,.25,.25,0,152)
+            if cfc.sfxWarning[custom.sfxList[o]] then gc.setColor(1,0,0,.75)
+            gc.printf(cfc.sfxWarning[custom.sfxList[o]],Exo_2_SB,-w/2,h/2+48,1600,'left',0,.25,.25,0,152)
             end
         end,
         event=function(x,y)
@@ -172,12 +173,12 @@ function custom.init()
         end
     },.2)
     BUTTON.create('scaleAdjust',{
-        x=-600,y=200,type='rect',w=400,h=100,
+        x=-600,y=150,type='rect',w=400,h=100,
         draw=function(bt,t,ct,pos)
             local sz=custom.info.fieldScale
             local w,h=bt.w,bt.h
             gc.setColor(.5,1,1)
-            gc.printf("场地缩放",Exo_2_SB,0,-100,1280,'center',0,.5,.5,640,84)
+            gc.printf(cfc.scale,Exo_2_SB,0,-100,1280,'center',0,.5,.5,640,84)
 
             gc.setColor(.5,1,1)
             gc.setLineWidth(4)
@@ -193,7 +194,7 @@ function custom.init()
             gc.setColor(1,1,1)
             gc.printf(("%.2f"):format(sz),Exo_2_SB,0,0,1280,'center',0,.5,.5,640,84)
             gc.setColor(1,1,1,.75)
-            gc.printf("数值为1时，对于标准场地，其高为屏幕高度的2/3。",Exo_2_SB,-w/2,h/2+48,1600,'left',0,.25,.25,0,152)
+            gc.printf(cfc.scaleTxt,Exo_2_SB,-w/2,h/2+48,1600,'left',0,.25,.25,0,152)
         end,
         event=function(x,y,bt)
             local w,h=bt.w,bt.h
@@ -217,7 +218,7 @@ function custom.update(dt)
 end
 function custom.draw()
     gc.setColor(1,1,1)
-    gc.printf("个性设置",SYHT,0,-460,1280,'center',0,1,1,640,64)
+    gc.printf(user.lang.conf.main.custom,Exo_2,0,-460,1280,'center',0,1,1,640,84)
     BUTTON.draw() SLIDER.draw()
 end
 function custom.exit()

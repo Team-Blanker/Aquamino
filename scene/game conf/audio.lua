@@ -1,5 +1,6 @@
 local M,T=mymath,mytable
 local BUTTON,SLIDER=scene.button,scene.slider
+local cf=user.lang.conf
 
 local audio={}
 function audio.read()
@@ -14,6 +15,7 @@ function audio.save()
     s:write(json.encode(audio.info))
 end
 function audio.init()
+    cf=user.lang.conf
     scene.BG=require'BG/space' scene.BG.init()
     audio.read()
     mus.volume,sfx.volume=audio.info.mus,audio.info.sfx
@@ -32,7 +34,7 @@ function audio.init()
             gc.setLineWidth(3)
             gc.rectangle('line',-w/2,-h/2,w,h,6)
             gc.setColor(1,1,1)
-            gc.printf("返回",Exo_2_SB,0,0,1280,'center',0,.5,.5,640,84)
+            gc.draw(win.UI.back,0,0,0,1,1,60,35)
         end,
         event=function()
             scene.switch({
@@ -63,7 +65,8 @@ function audio.init()
             gc.setColor(r,g,b,2*t)
             gc.rectangle('fill',-w/2,-h/2,h,h)
             gc.setColor(1,1,1)
-            gc.printf("失去焦点自动静音",Exo_2_SB,w/2+25,0,1200,'left',0,.25,.25,0,84)
+            gc.printf(cf.audio.distract,Exo_2_SB,w/2+25+cf.audio.DOX,0,1200,'left',0,.25,.25,0,84)
+            --DOX=Distract Offset X
         end,
         event=function()
             audio.info.distractCut=not audio.info.distractCut
@@ -81,7 +84,7 @@ function audio.init()
             gc.setLineWidth(6)
             gc.rectangle('line',-419,-19,838,38)
             gc.setColor(1,1,1)
-            gc.printf(string.format("音乐音量:%.0f%% = %.2fdB",
+            gc.printf(string.format(cf.audio.mus.."%.0f%% = %.2fdB",
                     audio.info.mus*100,audio.info.mus==0 and -1e999 or math.log(audio.info.mus,10)*10
                 ),Consolas,-419,-48,114514,'left',0,.3125,.3125,0,56)
         end,
@@ -104,7 +107,7 @@ function audio.init()
             gc.setLineWidth(6)
             gc.rectangle('line',-419,-19,838,38)
             gc.setColor(1,1,1)
-            gc.printf(string.format("音效音量:%.0f%% = %.2fdB",
+            gc.printf(string.format(cf.audio.sfx.."%.0f%% = %.2fdB",
                     audio.info.sfx*100,audio.info.sfx==0 and -1e999 or math.log(audio.info.sfx,10)*10
                 ),Consolas,-419,-48,114514,'left',0,.3125,.3125,0,56)
         end,
@@ -134,7 +137,7 @@ function audio.update(dt)
 end
 function audio.draw()
     gc.setColor(1,1,1)
-    gc.printf("音频设置",SYHT,0,-460,1280,'center',0,1,1,640,64)
+    gc.printf(cf.main.audio,Exo_2,0,-430,1280,'center',0,1,1,640,84)
     BUTTON.draw() SLIDER.draw()
 end
 function audio.exit()

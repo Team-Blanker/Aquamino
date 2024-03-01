@@ -1,20 +1,12 @@
+local m=user.lang.menu
 local BUTTON=scene.button
 
 local menu={modeKey=1}
 local flashT,enterT,clickT=0,0,0
 menu.modelist={'40 lines','marathon','ice storm','thunder','smooth','master','multitasking','sandbox'}
-local modename={
-    ['40 lines']="40行",
-    marathon="马拉松",
-    ['ice storm']="冰风暴",
-    thunder="雷暴",
-    smooth="丝滑40行",
-    master="宗师",
-    multitasking="多线程",
-    sandbox="沙盒子"
-}
-
 function menu.init()
+    m=user.lang.menu
+    menu.modeName=m.modeName
     if menu.bgName then scene.BG=require('BG/'..menu.bgName) else scene.BG=require('BG/pond') end
     if scene.BG.init then scene.BG.init() end
     if mus.path~='music/Hurt Record/Nine Five' then
@@ -100,11 +92,10 @@ function menu.update(dt)
 end
 function menu.draw()
     local l=1920/#menu.modelist
-    gc.printf(modename[menu.modelist[menu.modeKey]],Exo_2,-750,-540,1000,'center',0,1.5,1.5)
+    gc.printf(menu.modeName[menu.modelist[menu.modeKey]],Exo_2,-750,-540,1000,'center',0,1.5,1.5)
 
     gc.setColor(1,1,1,.5-.15*cos(scene.time%8*math.pi/4))
-    gc.printf("双击/按Enter键开始游戏\n按R键随机跳转",
-        Exo_2,0,0,2000,'center',0,.6,.6,1000,512/3)
+    gc.printf(m.illust,Exo_2,0,0,4000,'center',0,m.iScale,m.iScale,2000,512/3)
 
     gc.setLineWidth(3)
     for i=1,#menu.modelist do
@@ -115,7 +106,7 @@ function menu.draw()
             gc.setColor(1,1,1,.2+.05*(i%2))
             gc.rectangle('fill',-960+l*(i-1),500,l,40)
         end
-        gc.printf(modename[menu.modelist[i]],Consolas,-960+l*(i-.5),480,2000,'center',0,.3,.3,1000,56)
+        gc.printf(menu.modeName[menu.modelist[i]],Exo_2_SB,-960+l*(i-.5),480,2000,'center',0,.3,.3,1000,84)
     end
     gc.setColor(1,1,1,.5)
     gc.setLineWidth(20)

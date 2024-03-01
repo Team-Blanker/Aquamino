@@ -1,5 +1,7 @@
 local pause={}
+local ptxt=user.lang.pause
 function pause.init(mino)
+    ptxt=user.lang.pause
     local mode=mino.mode
     pause.time=0
     local bt=fs.read('framework/control/button.lua')
@@ -10,7 +12,7 @@ function pause.init(mino)
             gc.setColor(.5,.5,.5,.5+2*t)
             gc.rectangle('fill',-300,-50,600,100)
             gc.setColor(1,1,1)
-            gc.printf("继续",SYHT,0,0,1280,'center',0,.5,.5,640,96)
+            gc.printf(ptxt.resume,Exo_2,0,0,1280,'center',0,.5,.5,640,84)
         end,
         event=function()
             scene.cur.paused=false
@@ -22,7 +24,7 @@ function pause.init(mino)
             gc.setColor(.5,.5,.5,.5+2*t)
             gc.rectangle('fill',-300,-50,600,100)
             gc.setColor(1,1,1)
-            gc.printf("重开",SYHT,0,0,1280,'center',0,.5,.5,640,96)
+            gc.printf(ptxt.r,Exo_2,0,0,1280,'center',0,.5,.5,640,84)
         end,
         event=function()
             scene.dest='solo' scene.destScene=require'mino/game'
@@ -38,7 +40,7 @@ function pause.init(mino)
             gc.setColor(.5,.5,.5,.5+2*t)
             gc.rectangle('fill',-300,-50,600,100)
             gc.setColor(1,1,1)
-            gc.printf("退出",SYHT,0,0,1280,'center',0,.5,.5,640,96)
+            gc.printf(ptxt.quit,Exo_2,0,0,1280,'center',0,.5,.5,640,84)
         end,
         event=function()
             scene.dest=mino.exitScene or 'menu'

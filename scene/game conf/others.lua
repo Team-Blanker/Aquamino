@@ -1,3 +1,5 @@
+local cfo=user.lang.conf.other
+
 local others={}
 local BUTTON,SLIDER=scene.button,scene.slider
 function others.read()
@@ -5,6 +7,7 @@ end
 function others.save()
 end
 function others.init()
+    cfo=user.lang.conf.other
     scene.BG=require'BG/space' scene.BG.init()
     others.read()
 
@@ -18,7 +21,7 @@ function others.init()
             gc.setLineWidth(3)
             gc.rectangle('line',-w/2,-h/2,w,h,6)
             gc.setColor(1,1,1)
-            gc.printf("返回",Exo_2_SB,0,0,1280,'center',0,.5,.5,640,84)
+            gc.draw(win.UI.back,0,0,0,1,1,60,35)
         end,
         event=function()
             scene.switch({
@@ -41,8 +44,8 @@ function others.update(dt)
 end
 function others.draw()
     gc.setColor(1,1,1)
-    gc.printf("其它设置",SYHT,0,-460,1280,'center',0,1,1,640,64)
-    gc.printf("暂无内容",SYHT,0,-66,1280,'center',0,1,1,640,64)
+    gc.printf(cfo.title,Exo_2,0,-460,1280,'center',0,1,1,640,84)
+    gc.printf(cfo.nothing,Exo_2,0,-66,1280,'center',0,1,1,640,84)
     BUTTON.draw() SLIDER.draw()
 end
 function others.exit()

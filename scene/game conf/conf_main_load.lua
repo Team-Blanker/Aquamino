@@ -1,3 +1,5 @@
+local cf=user.lang.conf
+local cfm=cf.main
 scene.button.create('quit',{
     x=-700,y=400,type='rect',w=200,h=100,
     draw=function(bt,t)
@@ -8,7 +10,7 @@ scene.button.create('quit',{
         gc.setLineWidth(3)
         gc.rectangle('line',-w/2,-h/2,w,h,6)
         gc.setColor(1,1,1)
-        gc.printf("返回",Exo_2_SB,0,0,1280,'center',0,.5,.5,640,84)
+        gc.draw(win.UI.back,0,0,0,1,1,60,35)
     end,
     event=function()
         scene.switch({
@@ -27,7 +29,7 @@ scene.button.create('test',{
         gc.setLineWidth(3)
         gc.rectangle('line',-w/2,-h/2,w,h,6)
         gc.setColor(1,1,1)
-        gc.printf("测试",Exo_2_SB,0,0,1280,'center',0,.5,.5,640,84)
+        gc.printf(cf.test,Exo_2,0,0,1280,'center',0,.5,.5,640,84)
     end,
     event=function()
         scene.switch({
@@ -38,7 +40,8 @@ scene.button.create('test',{
         scene.sendArg='game conf/conf_main'
     end
 },.2)
-scene.button.create('key',{
+
+scene.button.create('keys',{
     x=360,y=-200,type='rect',w=600,h=160,
     draw=function(bt,t)
         local w,h=bt.w,bt.h
@@ -48,7 +51,7 @@ scene.button.create('key',{
         gc.setLineWidth(3)
         gc.rectangle('line',-w/2,-h/2,w,h,6)
         gc.setColor(1,1,1)
-        gc.printf("键位设置",SYHT,0,0,1280,'center',0,.8,.8,640,96)
+        gc.printf(cfm.keys,Exo_2,0,0,1280,'center',0,.8,.8,640,84)
     end,
     event=function()
         scene.switch({
@@ -67,7 +70,7 @@ scene.button.create('ctrl',{
         gc.setLineWidth(3)
         gc.rectangle('line',-w/2,-h/2,w,h,6)
         gc.setColor(1,1,1)
-        gc.printf("控制设置",SYHT,0,0,1280,'center',0,.8,.8,640,96)
+        gc.printf(cfm.ctrl,Exo_2,0,0,1280,'center',0,.8,.8,640,84)
     end,
     event=function()
         scene.switch({
@@ -77,7 +80,7 @@ scene.button.create('ctrl',{
     end
 },.2)
 scene.button.create('others',{
-    x=360,y=200,type='rect',w=600,h=160,
+    x=260,y=200,type='rect',w=400,h=160,
     draw=function(bt,t)
         local w,h=bt.w,bt.h
         gc.setColor(.15,.125,.5,.8+t)
@@ -86,7 +89,7 @@ scene.button.create('others',{
         gc.setLineWidth(3)
         gc.rectangle('line',-w/2,-h/2,w,h,6)
         gc.setColor(1,1,1)
-        gc.printf("其它设置",SYHT,0,0,1280,'center',0,.8,.8,640,96)
+        gc.printf(cfm.other,Exo_2,0,0,1280,'center',0,.8,.8,640,84)
     end,
     event=function()
         scene.switch({
@@ -95,6 +98,27 @@ scene.button.create('others',{
         })
     end
 },.2)
+scene.button.create('language',{
+    x=580,y=200,type='rect',w=160,h=160,
+    draw=function(bt,t)
+        local w,h=bt.w,bt.h
+        gc.setColor(.5,.125,.375,.8+t)
+        gc.rectangle('fill',-w/2,-h/2,w,h,6)
+        gc.setColor(.8,.2,.6)
+        gc.setLineWidth(3)
+        gc.rectangle('line',-w/2,-h/2,w,h,6)
+        gc.setColor(1,1,1)
+        gc.draw(win.UI.lang,0,0,0,1.5,1.5,50,50)
+    end,
+    event=function()
+        scene.switch({
+            dest='language',destScene=require('scene/game conf/language'),
+            swapT=.15,outT=.1,
+            anim=function() anim.cover(.1,.05,.1,0,0,0) end
+        })
+    end
+},.2)
+
 scene.button.create('audio',{
     x=-360,y=-200,type='rect',w=600,h=160,
     draw=function(bt,t)
@@ -105,7 +129,7 @@ scene.button.create('audio',{
         gc.setLineWidth(3)
         gc.rectangle('line',-w/2,-h/2,w,h,6)
         gc.setColor(1,1,1)
-        gc.printf("音频设置",SYHT,0,0,1280,'center',0,.8,.8,640,96)
+        gc.printf(cfm.audio,Exo_2,0,0,1280,'center',0,.8,.8,640,84)
     end,
     event=function()
         scene.switch({
@@ -124,7 +148,7 @@ scene.button.create('video',{
         gc.setLineWidth(3)
         gc.rectangle('line',-w/2,-h/2,w,h,6)
         gc.setColor(1,1,1)
-        gc.printf("画面设置",SYHT,0,0,1280,'center',0,.8,.8,640,96)
+        gc.printf(cfm.video,Exo_2,0,0,1280,'center',0,.8,.8,640,84)
     end,
     event=function()
         scene.switch({
@@ -143,7 +167,7 @@ scene.button.create('custom',{
         gc.setLineWidth(3)
         gc.rectangle('line',-w/2,-h/2,w,h,6)
         gc.setColor(1,1,1)
-        gc.printf("个性设置",SYHT,0,0,1280,'center',0,.8,.8,640,96)
+        gc.printf(cfm.custom,Exo_2,0,0,1280,'center',0,.8,.8,640,84)
     end,
     event=function()
         scene.switch({

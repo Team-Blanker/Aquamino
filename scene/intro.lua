@@ -38,6 +38,7 @@ local function btdraw(ch,w,h,o,t)
 end
 
 function intro.init()
+    local it=user.lang.intro
     intro.choose=0
     intro.lvl2animT=0
     intro.lvl=1
@@ -54,7 +55,7 @@ function intro.init()
             local w,h=bt.w,bt.h
             btdraw(3.5,w,h,1,t)
             gc.setColor(1,1,1)
-            gc.printf(unlocked[1] and "练习" or "???",Exo_2_SB,0,0,1280,'center',0,.75,.75,640,84)
+            gc.printf(unlocked[1] and it.mode[1] or "???",Exo_2_SB,0,0,1280,'center',0,.75,.75,640,84)
         end,
         event=function()
             if not unlocked[1] then return end
@@ -80,7 +81,7 @@ function intro.init()
             local w,h=bt.w,bt.h
             btdraw(2.5,w,h,2,t)
             gc.setColor(1,1,1)
-            gc.printf(unlocked[2] and "挑战" or "???",Exo_2_SB,0,0,1280,'center',0,.75,.75,640,84)
+            gc.printf(unlocked[2] and it.mode[2] or "???",Exo_2_SB,0,0,1280,'center',0,.75,.75,640,84)
         end,
         event=function()
             if not unlocked[2] then return end
@@ -106,7 +107,7 @@ function intro.init()
             local w,h=bt.w,bt.h
             btdraw(2.5,w,h,3,t)
             gc.setColor(1,1,1)
-            gc.printf(unlocked[3] and "秘境" or "???",Exo_2_SB,0,0,1280,'center',0,.75,.75,640,84)
+            gc.printf(unlocked[3] and it.mode[3] or "???",Exo_2_SB,0,0,1280,'center',0,.75,.75,640,84)
         end,
         event=function()
             if not unlocked[3] then return end
@@ -131,7 +132,7 @@ function intro.init()
             local w,h=bt.w,bt.h
             btdraw(2.5,w,h,4,t)
             gc.setColor(1,1,1)
-            gc.printf(unlocked[4] and "理堂" or "???",Exo_2_SB,0,0,1280,'center',0,.75,.75,640,84)
+            gc.printf(unlocked[4] and it.mode[4] or "???",Exo_2_SB,0,0,1280,'center',0,.75,.75,640,84)
         end,
         event=function()
             if not unlocked[4] then return end
@@ -156,7 +157,7 @@ function intro.keyP(k)
     if intro.lvl==1 then
         if k=='escape' then love.event.quit()
         elseif not mytable.include(banned,k) then
-            if win.stat.launch==1 and win.freshman then
+            if win.stat.launch==1 and user.freshman then
                 scene.switch({
                 dest='game conf',destScene=require('scene/game conf/conf_main'),swapT=.7,outT=.3,
                 anim=function() anim.cover(.3,.4,.3,0,0,0) end
@@ -164,7 +165,7 @@ function intro.keyP(k)
                 function scene.cur.send()
                     scene.cur.exitScene='scene/intro'
                 end
-                win.freshman=false
+                user.freshman=false
             else intro.lvl=2 end
         end
     else if k=='escape' then intro.lvl=1 end end
@@ -194,7 +195,7 @@ function intro.draw()
         gc.draw(logo,0,-200+12*sin(scene.time/5%2*math.pi)-600*v*v,0,1600/w,1600/w,w/2,h/2)
 
         gc.setColor(1,1,1,1-v)
-        gc.printf("Press any key to start",Exo_2,-57257,150,114514,'center',0,1,1)
+        gc.printf(user.lang.intro.start,Exo_2,-57257,150,114514,'center',0,1,1)
 
         gc.printf(intro.tip[intro.order],Exo_2,0,450,114514,'center',0,.4,.4,57257,84)
 

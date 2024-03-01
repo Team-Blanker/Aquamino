@@ -127,15 +127,16 @@ function simple.update(player,dt)
         if PCInfo[i]<=0 then rem(PCInfo,i) end
     end
 end
+local txt=user.lang.game.theme.simple
 function simple.dieAnim(player)
     setColor(1,1,1,player.deadTimer*4)
-    printf("失败",Exo_2,-200,-84,400,'center',0,1)
+    printf(txt.lose,Exo_2_SB,-200,-84,400,'center',0,1)
 end
 function simple.winAnim(player)
     setColor(1,1,1,1-player.winTimer*4)
-    printf("胜利",Exo_2,0,0,400,'center',0,1+player.winTimer*4,1+player.winTimer*4,200,84)
+    printf(txt.win,Exo_2_SB,0,0,400,'center',0,1+player.winTimer*4,1+player.winTimer*4,200,84)
     setColor(1,1,1)
-    printf("胜利",Exo_2,-200,-84,400,'center',0,1)
+    printf(txt.win,Exo_2_SB,-200,-84,400,'center',0,1)
 end
 function simple.setCInfoTTL(player)
     return .5

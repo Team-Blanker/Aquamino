@@ -108,7 +108,7 @@ scene={
 love.window.setMode(love.window.getMode()) --看似废话，但是如果去掉的话在我的框架里窗口颜色就会出神秘问题（至少Love 11.4如此）
 
 win={
-    stat={launch=0,version="preview 0005"},freshman=true,
+    stat={launch=0,version="preview 0005"},
     showInfo=false,
     --[[showAdjustKey=true,
     isAdjusting=false,]]
@@ -140,8 +140,19 @@ win={
         love.window.setFullscreen(win.fullscr)
         win.W,win.H=gc.getDimensions()
         win.scale=win.H/win.W<9/16 and win.H/1080 or win.W/1920
-    end
+    end,
+    UI={
+        back=gc.newImage('UI/sign/back.png'), --120*70
+        lang=gc.newImage('UI/sign/language.png')  --100*100
+    }
 }
+user={
+    freshman=true,
+    langName='English',
+    lang=nil
+}
+user.lang=require('language/'..user.langName)
+
 win.x,win.y=love.window.getPosition()
 win.x_win,win.y_win=love.window.getPosition()
 win.scale=win.H/win.W<9/16 and win.H/1080 or win.W/1920
@@ -183,7 +194,7 @@ function love.load()
 
     LED=gc.newFont('font/UniDreamLED.ttf',128)
 
-    UI_mini=gc.newImage('UI/mini.png')
+    --[[UI_mini=gc.newImage('UI/mini.png')
     UI_mini_hv=gc.newImage('UI/mini_hover.png')
     UI_FS=gc.newImage('UI/fullscreen.png')
     UI_FS_hv=gc.newImage('UI/fullscreen_hover.png')
@@ -192,7 +203,7 @@ function love.load()
     UI_close=gc.newImage('UI/X.png')
     UI_close_hv=gc.newImage('UI/X_hover.png')
     UI_adjust=gc.newImage('UI/adjust.png')
-    UI_adjust_hv=gc.newImage('UI/adjust_hover.png')
+    UI_adjust_hv=gc.newImage('UI/adjust_hover.png')]]
 
     require'init'
 end
