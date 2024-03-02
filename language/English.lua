@@ -87,7 +87,7 @@ return {
         "The game's' birthday...Kairan set it to August 14th!",
         "Block skin \"Carbon Fibre\" is inspired by Speedcubes that use carbon fibre stickers.",
         "Try Aquamino's Push mechanic in Sandbox mode!",
-        "Not every mode are related to water,although the game was named \"Aqua\".",
+        "Not every modes are related to water,although the game was named \"Aqua\".",
         "Kairan had modified SRS in this game with symmetric I-spin,and powerful 180 kicktables."
     },tipScale=.3
 }
