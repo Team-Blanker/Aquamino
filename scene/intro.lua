@@ -47,7 +47,7 @@ function intro.init()
         mus.add('music/Hurt Record/Nine Five','parts','mp3',61.847,224*60/130)
         mus.start()
     end
-    intro.tip=require'mino/tips'
+    intro.tip=user.lang.tip
     intro.order=rand(#intro.tip)
     BUTTON.create('practice',{
         x=-1440,y=-270,type='rect',w=960,h=540,
@@ -197,7 +197,7 @@ function intro.draw()
         gc.setColor(1,1,1,1-v)
         gc.printf(user.lang.intro.start,Exo_2,-57257,150,114514,'center',0,1,1)
 
-        gc.printf(intro.tip[intro.order],Exo_2,0,450,114514,'center',0,.4,.4,57257,84)
+        gc.printf(intro.tip[intro.order],Exo_2,0,450,114514,'center',0,user.lang.tipScale,user.lang.tipScale,57257,84)
 
         gc.setColor(1,1,1,.25-v*.25)
         gc.printf("Version : "..win.stat.version,Exo_2,-240,480,1600,'center',0,.3,.3)

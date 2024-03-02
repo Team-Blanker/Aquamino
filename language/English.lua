@@ -70,5 +70,24 @@ return {
         },
         other={title="Other",nothing="Nothing yet..."},
         lang={cur="Current Language:English"}
-    }
+    },
+
+    tip={
+        "Well well well...",
+        "Waht is \"Push\"?",
+        "I like C4W :D",
+        "AAAUUUGGGGGGGGGGGGGGGGHHH",
+        "Lua No.1!",
+        "Kairan is just a noob in blocks,not even know a line of code.",
+        "Bad argument #6623:Attempt to compare number with nil",
+        "I'm just a tip...",
+        "This is Kairan,neither capable nor cute,only making nonsense in tips",
+        "I'm not the first one who add tips into a block game,anyway",
+        "A Project by TEAM BLANKER",
+        "The game's' birthday...Kairan set it to August 14th!",
+        "Block skin \"Carbon Fibre\" is inspired by Speedcubes that use carbon fibre stickers.",
+        "Try Aquamino's Push mechanic in Sandbox mode!",
+        "Not every mode are related to water,although the game was named \"Aqua\".",
+        "Kairan had modified SRS in this game with symmetric I-spin,and powerful 180 kicktables."
+    },tipScale=.3
 }
