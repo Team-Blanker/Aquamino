@@ -88,6 +88,7 @@ return {
         "Block skin \"Carbon Fibre\" is inspired by Speedcubes that use carbon fibre stickers.",
         "Try Aquamino's Push mechanic in Sandbox mode!",
         "Not every modes are related to water,although the game was named \"Aqua\".",
-        "Kairan had modified SRS in this game with symmetric I-spin,and powerful 180 kicktables."
+        "Kairan had modified SRS in this game with symmetric I-spin,and powerful 180 kicktables.",
+        "\"How similar to Techmino but with nice color\""
     },tipScale=.3
 }
