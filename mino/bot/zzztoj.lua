@@ -26,9 +26,9 @@ function bot_zzz.renderField(player)
     end
     return boolField
 end
-function bot_zzz.getExecution(player,nextLimit)
+function bot_zzz.calculate(player,nextLimit)
     local nq=player.cur.name
-    for i=1,min(#player.next,nextLimit) do
+    for i=1,math.min(#player.next,nextLimit) do
         nq=nq..player.next[i]
     end
     return zzz.run(bot_zzz.renderField(player),player.cur.name or ' ',player.hold.name or ' ',player.canHold,nq)
@@ -186,5 +186,30 @@ function bot_zzz.execute(player,eq,mino)
     end
 
     return eq:sub(2,#eq)--去掉第一个操作
+end
+local th=love.thread
+function bot_zzz.init()
+    bot_zzz.sendChannel=th.getChannel("zzz_send")
+    bot_zzz.recvChannel=th.getChannel("zzz_recv")
+    bot_zzz.thread=th.newThread([[
+        local bot=require('mino/bot/zzztoj')
+        local th=love.thread
+        local nextLim=...
+        local s,r=th.getChannel("zzz_send"),th.getChannel("zzz_recv")
+        while true do
+            player=r:demand()
+            local eq,hold=bot.calculate(player,nextLim or 6)
+            s:push(eq) s:push(hold)
+        end
+    ]])
+end
+function bot_zzz.start(nextLim)
+    bot_zzz.thread:start(nextLim)
+end
+function bot_zzz.think(player)
+    bot_zzz.recvChannel:push(player)
+end
+function bot_zzz.getExecution()
+    return bot_zzz.sendChannel:pop(),bot_zzz.sendChannel:pop()--eq,hold
 end
 return bot_zzz

@@ -79,32 +79,6 @@ for i=1,5 do rand() end
 
 canop=true--=can operate，是决定玩家是否能操作的变量
 
-scene={
-    watermark=true,
-    totalTime=0,
-    cur=require('scene/warning'),pos='warning',
-    dest=nil,destScene=nil,
-    BG=require('BG/blank'),
-    nextBG=nil,
-    time=0,
-    swapT=0,
-    outT=0,
-    anim=nil,--过场动画
-    latest=nil,
-    path={'intro'},
-    switch=function(arg)
-        for k,v in pairs(arg) do scene[k]=v end
-    end,
-    sendArg=nil,
-    recvArg=nil,
-
-    button=require'framework/control/button',
-    slider=require'framework/control/slider'
-}
-
---scene.cur=require('territory/territory')
---scene.cur=require('mino/game') scene.cur.mode='bot_test'
-
 love.window.setMode(love.window.getMode()) --看似废话，但是如果去掉的话在我的框架里窗口颜色就会出神秘问题（至少Love 11.4如此）
 
 win={
@@ -152,6 +126,32 @@ user={
     lang=nil
 }
 user.lang=require('language/'..user.langName)
+
+scene={
+    watermark=true,
+    totalTime=0,
+    cur=require('scene/warning'),pos='warning',
+    dest=nil,destScene=nil,
+    BG=require('BG/blank'),
+    nextBG=nil,
+    time=0,
+    swapT=0,
+    outT=0,
+    anim=nil,--过场动画
+    latest=nil,
+    path={'intro'},
+    switch=function(arg)
+        for k,v in pairs(arg) do scene[k]=v end
+    end,
+    sendArg=nil,
+    recvArg=nil,
+
+    button=require'framework/control/button',
+    slider=require'framework/control/slider'
+}
+
+--scene.cur=require('territory/territory')
+--scene.cur=require('mino/game') scene.cur.mode='bot_test'
 
 win.x,win.y=love.window.getPosition()
 win.x_win,win.y_win=love.window.getPosition()

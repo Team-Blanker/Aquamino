@@ -8,7 +8,8 @@ function btest.init(P,mino)
     --mino.waitTime=.5
     mino.musInfo="R-side - Nine Five"
     P[1].FDelay=1e99
-    fLib.insertField(P[1],{
+    bot_zzz.init() bot_zzz.start(1)
+    --[[fLib.insertField(P[1],{
         {'Z','Z','Z','Z','Z','Z',' ',' ',' ',' '},
         {'Z','Z','Z','Z','Z','Z',' ',' ',' ',' '},
         {'Z','Z','Z','Z','Z','Z',' ',' ',' ',' '},
@@ -23,20 +24,24 @@ function btest.init(P,mino)
         {'Z','Z','Z','Z','Z','Z',' ',' ',' ',' '},
         {'Z','Z','Z','Z','Z','Z','O','O',' ',' '},
         {'Z','Z','Z','Z','Z','Z','O',' ',' ',' '},
-    })
+    })]]
 end
 local eq,hold
 function btest.update(player,dt,mino)
     btest.opTimer=btest.opTimer+dt
     if btest.opTimer>.5 then
-        eq,hold=bot_zzz.getExecution(player,6) btest.eq=eq
-        print(hold) print(eq)
-        if hold then bot_zzz.execute(player,'v',mino) end
-        while eq and eq~='' do
+        bot_zzz.think(player)
+        btest.opTimer=btest.opTimer-.5
+    end
+    eq,hold=bot_zzz.getExecution()
+    
+    if hold then bot_zzz.execute(player,'v',mino) end
+    if eq then print(hold) print(eq)
+        btest.eq=eq
+        while eq~='' do
             eq=bot_zzz.execute(player,eq,mino)
         end
         bot_zzz.execute(player,'V',mino)
-        btest.opTimer=btest.opTimer-.5
     end
 end
 function btest.overFieldDraw()
