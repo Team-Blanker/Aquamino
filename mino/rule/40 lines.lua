@@ -4,7 +4,7 @@ local rule={}
 function rule.init(P,mino)
     scene.BG=require('BG/sprint') scene.BG.init(127,.471987,2,64)
     mino.musInfo="たかゆき - Exciter"
-    mus.add('music/Hurt Record/Exciter','whole','mp3',30.709,192*60/127)
+    mus.add('music/Hurt Record/Exciter','whole','mp3',30.709,256*60/127)
     mus.start()
     for i=1,#P do P[i].line=0 end
 end
