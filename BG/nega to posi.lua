@@ -41,7 +41,7 @@ local function nsDraw(alpha)
     gc.pop()
 end
 local function blink(a)
-    gc.setColor(1,1,1,.25*a)
+    gc.setColor(1,1,1,.2*a)
     gc.rectangle('fill',-1000,-600,2000,1200)
 end
 function bg.init()
@@ -55,7 +55,7 @@ local rn,gn,bn, rp,gp,bp
 function bg.draw()
     local beat=(offset+scene.time)*BPM/60
     if beat>loopStartBeat then gc.clear(COLOR.hsv(beat%16*3/8,1,.14))
-    else gc.clear(0,0,0) end
+    else gc.clear(.03,.03,.03) end
 
     rn,gn,bn=1-bg.progressN,1-.75*bg.progressN,1
     rp,gp,bp=1,1-.25*bg.progressP,1-bg.progressP
