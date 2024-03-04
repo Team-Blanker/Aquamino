@@ -6,7 +6,7 @@ local banned={'f1','f2','f3','f4','f5','f6','f7','f8','f9','f10','f11','f12', 'f
 'printscreen'
 }
 local intro={}
-local logo=gc.newImage('assets/pic/logo.png')
+local logo=gc.newImage('assets/pic/title.png')
 local mode={
     {'40 lines','marathon','sandbox'},
     {'smooth','thunder','ice storm','master','multitasking'},
