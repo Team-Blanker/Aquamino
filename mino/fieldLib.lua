@@ -197,7 +197,7 @@ function fieldLib.garbage(player,block,atk,hole)
     local h=#field
     local gb={}
     for i=1,player.w do gb[i]=block end
-    if type(hole)=='number' then gb[hole or math.random(1,10)]={}
+    if type(hole)=='number' then gb[hole or math.random(1,player.w)]={}
     else for i=1,#hole do gb[hole[i]]={} end end
     for i=1,atk do
         for j=h,1,-1 do field[j+1]=field[j] end
