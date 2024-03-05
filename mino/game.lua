@@ -65,7 +65,7 @@ function mino.blockLock(player)
         else mino.addEvent(player,mino.rule.loosen.fallTPL,'loosenDrop') end
     else
         his.push=0
-        his.line,his.PC=fLib.lineClear(player)
+        his.line,his.PC,his.clearLine=fLib.lineClear(player)
         mino.checkClear(player,true) mino.sfxPlay.clear(player)
         if his.line>0 and mino.rule.onLineClear then mino.rule.onLineClear(player,mino) end
     end
@@ -168,7 +168,7 @@ function mino.loosenDrop(player)
     local his,delay=player.history,mino.rule.loosen.fallTPL
     fLib.loosenFall(player)
     if player.loosen[1] then mino.addEvent(player,delay,'loosenDrop')
-    else his.line,his.PC=fLib.lineClear(player)
+    else his.line,his.PC,his.clearLine=fLib.lineClear(player)
         mino.checkClear(player,true) mino.sfxPlay.clear(player)
         if his.line>0 and mino.rule.onLineClear then mino.rule.onLineClear(player,mino) end
         if mino.rule.onPieceDrop then mino.rule.onPieceDrop(player,mino) end

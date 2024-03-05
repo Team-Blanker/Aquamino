@@ -8,7 +8,7 @@ local banned={'f1','f2','f3','f4','f5','f6','f7','f8','f9','f10','f11','f12', 'f
 local intro={}
 local logo=gc.newImage('assets/pic/title.png')
 local mode={
-    {'40 lines','marathon','sandbox'},
+    {'40 lines','marathon','dig 40','sandbox'},
     {'smooth','thunder','ice storm','master','multitasking'},
     {},
     {}

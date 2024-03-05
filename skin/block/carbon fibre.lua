@@ -43,9 +43,9 @@ function skin.AscHoldDraw(player,piece,x,y,color)
 end
 function skin.holdDraw(player,piece,x,y,color,canHold)
     for i=1,#piece do
-        setColor(color)
+        if canHold then setColor(color) else setColor(.5,.5,.5) end
         rect('fill',-18+36*(x+piece[i][1]),-18-36*(y+piece[i][2]),36,36,6)
-        if canHold then setColor(1,1,1) gc.draw(skin.sticker,36*(x+piece[i][1]),-36*(y+piece[i][2]),0,1,1,18,18) end
+        setColor(1,1,1) gc.draw(skin.sticker,36*(x+piece[i][1]),-36*(y+piece[i][2]),0,1,1,18,18)
     end
 end
 function skin.nextDraw(player,piece,x,y,color,order)

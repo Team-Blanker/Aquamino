@@ -17,7 +17,8 @@ return {
             smooth="丝滑40行",
             master="宗师",
             multitasking="多线程",
-            sandbox="沙盒子"
+            sandbox="沙盒子",
+            ['dig 40']="挖掘 40行"
         },
         illust="双击/按Enter键开始游戏\n按R键随机跳转",
         iScale=.6

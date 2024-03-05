@@ -82,7 +82,7 @@ canop=true--=can operate，是决定玩家是否能操作的变量
 love.window.setMode(love.window.getMode()) --看似废话，但是如果去掉的话在我的框架里窗口颜色就会出神秘问题（至少Love 11.4如此）
 
 win={
-    stat={launch=0,version="preview 0005"},
+    stat={launch=0,version="preview 0006"},
     showInfo=false,
     --[[showAdjustKey=true,
     isAdjusting=false,]]

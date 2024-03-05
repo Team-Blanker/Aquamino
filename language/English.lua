@@ -17,7 +17,8 @@ return {
             smooth="Sprint Smooth",
             master="Master",
             multitasking="Multitasking",
-            sandbox="Sandbox"
+            sandbox="Sandbox",
+            ['dig 40']="Cheese"
         },
         illust="Double click or hit Enter to play.\nHit R to randomly choose a mode.",
         iScale=.4

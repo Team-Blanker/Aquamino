@@ -176,17 +176,18 @@ end
 function fieldLib.lineClear(player)
     local cunt=0 local field=player.field
     local PC=true
+    local cLine={}
     for y=#field,1,-1 do
         local pass=true
         for x=1,player.w do
             if not next(field[y][x]) then pass=false break end
         end
-        if pass then field[y]={} cunt=cunt+1 end
+        if pass then cLine[y]=field[y] field[y]={} cunt=cunt+1 end
     end
     for y=#field,1,-1 do for x=1,#field[y] do
         if next(field[y][x]) then PC=false break end
     end end
-    return cunt,PC
+    return cunt,PC,cLine
 end
 function fieldLib.eraseEmptyLine(player)
     for y=#player.field,1,-1 do if #player.field[y]==0 then table.remove(player.field,y) end end
@@ -196,13 +197,13 @@ function fieldLib.garbage(player,block,atk,hole)
     local field=player.field
     local h=#field
     local gb={}
-    for i=1,player.w do gb[i]=block end
+    for i=1,player.w do gb[i]=(type(block)=='table' and T.copy(block) or {name=block}) end
     if type(hole)=='number' then gb[hole or math.random(1,player.w)]={}
     else for i=1,#hole do gb[hole[i]]={} end end
     for i=1,atk do
         for j=h,1,-1 do field[j+1]=field[j] end
         field[1]=T.copy(gb)
-        if fieldLib.coincide(player) then player.cur.y=player.cur.y+1 end
+        if player.cur.piece and #player.cur.piece~=0 and fieldLib.coincide(player) then player.cur.y=player.cur.y+1 end
     end
     if h+atk>3*player.h then for i=3*player.h,(h+atk) do field[i]=nil end end
 end
