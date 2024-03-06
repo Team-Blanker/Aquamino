@@ -77,8 +77,6 @@ function skin.ghostDraw(player,piece,x,y,color)
     end
     gc.setShader()
 end
-function skin.dropEffect(color,alpha)
-end
 function skin.clearEffect(y,h,alpha,width)
 end
 return skin

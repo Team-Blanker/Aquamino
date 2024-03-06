@@ -70,6 +70,10 @@ return {
         lang={cur="当前语言：简体中文"}
     },
 
+    rule={
+        dig={remain="剩余行数",piece="使用块数"}
+    },
+
     tip={
         "哦哦，哦哦哦！",
         "感觉……不如……Techmino……",

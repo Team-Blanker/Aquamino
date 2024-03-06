@@ -72,8 +72,6 @@ function skin.ghostDraw(player,piece,x,y,color)
         skin.unitDraw(player,x+piece[i][1],y+piece[i][2],color,.5)
     end
 end
-function skin.dropEffect(color,alpha)
-end
 function skin.clearEffect(y,h,alpha,width)
 end
 return skin

@@ -73,6 +73,10 @@ return {
         lang={cur="Current Language:English"}
     },
 
+    rule={
+        dig={remain="Lines remain",piece="Pieces"}
+    },
+
     tip={
         "Well well well...",
         "Waht is \"Push\"?",

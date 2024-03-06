@@ -70,16 +70,16 @@ function bg.draw()
     gc.draw(c,0,0,0,1920,540,.5,1)
     gc.push('transform')
     gc.rotate(bg.angle)
-    gc.setColor(.8,.8,.84,.06)
+    gc.setColor(.8,.8,.84,.08)
     for i=1,#bbListS do
         --gc.circle('line',bbListS[i].x,1200-300*bbListS[i].t,20)
         gc.draw(bb,bbListS[i].x,1200-300*bbListS[i].t,0,.625,.625,32,32)
     end
-    gc.setColor(.8,.8,.84,.09)
+    gc.setColor(.8,.8,.84,.16)
     for i=1,#bbListM do
         gc.draw(bb,bbListM[i].x,1800-450*bbListM[i].t,0,.9375,.9375,32,32)
     end
-    gc.setColor(.8,.8,.84,.15)
+    gc.setColor(.8,.8,.84,.24)
     for i=1,#bbListL do
         gc.draw(bb,bbListL[i].x,2400-600*bbListL[i].t,0,1.25,1.25,32,32)
     end

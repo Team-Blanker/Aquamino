@@ -1,8 +1,9 @@
 local gc=love.graphics
 local fLib=require'mino/fieldLib'
-
+local rd
 local rule={}
 function rule.init(P,mino)
+    rd=user.lang.rule.dig
     scene.BG=require('BG/bubble') scene.BG.init()
     mino.musInfo="守己 - アトモスフィア(Atmosphere)"
     mus.add('music/Hurt Record/Atmosphere','whole','mp3',21.667,64)--192*(60/180)
@@ -40,8 +41,11 @@ function rule.onPieceDrop(player)
     player.pieceCount=player.pieceCount+1
 end
 function rule.underFieldDraw(player)
+    local x=-18*player.w-110
     gc.setColor(1,1,1)
-    gc.printf(""..player.remainLine,Consolas,-18*player.w-110,-48,6000,'center',0,.75,.75,3000,0)
-    gc.printf(""..player.pieceCount.." pieces",Consolas,-18*player.w-30,64,6000,'right',0,.25,.25,6000,96)
+    gc.printf(""..player.remainLine,Consolas,x,-40,6000,'center',0,.75,.75,3000,96)
+    gc.printf(rd.remain,Consolas_B,x,0,6000,'center',0,.2,.2,3000,96)
+    gc.printf(""..player.pieceCount,Consolas,x,64,6000,'center',0,.5,.5,3000,96)
+    gc.printf(rd.piece,Consolas_B,x,96,6000,'center',0,.2,.2,3000,96)
 end
 return rule

@@ -137,7 +137,7 @@ function thunder.postCheckClear(player,mino)
     end
 end
 function thunder.onLineClear(player,mino)
-    player.point=player.point+2^player.history.line-1
+    player.point=player.point+2^player.history.line-1+player.history.combo-1
     if player.point%100==99 then sfx.play('top') end
     if player.point>=player.stormLv*100 then
         if player.stormLv==10 then mino.win(player) return end
