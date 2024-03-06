@@ -17,6 +17,7 @@ local mus={
             if fs.getInfo(path..'/ITrans.'..form) then mus.ITrans=love.audio.newSource(path..'/ITrans.'..form,'stream') end
         elseif fs.getInfo(path..'/whole.'..form) then mus.whole=love.audio.newSource(path..'/whole.'..form,'stream')
             mus.loopStart=loopStart mus.loopTime=loopTime
+            mus.whole:seek(0)--新的音乐文件，第一次seek会卡
         end
     end,
     start=function()

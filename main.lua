@@ -308,7 +308,7 @@ function mainUpdate(dt)
         end
         sfx.timer=sfx.timer-5
     end
-    if win.isAdjusting then adjust.update(dt) end
+    --if win.isAdjusting then adjust.update(dt) end
 end
 function love.update(dt)
     mus.update(dt)
