@@ -43,11 +43,11 @@ function bg.update(dt)
         bbListL[i].t=bbListL[i].t+dt
         if bbListL[i].t>10 then rem(bbListL,i) end
     end
-    if insTimeL>16/bg.density then
+    if insTimeL>12/bg.density then
         ins(bbListL,{x=2000*(rand()-.5),t=0})
         insTimeL=insTimeL-16/bg.density
     end
-    if math.random()<dt*bg.density/16 then
+    if math.random()<dt*bg.density/12 then
         ins(bbListL,{x=2000*(rand()-.5),t=0})
     end
 
