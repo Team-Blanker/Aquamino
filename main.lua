@@ -311,10 +311,10 @@ function mainUpdate(dt)
     --if win.isAdjusting then adjust.update(dt) end
 end
 function love.update(dt)
-    mus.update(dt)
     local dtRemain=dt
     while dtRemain>=1/256 do mainUpdate(1/256) dtRemain=dtRemain-1/256 end
     mainUpdate(dtRemain)
+    mus.update(dt)
     mus.distract(mus.distractCut and win.distractTime>0 and 1 or 0)
 end
 function love.draw()
