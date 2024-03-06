@@ -2,14 +2,14 @@ local ZNHJ={}
 function ZNHJ.init(P,mino)
     scene.BG=require('BG/space') scene.BG.init()
 
-    local r=rand(2)
-    if r==1 then
+    --[[local r=rand(2)
+    if r==1 then]]
         mino.musInfo="Mikiya Komaba - Look Up The Starlight"
         mus.add('music/Hurt Record/Look Up The Starlight','parts','mp3')
-    else
+    --[[else
         mino.musInfo="K.Y. - NIGHT DRIVE"
         mus.add('music/Hurt Record/NIGHT DRIVE','parts','mp3')
-    end
+    end]]
     mus.start()
     mino.rule.allowPush={Z=true,S=true,J=true,L=true,T=true,O=true,I=true,}
     mino.rule.loosen.fallTPL=.1
