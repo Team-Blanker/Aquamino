@@ -22,7 +22,7 @@ function custom.init()
     scene.BG=require'BG/space' scene.BG.init()
     custom.read()
 
-    custom.blockSkinList={'pure','carbon fibre','wheelchair'}
+    custom.blockSkinList={'pure','glossy','carbon fibre','wheelchair'}
     custom.themeList={'simple'}
     custom.sfxList={--'krystal',
         'Dr Ocelot','meme','otto'

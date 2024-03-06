@@ -9,6 +9,11 @@ function bg.init()
     bg.thunderDensity=0.25
     bg.angle=0
 end
+local c=gc.newCanvas(1,2)
+gc.setCanvas(c)
+gc.setColor(.06, .1, .2) gc.points(.5, .5)
+gc.setColor(.04,.04,.08) gc.points(.5,1.5)
+gc.setCanvas()
 function bg.update(dt)
     insTimeS=insTimeS+dt
     for i=#bbListS,1,-1 do
@@ -45,12 +50,11 @@ function bg.update(dt)
     if math.random()<dt*bg.density/16 then
         ins(bbListL,{x=2000*(rand()-.5),t=0})
     end
+
+    gc.setCanvas(c)
+    gc.setColor(COLOR.hsv(3.75,.8,.16+.02*sin(scene.time%6/3*math.pi))) gc.points(.5, .5)
+    gc.setCanvas()
 end
-local c=gc.newCanvas(1,2)
-gc.setCanvas(c)
-gc.setColor(.06, .1, .2) gc.points(.5, .5)
-gc.setColor(.04,.04,.08) gc.points(.5,1.5)
-gc.setCanvas()
 local bb=gc.newCanvas(64,64)
 gc.setCanvas(bb)
 gc.setLineWidth(1)

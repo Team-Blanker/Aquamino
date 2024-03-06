@@ -4,13 +4,14 @@ local fLib=require'mino/fieldLib'
 local rule={}
 function rule.init(P,mino)
     scene.BG=require('BG/bubble') scene.BG.init()
-    mino.musInfo="直行-NAOYUKI- - Pulse"
-    mus.add('music/Hurt Record/Pulse','parts','mp3')
+    mino.musInfo="守己 - アトモスフィア(Atmosphere)"
+    mus.add('music/Hurt Record/Atmosphere','whole','mp3',21.667,64)--192*(60/180)
     mus.start()
     P[1].remainLine=40
     P[1].summonLine=40
     P[1].pieceCount=0
     P[1].lastHole=0
+    P[1].FDelay=4
     for i=1,10 do rule.newGarbageLine(P[1]) end
 end
 local h
