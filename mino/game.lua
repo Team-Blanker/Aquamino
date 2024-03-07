@@ -677,12 +677,10 @@ function mino.gameUpdate(dt)
             if P[i].LTimer>P[i].LDelay then
                 P[i].LTimer=P[i].LTimer-P[i].LDelay
                 if C.piece and #C.piece~=0 then
+                    his.dropHeight=0
                     mino.checkDie(P[i],T.include(S.opList,i))
                     mino.blockLock(P[i],mino)
-                    his.dropHeight=0
                 end
-
-                if mino.rule.onPieceDrop then mino.rule.onPieceDrop(P[i],mino) end
 
                 if S.winState==0 then
                     if (#P[i].loosen==0 or P[i].loosen.fallTPL==0) then
