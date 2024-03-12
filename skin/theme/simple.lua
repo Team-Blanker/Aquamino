@@ -4,6 +4,8 @@ local setColor,rect,line,circle,printf,draw=gc.setColor,gc.rectangle,gc.line,gc.
 
 function simple.init(player)
     simple.next=gc.newText(font.Bender_B,"N E X T") simple.hold=gc.newText(font.Bender_B,"H O L D")
+    simple.nextW,simple.nextH=simple.next:getWidth(),simple.next:getHeight()
+    simple.holdW,simple.holdH=simple.hold:getWidth(),simple.hold:getHeight()
     local his=player.history
     his.PCInfo={}
     simple.parList={}
@@ -32,8 +34,8 @@ function simple.fieldDraw(player,mino)
     setColor(0,0,0)
     --printf("H O L D",font.Bender_B,-W/2-110,-375,800,'center',0,.2,.2,400,76)
     --printf("N E X T",font.Bender_B, W/2+110,-375,800,'center',0,.2,.2,400,76)
-    draw(simple.hold,-W/2-110,-375,0,.2,.2,simple.hold:getWidth()/2,simple.hold:getHeight()/2)
-    draw(simple.next, W/2+110,-375,0,.2,.2,simple.next:getWidth()/2,simple.next:getHeight()/2)
+    draw(simple.hold,-W/2-110,-375,0,.2,.2,simple.holdW/2,simple.holdH/2)
+    draw(simple.next, W/2+110,-375,0,.2,.2,simple.nextW/2,simple.nextH/2)
 
     gc.setLineWidth(2)
     setColor(1,1,1,.125)
