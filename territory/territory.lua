@@ -299,11 +299,11 @@ function war.draw()
         if war.team.alive[i] and war.team.bulletR[i]==0 then gc.setColor(1,0,0) else gc.setColor(.5,.5,.5) end
         poly('fill',war.ctrl.cmd[i].rel.body:getWorldPoints(war.ctrl.cmd[i].rel.shape:getPoints()))
         setColor(1,0,0,.5)
-        printf('FIRE',Consolas,war.ctrl.cmd[i].rel.body:getX(),war.ctrl.cmd[i].rel.body:getY()-32,1280,'center',0,.25,.25,640,56)
+        printf('FIRE',font.Consolas,war.ctrl.cmd[i].rel.body:getX(),war.ctrl.cmd[i].rel.body:getY()-32,1280,'center',0,.25,.25,640,56)
         if war.team.alive[i] and war.team.bulletR[i]==0 then gc.setColor(0,1,0) else gc.setColor(.5,.5,.5) end
         poly('fill',war.ctrl.cmd[i].mtp.body:getWorldPoints(war.ctrl.cmd[i].mtp.shape:getPoints()))
         setColor(0,1,0,.5)
-        printf('x2',Consolas,war.ctrl.cmd[i].mtp.body:getX(),war.ctrl.cmd[i].mtp.body:getY()-32,1280,'center',0,.25,.25,640,56)
+        printf('x2',font.Consolas,war.ctrl.cmd[i].mtp.body:getX(),war.ctrl.cmd[i].mtp.body:getY()-32,1280,'center',0,.25,.25,640,56)
     end
     gc.setColor(1,1,1,.8)
     for i=1,#war.ctrl.obs do
@@ -319,10 +319,10 @@ function war.draw()
         local c=txtColor[i]
         local m,n=(25+10)*((i-1)%2*2-1)*16,12.5*(floor((i-1)/2)*2-1)*16
         if war.team.bulletR[i]>0 then gc.setColor(c[1],c[2],c[3],.5)
-            printf(""..war.team.bulletR[i],Consolas_B,m,n,1280,'center',0,.75,.75,640,56)
+            printf(""..war.team.bulletR[i],font.Consolas_B,m,n,1280,'center',0,.75,.75,640,56)
         else
             if war.team.bulletS[i]==war.bulletLimit then gc.setColor(c[1],c[2],c[3],.5) else gc.setColor(.75,.75,.75,.5) end
-            printf(""..war.team.bulletS[i],Consolas_B,m,n,1280,'center',0,.75,.75,640,56)
+            printf(""..war.team.bulletS[i],font.Consolas_B,m,n,1280,'center',0,.75,.75,640,56)
         end
     end
 
@@ -349,9 +349,9 @@ function war.draw()
     end
 
     setColor(1,1,1,.3)
-    printf(string.format("%02d:%02d",war.time/60,war.time%60),Consolas_B,0,0,10000,'center',0,1,1,5000,56)
+    printf(string.format("%02d:%02d",war.time/60,war.time%60),font.Consolas_B,0,0,10000,'center',0,1,1,5000,56)
     setColor(1,1,1,2+supplyT-supplyTLimit)--显示新球已加入
-    printf("New balls added.",Consolas_B,0,0,10000,'center',0,.5,.5,5000,56)
+    printf("New balls added.",font.Consolas_B,0,0,10000,'center',0,.5,.5,5000,56)
 
     gc.pop()
 end

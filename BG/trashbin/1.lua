@@ -5,7 +5,7 @@ function bg.init()
     bg.w,bg.h=bg.flOre:getPixelDimensions()
     bg.txt=gc.newCanvas(1000,128)
     gc.setCanvas(bg.txt)
-    gc.printf("FUCK U",Exo_2_SB,500,64,1000,'center',0,1,1,500,84)
+    gc.printf("FUCK U",font.Exo_2_SB,500,64,1000,'center',0,1,1,500,84)
     gc.setCanvas()
     print('success')
 end

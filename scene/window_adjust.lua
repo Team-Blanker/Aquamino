@@ -39,7 +39,7 @@ function adjust.draw()
     gc.setColor(.1,.4,.2,.5)
     gc.rectangle('fill',-1000,-600,2000,1200)
     gc.setColor(1,1,1)
-    gc.setFont(Exo_2)
+    gc.setFont(font.Exo_2)
     gc.printf("窗口调节器",-1000,-500,2000,'center',0,1,1)
     gc.printf(
 [[

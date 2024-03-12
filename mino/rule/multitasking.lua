@@ -41,9 +41,9 @@ function marathon.onLineClear(player,mino)
 end
 function marathon.underFieldDraw(player)
     gc.setColor(1,1,1)
-    gc.printf(""..player.totalLine,Consolas_B,-player.w*18-110,-32,2048,'center',0,.5,.5,1024,56)
-    gc.printf(""..min(player.speedLv,15)*5,Consolas_B,-player.w*18-110,32,2048,'center',0,.5,.5,1024,56)
-    gc.printf("Speed Lv.\n"..min(player.speedLv,15),Consolas_B,-player.w*18-28,256,2048,'right',0,0.25,0.25,2048,56)
+    gc.printf(""..player.totalLine,font.Consolas_B,-player.w*18-110,-32,2048,'center',0,.5,.5,1024,56)
+    gc.printf(""..min(player.speedLv,15)*5,font.Consolas_B,-player.w*18-110,32,2048,'center',0,.5,.5,1024,56)
+    gc.printf("Speed Lv.\n"..min(player.speedLv,15),font.Consolas_B,-player.w*18-28,256,2048,'right',0,0.25,0.25,2048,56)
     gc.setLineWidth(7)
     gc.line(-player.w*18-170,0,-player.w*18-50,0)
 end

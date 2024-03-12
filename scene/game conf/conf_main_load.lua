@@ -29,7 +29,7 @@ scene.button.create('test',{
         gc.setLineWidth(3)
         gc.rectangle('line',-w/2,-h/2,w,h,6)
         gc.setColor(1,1,1)
-        gc.printf(cf.test,Exo_2,0,0,1280,'center',0,.5,.5,640,84)
+        gc.printf(cf.test,font.Exo_2,0,0,1280,'center',0,.5,.5,640,84)
     end,
     event=function()
         scene.switch({
@@ -51,7 +51,7 @@ scene.button.create('keys',{
         gc.setLineWidth(3)
         gc.rectangle('line',-w/2,-h/2,w,h,6)
         gc.setColor(1,1,1)
-        gc.printf(cfm.keys,Exo_2,0,0,1280,'center',0,.8,.8,640,84)
+        gc.printf(cfm.keys,font.Exo_2,0,0,1280,'center',0,.8,.8,640,84)
     end,
     event=function()
         scene.switch({
@@ -70,7 +70,7 @@ scene.button.create('ctrl',{
         gc.setLineWidth(3)
         gc.rectangle('line',-w/2,-h/2,w,h,6)
         gc.setColor(1,1,1)
-        gc.printf(cfm.ctrl,Exo_2,0,0,1280,'center',0,.8,.8,640,84)
+        gc.printf(cfm.ctrl,font.Exo_2,0,0,1280,'center',0,.8,.8,640,84)
     end,
     event=function()
         scene.switch({
@@ -89,7 +89,7 @@ scene.button.create('others',{
         gc.setLineWidth(3)
         gc.rectangle('line',-w/2,-h/2,w,h,6)
         gc.setColor(1,1,1)
-        gc.printf(cfm.other,Exo_2,0,0,1280,'center',0,.8,.8,640,84)
+        gc.printf(cfm.other,font.Exo_2,0,0,1280,'center',0,.8,.8,640,84)
     end,
     event=function()
         scene.switch({
@@ -129,7 +129,7 @@ scene.button.create('audio',{
         gc.setLineWidth(3)
         gc.rectangle('line',-w/2,-h/2,w,h,6)
         gc.setColor(1,1,1)
-        gc.printf(cfm.audio,Exo_2,0,0,1280,'center',0,.8,.8,640,84)
+        gc.printf(cfm.audio,font.Exo_2,0,0,1280,'center',0,.8,.8,640,84)
     end,
     event=function()
         scene.switch({
@@ -148,7 +148,7 @@ scene.button.create('video',{
         gc.setLineWidth(3)
         gc.rectangle('line',-w/2,-h/2,w,h,6)
         gc.setColor(1,1,1)
-        gc.printf(cfm.video,Exo_2,0,0,1280,'center',0,.8,.8,640,84)
+        gc.printf(cfm.video,font.Exo_2,0,0,1280,'center',0,.8,.8,640,84)
     end,
     event=function()
         scene.switch({
@@ -167,7 +167,7 @@ scene.button.create('custom',{
         gc.setLineWidth(3)
         gc.rectangle('line',-w/2,-h/2,w,h,6)
         gc.setColor(1,1,1)
-        gc.printf(cfm.custom,Exo_2,0,0,1280,'center',0,.8,.8,640,84)
+        gc.printf(cfm.custom,font.Exo_2,0,0,1280,'center',0,.8,.8,640,84)
     end,
     event=function()
         scene.switch({

@@ -57,14 +57,14 @@ function custom.init()
             local o,l=custom.bOrder,#custom.blockSkinList
             local w,h=bt.w,bt.h
             gc.setColor(.5,1,.75)
-            gc.printf(cfc.texture,Exo_2_SB,0,-100,1280,'center',0,.5,.5,640,84)
+            gc.printf(cfc.texture,font.Exo_2_SB,0,-100,1280,'center',0,.5,.5,640,84)
             gc.setLineWidth(3)
             gc.rectangle('line',-bt.w/2,-bt.h/2,bt.w,bt.h,6)
             gc.setLineWidth(8)
             if o>1 then gc.line(-(w-h)/2,h/2-8,-w/2+8,0,-(w-h)/2,-h/2+8) end
             if o<l then gc.line( (w-h)/2,h/2-8, w/2-8,0, (w-h)/2,-h/2+8) end
             gc.setColor(1,1,1)
-            gc.printf(custom.blockSkinList[custom.bOrder],Exo_2_SB,0,0,1280,'center',0,.4,.4,640,84)
+            gc.printf(custom.blockSkinList[custom.bOrder],font.Exo_2_SB,0,0,1280,'center',0,.4,.4,640,84)
         end,
         event=function(x,y)
             if x<0 then
@@ -84,7 +84,7 @@ function custom.init()
             gc.setLineWidth(3)
             gc.rectangle('line',-w/2,-h/2,w,h,6)
             gc.setColor(1,1,1)
-            gc.printf(cfc.color,Exo_2_SB,0,0,1280,'center',0,.5,.5,640,84)
+            gc.printf(cfc.color,font.Exo_2_SB,0,0,1280,'center',0,.5,.5,640,84)
         end,
         event=function()
             scene.switch({
@@ -114,9 +114,9 @@ function custom.init()
             gc.setColor(r,g,b,2*t)
             gc.rectangle('fill',-w/2,-h/2,h,h)
             gc.setColor(1,1,1)
-            gc.printf(cfc.smooth,Exo_2_SB,w/2+20+cfc.smoothOffX,cfc.smoothOffY,1200,'left',0,.3,.3,0,84)
+            gc.printf(cfc.smooth,font.Exo_2_SB,w/2+20+cfc.smoothOffX,cfc.smoothOffY,1200,'left',0,.3,.3,0,84)
             gc.setColor(1,1,1,.75)
-            gc.printf(cfc.smoothTxt,Exo_2_SB,-w/2,h/2+32,1600,'left',0,.25,.25,0,84)
+            gc.printf(cfc.smoothTxt,font.Exo_2_SB,-w/2,h/2+32,1600,'left',0,.25,.25,0,84)
         end,
         event=function()
             custom.info.smoothAnimAct=not custom.info.smoothAnimAct
@@ -129,14 +129,14 @@ function custom.init()
             local o,l=custom.tOrder,#custom.themeList
             local w,h=bt.w,bt.h
             gc.setColor(1,.5,.5)
-            gc.printf(cfc.theme,Exo_2_SB,0,-100,1280,'center',0,.5,.5,640,84)
+            gc.printf(cfc.theme,font.Exo_2_SB,0,-100,1280,'center',0,.5,.5,640,84)
             gc.setLineWidth(3)
             gc.rectangle('line',-bt.w/2,-bt.h/2,bt.w,bt.h,6)
             gc.setLineWidth(8)
             if o>1 then gc.line(-(w-h)/2,h/2-8,-w/2+8,0,-(w-h)/2,-h/2+8) end
             if o<l then gc.line( (w-h)/2,h/2-8, w/2-8,0, (w-h)/2,-h/2+8) end
             gc.setColor(1,1,1)
-            gc.printf(custom.themeList[custom.tOrder],Exo_2_SB,0,0,1280,'center',0,.4,.4,640,84)
+            gc.printf(custom.themeList[custom.tOrder],font.Exo_2_SB,0,0,1280,'center',0,.4,.4,640,84)
         end,
         event=function(x,y)
             if x<0 then
@@ -152,16 +152,16 @@ function custom.init()
             local o,l=custom.sOrder,#custom.sfxList
             local w,h=bt.w,bt.h
             gc.setColor(1,.5,1)
-            gc.printf(cfc.sfx,Exo_2_SB,0,-100,1280,'center',0,.5,.5,640,84)
+            gc.printf(cfc.sfx,font.Exo_2_SB,0,-100,1280,'center',0,.5,.5,640,84)
             gc.setLineWidth(3)
             gc.rectangle('line',-bt.w/2,-bt.h/2,bt.w,bt.h,6)
             gc.setLineWidth(8)
             if o>1 then gc.line(-(w-h)/2,h/2-8,-w/2+8,0,-(w-h)/2,-h/2+8) end
             if o<l then gc.line( (w-h)/2,h/2-8, w/2-8,0, (w-h)/2,-h/2+8) end
             gc.setColor(1,1,1)
-            gc.printf(custom.sfxList[custom.sOrder],Exo_2_SB,0,0,1280,'center',0,.4,.4,640,84)
+            gc.printf(custom.sfxList[custom.sOrder],font.Exo_2_SB,0,0,1280,'center',0,.4,.4,640,84)
             if cfc.sfxWarning[custom.sfxList[o]] then gc.setColor(1,0,0,.75)
-            gc.printf(cfc.sfxWarning[custom.sfxList[o]],Exo_2_SB,-w/2,h/2+48,1600,'left',0,.25,.25,0,152)
+            gc.printf(cfc.sfxWarning[custom.sfxList[o]],font.Exo_2_SB,-w/2,h/2+48,1600,'left',0,.25,.25,0,152)
             end
         end,
         event=function(x,y)
@@ -178,7 +178,7 @@ function custom.init()
             local sz=custom.info.fieldScale
             local w,h=bt.w,bt.h
             gc.setColor(.5,1,1)
-            gc.printf(cfc.scale,Exo_2_SB,0,-100,1280,'center',0,.5,.5,640,84)
+            gc.printf(cfc.scale,font.Exo_2_SB,0,-100,1280,'center',0,.5,.5,640,84)
 
             gc.setColor(.5,1,1)
             gc.setLineWidth(4)
@@ -192,9 +192,9 @@ function custom.init()
                 gc.line( (w-h)/2,h/2*.625,(w-h)/2,-h/2*.625)
             end
             gc.setColor(1,1,1)
-            gc.printf(("%.2f"):format(sz),Exo_2_SB,0,0,1280,'center',0,.5,.5,640,84)
+            gc.printf(("%.2f"):format(sz),font.Exo_2_SB,0,0,1280,'center',0,.5,.5,640,84)
             gc.setColor(1,1,1,.75)
-            gc.printf(cfc.scaleTxt,Exo_2_SB,-w/2,h/2+48,1600,'left',0,.25,.25,0,152)
+            gc.printf(cfc.scaleTxt,font.Exo_2_SB,-w/2,h/2+48,1600,'left',0,.25,.25,0,152)
         end,
         event=function(x,y,bt)
             local w,h=bt.w,bt.h
@@ -218,7 +218,7 @@ function custom.update(dt)
 end
 function custom.draw()
     gc.setColor(1,1,1)
-    gc.printf(user.lang.conf.main.custom,Exo_2,0,-460,1280,'center',0,1,1,640,84)
+    gc.printf(user.lang.conf.main.custom,font.Exo_2,0,-460,1280,'center',0,1,1,640,84)
     BUTTON.draw() SLIDER.draw()
 end
 function custom.exit()

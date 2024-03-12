@@ -65,7 +65,7 @@ function audio.init()
             gc.setColor(r,g,b,2*t)
             gc.rectangle('fill',-w/2,-h/2,h,h)
             gc.setColor(1,1,1)
-            gc.printf(cf.audio.distract,Exo_2_SB,w/2+25+cf.audio.DOX,0,1200,'left',0,.25,.25,0,84)
+            gc.printf(cf.audio.distract,font.Exo_2_SB,w/2+25+cf.audio.DOX,0,1200,'left',0,.25,.25,0,84)
             --DOX=Distract Offset X
         end,
         event=function()
@@ -86,7 +86,7 @@ function audio.init()
             gc.setColor(1,1,1)
             gc.printf(string.format(cf.audio.mus.."%.0f%% = %.2fdB",
                     audio.info.mus*100,audio.info.mus==0 and -1e999 or math.log(audio.info.mus,10)*10
-                ),Consolas,-419,-48,114514,'left',0,.3125,.3125,0,56)
+                ),font.Consolas,-419,-48,114514,'left',0,.3125,.3125,0,56)
         end,
         buttonDraw=function(pos)
             gc.setColor(1,1,1)
@@ -109,7 +109,7 @@ function audio.init()
             gc.setColor(1,1,1)
             gc.printf(string.format(cf.audio.sfx.."%.0f%% = %.2fdB",
                     audio.info.sfx*100,audio.info.sfx==0 and -1e999 or math.log(audio.info.sfx,10)*10
-                ),Consolas,-419,-48,114514,'left',0,.3125,.3125,0,56)
+                ),font.Consolas,-419,-48,114514,'left',0,.3125,.3125,0,56)
         end,
         buttonDraw=function(pos)
             gc.setColor(1,1,1)
@@ -137,7 +137,7 @@ function audio.update(dt)
 end
 function audio.draw()
     gc.setColor(1,1,1)
-    gc.printf(cf.main.audio,Exo_2,0,-430,1280,'center',0,1,1,640,84)
+    gc.printf(cf.main.audio,font.Exo_2,0,-430,1280,'center',0,1,1,640,84)
     BUTTON.draw() SLIDER.draw()
 end
 function audio.exit()

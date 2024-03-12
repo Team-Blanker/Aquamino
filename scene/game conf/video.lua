@@ -4,7 +4,7 @@ local cf=user.lang.conf
 local video={}
 local BUTTON,SLIDER=scene.button,scene.slider
 function video.read()
-    video.info={unableBG=false,vsync=false,fullscr=false}
+    video.info={unableBG=false,vsync=false,fullscr=false,frameLim=120}
     if fs.getInfo('conf/video') then T.combine(video.info,json.decode(fs.newFile('conf/video'):read())) end
     win.setFullscr(video.info.fullscr)
 end
@@ -13,6 +13,7 @@ function video.save()
     s:open('w')
     s:write(json.encode(video.info))
     love.window.setVSync(video.info.vsync and 1 or 0)
+    drawCtrl.dtRestrict=1/video.info.frameLim
 end
 function video.init()
     cf=user.lang.conf
@@ -60,16 +61,16 @@ function video.init()
             gc.setColor(r,g,b,2*t)
             gc.rectangle('fill',-w/2,-h/2,h,h)
             gc.setColor(1,1,1)
-            gc.printf(cf.video.unableBG,Exo_2_SB,w/2+50,0,1200,'left',0,.35,.35,0,84)
+            gc.printf(cf.video.unableBG,font.Exo_2_SB,w/2+50,0,1200,'left',0,.35,.35,0,84)
             gc.setColor(1,1,1,.75)
-            gc.printf(cf.video.unableTxt,Exo_2_SB,-w/2,h/2+60,1840,'left',0,.25,.25,0,152)
+            gc.printf(cf.video.unableTxt,font.Exo_2_SB,-w/2,h/2+60,1840,'left',0,.25,.25,0,152)
         end,
         event=function()
             video.info.unableBG=not video.info.unableBG
         end
     },.2)
     BUTTON.create('vsync',{
-        x=-750,y=0,type='rect',w=100,h=100,
+        x=390,y=-240,type='rect',w=100,h=100,
         draw=function(bt,t,ct)
             local animArg=video.info.vsync and min(ct/.2,1) or max(1-ct/.2,0)
             local w,h=bt.w,bt.h
@@ -89,9 +90,9 @@ function video.init()
             gc.setColor(r,g,b,2*t)
             gc.rectangle('fill',-w/2,-h/2,h,h)
             gc.setColor(1,1,1)
-            gc.printf(cf.video.vsync,Exo_2_SB,w/2+50,0,1200,'left',0,.35,.35,0,84)
+            gc.printf(cf.video.vsync,font.Exo_2_SB,w/2+50,0,1200,'left',0,.35,.35,0,84)
             gc.setColor(1,1,1,.75)
-            gc.printf(cf.video.vsyncTxt,Exo_2_SB,-w/2,h/2+64,1840,'left',0,.25,.25,0,152)
+            gc.printf(cf.video.vsyncTxt,font.Exo_2_SB,-w/2,h/2+64,1840,'left',0,.25,.25,0,152)
         end,
         event=function()
             video.info.vsync=not video.info.vsync
@@ -119,15 +120,42 @@ function video.init()
             gc.setColor(r,g,b,2*t)
             gc.rectangle('fill',-w/2,-h/2,h,h)
             gc.setColor(1,1,1)
-            gc.printf(cf.video.fullScr,Exo_2_SB,w/2+50,0,1200,'left',0,.35,.35,0,84)
+            gc.printf(cf.video.fullScr,font.Exo_2_SB,w/2+50,0,1200,'left',0,.35,.35,0,84)
             gc.setColor(1,1,1,.75)
-            gc.printf(cf.video.fullScrTxt,Exo_2_SB,-w/2,h/2+64,1840,'left',0,.25,.25,0,152)
+            gc.printf(cf.video.fullScrTxt,font.Exo_2_SB,-w/2,h/2+64,1840,'left',0,.25,.25,0,152)
         end,
         event=function()
             video.info.fullscr=not video.info.fullscr
             win.setFullscr(video.info.fullscr)
         end
     },.2)
+    SLIDER.create('frameLim',{
+        x=-400,y=0,type='hori',sz={800,32},button={32,32},
+        gear=0,pos=(video.info.frameLim-60)/240,
+        sliderDraw=function()
+            gc.setColor(.5,.5,.5,.8)
+            gc.rectangle('fill',-416,-16,832,32)
+            gc.setColor(.8,.8,.8)
+            gc.setLineWidth(6)
+            gc.rectangle('line',-419,-19,838,38)
+            gc.setColor(1,1,1)
+            gc.printf(string.format(cf.video.frameLim.."%d",video.info.frameLim),
+                font.Consolas,-419,-48,114514,'left',0,.3125,.3125,0,56)
+                gc.setColor(1,1,1,.75)
+            gc.printf(cf.video.frameTxt,font.Exo_2_SB,-419,48,114514,'left',0,.25,.25,0,84)
+        end,
+        buttonDraw=function(pos)
+            gc.setColor(1,1,1)
+            gc.rectangle('fill',800*(pos-.5)-16,-18,32,36)
+        end,
+        always=function(pos)
+            video.info.frameLim=math.floor(60.5+pos*240)
+        end,
+        release=function(pos)
+            video.info.frameLim=math.floor(60.5+pos*240)
+            drawCtrl.dtRestrict=1/video.info.frameLim
+        end
+    })
 end
 function video.detectKeyP(k)
     if k=='f11' then video.info.fullscr=win.fullscr end
@@ -136,7 +164,7 @@ function video.mouseP(x,y,button,istouch)
     if not BUTTON.click(x,y,button,istouch) and SLIDER.mouseP(x,y,button,istouch) then end
 end
 function video.mouseR(x,y,button,istouch)
-
+    SLIDER.mouseR(x,y,button,istouch)
 end
 function video.update(dt)
     BUTTON.update(dt,adaptAllWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5))
@@ -146,7 +174,7 @@ function video.update(dt)
 end
 function video.draw()
     gc.setColor(1,1,1)
-    gc.printf(cf.main.video,Exo_2,0,-430,1280,'center',0,1,1,640,84)
+    gc.printf(cf.main.video,font.Exo_2,0,-430,1280,'center',0,1,1,640,84)
     BUTTON.draw() SLIDER.draw()
 end
 function video.exit()

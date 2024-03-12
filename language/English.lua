@@ -18,7 +18,8 @@ return {
             master="Master",
             multitasking="Multitasking",
             sandbox="Sandbox",
-            ['dig 40']="Cheese"
+            ['dig 40']="Cheese",
+            laser="Laser"
         },
         illust="Double click or hit Enter to play.\nHit R to randomly choose a mode.",
         iScale=.4
@@ -41,7 +42,8 @@ return {
         video={
             unableBG="Unable BGs",unableTxt="Turn on when ingame BGs discomfort you.",
             fullScr="Fullscreen",fullScrTxt="Press F11 to switch window mode immediately.",
-            vsync="Vertical Sync",vsyncTxt="Usually,it's not recommended to open this option."
+            vsync="Vertical Sync",vsyncTxt="Usually,it's not recommended to open this option.",
+            frameLim="Max draw FPS:",frameTxt="A value equal to your monitor's FPS is recommended."
         },
         custom={
             texture="Block texture",color="Color adjust",
@@ -94,6 +96,7 @@ return {
         "Try Aquamino's Push mechanic in Sandbox mode!",
         "Not every modes are related to water,although the game was named \"Aqua\".",
         "Kairan had modified SRS in this game with symmetric I-spin,and powerful 180 kicktables.",
-        "\"How similar to Techmino but with nice color\""
+        "\"How similar to Techmino but with nice color\"",
+        "\"Ice Storm\" mode is from the mode with same name in Bejeweled 3"
     },tipScale=.3
 }

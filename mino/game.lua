@@ -817,8 +817,8 @@ function mino.draw()
     gc.rectangle('fill',-1000,-1000,2000,2000)
     if mino.paused then
         pause.draw()
-        --gc.printf("当前播放 : "..mino.musInfo,Exo_2,0,384,65536,'center',0,.4,.4,32768,84)
-        gc.printf(curPlayTxt,Exo_2,0,384,65536,'center',0,.4,.4,32768,84)
+        --gc.printf("当前播放 : "..mino.musInfo,font.Exo_2,0,384,65536,'center',0,.4,.4,32768,84)
+        gc.printf(curPlayTxt,font.Exo_2,0,384,65536,'center',0,.4,.4,32768,84)
     end
 end
 function mino.exit()

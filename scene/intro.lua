@@ -9,7 +9,7 @@ local intro={}
 local logo=gc.newImage('assets/pic/title.png')
 local mode={
     {'40 lines','marathon','dig 40','sandbox'},
-    {'smooth','thunder','ice storm','master','multitasking'},
+    {'smooth','thunder','ice storm','master','laser','multitasking'},
     {},
     {}
 }
@@ -55,7 +55,7 @@ function intro.init()
             local w,h=bt.w,bt.h
             btdraw(3.5,w,h,1,t)
             gc.setColor(1,1,1)
-            gc.printf(unlocked[1] and it.mode[1] or "???",Exo_2_SB,0,0,1280,'center',0,.75,.75,640,84)
+            gc.printf(unlocked[1] and it.mode[1] or "???",font.Exo_2_SB,0,0,1280,'center',0,.75,.75,640,84)
         end,
         event=function()
             if not unlocked[1] then return end
@@ -81,7 +81,7 @@ function intro.init()
             local w,h=bt.w,bt.h
             btdraw(2.5,w,h,2,t)
             gc.setColor(1,1,1)
-            gc.printf(unlocked[2] and it.mode[2] or "???",Exo_2_SB,0,0,1280,'center',0,.75,.75,640,84)
+            gc.printf(unlocked[2] and it.mode[2] or "???",font.Exo_2_SB,0,0,1280,'center',0,.75,.75,640,84)
         end,
         event=function()
             if not unlocked[2] then return end
@@ -107,7 +107,7 @@ function intro.init()
             local w,h=bt.w,bt.h
             btdraw(2.5,w,h,3,t)
             gc.setColor(1,1,1)
-            gc.printf(unlocked[3] and it.mode[3] or "???",Exo_2_SB,0,0,1280,'center',0,.75,.75,640,84)
+            gc.printf(unlocked[3] and it.mode[3] or "???",font.Exo_2_SB,0,0,1280,'center',0,.75,.75,640,84)
         end,
         event=function()
             if not unlocked[3] then return end
@@ -132,7 +132,7 @@ function intro.init()
             local w,h=bt.w,bt.h
             btdraw(2.5,w,h,4,t)
             gc.setColor(1,1,1)
-            gc.printf(unlocked[4] and it.mode[4] or "???",Exo_2_SB,0,0,1280,'center',0,.75,.75,640,84)
+            gc.printf(unlocked[4] and it.mode[4] or "???",font.Exo_2_SB,0,0,1280,'center',0,.75,.75,640,84)
         end,
         event=function()
             if not unlocked[4] then return end
@@ -195,12 +195,12 @@ function intro.draw()
         gc.draw(logo,0,-200+12*sin(scene.time/5%2*math.pi)-600*v*v,0,1600/w,1600/w,w/2,h/2)
 
         gc.setColor(1,1,1,1-v)
-        gc.printf(user.lang.intro.start,Exo_2,-57257,150,114514,'center',0,1,1)
+        gc.printf(user.lang.intro.start,font.Exo_2,-57257,150,114514,'center',0,1,1)
 
-        gc.printf(intro.tip[intro.order],Exo_2,0,450,114514,'center',0,user.lang.tipScale,user.lang.tipScale,57257,84)
+        gc.printf(intro.tip[intro.order],font.Exo_2,0,450,114514,'center',0,user.lang.tipScale,user.lang.tipScale,57257,84)
 
         gc.setColor(1,1,1,.25-v*.25)
-        gc.printf("Version : "..win.stat.version,Exo_2,-240,480,1600,'center',0,.3,.3)
+        gc.printf("Version : "..win.stat.version,font.Exo_2,-240,480,1600,'center',0,.3,.3)
     end
 
     BUTTON.draw()

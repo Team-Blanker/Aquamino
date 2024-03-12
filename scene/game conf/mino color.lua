@@ -60,7 +60,7 @@ function bc.init()
             gc.setLineWidth(3)
             gc.rectangle('line',-w/2,-h/2,w,h,6)
             gc.setColor(1,1,1)
-            gc.printf(cfcc.rAll,Exo_2_SB,0,0,1280,'center',0,.5,.5,640,84)
+            gc.printf(cfcc.rAll,font.Exo_2_SB,0,0,1280,'center',0,.5,.5,640,84)
         end,
         event=function()
             if not canAdjustColor[skinName] then return end
@@ -83,7 +83,7 @@ function bc.init()
             gc.setLineWidth(3)
             gc.rectangle('line',-w/2,-h/2,w,h,6)
             gc.setColor(1,1,1)
-            gc.printf(cfcc.rCur,Exo_2_SB,0,0,1280,'center',0,.5,.5,640,84)
+            gc.printf(cfcc.rCur,font.Exo_2_SB,0,0,1280,'center',0,.5,.5,640,84)
         end,
         event=function()
             if not canAdjustColor[skinName] then return end
@@ -145,7 +145,7 @@ function bc.init()
             gc.setLineWidth(6)
             gc.rectangle('line',-219,-19,438,38)
             gc.setColor(1,.5,.5)
-            gc.printf(string.format("R:%.2f",bc.color[bList[bc.blockIndex]][1]),Consolas,-219,-48,1000,'left',0,.3125,.3125,0,56)
+            gc.printf(string.format("R:%.2f",bc.color[bList[bc.blockIndex]][1]),font.Consolas,-219,-48,1000,'left',0,.3125,.3125,0,56)
         end,
         buttonDraw=function(pos)
             if not canAdjustColor[skinName] then return end
@@ -168,7 +168,7 @@ function bc.init()
             gc.setLineWidth(6)
             gc.rectangle('line',-219,-19,438,38)
             gc.setColor(.5,1,.5)
-            gc.printf(string.format("G:%.2f",bc.color[bList[bc.blockIndex]][2]),Consolas,-219,-48,1000,'left',0,.3125,.3125,0,56)
+            gc.printf(string.format("G:%.2f",bc.color[bList[bc.blockIndex]][2]),font.Consolas,-219,-48,1000,'left',0,.3125,.3125,0,56)
         end,
         buttonDraw=function(pos)
             if not canAdjustColor[skinName] then return end
@@ -191,7 +191,7 @@ function bc.init()
             gc.setLineWidth(6)
             gc.rectangle('line',-219,-19,438,38)
             gc.setColor(.5,.5,1)
-            gc.printf(string.format("B:%.2f",bc.color[bList[bc.blockIndex]][3]),Consolas,-219,-48,1000,'left',0,.3125,.3125,0,56)
+            gc.printf(string.format("B:%.2f",bc.color[bList[bc.blockIndex]][3]),font.Consolas,-219,-48,1000,'left',0,.3125,.3125,0,56)
         end,
         buttonDraw=function(pos)
             if not canAdjustColor[skinName] then return end
@@ -219,11 +219,11 @@ end
 local w,h,x,y
 function bc.draw()
     gc.setColor(1,1,1)
-    gc.printf(cfcc.title,Exo_2,0,-500,1280,'center',0,.6,.6,640,84)
+    gc.printf(cfcc.title,font.Exo_2,0,-500,1280,'center',0,.6,.6,640,84)
     if canAdjustColor[skinName] then gc.setColor(1,1,1,.6)
-        gc.printf(cfcc.adjY,Exo_2_SB,0,-40,10000,'center',0,.4,.4,5000,84)
+        gc.printf(cfcc.adjY,font.Exo_2_SB,0,-40,10000,'center',0,.4,.4,5000,84)
     else gc.setColor(1,1,1,.6)
-        gc.printf(cfcc.adjN,Exo_2_SB,0,-40,10000,'center',0,.4,.4,5000,84)
+        gc.printf(cfcc.adjN,font.Exo_2_SB,0,-40,10000,'center',0,.4,.4,5000,84)
     end
     BUTTON.draw() SLIDER.draw()
 

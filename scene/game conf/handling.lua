@@ -51,7 +51,7 @@ function hand.init()
             gc.rectangle('line',-519,-19,1038,38)
             gc.setColor(1,1,1)
             gc.printf(string.format(cfh.ASD.."%.0fms = %.2fF(60 FPS)",hand.ctrl.ASD*1000,hand.ctrl.ASD*60),
-                Consolas,-519,-48,114514,'left',0,.3125,.3125,0,56)
+                font.Consolas,-519,-48,114514,'left',0,.3125,.3125,0,56)
         end,
         buttonDraw=function(pos)
             gc.setColor(1,1,1)
@@ -72,7 +72,7 @@ function hand.init()
             gc.rectangle('line',-519,-19,1038,38)
             gc.setColor(1,1,1)
             gc.printf(string.format(cfh.ASP.."%.0fms = %.2fF(60 FPS)",hand.ctrl.ASP*1000,hand.ctrl.ASP*60),
-                Consolas,-519,-48,114514,'left',0,.3125,.3125,0,56)
+                font.Consolas,-519,-48,114514,'left',0,.3125,.3125,0,56)
         end,
         buttonDraw=function(pos)
             gc.setColor(1,1,1)
@@ -93,7 +93,7 @@ function hand.init()
             gc.rectangle('line',-519,-19,1038,38)
             gc.setColor(1,1,1)
             gc.printf(string.format(cfh.SD_ASD.."%.0fms = %.2fF(60 FPS)",hand.ctrl.SD_ASD*1000,hand.ctrl.SD_ASD*60),
-                Consolas,-519,-48,114514,'left',0,.3125,.3125,0,56)
+                font.Consolas,-519,-48,114514,'left',0,.3125,.3125,0,56)
         end,
         buttonDraw=function(pos)
             gc.setColor(1,1,1)
@@ -114,7 +114,7 @@ function hand.init()
             gc.rectangle('line',-519,-19,1038,38)
             gc.setColor(1,1,1)
             gc.printf(string.format(cfh.SD_ASP.."%.0fms = %.2fF(60 FPS)",hand.ctrl.SD_ASP*1000,hand.ctrl.SD_ASP*60),
-                Consolas,-519,-48,114514,'left',0,.3125,.3125,0,56)
+                font.Consolas,-519,-48,114514,'left',0,.3125,.3125,0,56)
         end,
         buttonDraw=function(pos)
             gc.setColor(1,1,1)
@@ -139,7 +139,7 @@ function hand.update(dt)
 end
 function hand.draw()
     gc.setColor(1,1,1)
-    gc.printf(user.lang.conf.main.ctrl,Exo_2,0,-460,1280,'center',0,1,1,640,84)
+    gc.printf(user.lang.conf.main.ctrl,font.Exo_2,0,-460,1280,'center',0,1,1,640,84)
     BUTTON.draw() SLIDER.draw()
 end
 function hand.exit()

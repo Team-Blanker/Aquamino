@@ -109,6 +109,6 @@ function bg.draw()
     end
 
     --gc.setColor(1,1,1)
-    --gc.printf(""..floor(beat),Exo_2_SB,0,0,1000,'center',0,1,1,500,84)
+    --gc.printf(""..floor(beat),font.Exo_2_SB,0,0,1000,'center',0,1,1,500,84)
 end
 return bg

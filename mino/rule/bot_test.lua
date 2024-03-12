@@ -46,6 +46,6 @@ function btest.update(player,dt,mino)
 end
 function btest.overFieldDraw()
     gc.setColor(1,1,1)
-    if btest.eq then gc.printf(btest.eq,Exo_2_SB,0,-300,1280,'center',0,.75,.75,640,84) end
+    if btest.eq then gc.printf(btest.eq,font.Exo_2_SB,0,-300,1280,'center',0,.75,.75,640,84) end
 end
 return btest

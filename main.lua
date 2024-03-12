@@ -4,8 +4,8 @@ end
 
 loopTime=0
 
-draw_frame={dtRestrict=0,timer=0,FPS=0,count=0,FPStimer=0}
-draw_frame.timer=draw_frame.dtRestrict
+drawCtrl={dtRestrict=1/165,timer=0,FPS=0,count=0,FPStimer=0}
+drawCtrl.timer=drawCtrl.dtRestrict
 function love.run()
     if love.load then love.load(love.arg.parseGameArguments(arg), arg) end
 
@@ -27,8 +27,8 @@ function love.run()
         end
 
         if love.timer then dt = love.timer.step()
-            if draw_frame.dtRestrict~=0 then draw_frame.timer=draw_frame.timer+dt end
-            draw_frame.FPStimer=draw_frame.FPStimer+dt
+            if drawCtrl.dtRestrict~=0 then drawCtrl.timer=drawCtrl.timer+dt end
+            drawCtrl.FPStimer=drawCtrl.FPStimer+dt
         end
 
         if love.update then love.update(dt) end
@@ -37,13 +37,13 @@ function love.run()
             love.graphics.origin()
             love.graphics.clear(0,0,0)
 
-            if draw_frame.timer>=draw_frame.dtRestrict then
+            if drawCtrl.timer>=drawCtrl.dtRestrict then
                 if love.draw then love.draw() end
-                love.graphics.present() draw_frame.count=draw_frame.count+1
-                while draw_frame.timer>draw_frame.dtRestrict do draw_frame.timer=draw_frame.timer-draw_frame.dtRestrict end
-                if draw_frame.FPStimer>1 then
-                    draw_frame.FPS=draw_frame.count/math.floor(draw_frame.FPStimer) draw_frame.count=0
-                    draw_frame.FPStimer=draw_frame.FPStimer-math.floor(draw_frame.FPStimer)
+                love.graphics.present() drawCtrl.count=drawCtrl.count+1
+                while drawCtrl.timer>drawCtrl.dtRestrict do drawCtrl.timer=drawCtrl.timer-drawCtrl.dtRestrict end
+                if drawCtrl.FPStimer>1 then
+                    drawCtrl.FPS=drawCtrl.count/math.floor(drawCtrl.FPStimer) drawCtrl.count=0
+                    drawCtrl.FPStimer=drawCtrl.FPStimer-math.floor(drawCtrl.FPStimer)
                 end
             end
         end
@@ -76,6 +76,41 @@ ins,rem=table.insert,table.remove
 
 math.randomseed(os.time()-6623)
 for i=1,5 do rand() end
+
+do
+    gc.setDefaultFilter('linear','linear',16)
+    fs.createDirectory('conf')
+    fs.createDirectory('player')
+
+    --[[UI_mini=gc.newImage('UI/mini.png')
+    UI_mini_hv=gc.newImage('UI/mini_hover.png')
+    UI_FS=gc.newImage('UI/fullscreen.png')
+    UI_FS_hv=gc.newImage('UI/fullscreen_hover.png')
+    UI_win=gc.newImage('UI/windowed.png')
+    UI_win_hv=gc.newImage('UI/windowed_hover.png')
+    UI_close=gc.newImage('UI/X.png')
+    UI_close_hv=gc.newImage('UI/X_hover.png')
+    UI_adjust=gc.newImage('UI/adjust.png')
+    UI_adjust_hv=gc.newImage('UI/adjust_hover.png')]]
+end
+
+font={
+    SYHT=gc.newFont('font/SourceHanSans-Regular.otf',128),
+    Bender=gc.newFont('font/Bender.otf',128),
+    Bender_B=gc.newFont('font/Bender-Bold.otf',128),
+    Exo_2=gc.newFont('font/Exo2-Regular.otf',128),
+    Exo_2_SB=gc.newFont('font/Exo2-SemiBold.otf',128),
+    Exo_2_B=gc.newFont('font/Exo2-Bold.otf',128),
+    haisi=gc.newFont('font/haisi.ttf',128), 
+    Consolas=gc.newFont('font/Consolas.ttf',128),
+    Consolas_B=gc.newFont('font/Consolas-Bold.ttf',128),
+
+    LED=gc.newFont('font/UniDreamLED.ttf',128)
+}
+font.Bender:setFallbacks(font.SYHT) font.Bender_B:setFallbacks(font.SYHT)
+font.Exo_2:setFallbacks(font.SYHT) font.Exo_2_SB:setFallbacks(font.SYHT)
+font.haisi:setFallbacks(font.SYHT)
+font.Consolas:setFallbacks(font.SYHT) font.Consolas_B:setFallbacks(font.SYHT)
 
 canop=true--=can operate，是决定玩家是否能操作的变量
 
@@ -120,6 +155,9 @@ win={
         lang=gc.newImage('UI/sign/language.png')  --100*100
     }
 }
+win.H=gc.getHeight()
+win.W=gc.getWidth()
+
 user={
     freshman=true,
     langName='English',
@@ -151,7 +189,7 @@ scene={
 }
 
 --scene.cur=require('territory/territory')
---scene.cur=require('mino/game') scene.cur.mode='bot_test'
+scene.cur=require('mino/game') scene.cur.mode='laser'
 
 win.x,win.y=love.window.getPosition()
 win.x_win,win.y_win=love.window.getPosition()
@@ -168,45 +206,12 @@ voice={
     timer=0
 }
 
+--[[]]require'init'--[[]]
 scene.cur.init()
 if scene.BG.init then scene.BG.init() end
 
 lastkeyP=nil lastkeyR=nil
 
-
-function love.load()
-    gc.setDefaultFilter('linear','linear',16)
-    fs.createDirectory('conf')
-    fs.createDirectory('player')
-
-    win.H=gc.getHeight()
-    win.W=gc.getWidth()
-    Exo_2=gc.newFont('font/Exo2-Regular.otf',128)
-    Exo_2_SB=gc.newFont('font/Exo2-SemiBold.otf',128)
-    Exo_2_B=gc.newFont('font/Exo2-Bold.otf',128)
-    SYHT=gc.newFont('font/SourceHanSans-Regular.otf',128)
-    Exo_2:setFallbacks(SYHT) Exo_2_SB:setFallbacks(SYHT)
-    haisi=gc.newFont('font/haisi.ttf',128)
-    haisi:setFallbacks(SYHT)
-    Consolas=gc.newFont('font/Consolas.ttf',128)
-    Consolas_B=gc.newFont('font/Consolas-Bold.ttf',128)
-    Consolas:setFallbacks(SYHT) Consolas_B:setFallbacks(SYHT)
-
-    LED=gc.newFont('font/UniDreamLED.ttf',128)
-
-    --[[UI_mini=gc.newImage('UI/mini.png')
-    UI_mini_hv=gc.newImage('UI/mini_hover.png')
-    UI_FS=gc.newImage('UI/fullscreen.png')
-    UI_FS_hv=gc.newImage('UI/fullscreen_hover.png')
-    UI_win=gc.newImage('UI/windowed.png')
-    UI_win_hv=gc.newImage('UI/windowed_hover.png')
-    UI_close=gc.newImage('UI/X.png')
-    UI_close_hv=gc.newImage('UI/X_hover.png')
-    UI_adjust=gc.newImage('UI/adjust.png')
-    UI_adjust_hv=gc.newImage('UI/adjust_hover.png')]]
-
-    require'init'
-end
 function love.resize(w,h)
     win.H=h
     win.W=w
@@ -333,16 +338,16 @@ function love.draw()
     gc.setColor(1,1,1)
     if scene.cur.draw then scene.cur.draw() end
     if scene.watermark then
-        gc.setColor(.5,1,.75,.25+.05*sin(scene.totalTime*5*math.pi))
-        gc.printf("作者：Aqua6623",Consolas_B,480*sin(scene.totalTime/2*math.pi),-440,5000,'center',0,.5,.5,2500,56)
-        gc.printf("作者：Aqua6623",Consolas_B,-480*sin(scene.totalTime/2*math.pi), 440,5000,'center',0,.5,.5,2500,56)
+        gc.setColor(.5,1,.75,.15+.0*sin(scene.totalTime*5*math.pi))
+        gc.printf("作者：Aqua6623",font.Consolas_B,480*sin(scene.totalTime/2*math.pi),-440,5000,'center',0,.5,.5,2500,56)
+        gc.printf("作者：Aqua6623",font.Consolas_B,-480*sin(scene.totalTime/2*math.pi), 440,5000,'center',0,.5,.5,2500,56)
         --gc.printf("未经授权禁止转载",Consolas_B,-480*sin(scene.totalTime/2*math.pi),440,5000,'center',0,.5,.5,2500,56)
     end
     gc.setColor(1,1,1)
     if scene.anim then scene.anim() end
     gc.setColor(1,1,1,.5)
     --gc.print("绘制帧率/逻辑帧率:"..draw_frame.FPS.."/"..love.timer.getFPS(),Exo_2_SB,-955,510,0,.2,.2)
-    gc.print("FPS:"..love.timer.getFPS()..",gcinfo:"..gcinfo(),Exo_2_SB,-955,510,0,.2,.2)
+    gc.print("FPS:"..love.timer.getFPS()..",gcinfo:"..gcinfo(),font.Exo_2_SB,-955,510,0,.2,.2)
 
     --[[if win.isAdjusting then adjust.draw() end]]
     gc.setScissor()
@@ -352,9 +357,9 @@ function love.draw()
         local infoL="Current scene: "..scene.pos.."\nCursor pos:"..("%.2f,%.2f"):format(rx,ry)
         if canop then infoL=infoL.."\nYou can operate now"
         else infoL=infoL.."\nYou can\'t operate now" end
-        infoR="You\'ve stayed here for "..string.format("%.2f",scene.time).."s".."\nRes:"..win.W.."*"..win.H.."\nReal res:"..rw.."*"..rh.."\nWindow mode position:"..win.x_win..","..win.y_win.."\n"..draw_frame.timer.."/"..draw_frame.dtRestrict.."\n"..(lastkeyP and lastkeyP or "")
-        gc.print(infoL,Exo_2,10,25,0,.15,.15)
-        gc.printf(infoR,Exo_2,win.W-10-114514*.15,25,114514,'right',0,.15,.15)
+        infoR="You\'ve stayed here for "..string.format("%.2f",scene.time).."s".."\nRes:"..win.W.."*"..win.H.."\nReal res:"..rw.."*"..rh.."\nWindow mode position:"..win.x_win..","..win.y_win.."\n"..drawCtrl.timer.."/"..drawCtrl.dtRestrict.."\n"..(lastkeyP and lastkeyP or "")
+        gc.print(infoL,font.Exo_2,10,25,0,.15,.15)
+        gc.printf(infoR,font.Exo_2,win.W-10-114514*.15,25,114514,'right',0,.15,.15)
     end
     --[[if win.showAdjustKey then
         gc.setColor(1,1,1)

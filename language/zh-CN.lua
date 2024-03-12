@@ -18,7 +18,8 @@ return {
             master="宗师",
             multitasking="多线程",
             sandbox="沙盒子",
-            ['dig 40']="挖掘 40行"
+            ['dig 40']="挖掘 40行",
+            laser="激光"
         },
         illust="双击/按Enter键开始游戏\n按R键随机跳转",
         iScale=.6
@@ -39,7 +40,8 @@ return {
         video={
             unableBG="禁用游戏背景",unableTxt="若游戏背景导致你身体不适，请打开此选项。",
             fullScr="全屏",fullScrTxt="按F11可一键切换窗口状态。",
-            vsync="垂直同步",vsyncTxt="若感觉画面严重撕裂，尝试调整此选项。一般不建议打开。"
+            vsync="垂直同步",vsyncTxt="若感觉画面严重撕裂，尝试调整此选项。一般不建议打开。",
+            frameLim="最高绘制帧率:",frameTxt="推荐将此值调整至显示器帧率。"
         },
         custom={
             texture="方块材质",color="颜色设置",
@@ -96,6 +98,7 @@ return {
         "Carbon Fibre方块皮肤的灵感来自于碳纤维贴纸魔方",
         "Aquamino特色推箱子",
         "虽然名字是水，但海兰可不保证每个模式都和水有关系",
-        "本游戏的SRS经过修改，I旋对称，并且加入了180°踢墙"
+        "本游戏的SRS经过修改，I旋对称，并且加入了180°踢墙",
+        "冰风暴模式来自于宝石迷阵3的同名模式"
     },tipScale=.4
 }

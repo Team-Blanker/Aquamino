@@ -44,8 +44,8 @@ function others.update(dt)
 end
 function others.draw()
     gc.setColor(1,1,1)
-    gc.printf(cfo.title,Exo_2,0,-460,1280,'center',0,1,1,640,84)
-    gc.printf(cfo.nothing,Exo_2,0,-66,1280,'center',0,1,1,640,84)
+    gc.printf(cfo.title,font.Exo_2,0,-460,1280,'center',0,1,1,640,84)
+    gc.printf(cfo.nothing,font.Exo_2,0,-66,1280,'center',0,1,1,640,84)
     BUTTON.draw() SLIDER.draw()
 end
 function others.exit()

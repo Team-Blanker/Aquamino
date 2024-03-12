@@ -15,7 +15,7 @@ function config.update(dt)
 end
 function config.draw()
     gc.setColor(1,1,1)
-    gc.printf(user.lang.conf.main.title,Exo_2,0,-420,1280,'center',0,1,1,640,84)
+    gc.printf(user.lang.conf.main.title,font.Exo_2,0,-420,1280,'center',0,1,1,640,84)
     BUTTON.draw()
 end
 function config.send(destScene,arg)

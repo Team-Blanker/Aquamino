@@ -3,7 +3,7 @@ local BUTTON=scene.button
 
 local menu={modeKey=1}
 local flashT,enterT,clickT=0,0,0
-menu.modelist={'40 lines','marathon','ice storm','thunder','smooth','master','multitasking','sandbox'}
+menu.modelist={'40 lines','marathon','dig 40','sandbox'}
 function menu.init()
     m=user.lang.menu
     menu.modeName=m.modeName
@@ -95,10 +95,10 @@ function menu.update(dt)
 end
 function menu.draw()
     local l=1920/#menu.modelist
-    gc.printf(menu.modeName[menu.modelist[menu.modeKey]],Exo_2,-750,-540,1000,'center',0,1.5,1.5)
+    gc.printf(menu.modeName[menu.modelist[menu.modeKey]],font.Exo_2,-750,-540,1000,'center',0,1.5,1.5)
 
     gc.setColor(1,1,1,.5-.15*cos(scene.time%8*math.pi/4))
-    gc.printf(m.illust,Exo_2,0,0,4000,'center',0,m.iScale,m.iScale,2000,512/3)
+    gc.printf(m.illust,font.Exo_2,0,0,4000,'center',0,m.iScale,m.iScale,2000,512/3)
 
     gc.setLineWidth(3)
     for i=1,#menu.modelist do
@@ -109,7 +109,7 @@ function menu.draw()
             gc.setColor(1,1,1,.2+.05*(i%2))
             gc.rectangle('fill',-960+l*(i-1),500,l,40)
         end
-        gc.printf(menu.modeName[menu.modelist[i]],Exo_2_SB,-960+l*(i-.5),480,2000,'center',0,.3,.3,1000,84)
+        gc.printf(menu.modeName[menu.modelist[i]],font.Exo_2_SB,-960+l*(i-.5),480,2000,'center',0,.3,.3,1000,84)
     end
     gc.setColor(1,1,1,.5)
     gc.setLineWidth(20)

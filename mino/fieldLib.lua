@@ -14,7 +14,6 @@ block={
 local M=require'framework/mathextend'
 local T=require'framework/tableextend'
 local B=require'mino/blocks'
-local RS=require'mino/RSlist'
 
 local fieldLib={}
 
