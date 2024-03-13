@@ -156,12 +156,12 @@ end
 
 function simple.dieAnim(player)
     setColor(1,1,1,player.deadTimer*4)
-    printf(gts.lose,font.Bender_B,-200,0,400,'center',0,1,1,200,76)
+    printf(gts.lose,font.Bender_B,0,0,400,'center',0,1,1,200,76)
 end
 function simple.winAnim(player)
     setColor(1,1,1,1-player.winTimer*4)
     printf(gts.win,font.Bender_B,0,0,400,'center',0,1+player.winTimer*4,1+player.winTimer*4,200,76)
     setColor(1,1,1)
-    printf(gts.win,font.Bender_B,-200,0,400,'center',0,1,1,200,76)
+    printf(gts.win,font.Bender_B,0,0,400,'center',0,1,1,200,76)
 end
 return simple
