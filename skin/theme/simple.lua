@@ -156,7 +156,7 @@ end
 
 function simple.dieAnim(player)
     setColor(1,1,1,player.deadTimer*4)
-    printf(gts.lose,font.Exo_2_SB,-200,-84,400,'center',0,1)
+    printf(gts.lose,font.Bender_B,-200,-84,400,'center',0,1)
 end
 function simple.winAnim(player)
     setColor(1,1,1,1-player.winTimer*4)
