@@ -31,7 +31,6 @@ return {
         nowPlaying="Now playing: ",
         theme={
             simple={win="Win!",lose="Lose"}
-
         }
     },
     conf={

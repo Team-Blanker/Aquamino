@@ -1,16 +1,23 @@
-local simple={clearInfoTTL=1.5}
+local simple={}
 local T,M=mytable,mymath
 local setColor,rect,line,circle,printf,draw=gc.setColor,gc.rectangle,gc.line,gc.circle,gc.printf,gc.draw
 
+local gts
 function simple.init(player)
+    gts=user.lang.game.theme.simple
     simple.next=gc.newText(font.Bender_B,"N E X T") simple.hold=gc.newText(font.Bender_B,"H O L D")
     simple.nextW,simple.nextH=simple.next:getWidth(),simple.next:getHeight()
     simple.holdW,simple.holdH=simple.hold:getWidth(),simple.hold:getHeight()
-    local his=player.history
-    his.PCInfo={}
+    simple.clearInfo=T.copy(player.history)
+    simple.PCInfo={} simple.txtTimer=0 simple.txtTMax=0
     simple.parList={}
 end
-function simple.onLineClear(player,mino)
+function simple.updateClearInfo(player,mino)
+    local his=player.history
+    if his.line>0 or his.spin then simple.clearInfo=T.copy(player.history) end
+    if his.PC then simple.PCInfo[#simple.PCInfo+1]=3 end
+    simple.txtTMax=his.line>0 and (his.line>4 and .1 or his.spin and .8 or .5) or .5
+    simple.txtTimer=simple.txtTMax
 end
 local W,H,timeTxt
 function simple.fieldDraw(player,mino)
@@ -38,7 +45,7 @@ function simple.fieldDraw(player,mino)
     draw(simple.next, W/2+110,-375,0,.2,.2,simple.nextW/2,simple.nextH/2)
 
     gc.setLineWidth(2)
-    setColor(1,1,1,.125)
+    setColor(1,1,1,.1)
     --网格
     for y=-.5*player.h+1,.5*player.h-1 do
         line(-W/2,36*y,W/2,36*y)
@@ -81,39 +88,41 @@ end
 local clearTxt={'Single','Double','Triple','Aquad'} local txt
 function simple.clearTextDraw(player)
     W,H=36*player.w,36*player.h
-    local his=player.history
+    local CInfo=simple.clearInfo
+    print(next(CInfo))
     gc.translate(-W/2-20,-250)
-    if his.combo>1 then
-        txt=""..his.combo.." chain"..(his.combo>19 and "?!?!" or his.combo>15 and "!!" or his.combo>7 and "!" or "")
+    if CInfo.combo>1 then
+        txt=""..CInfo.combo.." chain"..(CInfo.combo>19 and "?!?!" or CInfo.combo>15 and "!!" or CInfo.combo>7 and "!" or "")
 
         setColor(.1,.1,.1,.3)
         for i=0,3 do
             printf(txt,font.Bender_B,-19+i%2*6,9+6*floor(i/2),1200,'right',0,.25,.25,1200,76)
         end
-        setColor(scene.time%.2<.1 and {1,1,1} or M.lerp({1,1,1},{.5,1,.75},min((his.combo-8)/8,1)))
+        setColor(scene.time%.2<.1 and {1,1,1} or M.lerp({1,1,1},{.5,1,.75},min((CInfo.combo-8)/8,1)))
         printf(txt,font.Bender_B,-16,12,1200,'right',0,.25,.25,1200,76)
     end
     gc.translate(W/2+20,250)
-    if #his.clearInfo>0 then
-        local CInfo=his.clearInfo[#his.clearInfo]
-        txt=(
-            (CInfo.B2B>0 and CInfo.line>0 and "B2B " or "")
-          ..(CInfo.spin and (CInfo.mini and "weak " or "")..CInfo.name.."-spin " or "")
-          ..(clearTxt[min(CInfo.line,4)] or "")
-        )
+    txt=(
+        (CInfo.B2B>0 and CInfo.line>0 and "B2B " or "")
+        ..(CInfo.spin and (CInfo.mini and "weak " or "")..CInfo.name.."-spin " or "")
+        ..(clearTxt[min(CInfo.line,4)] or "")
+    )
 
-        local alpha=min((CInfo.t*3),1)*.8
-        --[[setColor(CInfo.line>=4 and {0,.4,.2,.3*alpha*alpha} or {.1,.1,.1,.3*alpha*alpha})
-        for i=0,3 do
-            printf(txt,font.Exo_2_SB,-3+i%2*6,387+6*floor(i/2),4000,'center',0,.375,.375,2000,0)
-        end]]
-        setColor(CInfo.line>=4 and {.5,1,.75,alpha} or {1,1,1,alpha})
-        local s=(CInfo.line>=4 and .75 or .5)
-        printf(txt,font.Bender,0,0,4000,'center',0,s,s,2000,76)
-    end
+    local alpha=min(simple.txtTimer*1.5/simple.txtTMax,1)*.9
+    --[[setColor(CInfo.line>=4 and {0,.4,.2,.3*alpha*alpha} or {.1,.1,.1,.3*alpha*alpha})
+    for i=0,3 do
+        printf(txt,font.Exo_2_SB,-3+i%2*6,387+6*floor(i/2),4000,'center',0,.375,.375,2000,0)
+    end]]
+    if CInfo.line>=4 then setColor(.5,1,.75,alpha)
+    elseif CInfo.spin and not CInfo.mini then
+        local c=player.color[CInfo.name]
+        setColor(c[1]+.2*(1-c[1]),c[2]+.2*(1-c[2]),c[3]+.2*(1-c[3]),alpha)
+    else setColor(1,1,1,alpha) end
+    local s=(CInfo.line>=4 and .75 or .5)
+    printf(txt,font.Bender,0,0,4000,'center',0,s,s,2000,76)
 
-    for i=1,#his.PCInfo do
-        local t=his.PCInfo[i]
+    for i=1,#simple.PCInfo do
+        local t=simple.PCInfo[i]
         local ti=3-t
         local a,b,c,s=.3,.35,.4,1.35
         if ti>c then local ts=ti-c
@@ -138,23 +147,21 @@ function simple.checkClear(player)
     if his.PC then ins(his.PCInfo,3) end
 end
 function simple.update(player,dt)
-    local PCInfo=player.history.PCInfo
+    local PCInfo=simple.PCInfo
     for i=#PCInfo,1,-1 do PCInfo[i]=PCInfo[i]-dt
         if PCInfo[i]<=0 then rem(PCInfo,i) end
     end
+    simple.txtTimer=max(simple.txtTimer-dt,0)
 end
-local txt=user.lang.game.theme.simple
+
 function simple.dieAnim(player)
     setColor(1,1,1,player.deadTimer*4)
-    printf(txt.lose,font.Exo_2_SB,-200,-84,400,'center',0,1)
+    printf(gts.lose,font.Exo_2_SB,-200,-84,400,'center',0,1)
 end
 function simple.winAnim(player)
     setColor(1,1,1,1-player.winTimer*4)
-    printf(txt.win,font.Exo_2_SB,0,0,400,'center',0,1+player.winTimer*4,1+player.winTimer*4,200,84)
+    printf(gts.win,font.Bender_B,0,0,400,'center',0,1+player.winTimer*4,1+player.winTimer*4,200,84)
     setColor(1,1,1)
-    printf(txt.win,font.Exo_2_SB,-200,-84,400,'center',0,1)
-end
-function simple.setCInfoTTL(player)
-    return .5
+    printf(gts.win,font.Bender_B,-200,-84,400,'center',0,1)
 end
 return simple

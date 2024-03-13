@@ -186,13 +186,7 @@ function mino.checkClear(player,comboBreak,delayBreak)
         his.CDelay=player.CDelay
     elseif comboBreak then his.combo=0 end
     if his.line>0 or his.spin or his.PC then
-        ins(his.clearInfo,
-            {name=his.name,line=his.line,
-            spin=his.spin,mini=his.mini,
-            PC=his.PC,B2B=his.B2B,
-            t=mino.theme.setCInfoTTL(player)}
-        )
-        if mino.theme.checkClear then mino.theme.checkClear(player,comboBreak,delayBreak) end
+        if mino.theme.updateClearInfo then mino.theme.updateClearInfo(player,mino) end
     end
 end
 
@@ -223,6 +217,7 @@ function mino.addDropAnim(player,x,ys,yf,TTL)
     player.dropAnim[#player.dropAnim+1]={x=x,ys=ys,yf=yf,TTL=TTL,TMax=TTL}
 end
 
+--初始化
 local curPlayTxt
 function mino.init()
     mino.profile=require'profile'
@@ -647,10 +642,6 @@ function mino.gameUpdate(dt)
         A.timer=max(A.timer-dt,0)
         if P[i].started and P[i].deadTimer<0 and S.winState==0 then P[i].gameTimer=P[i].gameTimer+dt end
 
-        for j=#his.clearInfo,1,-1 do
-            his.clearInfo[j].t=his.clearInfo[j].t-dt
-            if his.clearInfo[j].t<0 then rem(his.clearInfo,j) end
-        end
         if mino.theme.update then mino.theme.update(P[i],dt) end
         if P[i].event[1] then
             P[i].event[1]=P[i].event[1]-dt

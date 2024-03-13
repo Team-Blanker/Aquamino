@@ -47,7 +47,7 @@ function fieldLib.newPlayer(arg)
             name=nil,piece={},x=0,y=0,O=0,
             dropHeight=0,kickOrder=0,
             line=0,spin=false,mini=false,PC=false,combo=0,B2B=-1,push=0,
-            clearInfo={},CDelay=0
+            CDelay=0
         },
         cur={
             name=nil,piece={},x=5,y=21,O=0,ghostY=0,
@@ -186,6 +186,16 @@ function fieldLib.lineClear(player)
     for y=#field,1,-1 do for x=1,#field[y] do
         if next(field[y][x]) then PC=false break end
     end end
+    --清除全空的行
+    local stop=false
+    for y=#field,1,-1 do
+        local empty=true
+        for x=1,#field[y] do
+        if next(field[y][x]) then empty=false stop=true break end
+        end
+        if stop then break end
+        if empty then field[y]=nil end
+    end
     return cunt,PC,cLine
 end
 function fieldLib.eraseEmptyLine(player)
