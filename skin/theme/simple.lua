@@ -89,7 +89,6 @@ local clearTxt={'Single','Double','Triple','Aquad'} local txt
 function simple.clearTextDraw(player)
     W,H=36*player.w,36*player.h
     local CInfo=simple.clearInfo
-    print(next(CInfo))
     gc.translate(-W/2-20,-250)
     if CInfo.combo>1 then
         txt=""..CInfo.combo.." chain"..(CInfo.combo>19 and "?!?!" or CInfo.combo>15 and "!!" or CInfo.combo>7 and "!" or "")

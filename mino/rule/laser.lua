@@ -10,7 +10,7 @@ function laser.init(P,mino)
     mino.rule.allowSpin={T=true}
     P[1].pDropped=0
     --横向和纵向激光表，白色摧毁，蓝色反转，橙色随机
-    laser.HLaserList,laser.SLaserList={destroy={},reverse={},rand={}},{destroy={},reverse={1},rand={}}
+    laser.HLaserList,laser.SLaserList={destroy={},reverse={},mayhem={}},{destroy={1,2,3,4,5,6,7,8,9,10},reverse={},mayhem={}}
 end
 function laser.postCheckClear(player,mino)
     local h,s=laser.HLaserList,laser.SLaserList
@@ -44,12 +44,12 @@ function laser.postCheckClear(player,mino)
         end
         end
     end
-    for j=1,#s.rand do
+    for j=1,#s.mayhem do
         local touch=false
         for i=1,#piece do
-        if piece[i][1]+his.x==s.rand[j] then
+        if piece[i][1]+his.x==s.mayhem[j] then
             for k=1,#player.field do
-                player.field[k][s.rand[j]]=rand()<.5 and {name='g1'} or {}
+                player.field[k][s.mayhem[j]]=rand()<.5 and {name='g1'} or {}
                 laserTouch=true touch=true
             end
             if touch then break end
@@ -60,7 +60,7 @@ function laser.postCheckClear(player,mino)
     if laserTouch or player.pDropped>=5 then
         player.pDropped=0
         --laser.SLaserList.destroy[1]=rand(player.w)
-        laser.SLaserList.reverse[1]=laser.SLaserList.reverse[1]%player.w+1
+        --laser.SLaserList.reverse[1]=rand(player.w)
         --laser.SLaserList.rand   [1]=rand(player.w)
     end
 end
@@ -74,9 +74,9 @@ function laser.overFieldDraw(player,mino)
         gc.setColor(0,1,1,.4+(scene.time%.2<.1 and .2 or 0))
         rect('fill',36*s.reverse[i]-18*player.w-27,-18*player.h,18,36*player.h)
     end
-    for i=1,#s.rand do
+    for i=1,#s.mayhem do
         gc.setColor(1,.8,0,.4+(scene.time%.2<.1 and .2 or 0))
-        rect('fill',36*s.rand[i]-18*player.w-27,-18*player.h,18,36*player.h)
+        rect('fill',36*s.mayhem[i]-18*player.w-27,-18*player.h,18,36*player.h)
     end
 end
 return laser
