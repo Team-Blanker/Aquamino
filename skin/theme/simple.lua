@@ -102,6 +102,7 @@ function simple.clearTextDraw(player)
         printf(txt,font.Bender_B,-16,12,1200,'right',0,.25,.25,1200,76)
     end
     gc.translate(W/2+20,250)
+
     txt=(
         (CInfo.B2B>0 and CInfo.line>0 and "B2B " or "")
         ..(CInfo.spin and (CInfo.mini and "weak " or "")..CInfo.name.."-spin " or "")
@@ -116,7 +117,7 @@ function simple.clearTextDraw(player)
     if CInfo.line>=4 then setColor(.5,1,.75,alpha)
     elseif CInfo.spin and not CInfo.mini then
         local c=player.color[CInfo.name]
-        setColor(c[1]+.2*(1-c[1]),c[2]+.2*(1-c[2]),c[3]+.2*(1-c[3]),alpha)
+        setColor(c[1]+.3*(1-c[1]),c[2]+.3*(1-c[2]),c[3]+.3*(1-c[3]),alpha)
     else setColor(1,1,1,alpha) end
     local s=(CInfo.line>=4 and .75 or .5)
     printf(txt,font.Bender,0,0,4000,'center',0,s,s,2000,76)
