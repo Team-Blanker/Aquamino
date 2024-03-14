@@ -18,16 +18,25 @@ return {
             local newClone=true
             local buffer=sfx.buffer[name]
             for i=1,#buffer do
-                if not buffer[i].sfx:isPlaying() then
+                if not buffer[i].sfx:isPlaying() then--如果缓冲区有没播放的音频，放这个
                     buffer[i].sfx:setVolume(sfx.volume*volume) buffer[i].sfx:setPitch(pitch)
                     buffer[i].sfx:play() buffer[i].TTL=sfx.TTL newClone=false break
                 end
             end
-            if newClone and #sfx.buffer[name]<sfx.cloneLim then
+            if newClone then
+            if #buffer<sfx.cloneLim then--如果没超出复制上限，复制一个出来放
             buffer[#buffer+1]={sfx=sfx.pack[name]:clone(),TTL=sfx.TTL}
             buffer[#buffer].sfx:setPitch(pitch) buffer[#buffer].sfx:play()
+            else--否则，找快放完的那个重新放一遍
+                local k,t=0,0
+                for i=1,#buffer do
+                    local tell=buffer[i].sfx:tell()
+                    if tell>t then k=i t=tell end
+                end
+                buffer[k].sfx:seek(0) buffer[k].sfx:play()
             end
-        else
+            end
+        else--如果本体没放，放本体
             sfx.pack[name]:setVolume(sfx.volume*volume) sfx.pack[name]:setPitch(pitch)
             sfx.pack[name]:play()
         end
