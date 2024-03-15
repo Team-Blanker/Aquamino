@@ -225,6 +225,7 @@ function rule.underFieldDraw(player)
         font.Consolas,-1250,160,10000,'center',0,.25,.25)
     gc.pop()
 end
+local r,g,b,larg
 function rule.overFieldDraw(player)
     gc.push()
     local FW,FH=36*player.w,36*player.h
@@ -233,21 +234,22 @@ function rule.overFieldDraw(player)
     for i=1,player.w do
         local ice=player.iceColumn[i]
         if ice.H>=0 then
-            local clr=ice.H==2 and {.8,.1,.1}
-                   or ice.H>=1 and M.lerp({.6,.9,1},{1,.8,.8},ice.H>=1.5 and abs(player.gameTimer%.25-.125)*8 or 0)
-                                or {.4,.8,1}
+            larg=ice.H>=1.5 and abs(player.gameTimer%.25-.125)*8 or 0
+            r=ice.H==2 and .8 or ice.H>=1 and M.lerp(.6, 1,larg) or .4
+            g=ice.H==2 and .1 or ice.H>=1 and M.lerp(.9,.8,larg) or .8
+            b=ice.H==2 and .1 or ice.H>=1 and M.lerp( 1,.8,larg) or  1
             --冰柱显示的高度
             local H=max( M.lerp(min(ice.H,1),A.ice[i].preH, (A.ice[i].t/A.iceTMax)^2 ) -6*ice.strikeT/.075/FH ,0)
             --“底座”
             gc.setColor(.6,.9,1,1.25*ice.appearT)
             gc.rectangle('fill',36*i,0,36,4)
-            gc.setColor(clr[1],clr[2],clr[3],.2)
+            gc.setColor(r,g,b,.2)
             --“柱体”
             gc.rectangle('fill',36*i,-FH*H,36,FH*H)
-            gc.setColor(clr[1],clr[2],clr[3],.4)
+            gc.setColor(r,g,b,.4)
             local topH=M.clamp(ice.H-1,0,1)
             gc.rectangle('fill',36*i,-FH*topH,36,FH*topH)
-            gc.setColor(clr[1],clr[2],clr[3],1)
+            gc.setColor(r,g,b,1)
             gc.rectangle('fill',36*i,-FH*H,4,FH*H)
             gc.rectangle('fill',36*i+32,-FH*H,4,FH*H)
         end
