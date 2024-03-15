@@ -20,6 +20,7 @@ function marathon.init(P,mino)
     P[1].LDelay=.5
     for k,v in pairs(P) do
         v.CDelay=.25
+        v.EDelay=.1
 
         v.speedLv=1
         v.FDelay=2^(-(v.speedLv-1)/14*8)

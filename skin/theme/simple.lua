@@ -8,16 +8,16 @@ function simple.init(player)
     simple.next=gc.newText(font.Bender_B,"N E X T") simple.hold=gc.newText(font.Bender_B,"H O L D")
     simple.nextW,simple.nextH=simple.next:getWidth(),simple.next:getHeight()
     simple.holdW,simple.holdH=simple.hold:getWidth(),simple.hold:getHeight()
-    simple.clearInfo=T.copy(player.history)
-    simple.PCInfo={} simple.txtTimer=0 simple.txtTMax=0
+    player.clearInfo=T.copy(player.history)
+    player.PCInfo={} player.clearTxtTimer=0 player.clearTxtTMax=0
     simple.parList={}
 end
 function simple.updateClearInfo(player,mino)
     local his=player.history
-    if his.line>0 or his.spin then simple.clearInfo=T.copy(player.history) end
-    if his.PC then simple.PCInfo[#simple.PCInfo+1]=3 end
-    simple.txtTMax=his.line>0 and (his.line>4 and .1 or his.spin and .8 or .5) or .5
-    simple.txtTimer=simple.txtTMax
+    if his.line>0 or his.spin then player.clearInfo=T.copy(player.history) end
+    if his.PC then player.PCInfo[#player.PCInfo+1]=3 end
+    player.clearTxtTMax=his.line>0 and (his.line>4 and .1 or his.spin and .8 or .5) or .5
+    player.clearTxtTimer=player.clearTxtTMax
 end
 local W,H,timeTxt
 function simple.fieldDraw(player,mino)
@@ -88,7 +88,7 @@ end
 local clearTxt={'Single','Double','Triple','Aquad'} local txt
 function simple.clearTextDraw(player)
     W,H=36*player.w,36*player.h
-    local CInfo=simple.clearInfo
+    local CInfo=player.clearInfo
     gc.translate(-W/2-20,-250)
     if CInfo.combo>1 then
         txt=""..CInfo.combo.." chain"..(CInfo.combo>19 and "?!?!" or CInfo.combo>15 and "!!" or CInfo.combo>7 and "!" or "")
@@ -108,7 +108,7 @@ function simple.clearTextDraw(player)
         ..(clearTxt[min(CInfo.line,4)] or "")
     )
 
-    local alpha=min(simple.txtTimer*1.5/simple.txtTMax,1)*.9
+    local alpha=min(player.clearTxtTimer*1.5/player.clearTxtTMax,1)*.9
     --[[setColor(CInfo.line>=4 and {0,.4,.2,.3*alpha*alpha} or {.1,.1,.1,.3*alpha*alpha})
     for i=0,3 do
         printf(txt,font.Exo_2_SB,-3+i%2*6,387+6*floor(i/2),4000,'center',0,.375,.375,2000,0)
@@ -121,8 +121,8 @@ function simple.clearTextDraw(player)
     local s=(CInfo.line>=4 and .75 or .5)
     printf(txt,font.Bender,0,0,4000,'center',0,s,s,2000,76)
 
-    for i=1,#simple.PCInfo do
-        local t=simple.PCInfo[i]
+    for i=1,#player.PCInfo do
+        local t=player.PCInfo[i]
         local ti=3-t
         local a,b,c,s=.3,.35,.4,1.35
         if ti>c then local ts=ti-c
@@ -142,16 +142,12 @@ function simple.clearTextDraw(player)
     end
 end
 
-function simple.checkClear(player)
-    local his=player.history
-    if his.PC then ins(his.PCInfo,3) end
-end
 function simple.update(player,dt)
-    local PCInfo=simple.PCInfo
+    local PCInfo=player.PCInfo
     for i=#PCInfo,1,-1 do PCInfo[i]=PCInfo[i]-dt
         if PCInfo[i]<=0 then rem(PCInfo,i) end
     end
-    simple.txtTimer=max(simple.txtTimer-dt,0)
+    player.clearTxtTimer=max(player.clearTxtTimer-dt,0)
 end
 
 function simple.dieAnim(player)

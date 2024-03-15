@@ -7,10 +7,10 @@ function pause.init(mino)
     local bt=fs.read('framework/control/button.lua')
     pause.button=assert(loadstring(bt))()
     pause.button.create('pause_resume',{
-        x=0,y=-150,type='rect',w=600,h=100,
+        x=-600,y=420,type='rect',w=400,h=100,
         draw=function(bt,t)
             gc.setColor(.5,.5,.5,.5+2*t)
-            gc.rectangle('fill',-300,-50,600,100)
+            gc.rectangle('fill',-200,-50,400,100)
             gc.setColor(1,1,1)
             gc.printf(ptxt.resume,font.Exo_2,0,0,1280,'center',0,.5,.5,640,84)
         end,
@@ -19,10 +19,10 @@ function pause.init(mino)
         end
     },.25)
     pause.button.create('pause_retry',{
-        x=0,y=0,type='rect',w=600,h=100,
+        x=0,y=420,type='rect',w=400,h=100,
         draw=function(bt,t)
             gc.setColor(.5,.5,.5,.5+2*t)
-            gc.rectangle('fill',-300,-50,600,100)
+            gc.rectangle('fill',-200,-50,400,100)
             gc.setColor(1,1,1)
             gc.printf(ptxt.r,font.Exo_2,0,0,1280,'center',0,.5,.5,640,84)
         end,
@@ -35,10 +35,10 @@ function pause.init(mino)
         end
     },.25)
     pause.button.create('pause_quit',{
-        x=0,y=150,type='rect',w=600,h=100,
+        x=600,y=420,type='rect',w=600,h=100,
         draw=function(bt,t)
             gc.setColor(.5,.5,.5,.5+2*t)
-            gc.rectangle('fill',-300,-50,600,100)
+            gc.rectangle('fill',-200,-50,400,100)
             gc.setColor(1,1,1)
             gc.printf(ptxt.quit,font.Exo_2,0,0,1280,'center',0,.5,.5,640,84)
         end,

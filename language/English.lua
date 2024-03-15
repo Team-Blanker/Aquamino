@@ -29,6 +29,7 @@ return {
     },
     game={
         nowPlaying="Now playing: ",
+        paused="Paused",
         theme={
             simple={win="Win!",lose="Lose"}
         }

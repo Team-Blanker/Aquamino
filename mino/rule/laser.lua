@@ -10,7 +10,7 @@ function laser.init(P,mino)
     mino.rule.allowSpin={T=true}
     P[1].pDropped=0
     --横向和纵向激光表，白色摧毁，蓝色反转，橙色随机
-    laser.HLaserList,laser.SLaserList={destroy={},reverse={},mayhem={}},{destroy={1,2,3,4,5,6,7,8,9,10},reverse={},mayhem={}}
+    laser.HLaserList,laser.SLaserList={destroy={},reverse={},mayhem={}},{destroy={},reverse={},mayhem={1,2,3,4,5,6,7,8,9,10}}
 end
 function laser.postCheckClear(player,mino)
     local h,s=laser.HLaserList,laser.SLaserList

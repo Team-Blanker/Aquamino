@@ -72,7 +72,7 @@ function mino.blockLock(player)
     if mino.rule.onPieceDrop then mino.rule.onPieceDrop(player,mino) end
 
     if mino.blockSkin.onPieceDrop then player.blockSkin.onPieceDrop(player,mino) end
-    if mino.theme.onPieceDrop then mino.theme.onPieceDrop(player,mino) end
+    if player.theme.onPieceDrop then player.theme.onPieceDrop(player,mino) end
 end
 function mino.lose(player)
     local w=S.winState
@@ -186,7 +186,7 @@ function mino.checkClear(player,comboBreak,delayBreak)
         his.CDelay=player.CDelay
     elseif comboBreak then his.combo=0 end
     if his.line>0 or his.spin or his.PC then
-        if mino.theme.updateClearInfo then mino.theme.updateClearInfo(player,mino) end
+        if player.theme.updateClearInfo then player.theme.updateClearInfo(player,mino) end
     end
 end
 
@@ -240,7 +240,7 @@ function mino.init()
         {block='pure',theme='simple',sfx='Dr Ocelot',smoothAnimAct=false,fieldScale=1}
         mino.fieldScale=pf.fieldScale
         mino.blockSkin=require('skin/block/'..pf.block)
-        mino.theme=require('skin/theme/'..pf.theme)
+        P[1].theme=require('skin/theme/'..pf.theme)
         P[1].smoothAnimAct=pf.smoothAnimAct
         mino.sfxPlay=require('sfx/game/'..pf.sfx)
         mino.sfxPlay.addSFX()
@@ -282,7 +282,7 @@ function mino.init()
             end
         end
         if mino.blockSkin.init then mino.blockSkin.init(P[i]) end
-        if mino.theme.init then mino.theme.init(P[i]) end
+        if P[i].theme.init then P[i].theme.init(P[i]) end
     end
     curPlayTxt=user.lang.game.nowPlaying..mino.musInfo
 end
@@ -642,7 +642,7 @@ function mino.gameUpdate(dt)
         A.timer=max(A.timer-dt,0)
         if P[i].started and P[i].deadTimer<0 and S.winState==0 then P[i].gameTimer=P[i].gameTimer+dt end
 
-        if mino.theme.update then mino.theme.update(P[i],dt) end
+        if P[i].theme.update then P[i].theme.update(P[i],dt) end
         if P[i].event[1] then
             P[i].event[1]=P[i].event[1]-dt
             if not P[i].event[3] and P[i].event[1]<=0 then remainTime=P[i].event[1] end
@@ -737,7 +737,7 @@ function mino.draw()
             --场地
             if mino.rule.underFieldDraw then mino.rule.underFieldDraw(P[i],mino) end
 
-            mino.theme.fieldDraw(P[i],mino)
+            P[i].theme.fieldDraw(P[i],mino)
 
             gc.setColor(1,1,1,.4)
             gc.push()
@@ -791,25 +791,26 @@ function mino.draw()
                 gc.pop()
             end
 
-            if mino.theme.overFieldDraw then mino.theme.overFieldDraw(P[i],mino) end
-            mino.theme.clearTextDraw(P[i])
+            if P[i].theme.overFieldDraw then P[i].theme.overFieldDraw(P[i],mino) end
+            P[i].theme.clearTextDraw(P[i])
 
             if mino.rule.overFieldDraw then mino.rule.overFieldDraw(P[i],mino) end
             --Ready Set Go
-            if mino.theme.readyDraw then mino.theme.readyDraw(mino.waitTime) end
+            if P[i].theme.readyDraw then P[i].theme.readyDraw(mino.waitTime) end
             --诶你怎么死了
-            if P[i].deadTimer>=0 then mino.theme.dieAnim(P[i],mino) end
+            if P[i].deadTimer>=0 then P[i].theme.dieAnim(P[i],mino) end
             --赢了
-            if P[i].winTimer>=0 then mino.theme.winAnim(P[i],mino) end
+            if P[i].winTimer>=0 then P[i].theme.winAnim(P[i],mino) end
         gc.pop()
     end
     --暂停
-    gc.setColor(.08,.08,.08,mino.pauseAnimTimer*4)
+    gc.setColor(.04,.04,.04,min(mino.pauseAnimTimer*(S.winState==0 and 4 or 2),S.winState==0 and 1 or .5))
     gc.rectangle('fill',-1000,-1000,2000,2000)
     if mino.paused then
         pause.draw()
-        --gc.printf("当前播放 : "..mino.musInfo,font.Exo_2,0,384,65536,'center',0,.4,.4,32768,84)
-        gc.printf(curPlayTxt,font.Exo_2,0,384,65536,'center',0,.4,.4,32768,84)
+        gc.setColor(1,1,1)
+        gc.printf(user.lang.game.paused,font.Exo_2,0,-440,65536,'center',0,1,1,32768,84)
+        gc.printf(curPlayTxt,font.Exo_2,0,330,65536,'center',0,.4,.4,32768,84)
     end
 end
 function mino.exit()
