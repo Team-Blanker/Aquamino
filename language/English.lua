@@ -97,6 +97,7 @@ return {
         "Not every modes are related to water,although the game was named \"Aqua\".",
         "Kairan had modified SRS in this game with symmetric I-spin,and powerful 180 kicktables.",
         "\"How similar to Techmino but with nice color\"",
-        "\"Ice Storm\" mode is from the mode with same name in Bejeweled 3"
+        "\"Ice Storm\" mode is from the mode with same name in Bejeweled 3",
+        "You can do a T-spin Aquad in Aquamino!"
     },tipScale=.3
 }
