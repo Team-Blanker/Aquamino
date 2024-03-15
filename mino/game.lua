@@ -807,9 +807,10 @@ function mino.draw()
     gc.setColor(.04,.04,.04,min(mino.pauseAnimTimer*(S.winState==0 and 4 or 2),S.winState==0 and 1 or .5))
     gc.rectangle('fill',-1000,-1000,2000,2000)
     if mino.paused then
-        pause.draw()
+        pause.button.draw()
         gc.setColor(1,1,1)
-        gc.printf(user.lang.game.paused,font.Exo_2,0,-440,65536,'center',0,1,1,32768,84)
+        gc.printf(S.winState==0 and user.lang.game.paused or user.lang.game.result,
+            font.Exo_2,0,-440,65536,'center',0,1,1,32768,84)
         gc.printf(curPlayTxt,font.Exo_2,0,330,65536,'center',0,.4,.4,32768,84)
     end
 end

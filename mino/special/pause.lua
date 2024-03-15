@@ -1,5 +1,6 @@
 local pause={}
 local ptxt=user.lang.pause
+local max,min=math.max,math.min
 function pause.init(mino)
     ptxt=user.lang.pause
     local mode=mino.mode
@@ -9,7 +10,7 @@ function pause.init(mino)
     pause.button.create('pause_resume',{
         x=-600,y=420,type='rect',w=400,h=100,
         draw=function(bt,t)
-            gc.setColor(.5,.5,.5,.5+2*t)
+            gc.setColor(.75,.75,.75,.5+min(2*t,.3))
             gc.rectangle('fill',-200,-50,400,100)
             gc.setColor(1,1,1)
             gc.printf(ptxt.resume,font.Exo_2,0,0,1280,'center',0,.5,.5,640,84)
@@ -21,7 +22,7 @@ function pause.init(mino)
     pause.button.create('pause_retry',{
         x=0,y=420,type='rect',w=400,h=100,
         draw=function(bt,t)
-            gc.setColor(.5,.5,.5,.5+2*t)
+            gc.setColor(.75,.75,.75,.5+min(2*t,.3))
             gc.rectangle('fill',-200,-50,400,100)
             gc.setColor(1,1,1)
             gc.printf(ptxt.r,font.Exo_2,0,0,1280,'center',0,.5,.5,640,84)
@@ -37,7 +38,7 @@ function pause.init(mino)
     pause.button.create('pause_quit',{
         x=600,y=420,type='rect',w=600,h=100,
         draw=function(bt,t)
-            gc.setColor(.5,.5,.5,.5+2*t)
+            gc.setColor(.75,.75,.75,.5+min(2*t,.3))
             gc.rectangle('fill',-200,-50,400,100)
             gc.setColor(1,1,1)
             gc.printf(ptxt.quit,font.Exo_2,0,0,1280,'center',0,.5,.5,640,84)

@@ -29,7 +29,7 @@ return {
     },
     game={
         nowPlaying="当前播放 : ",
-        paused="暂停",
+        paused="暂停",result="游戏结束",
         theme={
             simple={win="胜利",lose="失败"}
         }
