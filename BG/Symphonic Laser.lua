@@ -122,8 +122,8 @@ function bg.draw()
             rect('fill',-960,420-m*192,1920,120+m*192)
             local s=max(flore((loopBeat-46)*4/3+1),0)
             setColor(1,1,1,.1*s)
-            local sz=(4-s)*120
-            rect('fill',-300-sz,-sz/2,sz,sz) rect('fill',300,-sz/2,sz,sz)
+            --local sz=(4-s)*120
+            rect('fill',-840+120*s,-60,120,120) rect('fill',720-120*s,-60,120,120)
         elseif loopBeat<152 then
             setColor(1,1,1,.25*(49-loopBeat)) rect('fill',-960,-540,1920,1080)
             setColor(0,1,.5,.15) rect('fill',-960,-540,1920,1080)
