@@ -2,6 +2,7 @@ local otto={}
 function otto.addSFX()
     sfx.add({
         die='sfx/game/otto/die.wav',
+        lose='sfx/game/otto/lose.wav',
         win='sfx/game/otto/win.wav',
         move='sfx/game/otto/move.wav',
         moveFail='sfx/game/otto/move fail.wav',
@@ -70,5 +71,8 @@ function otto.win()
 end
 function otto.die()
     sfx.play('die')
+end
+function otto.lose()
+    sfx.play('lose')
 end
 return otto

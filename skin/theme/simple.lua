@@ -113,12 +113,12 @@ function simple.clearTextDraw(player)
     for i=0,3 do
         printf(txt,font.Exo_2_SB,-3+i%2*6,387+6*floor(i/2),4000,'center',0,.375,.375,2000,0)
     end]]
+    local s=(CInfo.line>=4 and .75 or .5)
     if CInfo.line>=4 then setColor(.5,1,.75,alpha)
     elseif CInfo.spin and not CInfo.mini then
         local c=player.color[CInfo.name]
         setColor(c[1]+.3*(1-c[1]),c[2]+.3*(1-c[2]),c[3]+.3*(1-c[3]),alpha)
     else setColor(1,1,1,alpha) end
-    local s=(CInfo.line>=4 and .75 or .5)
     printf(txt,font.Bender,0,0,4000,'center',0,s,s,2000,76)
 
     for i=1,#player.PCInfo do
