@@ -15,7 +15,6 @@ function laser.init(P,mino)
     mino.rule.allowSpin={}
     P[1].pDropped=0
     P[1].point=0
-    P[1].laserLv=1
     --P[1].posy=600
     --激光表，destroy摧毁，reverse反转，random随机；h水平(horizontal)，s竖直(straight)
     P[1].laserList={} P[1].nextLaserList={}
@@ -88,18 +87,15 @@ function laser.postCheckClear(player,mino)
 end
 function laser.onLineClear(player,mino)
     local l,c=player.history.line,player.history.combo
-    player.point=player.point+l*(l+1)/2+c-1
-    if player.point>=player.laserLv*50 then
-        if player.laserLv==10 then mino.win(player) return end
-        player.laserLv=min(player.laserLv+1,10) sfx.play('lvup')
-    end
+    --player.point=player.point+l*(l+1)/2+c-1
+    player.point=player.point+c
+    if player.point>=1000 then mino.win(player) return end
 end
 
 function laser.underFieldDraw(player)
     gc.setColor(1,1,1)
     gc.printf(""..player.point,font.Consolas_B,-player.w*18-110,-32,2048,'center',0,.5,.5,1024,56)
-    gc.printf(""..player.laserLv*50,font.Consolas_B,-player.w*18-110,32,2048,'center',0,.5,.5,1024,56)
-    gc.printf("Laser Lv.\n"..player.laserLv,font.Consolas_B,-player.w*18-28,256,2048,'right',0,0.25,0.25,2048,56)
+    gc.printf(1000,font.Consolas_B,-player.w*18-110,32,2048,'center',0,.5,.5,1024,56)
     gc.setLineWidth(7)
     gc.line(-player.w*18-170,0,-player.w*18-50,0)
 end
