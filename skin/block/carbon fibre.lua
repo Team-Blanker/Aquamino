@@ -7,7 +7,7 @@ skin.shadow=gc.newImage('skin/block/carbon fibre/ghost.png')
 local rect,setColor=gc.rectangle,gc.setColor
 function skin.unitDraw(player,x,y,color,alpha)
     setColor(color[1],color[2],color[3],alpha)
-    rect('fill',-18+36*x,-18-36*y,36,36,6)
+    rect('fill',-18+36*x,-18-36*y,36,36)
 end
 function skin.fieldDraw(player,mino)
     local h=0 local n=player.event[1] and player.event[1]/player.history.CDelay
@@ -17,7 +17,7 @@ function skin.fieldDraw(player,mino)
             local F=player.field
             if F[y][x] and next(F[y][x]) then
                 setColor(player.color[F[y][x].name])
-                rect('fill',-18+36*x,-18-36*h,36,36,6)
+                rect('fill',-18+36*x,-18-36*h,36,36)
                 if not F[y][x].loosen then setColor(1,1,1) gc.draw(skin.sticker,36*x,-36*h,0,1,1,18,18) end
             end
         end
@@ -35,7 +35,7 @@ function skin.curDraw(player,piece,x,y,clr)
     end
     for i=1,#piece do
         setColor(clr)
-        rect('fill',-18+36*(x+piece[i][1]),-18-36*(y+piece[i][2]),36,36,6)
+        rect('fill',-18+36*(x+piece[i][1]),-18-36*(y+piece[i][2]),36,36)
         setColor(1,1,1) gc.draw(skin.sticker,36*(x+piece[i][1]),-36*(y+piece[i][2]),0,1,1,18,18)
     end
 end
@@ -44,14 +44,14 @@ end
 function skin.holdDraw(player,piece,x,y,color,canHold)
     for i=1,#piece do
         if canHold then setColor(color) else setColor(.5,.5,.5) end
-        rect('fill',-18+36*(x+piece[i][1]),-18-36*(y+piece[i][2]),36,36,6)
+        rect('fill',-18+36*(x+piece[i][1]),-18-36*(y+piece[i][2]),36,36)
         setColor(1,1,1) gc.draw(skin.sticker,36*(x+piece[i][1]),-36*(y+piece[i][2]),0,1,1,18,18)
     end
 end
 function skin.nextDraw(player,piece,x,y,color,order)
     for i=1,#piece do
         setColor(color)
-        rect('fill',-18+36*(x+piece[i][1]),-18-36*(y+piece[i][2]),36,36,6)
+        rect('fill',-18+36*(x+piece[i][1]),-18-36*(y+piece[i][2]),36,36)
         setColor(1,1,1) gc.draw(skin.sticker,36*(x+piece[i][1]),-36*(y+piece[i][2]),0,1,1,18,18)
     end
 end
@@ -64,7 +64,7 @@ function skin.loosenDraw(player,mino)
     for i=1,#ls do
         local clr=player.color[ls[i].info.name]
         setColor(clr[1],clr[2],clr[3],.5)
-        rect('fill',-18+36*ls[i].x,-18-36*(ls[i].y+N),36,36,6)
+        rect('fill',-18+36*ls[i].x,-18-36*(ls[i].y+N),36,36)
     end
 end
 function skin.dropAnim(player)

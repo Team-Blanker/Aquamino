@@ -1,6 +1,7 @@
 local otto={}
 function otto.addSFX()
     sfx.add({
+        start='sfx/game/otto/start.wav',
         die='sfx/game/otto/die.wav',
         lose='sfx/game/otto/lose.wav',
         win='sfx/game/otto/win.wav',
@@ -24,11 +25,15 @@ function otto.addSFX()
         spin1='sfx/game/otto/spin1.wav',
         spin2='sfx/game/otto/spin2.wav',
         spin3='sfx/game/otto/spin3.wav',
+        ['4wide']='sfx/game/otto/4wide.wav',
         PC='sfx/game/otto/PC.wav',
         B2B='sfx/game/otto/B2B.wav',
         megacombo='sfx/game/otto/megacombo.wav',
         wtf='sfx/game/otto/wtf.wav',
     })
+end
+function otto.start()
+    sfx.play('start')
 end
 function otto.move(player,success,landed)
     if success then
@@ -61,6 +66,7 @@ function otto.clear(player)
         sfx.play('wtf') return
     end
     sfx.play(clearType,vol,pitch)
+    if his.wide==4 and his.line>0 then sfx.play('4wide') end
     if his.mini then sfx.play('mini') end
     if his.PC then sfx.play('PC') end
     if his.B2B>0 and his.line>0 then sfx.play('B2B') end

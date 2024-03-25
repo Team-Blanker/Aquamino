@@ -14,10 +14,11 @@ function simple.init(player)
 end
 function simple.updateClearInfo(player,mino)
     local his=player.history
-    if his.line>0 or his.spin then player.clearInfo=T.copy(player.history) end
+    if his.line>0 or his.spin then player.clearInfo=T.copy(player.history)
+        player.clearTxtTMax=his.line>0 and (his.line>4 and .1 or his.spin and .8 or .5) or .5
+        player.clearTxtTimer=player.clearTxtTMax
+    else player.clearInfo.combo=his.combo player.clearInfo.wide=-1 end
     if his.PC then player.PCInfo[#player.PCInfo+1]=3 end
-    player.clearTxtTMax=his.line>0 and (his.line>4 and .1 or his.spin and .8 or .5) or .5
-    player.clearTxtTimer=player.clearTxtTMax
 end
 local W,H,timeTxt
 function simple.fieldDraw(player,mino)
@@ -119,6 +120,7 @@ function simple.clearTextDraw(player)
         local c=player.color[CInfo.name]
         setColor(c[1]+.3*(1-c[1]),c[2]+.3*(1-c[2]),c[3]+.3*(1-c[3]),alpha)
     else setColor(1,1,1,alpha) end
+    if CInfo.wide==4 and CInfo.line>0 then printf("4-wide",font.Bender,0,-64*s-20,4000,'center',0,.333,.333,2000,76) end
     printf(txt,font.Bender,0,0,4000,'center',0,s,s,2000,76)
 
     for i=1,#player.PCInfo do

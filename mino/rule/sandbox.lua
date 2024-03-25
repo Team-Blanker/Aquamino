@@ -15,7 +15,7 @@ function ZNHJ.init(P,mino)
     mino.rule.loosen.fallTPL=.1
     mino.rule.allowSpin={Z=true,S=true,J=true,L=true,T=true,O=true,I=true,}
     for k,v in pairs(P) do
-        --v.w=8
+        --v.w=4
         v.LDRInit=1e99 v.FDelay=5 v.LDelay=1e99 v.LDR=1e99
     end
 end

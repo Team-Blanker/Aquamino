@@ -41,6 +41,13 @@ local mus={
         if mus.loop then mus.loop:stop() end
         if mus.whole then mus.whole:stop() end
     end,
+    pause=function()
+        mus.paused=true
+        if mus.intro then mus.intro:pause() end
+        if mus.ITrans then mus.ITrans:pause() end
+        if mus.loop then mus.loop:pause() end
+        if mus.whole then mus.whole:pause() end
+    end,
     setPitch=function(bitch)
         if mus.intro then mus.intro:setPitch(bitch) end
         if mus.ITrans then mus.ITrans:setPitch(bitch) end

@@ -2,6 +2,7 @@
 song info:
 name: nega to posi  author: georhythm
 ]]
+--该背景依靠外部传入时间变量。
 local BPM=128
 local offset=0
 local loopStartBeat=96
@@ -16,8 +17,8 @@ local bg={}
 function bg.init()
     bg.time=0
 end
-function bg.update(dt)
-    bg.time=bg.time+dt
+function bg.setTime(time)
+    bg.time=time
 end
 local beat,intBeat, loopBeat,intLoopBeat
 local function diamondPos(sz,p)

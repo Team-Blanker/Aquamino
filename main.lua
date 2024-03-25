@@ -305,7 +305,8 @@ function mainUpdate(dt)
     scene.time,scene.totalTime,sfx.timer=scene.time+dt,scene.totalTime+dt,sfx.timer+dt
 
     if scene.cur.update then scene.cur.update(dt) end
-    if scene.BG.update then scene.BG.update(dt) end
+    if scene.cur.BGUpdate then scene.cur.BGUpdate(dt)
+    elseif scene.BG.update then scene.BG.update(dt) end
 
     if sfx.timer>5 then
         for i=#sfx.buffer,1,-1 do

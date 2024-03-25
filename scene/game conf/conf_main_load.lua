@@ -5,10 +5,10 @@ scene.button.create('quit',{
     draw=function(bt,t)
         local w,h=bt.w,bt.h
         gc.setColor(.5,.5,.5,.8+t)
-        gc.rectangle('fill',-w/2,-h/2,w,h,6)
+        gc.rectangle('fill',-w/2,-h/2,w,h)
         gc.setColor(.8,.8,.8)
         gc.setLineWidth(3)
-        gc.rectangle('line',-w/2,-h/2,w,h,6)
+        gc.rectangle('line',-w/2,-h/2,w,h)
         gc.setColor(1,1,1)
         gc.draw(win.UI.back,0,0,0,1,1,60,35)
     end,
@@ -24,10 +24,10 @@ scene.button.create('test',{
     draw=function(bt,t)
         local w,h=bt.w,bt.h
         gc.setColor(.5,.5,.5,.8+t)
-        gc.rectangle('fill',-w/2,-h/2,w,h,6)
+        gc.rectangle('fill',-w/2,-h/2,w,h)
         gc.setColor(.8,.8,.8)
         gc.setLineWidth(3)
-        gc.rectangle('line',-w/2,-h/2,w,h,6)
+        gc.rectangle('line',-w/2,-h/2,w,h)
         gc.setColor(1,1,1)
         gc.printf(cf.test,font.Exo_2,0,0,1280,'center',0,.5,.5,640,84)
     end,
@@ -46,10 +46,10 @@ scene.button.create('keys',{
     draw=function(bt,t)
         local w,h=bt.w,bt.h
         gc.setColor(.25,.5,.375,.8+t)
-        gc.rectangle('fill',-w/2,-h/2,w,h,6)
+        gc.rectangle('fill',-w/2,-h/2,w,h)
         gc.setColor(.4,.8,.6)
         gc.setLineWidth(3)
-        gc.rectangle('line',-w/2,-h/2,w,h,6)
+        gc.rectangle('line',-w/2,-h/2,w,h)
         gc.setColor(1,1,1)
         gc.printf(cfm.keys,font.Exo_2,0,0,1280,'center',0,.8,.8,640,84)
     end,
@@ -65,10 +65,10 @@ scene.button.create('ctrl',{
     draw=function(bt,t)
         local w,h=bt.w,bt.h
         gc.setColor(.125,.25,.5,.8+t)
-        gc.rectangle('fill',-w/2,-h/2,w,h,6)
+        gc.rectangle('fill',-w/2,-h/2,w,h)
         gc.setColor(.2,.4,.8)
         gc.setLineWidth(3)
-        gc.rectangle('line',-w/2,-h/2,w,h,6)
+        gc.rectangle('line',-w/2,-h/2,w,h)
         gc.setColor(1,1,1)
         gc.printf(cfm.ctrl,font.Exo_2,0,0,1280,'center',0,.8,.8,640,84)
     end,
@@ -84,10 +84,10 @@ scene.button.create('others',{
     draw=function(bt,t)
         local w,h=bt.w,bt.h
         gc.setColor(.15,.125,.5,.8+t)
-        gc.rectangle('fill',-w/2,-h/2,w,h,6)
+        gc.rectangle('fill',-w/2,-h/2,w,h)
         gc.setColor(.24,.2,.8)
         gc.setLineWidth(3)
-        gc.rectangle('line',-w/2,-h/2,w,h,6)
+        gc.rectangle('line',-w/2,-h/2,w,h)
         gc.setColor(1,1,1)
         gc.printf(cfm.other,font.Exo_2,0,0,1280,'center',0,.8,.8,640,84)
     end,
@@ -103,10 +103,10 @@ scene.button.create('language',{
     draw=function(bt,t)
         local w,h=bt.w,bt.h
         gc.setColor(.5,.125,.375,.8+t)
-        gc.rectangle('fill',-w/2,-h/2,w,h,6)
+        gc.rectangle('fill',-w/2,-h/2,w,h)
         gc.setColor(.8,.2,.6)
         gc.setLineWidth(3)
-        gc.rectangle('line',-w/2,-h/2,w,h,6)
+        gc.rectangle('line',-w/2,-h/2,w,h)
         gc.setColor(1,1,1)
         gc.draw(win.UI.lang,0,0,0,1.5,1.5,50,50)
     end,
@@ -124,10 +124,10 @@ scene.button.create('audio',{
     draw=function(bt,t)
         local w,h=bt.w,bt.h
         gc.setColor(.5,.25,.25,.8+t)
-        gc.rectangle('fill',-w/2,-h/2,w,h,6)
+        gc.rectangle('fill',-w/2,-h/2,w,h)
         gc.setColor(.8,.4,.4)
         gc.setLineWidth(3)
-        gc.rectangle('line',-w/2,-h/2,w,h,6)
+        gc.rectangle('line',-w/2,-h/2,w,h)
         gc.setColor(1,1,1)
         gc.printf(cfm.audio,font.Exo_2,0,0,1280,'center',0,.8,.8,640,84)
     end,
@@ -143,10 +143,10 @@ scene.button.create('video',{
     draw=function(bt,t)
         local w,h=bt.w,bt.h
         gc.setColor(.5,.375,.125,.8+t)
-        gc.rectangle('fill',-w/2,-h/2,w,h,6)
+        gc.rectangle('fill',-w/2,-h/2,w,h)
         gc.setColor(.8,.6,.2)
         gc.setLineWidth(3)
-        gc.rectangle('line',-w/2,-h/2,w,h,6)
+        gc.rectangle('line',-w/2,-h/2,w,h)
         gc.setColor(1,1,1)
         gc.printf(cfm.video,font.Exo_2,0,0,1280,'center',0,.8,.8,640,84)
     end,
@@ -162,10 +162,10 @@ scene.button.create('custom',{
     draw=function(bt,t)
         local w,h=bt.w,bt.h
         gc.setColor(.15,.5,.125,.8+t)
-        gc.rectangle('fill',-w/2,-h/2,w,h,6)
+        gc.rectangle('fill',-w/2,-h/2,w,h)
         gc.setColor(.24,.8,.2)
         gc.setLineWidth(3)
-        gc.rectangle('line',-w/2,-h/2,w,h,6)
+        gc.rectangle('line',-w/2,-h/2,w,h)
         gc.setColor(1,1,1)
         gc.printf(cfm.custom,font.Exo_2,0,0,1280,'center',0,.8,.8,640,84)
     end,

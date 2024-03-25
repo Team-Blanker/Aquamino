@@ -16,10 +16,10 @@ function others.init()
         draw=function(bt,t)
             local w,h=bt.w,bt.h
             gc.setColor(.5,.5,.5,.8+t)
-            gc.rectangle('fill',-w/2,-h/2,w,h,6)
+            gc.rectangle('fill',-w/2,-h/2,w,h)
             gc.setColor(.8,.8,.8)
             gc.setLineWidth(3)
-            gc.rectangle('line',-w/2,-h/2,w,h,6)
+            gc.rectangle('line',-w/2,-h/2,w,h)
             gc.setColor(1,1,1)
             gc.draw(win.UI.back,0,0,0,1,1,60,35)
         end,

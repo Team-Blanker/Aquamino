@@ -13,6 +13,7 @@ function rule.init(P,mino)
     P[1].pieceCount=0
     P[1].lastHole=0
     P[1].FDelay=4
+    P[1].LDelay=4
     for i=1,10 do rule.newGarbageLine(P[1]) end
 end
 local h

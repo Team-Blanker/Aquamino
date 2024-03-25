@@ -34,10 +34,10 @@ function bc.init()
         draw=function(bt,t)
             local w,h=bt.w,bt.h
             gc.setColor(.5,.5,.5,.8+t)
-            gc.rectangle('fill',-w/2,-h/2,w,h,6)
+            gc.rectangle('fill',-w/2,-h/2,w,h)
             gc.setColor(.8,.8,.8)
             gc.setLineWidth(3)
-            gc.rectangle('line',-w/2,-h/2,w,h,6)
+            gc.rectangle('line',-w/2,-h/2,w,h)
             gc.setColor(1,1,1)
             gc.draw(win.UI.back,0,0,0,1,1,60,35)
         end,
@@ -55,10 +55,10 @@ function bc.init()
             if not canAdjustColor[skinName] then return end
             local w,h=bt.w,bt.h
             gc.setColor(.5,.5,.5,.8+t)
-            gc.rectangle('fill',-w/2,-h/2,w,h,6)
+            gc.rectangle('fill',-w/2,-h/2,w,h)
             gc.setColor(.8,.8,.8)
             gc.setLineWidth(3)
-            gc.rectangle('line',-w/2,-h/2,w,h,6)
+            gc.rectangle('line',-w/2,-h/2,w,h)
             gc.setColor(1,1,1)
             gc.printf(cfcc.rAll,font.Exo_2_SB,0,0,1280,'center',0,.5,.5,640,84)
         end,
@@ -78,10 +78,10 @@ function bc.init()
             if not canAdjustColor[skinName] then return end
             local w,h=bt.w,bt.h
             gc.setColor(.5,.5,.5,.8+t)
-            gc.rectangle('fill',-w/2,-h/2,w,h,6)
+            gc.rectangle('fill',-w/2,-h/2,w,h)
             gc.setColor(.8,.8,.8)
             gc.setLineWidth(3)
-            gc.rectangle('line',-w/2,-h/2,w,h,6)
+            gc.rectangle('line',-w/2,-h/2,w,h)
             gc.setColor(1,1,1)
             gc.printf(cfcc.rCur,font.Exo_2_SB,0,0,1280,'center',0,.5,.5,640,84)
         end,

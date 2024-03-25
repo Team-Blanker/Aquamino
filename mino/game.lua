@@ -27,11 +27,11 @@ local mino={
         timer=0,
         allowPush={},allowSpin={T=true},spinType='default',loosen={fallTPL=0}--TPL=Time Per Line
     },
-    paused=false,pauseTimer=0,
+    started=false, paused=false,pauseTimer=0,
     stacker={
         keySet={},ctrl={},opList={1},event={},
         dieAnim=function() end,
-        winState=0,
+        winState=0,started=false
     },
     --bag={},
     seqGenType='bag',
@@ -122,7 +122,7 @@ function mino.curIns(player)
         player.canHold=true C.kickOrder=nil
     elseif player.hold.name then mino.hold(player)
     else C.piece,C.name=nil,nil end
-    if C.piece then player.ghostY=fLib.getGhostY(player) end
+    if C.piece then player.cur.ghostY=fLib.getGhostY(player) end
     if #player.next<=21 then NG[mino.seqGenType](mino.bag,player.next) end
     player.MTimer,player.DTimer=min(player.MTimer,S.ctrl.ASD),min(player.DTimer,S.ctrl.SD_ASD)
     player.LDR=player.LDRInit player.LTimer=0
@@ -135,6 +135,20 @@ function mino.curIns(player)
     player.started=true
     if mino.rule.onPieceEnter then mino.rule.onPieceEnter(player) end
 end
+function mino.checkClear(player,comboBreak,delayBreak)
+    local his=player.history
+    
+    if his.line>0 then
+        if delayBreak or player.CDelay==0 then fLib.eraseEmptyLine(player)
+        else mino.addEvent(player,player.CDelay,'eraseEmptyLine') end
+        his.combo=his.combo+1
+        his.B2B=(his.spin or his.line>=4) and his.B2B+1 or -1
+        his.CDelay=player.CDelay
+    elseif comboBreak then his.combo=0 end
+    his.wide=fLib.wideDetect(player)
+    if player.theme.updateClearInfo then player.theme.updateClearInfo(player,mino) end
+end
+
 function mino.hold(player)
     local H,C,A=player.hold,player.cur,player.smoothAnim
     H.name,C.name=C.name,H.name  H.piece,C.piece=C.piece,H.piece  H.O,C.O=C.O,H.O
@@ -156,7 +170,7 @@ function mino.hold(player)
     else error("player.hold.mode must be 'S' or 'A'") end
     player.LTimer,player.FTimer=0,0
     if C.piece then
-        player.ghostY=fLib.getGhostY(player)
+        player.cur.ghostY=fLib.getGhostY(player)
         if player.FDelay==0 then
             if player.event[3] then mino.addEvent(player,0,'Ins20GDrop') else
             mino.Ins20GDrop(player) end
@@ -173,20 +187,6 @@ function mino.loosenDrop(player)
         if his.line>0 and mino.rule.onLineClear then mino.rule.onLineClear(player,mino) end
         if mino.rule.onPieceDrop then mino.rule.onPieceDrop(player,mino) end
         mino.addEvent(player,player.EDelay,'curIns')
-    end
-end
-
-function mino.checkClear(player,comboBreak,delayBreak)
-    local his=player.history
-    if his.line>0 then
-        if delayBreak or player.CDelay==0 then fLib.eraseEmptyLine(player)
-        else mino.addEvent(player,player.CDelay,'eraseEmptyLine') end
-        his.combo=his.combo+1
-        his.B2B=(his.spin or his.line>=4) and his.B2B+1 or -1
-        his.CDelay=player.CDelay
-    elseif comboBreak then his.combo=0 end
-    if his.line>0 or his.spin or his.PC then
-        if player.theme.updateClearInfo then player.theme.updateClearInfo(player,mino) end
     end
 end
 
@@ -226,9 +226,9 @@ function mino.init()
     mino.endPaused=false
     mino.waitTime=2
     scene.BG=require('BG/blank')
-    S.winState=0
+    S.winState=0 S.started=false
     mino.resetStopMusic=true
-    mino.paused=false mino.pauseTimer=0 mino.pauseAnimTimer=0
+    mino.started=false mino.paused=false mino.pauseTimer=0 mino.pauseAnimTimer=0
 
     mino.player={}
     P,S=mino.player,mino.stacker
@@ -291,6 +291,8 @@ local success
 function mino.keyP(k)
     --if k=='f1' then mino.profile.switch() end
     if T.include(S.keySet.pause,k) then mino.paused=not mino.paused
+        if mino.rule.pause then mino.rule.pause(S,mino.paused) end
+        if S.event[2]=='pause' then rem(S.event,1) rem(S.event,1) end
     elseif T.include(S.keySet.R,k) then
         scene.dest='solo' scene.destScene=require('mino/game')
         scene.swapT=(mino.paused and 1.5 or 0) scene.outT=.5
@@ -326,7 +328,7 @@ function mino.keyP(k)
                         local landed=coincide(OP,0,-1)
                         if success then
                             C.x=C.x-1 C.moveSuccess=true his.spin=false
-                            OP.ghostY=fLib.getGhostY(OP)
+                            OP.cur.ghostY=fLib.getGhostY(OP)
                         end
                         OP.moveDir='L'
                         if love.keyboard.isDown(S.keySet.MR) then OP.MTimer=0 end
@@ -340,7 +342,7 @@ function mino.keyP(k)
                         local landed=coincide(OP,0,-1)
                         if success then
                             C.x=C.x+1 C.moveSuccess=true his.spin=false
-                            OP.ghostY=fLib.getGhostY(OP)
+                            OP.cur.ghostY=fLib.getGhostY(OP)
                         end
                         OP.moveDir='R'
                         if love.keyboard.isDown(S.keySet.ML) then OP.MTimer=0 end
@@ -352,7 +354,7 @@ function mino.keyP(k)
                 elseif T.include(S.keySet.CW,k) and OP.canInitRotate then
                     OP.initOpQueue[#OP.initOpQueue+1]=function ()
                         C.kickOrder=fLib.kick(OP,'R')
-                        if C.kickOrder then OP.ghostY=fLib.getGhostY(OP)
+                        if C.kickOrder then OP.cur.ghostY=fLib.getGhostY(OP)
                             C.moveSuccess=true
                             if mino.rule.allowSpin[C.name] then his.spin,his.mini=SC[mino.rule.spinType](OP)
                             else his.spin,his.mini=false,false end
@@ -366,7 +368,7 @@ function mino.keyP(k)
                 elseif T.include(S.keySet.CCW,k) and OP.canInitRotate then
                     OP.initOpQueue[#OP.initOpQueue+1]=function ()
                         C.kickOrder=fLib.kick(OP,'L')
-                        if C.kickOrder then OP.ghostY=fLib.getGhostY(OP)
+                        if C.kickOrder then OP.cur.ghostY=fLib.getGhostY(OP)
                             C.moveSuccess=true
                             if mino.rule.allowSpin[C.name] then his.spin,his.mini=SC[mino.rule.spinType](OP)
                             else his.spin,his.mini=false,false end
@@ -379,7 +381,7 @@ function mino.keyP(k)
                 elseif T.include(S.keySet.flip,k) and OP.canInitRotate then
                     OP.initOpQueue[#OP.initOpQueue+1]=function ()
                         C.kickOrder=fLib.kick(OP,'F')
-                        if C.kickOrder then OP.ghostY=fLib.getGhostY(OP)
+                        if C.kickOrder then OP.cur.ghostY=fLib.getGhostY(OP)
                             C.moveSuccess=true
                             if mino.rule.allowSpin[C.name] then his.spin,his.mini=SC[mino.rule.spinType](OP)
                             else his.spin,his.mini=false,false end
@@ -397,7 +399,7 @@ function mino.keyP(k)
                     if success then mino.setAnimPrePiece(OP) A.timer=A.delay
                         C.x=C.x-1 C.moveSuccess=true his.spin=false
                         if landed and OP.LDR>0 then OP.LTimer=0 OP.LDR=OP.LDR-1 end
-                        OP.ghostY=fLib.getGhostY(OP)
+                        OP.cur.ghostY=fLib.getGhostY(OP)
                     else  end
                     OP.moveDir='L'
                     if love.keyboard.isDown(S.keySet.MR) then OP.MTimer=0 end
@@ -409,7 +411,7 @@ function mino.keyP(k)
                     if success then mino.setAnimPrePiece(OP) A.timer=A.delay
                         C.x=C.x+1 C.moveSuccess=true his.spin=false
                         if landed and OP.LDR>0 then OP.LTimer=0 OP.LDR=OP.LDR-1 end
-                        OP.ghostY=fLib.getGhostY(OP)
+                        OP.cur.ghostY=fLib.getGhostY(OP)
                     else  end
                     OP.moveDir='R'
                     if love.keyboard.isDown(S.keySet.ML) then OP.MTimer=0 end
@@ -419,7 +421,7 @@ function mino.keyP(k)
                 elseif T.include(S.keySet.CW,k) then mino.setAnimPrePiece(OP)
                     C.kickOrder=fLib.kick(OP,'R')
                     if C.kickOrder then A.timer=A.delay
-                        OP.ghostY=fLib.getGhostY(OP)
+                        OP.cur.ghostY=fLib.getGhostY(OP)
                         C.moveSuccess=true
                         if landed and OP.LDR>0 then OP.LTimer=0 OP.LDR=OP.LDR-1
                         else if C.kickOrder~=1 then OP.LDR=OP.LDR-1 end
@@ -433,7 +435,7 @@ function mino.keyP(k)
                 elseif T.include(S.keySet.CCW,k) then mino.setAnimPrePiece(OP)
                     C.kickOrder=fLib.kick(OP,'L')
                     if C.kickOrder then A.timer=A.delay
-                        OP.ghostY=fLib.getGhostY(OP)
+                        OP.cur.ghostY=fLib.getGhostY(OP)
                         C.moveSuccess=true
                         if landed and OP.LDR>0 then OP.LTimer=0 OP.LDR=OP.LDR-1
                         else if C.kickOrder~=1 then OP.LDR=OP.LDR-1 end
@@ -447,7 +449,7 @@ function mino.keyP(k)
                 elseif T.include(S.keySet.flip,k) then mino.setAnimPrePiece(OP)
                     C.kickOrder=fLib.kick(OP,'F')
                     if C.kickOrder then A.timer=A.delay
-                        OP.ghostY=fLib.getGhostY(OP)
+                        OP.cur.ghostY=fLib.getGhostY(OP)
                         C.moveSuccess=true
                         if landed and OP.LDR>0 then OP.LTimer=0 OP.LDR=OP.LDR-1
                         else if C.kickOrder~=1 then OP.LDR=OP.LDR-1 end
@@ -586,7 +588,7 @@ function mino.gameUpdate(dt)
             while OP.MTimer>=cxk.ASD and OP.moveDir=='L' and not coincide(OP,-1,0) do
                 mino.setAnimPrePiece(OP) A.timer=A.delay
                 C.x=C.x-1 his.spin=false m=m+1
-                OP.ghostY=fLib.getGhostY(OP)
+                OP.cur.ghostY=fLib.getGhostY(OP)
                 C.moveSuccess=true OP.MTimer=OP.MTimer-cxk.ASP
                 if coincide(OP,0,-1) and OP.LDR>0 then OP.LTimer=0 OP.LDR=OP.LDR-1 end
 
@@ -605,7 +607,7 @@ function mino.gameUpdate(dt)
             while OP.MTimer>=cxk.ASD and OP.moveDir=='R' and not coincide(OP,1,0) do
                 mino.setAnimPrePiece(OP) A.timer=A.delay
                 C.x=C.x+1 his.spin=false m=m+1
-                OP.ghostY=fLib.getGhostY(OP)
+                OP.cur.ghostY=fLib.getGhostY(OP)
                 C.moveSuccess=true OP.MTimer=OP.MTimer-cxk.ASP
                 if coincide(OP,0,-1) and OP.LDR>0 then OP.LTimer=0 OP.LDR=OP.LDR-1 end
 
@@ -629,7 +631,7 @@ function mino.gameUpdate(dt)
                     mino.sfxPlay.touch(OP,coincide(OP,0,-1))
                 end
                 mino.setAnimPrePiece(OP)
-                OP.ghostY=fLib.getGhostY(OP)
+                OP.cur.ghostY=fLib.getGhostY(OP)
             end
         else OP.DTimer=0 end
 
@@ -662,7 +664,7 @@ function mino.gameUpdate(dt)
                 while P[i].FTimer>=P[i].FDelay and not coincide(P[i],0,-1) do
                     C.y=C.y-1 his.spin=false P[i].FTimer=P[i].FTimer-P[i].FDelay
                     mino.sfxPlay.touch(P[i],coincide(P[i],0,-1))
-                    P[i].ghostY=fLib.getGhostY(P[i])
+                    P[i].cur.ghostY=fLib.getGhostY(P[i])
                 end
             end
             if P[i].LTimer>P[i].LDelay then
@@ -694,6 +696,10 @@ function mino.gameUpdate(dt)
         end
     end
 end
+function mino.BGUpdate(dt)
+    if mino.rule.BGUpdate then mino.rule.BGUpdate(S,dt)
+    elseif scene.BG.update then scene.BG.update(dt) end
+end
 
 function mino.update(dt)
     if not (love.window.hasFocus() or mino.paused) then mino.paused=true end
@@ -701,6 +707,11 @@ function mino.update(dt)
     else mino.pauseAnimTimer=max(mino.pauseAnimTimer-dt,0)
         mino.waitTime=mino.waitTime-dt
         if mino.waitTime<=0 then mino.gameUpdate(dt)
+            if not S.started then
+                S.started=true
+                if mino.sfxPlay.start then mino.sfxPlay.start() end
+                if mino.rule.start then mino.rule.start(P,mino) end
+            end
         else
             for i=1,#S.opList do local OP=P[S.opList[i]]
                 if love.keyboard.isDown(S.keySet.ML) or love.keyboard.isDown(S.keySet.MR) then
@@ -751,7 +762,7 @@ function mino.draw()
 
             if C.piece and #C.piece~=0 then
                 --投影
-                mino.blockSkin.ghostDraw(P[i],C.piece,C.x,P[i].ghostY,P[i].color[C.name])
+                mino.blockSkin.ghostDraw(P[i],C.piece,C.x,P[i].cur.ghostY,P[i].color[C.name])
                 --手上拿的
                 if P[i].smoothAnimAct then
                     mino.setAnimDrawPiece(P[i])

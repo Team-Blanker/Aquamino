@@ -1,7 +1,8 @@
 local gc=love.graphics
 local bg={}
-local n=16
+local n=12
 function bg.draw()
+    gc.clear(.04,.04,.04)
     gc.setLineWidth(450/n)
     for i=1,n do
         gc.setColor(COLOR.hsv((i-1)/n*6,.5,1,.4))

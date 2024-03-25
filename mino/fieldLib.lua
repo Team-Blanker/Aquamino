@@ -43,12 +43,13 @@ function fieldLib.newPlayer(arg)
         FDelay=1,FTimer=0,
         LDelay=1,LTimer=0,LDR=15,LDRInit=15,
 
-        history={
+        history={--上一个块放下的时候做了什么
             name=nil,piece={},x=0,y=0,O=0,
             dropHeight=0,kickOrder=0,
             line=0,spin=false,mini=false,PC=false,combo=0,B2B=-1,push=0,
-            CDelay=0
+            CDelay=0,wide=0,
         },
+        nWideDetect={},--空n列检测，仅消行时使用，不消就清空
         cur={
             name=nil,piece={},x=5,y=21,O=0,ghostY=0,
             moveSuccess=false,
@@ -172,6 +173,7 @@ function fieldLib.lock(player)
     C.piece,C.name,C.o={},nil,nil
     player.FTimer=0 player.pushAtt=0
 end
+--消行操作与检测
 function fieldLib.lineClear(player)
     local cunt=0 local field=player.field
     local PC=true
@@ -202,6 +204,27 @@ function fieldLib.eraseEmptyLine(player)
     for y=#player.field,1,-1 do if #player.field[y]==0 then table.remove(player.field,y) end end
     if player.history.PC then player.field={} end
 end
+function fieldLib.wideDetect(player)--空n列检测，n<=4时数值才有意义
+    local his=player.history
+    local wd=player.nWideDetect
+
+    if his.line>0 then
+        wd[#wd+1]={}
+        for i=1,#his.piece do table.insert(wd[#wd],his.piece[i][1]+his.x) end
+    else player.nWideDetect={} return -1 --代表不检测
+    end
+
+    if #wd<3 then return -1
+    elseif #wd>3 then table.remove(wd,1) end--去掉过早放置的方块信息
+
+    local min,max=player.w,1
+    for i=1,3 do  for j=1,#wd[i] do
+        if wd[i][j]<min then min=wd[i][j] end
+        if wd[i][j]>max then max=wd[i][j] end
+    end end
+    return max-min+1
+end
+--垃圾进场
 function fieldLib.garbage(player,block,atk,hole)
     local field=player.field
     local h=#field
@@ -215,6 +238,8 @@ function fieldLib.garbage(player,block,atk,hole)
         if player.cur.piece and #player.cur.piece~=0 and fieldLib.coincide(player) then player.cur.y=player.cur.y+1 end
     end
     if h+atk>3*player.h then for i=3*player.h,(h+atk) do field[i]=nil end end
+
+    player.cur.ghostY=fieldLib.getGhostY(player)
 end
 function fieldLib.insertField(player,field)--导入场地/涨入特定垃圾，field里的砖格均以字符串表示
     for y=1,#field do
