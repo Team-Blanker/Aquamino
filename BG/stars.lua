@@ -5,7 +5,8 @@ for i=1,4 do
     c[i]=gc.newCanvas(2000,2000)
     gc.setCanvas(c[i])
     for j=1,96 do
-        gc.circle('fill',rand()*2000,rand()*2000,3,6)
+        local a,b=2*rand()-1,2*rand()-1
+        gc.circle('fill',1000*a+1000,1000*b+1000,2+1*(a*a+b*b),8)
     end
 end
 gc.setCanvas()
