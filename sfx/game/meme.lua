@@ -1,7 +1,7 @@
 local meme={}
 function meme.addSFX()
     sfx.add({
-        die='sfx/game/meme/die.wav',
+        lose='sfx/game/meme/lose.wav',
         win='sfx/game/meme/win.wav',
 
         move='sfx/game/meme/move.wav',
@@ -52,8 +52,8 @@ function meme.clear(player)
     sfx.play(clearType,1)
     if his.PC then sfx.play('PC') end
 end
-function meme.die()
-    sfx.play('die')
+function meme.lose()
+    sfx.play('lose')
 end
 function meme.win()
 sfx.play('win')

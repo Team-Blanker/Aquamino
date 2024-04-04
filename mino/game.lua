@@ -48,11 +48,6 @@ end
 function mino.freeze(player)
     --啥事不做，单纯的不让玩家操作
 end
-function mino.win(player)
-    local w=S.winState
-    S.winState=1 player.winTimer=0 if mino.sfxPlay.win then mino.sfxPlay.win() end
-    if w~=1 then mino.addStackerEvent(1.5,'pause') end
-end
 function mino.blockLock(player)
     local his=player.history
     fLib.lock(player) fLib.loosenFall(player) mino.sfxPlay.lock(player)
@@ -74,17 +69,26 @@ function mino.blockLock(player)
     if mino.blockSkin.onPieceDrop then player.blockSkin.onPieceDrop(player,mino) end
     if player.theme.onPieceDrop then player.theme.onPieceDrop(player,mino) end
 end
+
+function mino.win(player)
+    local w=S.winState
+    S.winState=1 player.winTimer=0 if mino.sfxPlay.win then mino.sfxPlay.win() end
+    if w~=1 then mino.addStackerEvent(1.5,'pause') end
+end
 function mino.lose(player)
     local w=S.winState
-    S.winState=-1 if mino.sfxPlay.lose then mino.sfxPlay.lose() end
+    S.winState=-1 player.loseTimer=0 if mino.sfxPlay.lose then mino.sfxPlay.lose() end
     if w~=-1 then mino.addStackerEvent(1.5,'pause') end
 end
 function mino.die(player,isStacker)
-    player.deadTimer=0 mino.sfxPlay.die()
+    player.deadTimer=0 if mino.sfxPlay.die then mino.sfxPlay.die() end
     if isStacker then
         if mino.rule.onDie then mino.rule.onDie(player,mino)
         else mino.lose(player) end
     end
+end
+function mino.revive(player,isStacker)
+    
 end
 function mino.checkDie(player,isStacker)
     if coincide(player) then mino.die(player,isStacker) end
@@ -684,8 +688,10 @@ function mino.gameUpdate(dt)
                 P[i].LTimer=0
             end
         end
+
         if P[i].deadTimer>=0 then P[i].deadTimer=P[i].deadTimer+dt end
         if P[i].winTimer>=0 then P[i].winTimer=P[i].winTimer+dt end
+        if P[i].loseTimer>=0 then P[i].loseTimer=P[i].loseTimer+dt end
 
         if mino.rule.update and P[i].started and P[i].deadTimer<0 and S.winState==0 then mino.rule.update(P[i],dt,mino) end
         if mino.rule.always then mino.rule.always(P[i],dt,mino) end
@@ -702,7 +708,9 @@ function mino.BGUpdate(dt)
 end
 
 function mino.update(dt)
-    if not (love.window.hasFocus() or mino.paused) then mino.paused=true end
+    if not (love.window.hasFocus() or mino.paused) then mino.paused=true
+        if mino.rule.pause then mino.rule.pause(S,mino.paused) end
+    end
     if mino.paused then pause.update(dt) mino.pauseTimer=mino.pauseTimer+dt mino.pauseAnimTimer=min(mino.pauseAnimTimer+dt,.25)
     else mino.pauseAnimTimer=max(mino.pauseAnimTimer-dt,0)
         mino.waitTime=mino.waitTime-dt
@@ -750,7 +758,8 @@ function mino.draw()
 
             P[i].theme.fieldDraw(P[i],mino)
 
-            gc.setColor(1,1,1,.4)
+            if mino.rule.underStackDraw then mino.rule.underStackDraw(P[i],mino) end
+
             gc.push()
             gc.translate(-18*P[i].w-18,18*P[i].h+18)
             --硬降特效
@@ -809,9 +818,11 @@ function mino.draw()
             --Ready Set Go
             if P[i].theme.readyDraw then P[i].theme.readyDraw(mino.waitTime) end
             --诶你怎么死了
-            if P[i].deadTimer>=0 then P[i].theme.dieAnim(P[i],mino) end
+            if P[i].deadTimer>=0 and P[i].theme.dieAnim then P[i].theme.dieAnim(P[i],mino) end
             --赢了
-            if P[i].winTimer>=0 then P[i].theme.winAnim(P[i],mino) end
+            if P[i].winTimer>=0 and P[i].theme.winAnim then P[i].theme.winAnim(P[i],mino) end
+            --输了
+            if P[i].loseTimer>=0 and P[i].theme.loseAnim then P[i].theme.loseAnim(P[i],mino) end
         gc.pop()
     end
     --暂停

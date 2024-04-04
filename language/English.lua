@@ -98,6 +98,8 @@ return {
         "Kairan had modified SRS in this game with symmetric I-spin,and powerful 180 kicktables.",
         "\"How similar to Techmino but with nice color\"",
         "\"Ice Storm\" mode is from the mode with same name in Bejeweled 3",
-        "You can do a T-spin Aquad in Aquamino!"
-    },tipScale=.3
+        "You can do a T-spin Aquad in Aquamino!",
+        "It's best not to drag the game window while in game."
+    },tipScale=.3,
+    territory={info="Space/Enter=pause/run\nesc=exit"}
 }

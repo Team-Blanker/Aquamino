@@ -37,7 +37,6 @@ end
 
 function key.init()
     cfk=user.lang.conf.keys
-    scene.BG=require'BG/space' scene.BG.init()
 
     key.keyName={'ML','MR','CW','CCW','flip','SD','HD','hold','R','pause'}
     key.read()

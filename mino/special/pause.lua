@@ -20,6 +20,7 @@ function pause.init(mino)
         end,
         event=function()
             scene.cur.paused=false
+            if mino.rule.pause then mino.rule.pause(mino.stacker,mino.paused) end
         end
     },.25)
     pause.button.create('pause_retry',{

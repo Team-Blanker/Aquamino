@@ -15,7 +15,7 @@ end
 function simple.updateClearInfo(player,mino)
     local his=player.history
     if his.line>0 or his.spin then player.clearInfo=T.copy(player.history)
-        player.clearTxtTMax=his.line>0 and (his.line>4 and .1 or his.spin and .8 or .5) or .5
+        player.clearTxtTMax=his.line>0 and (his.line>=4 and 1 or his.spin and .8 or .5) or .5
         player.clearTxtTimer=player.clearTxtTMax
     else player.clearInfo.combo=his.combo player.clearInfo.wide=-1 end
     if his.PC then player.PCInfo[#player.PCInfo+1]=3 end
@@ -152,7 +152,7 @@ function simple.update(player,dt)
     player.clearTxtTimer=max(player.clearTxtTimer-dt,0)
 end
 
-function simple.dieAnim(player)
+function simple.loseAnim(player)
     setColor(1,1,1,player.deadTimer*4)
     printf(gts.lose,font.Bender_B,0,0,400,'center',0,1,1,200,76)
 end

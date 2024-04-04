@@ -1,11 +1,11 @@
 local krystal={}
 function krystal.addSFX()
     sfx.add({
-        die='sfx/game/krystal/die.wav',
+        lose='sfx/game/krystal/lose.wav',
+        win='sfx/game/krystal/win.wav',
         move='sfx/game/krystal/move.wav',
         moveFail='sfx/game/krystal/move fail.wav',
         landedMove='sfx/game/krystal/landed move.wav',
-        HD='sfx/game/krystal/hard drop.wav',
         lock='sfx/game/krystal/lock.wav',
         hold='sfx/game/krystal/hold.wav',
         rotate='sfx/game/krystal/rotate.wav',
@@ -43,17 +43,19 @@ function krystal.touch(player,touch)
     if touch then sfx.play('touch') end
 end
 function krystal.lock(player)
-    if player.history.dropHeight>0 then sfx.play('HD',.3+.7*player.history.dropHeight/player.h)
-    else sfx.play('lock') end
+    sfx.play('lock')
 end
 function krystal.clear(player)
     local his=player.history
     local clearType=(his.spin and 'spin' or '')..min(his.line,(his.spin and 3 or 4))
-    local pitch=his.line==0 and 1 or min(2^((his.combo-1)/12),2.848)
-    sfx.play(clearType,1)
+    local pitch=(his.line==0 or his.spin) and 1 or min(2^((his.combo-1)/12),2.848)
+    sfx.play(clearType,1,pitch)
     if his.PC then sfx.play('PC') end  if his.B2B>0 and his.line>0 then sfx.play('B2B') end
 end
-function krystal.die()
-    sfx.play('die')
+function krystal.lose()
+    sfx.play('lose')
+end
+function krystal.win()
+    sfx.play('win')
 end
 return krystal

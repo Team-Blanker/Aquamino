@@ -19,12 +19,11 @@ function custom.save()
 end
 function custom.init()
     cfc=user.lang.conf.custom
-    scene.BG=require'BG/space' scene.BG.init()
     custom.read()
 
     custom.blockSkinList={'glossy','pure','carbon fibre','wheelchair'}
     custom.themeList={'simple'}
-    custom.sfxList={--'krystal',
+    custom.sfxList={'krystal',
         'Dr Ocelot','meme','otto'
     }
 

@@ -222,6 +222,11 @@ function war.init()
 end
 function war.keyP(k)
     if k=='space' or k=='return' then war.sim=not war.sim
+    elseif k=='escape' then
+        scene.switch({
+            dest='intro',destScene=require('scene/intro'),swapT=.7,outT=.3,
+            anim=function() anim.cover(.3,.4,.3,0,0,0) end
+        })
     end
 end
 local fa,fb
@@ -350,6 +355,7 @@ function war.draw()
 
     setColor(1,1,1,.3)
     printf(string.format("%02d:%02d",war.time/60,war.time%60),font.Consolas_B,0,0,10000,'center',0,1,1,5000,56)
+    printf(user.lang.territory.info,font.Consolas_B,0,80,10000,'center',0,.25,.25,5000,56)
     setColor(1,1,1,2+supplyT-supplyTLimit)--显示新球已加入
     printf("New balls added.",font.Consolas_B,0,0,10000,'center',0,.5,.5,5000,56)
 

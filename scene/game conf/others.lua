@@ -8,7 +8,6 @@ function others.save()
 end
 function others.init()
     cfo=user.lang.conf.other
-    scene.BG=require'BG/space' scene.BG.init()
     others.read()
 
     BUTTON.create('quit',{

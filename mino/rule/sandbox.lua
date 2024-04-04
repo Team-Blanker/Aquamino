@@ -1,6 +1,6 @@
 local ZNHJ={}
 function ZNHJ.init(P,mino)
-    scene.BG=require('BG/space') scene.BG.init()
+    scene.BG=require('BG/stars') --scene.BG.init()
 
     --[[local r=rand(2)
     if r==1 then]]

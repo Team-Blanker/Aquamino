@@ -16,7 +16,6 @@ function audio.save()
 end
 function audio.init()
     cf=user.lang.conf
-    scene.BG=require'BG/space' scene.BG.init()
     audio.read()
     mus.volume,sfx.volume=audio.info.mus,audio.info.sfx
 

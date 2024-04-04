@@ -1,7 +1,7 @@
 local DrOcelot={}
 function DrOcelot.addSFX()
     sfx.add({
-        die='sfx/game/Dr Ocelot/die.wav',
+        lose='sfx/game/Dr Ocelot/lose.wav',
         win='sfx/game/Dr Ocelot/win.wav',
         move='sfx/game/Dr Ocelot/move.wav',
 
@@ -45,8 +45,8 @@ function DrOcelot.clear(player)
     sfx.play(clearType,1)
     if his.PC then sfx.play('PC') end
 end
-function DrOcelot.die()
-    sfx.play('die')
+function DrOcelot.lose()
+    sfx.play('lose')
 end
 function DrOcelot.win()
     sfx.play('win')

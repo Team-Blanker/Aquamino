@@ -153,6 +153,7 @@ function intro.init()
     },.4)
 end
 
+local tchar='territory' local cnum=1
 function intro.keyP(k)
     if intro.lvl==1 then
         if k=='escape' then love.event.quit()
@@ -166,7 +167,15 @@ function intro.keyP(k)
                     scene.cur.exitScene='scene/intro'
                 end
                 user.freshman=false
-            else intro.lvl=2 end
+            elseif k==tchar:sub(cnum,cnum) then cnum=cnum+1
+                if cnum==tchar:len()+1 then
+                    cnum=1
+                    scene.switch({
+                        dest='territory',destScene=require('territory/territory'),swapT=.7,outT=.3,
+                        anim=function() anim.cover(.3,.4,.3,0,0,0) end
+                    })
+                end
+            else cnum=1 intro.lvl=2 end
         end
     else if k=='escape' then intro.lvl=1 end end
 end

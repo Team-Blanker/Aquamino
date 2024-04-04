@@ -16,7 +16,7 @@ return {
             thunder="雷暴",
             smooth="丝滑40行",
             master="宗师",
-            multitasking="多线程",
+            multitasking="双线程",
             sandbox="沙盒子",
             ['dig 40']="挖掘 40行",
             laser="激光"
@@ -42,7 +42,7 @@ return {
             unableBG="禁用游戏背景",unableTxt="若游戏背景导致你身体不适，请打开此选项。",
             fullScr="全屏",fullScrTxt="按F11可一键切换窗口状态。",
             vsync="垂直同步",vsyncTxt="若感觉画面严重撕裂，尝试调整此选项。一般不建议打开。",
-            frameLim="最高绘制帧率:",frameTxt="推荐将此值调整至显示器帧率。"
+            frameLim="最高绘制帧率:",frameTxt="推荐将该值调整为与显示器帧率相等。"
         },
         custom={
             texture="方块材质",color="颜色设置",
@@ -101,6 +101,8 @@ return {
         "虽然名字是水，但海兰可不保证每个模式都和水有关系",
         "本游戏的SRS经过修改，I旋对称，并且加入了180°踢墙",
         "冰风暴模式来自于宝石迷阵3的同名模式",
-        "在Aquamino，你可以做到T旋消四！"
-    },tipScale=.4
+        "在Aquamino，你可以做到T旋消四！",
+        "最好不要在游玩的时候拖动游戏窗口"
+    },tipScale=.4,
+    territory={info="按下空格/Enter切换暂停/运行状态\n按esc退出"}
 }

@@ -14,7 +14,6 @@ function lang.save()
     s:write(json.encode(lang.uage))
 end
 function lang.init()
-    scene.BG=require'BG/space' scene.BG.init()
     lang.read()
 
     BUTTON.create('quit',{

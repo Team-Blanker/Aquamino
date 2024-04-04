@@ -17,7 +17,6 @@ function hand.save()
 end
 function hand.init()
     cfh=user.lang.conf.handling
-    scene.BG=require'BG/space' scene.BG.init()
     hand.read()
 
     BUTTON.create('quit',{

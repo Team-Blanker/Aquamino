@@ -17,7 +17,6 @@ function video.save()
 end
 function video.init()
     cf=user.lang.conf
-    scene.BG=require'BG/space' scene.BG.init()
     video.info.fullscr=win.fullscr video.save() video.read()
 
     BUTTON.create('quit',{

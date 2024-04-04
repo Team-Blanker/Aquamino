@@ -19,7 +19,7 @@ local fieldLib={}
 
 function fieldLib.newPlayer(arg)
     local stdPlayer={
-        started=false,gameTimer=0,deadTimer=-1,winTimer=-1,
+        started=false,gameTimer=0,deadTimer=-1,loseTimer=-1,winTimer=-1,
 
         event={0,'curIns'},
         initOpQueue={},--I_S操作序列
@@ -191,12 +191,14 @@ function fieldLib.lineClear(player)
     --清除全空的行
     local stop=false
     for y=#field,1,-1 do
-        local empty=true
-        for x=1,#field[y] do
-        if next(field[y][x]) then empty=false stop=true break end
+        if #field[y]~=0 then
+            local empty=true
+            for x=1,#field[y] do
+            if next(field[y][x]) then empty=false stop=true break end
+            end
+            if stop then break end
+            if empty then field[y]=nil end
         end
-        if stop then break end
-        if empty then field[y]=nil end
     end
     return cunt,PC,cLine
 end
@@ -214,11 +216,11 @@ function fieldLib.wideDetect(player)--空n列检测，n<=4时数值才有意义
     else player.nWideDetect={} return -1 --代表不检测
     end
 
-    if #wd<3 then return -1
-    elseif #wd>3 then table.remove(wd,1) end--去掉过早放置的方块信息
+    if #wd<4 then return -1
+    elseif #wd>4 then table.remove(wd,1) end--去掉过早放置的方块信息
 
     local min,max=player.w,1
-    for i=1,3 do  for j=1,#wd[i] do
+    for i=1,4 do  for j=1,#wd[i] do
         if wd[i][j]<min then min=wd[i][j] end
         if wd[i][j]>max then max=wd[i][j] end
     end end

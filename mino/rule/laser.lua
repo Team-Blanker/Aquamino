@@ -1,36 +1,73 @@
 local fLib=require('mino/fieldLib')
 
 local laser={}
-local setColor,rect=gc.setColor,gc.rectangle
+local setColor,rect,draw=gc.setColor,gc.rectangle,gc.draw
 local progressAct={
-    --{几分以前使用事件，事件间间隔几拍，下一波激光的位置，到达分数时事件}
+    --{几分以前使用事件，事件间间隔几拍，下一波激光的位置}
     --随机边列
-    {50,16,function(player)
+    {30,16,function(player)
         return {{'s','destroy',player.laserList[1][3]==1 and player.w or 1}}
     end},
     --随机全部
-    {100,16,function (player)
+    {60,16,function(player)
         local a=rand(player.w-1)
         return {{'s','destroy',player.laserList[1][3]==a and a+1 or a}}
     end},
     --随机中间
-    {150,16,function (player)
+    {90,16,function(player)
         local a=player.laserList[1][3]>3 and player.laserList[1][3]<player.w-3 and rand(4,player.w-4) or rand(4,player.w-5)
         return {{'s','destroy',player.laserList[1][3]==a and a+1 or a}}
     end},
-    --随机两条，一条毁灭，一条反转
-    {175,16,function (player)
-        return {{'s','destroy',rand(player.w)},{'s','reverse',rand(player.w)}}
+    --随机反转
+    {120,8,function(player)
+        local a=rand(player.w-1)
+        return {{'s','reverse',player.laserList[1][3]==a and a+1 or a}}
     end},
-    --以上全部纵向
-    {200},--随机一条纵向毁灭，每20块在场地最上方出现一条横向毁灭
-    {225},--TEC的squeeze
-    {250},--squeeze加强
-    {300},--“强制4w”
-    {350},--随机两条，一条毁灭，一条反转
-    {375},--限高18行，每1分降低1行，8行为止
-    {390},--限高4行
-    {400},--全反转
+    --随机两条相邻反转
+    {140,8,function(player)
+        local a=rand(player.w-1)
+        return {{'s','reverse',a},{'s','reverse',a+1}}
+    end},
+    --TEC的squeeze
+    {180,4,function(player)
+        local list={}
+        for i=1,4 do
+            list[i]={'s','mayhem',i-min(max(abs(floor(player.beat%48/4)-6)-1,0),4)<=0 and i or player.w-4+i}
+        end
+        return list
+    end},
+    --场地最上方出现一条横向毁灭
+    {210,8,function(player)
+        return {{'h','destroy',#player.field}}
+    end},
+    --两条随机毁灭
+    {220,8,function(player)
+        return {{'s','destroy',rand(player.w)},{'s','destroy',rand(player.w)}}
+    end},
+    --“走马灯”
+    {240,4,function (player)
+        local list={}
+        for i=1,3 do list[i]={'s','mayhem',(i+floor(player.beat%(player.w*4)/4))%player.w+1} end
+        return list
+    end},
+    --反向走马灯
+    {270,4,function (player)
+        local list={}
+        for i=1,3 do list[i]={'s','mayhem',(i-floor(player.beat%(player.w*4)/4))%player.w+1} end
+        return list
+    end},
+    --限高
+    {290,4,function (player)
+        local list={}
+        for i=2,4 do list[#list+1] ={'h','reverse',#player.field+i} end
+        return list
+    end},
+    --全反转
+    {1e99,2,function (player)
+        local list={}
+        for i=1,player.w do list[i]={'s','reverse',i} end
+        return list
+    end},
 }
 function laser.init(P,mino)
     scene.BG=require('BG/Symphonic Laser') scene.BG.init()
@@ -70,7 +107,7 @@ local laserAct={
         end,
         reverse=function(field,line)
             for i=1,#field[line] do
-                field[line][i]=next(field[i][col]) and {} or {name='g1'}
+                field[line][i]=next(field[line][i]) and {} or {name='g1'}
             end
         end,
         mayhem =function(field,line)
@@ -108,7 +145,7 @@ function laser.postCheckClear(player,mino)
     player.pDropped=player.pDropped+1
     for i=#list,1,-1 do
         for j=1,#piece do
-            if list[i]=='h' then
+            if list[i][1]=='h' then
                 if piece[j][2]+his.y==list[i][3] then laserAct.h[list[i][2]](player.field,list[i][3])
                 laserTouch=true sfx.play(list[i][2]) ins(aList,rem(list,i)) aList[#aList][4]=animTMax
                 break end
@@ -125,17 +162,16 @@ end
 function laser.onLineClear(player,mino)
     local l,c=player.history.line,player.history.combo
     --player.point=player.point+l*(l+1)/2+c-1
-    player.point=player.point+c+l-1
-    if player.point>=400 then mino.win(player) return end
-
+    player.point=player.point+min(floor((c-1)/2),3)+ceil(l/8)*l
     for i=#progressAct,1,-1 do
         if player.point<progressAct[i][1] then
             break
         end
     end
     for i=1,#progressAct do
-        if player.point<progressAct[i][1] then player.laserLv=i break end
+        if player.point<=progressAct[i][1] then player.laserLv=i break end
     end
+    if player.point>=300 then player.garbageTMax=1e99 player.garbageTimer=1e99 end
 end
 
 function laser.start()
@@ -147,15 +183,18 @@ function laser.pause(stacker,paused)
     end
 end
 local BPM,offset=128,0
+local mb={0,0,0,0,0}
 function laser.update(player,dt,mino)
-    player.garbageTimer=player.garbageTimer-dt
+    if not player.event[1] then player.garbageTimer=player.garbageTimer-dt end
     local beat=(player.gameTimer+offset)*BPM/60
     if beat-1>=player.beat then
         player.beat=player.beat+1 player.eventBeat=player.eventBeat+1
+        for i=1,5 do mb[i]=rand(0,1) end
+
         if player.eventBeat>=progressAct[player.laserLv][2] then
             player.laserList=player.nextLaserList
             player.nextLaserList=progressAct[player.laserLv][3](player)
-            player.eventBeat=0
+            player.eventBeat=player.eventBeat%progressAct[player.laserLv][2]
         end
         if player.garbageTimer<=0 then
             fLib.garbage(player,'g1',1,rand(player.w))
@@ -164,12 +203,18 @@ function laser.update(player,dt,mino)
             sfx.play('forceGarbage')
         end
     end
+end
 
+function laser.always(player,dt)
     local aList=player.animLaserList
     for i=#aList,1,-1 do
         aList[i][4]=aList[i][4]-dt
         if aList[i][4]<0 then rem(aList,i) end
     end
+end
+
+function laser.onDie(player,mino)
+    if player.point>=300 then mino.win(player) else mino.lose(player) end
 end
 
 function laser.BGUpdate(stacker,dt)
@@ -179,9 +224,9 @@ function laser.underFieldDraw(player)
     if player.gameTimer==0 then
     gc.setColor(0,0,0) gc.rectangle('fill',-960,-540,1920,1080)
     end
-    gc.setColor(1,1,1)
+    if player.point>=300 then gc.setColor(1,.95,.05) else gc.setColor(1,1,1) end
     gc.printf(""..player.point,font.Consolas_B,-player.w*18-110,-32,2048,'center',0,.5,.5,1024,56)
-    gc.printf(400,font.Consolas_B,-player.w*18-110,32,2048,'center',0,.5,.5,1024,56)
+    gc.printf(300,font.Consolas_B,-player.w*18-110,32,2048,'center',0,.5,.5,1024,56)
     gc.setLineWidth(7)
     gc.line(-player.w*18-170,0,-player.w*18-50,0)
 
@@ -189,93 +234,132 @@ function laser.underFieldDraw(player)
     gc.setLineWidth(40)
     gc.arc('line','open',0,0,450,-math.pi/2,(min(1-player.garbageTimer/player.garbageTMax,1)-.25)*2*math.pi,72)
 end
+function laser.underStackDraw(player)
+    setColor(1,1,1,.05)
+    local p=player.eventBeat/(progressAct[player.laserLv][2]-1)
+    rect('fill',-18*player.w,(18-36*p)*player.h,36*player.w,36*p*player.h)
+end
+
+local X,O=gc.newCanvas(36,36),gc.newCanvas(36,36)
+gc.setLineWidth(4.5)
+gc.setCanvas(X) setColor(1,1,1)
+gc.line(3,3,33,33) gc.line(3,33,33,3)
+gc.setLineWidth(4)
+gc.setCanvas(O)
+gc.rectangle('line',3,3,30,30)
+gc.setCanvas()
+
+local W,H,parg
 function laser.overFieldDraw(player,mino)
+
     local list,nList,aList=player.laserList,player.nextLaserList,player.animLaserList
+    W,H=36*player.w,36*player.h
+
+    gc.translate(-18*player.w,18*player.h)--绘制原点移至场地左下角
     for i=1,#list do
+        local alpha=.48+(scene.time%.2<.1 and .24 or 0)
         if list[i][1]=='h' then
             if list[i][2]=='destroy' then
-            setColor(1,1,1,.4+(scene.time%.2<.1 and .2 or 0))
-            rect('fill',-18*player.w,-36*list[i][3]+18*player.w+9,36*player.w,18)
+            setColor(1,1,1,alpha/3)
+            rect('fill',0,-36*list[i][3]+6,W,24)
+            setColor(1,1,1,alpha)
+            rect('fill',0,-36*list[i][3]+9,W,18)
+
             elseif list[i][2]=='reverse' then
-            setColor(0,1,1,.4+(scene.time%.2<.1 and .2 or 0))
-            rect('fill',-18*player.w,-36*list[i][3]+18*player.w+9,36*player.w,18)
+            setColor(0,1,1,alpha/3)
+            rect('fill',0,-36*list[i][3]+6,W,24)
+            setColor(0,1,1,alpha)
+            rect('fill',0,-36*list[i][3]+9,W,18)
+            local l=player.field[list[i][3]]
+            if l then
+                for j=1,player.w do
+                    if next(l[j]) then setColor(1,1,1)
+                        draw(X,36*j-36,-36*list[i][3])
+                    else setColor(.2,1,1,.5)
+                        draw(O,36*j-36,-36*list[i][3])
+                    end
+                end
             else
-            setColor(1,.8,0,.4+(scene.time%.2<.1 and .2 or 0))
-            rect('fill',-18*player.w,-36*list[i][3]+18*player.w+9,36*player.w,18)
+                for j=1,player.w do
+                    draw(O,36*j-36,-36*list[i][3])
+                end
+            end
+
+            else
+            setColor(1,.8,0,alpha)
+            rect('fill',0,-36*list[i][3]+9,W,18)
+            setColor(1,.8,0,.5)
+            for j=1,player.w do
+                if mb[j%5+1]==1 then
+                    draw(O,36*j-36,-36*list[i][3])
+                end
+            end
             end
         else
             if list[i][2]=='destroy' then
-            setColor(1,1,1,.4+(scene.time%.2<.1 and .2 or 0))
-            rect('fill',36*list[i][3]-18*player.w-27,-18*player.h,18,36*player.h)
+            setColor(1,1,1,alpha/3)
+            rect('fill',36*list[i][3]-30,-H,24,H)
+            setColor(1,1,1,alpha)
+            rect('fill',36*list[i][3]-27,-H,18,H)
+
             elseif list[i][2]=='reverse' then
-            setColor(0,1,1,.4+(scene.time%.2<.1 and .2 or 0))
-            rect('fill',36*list[i][3]-18*player.w-27,-18*player.h,18,36*player.h)
+            setColor(.2,1,1,alpha/3)
+            rect('fill',36*list[i][3]-30,-H,24,H)
+            setColor(.2,1,1,alpha)
+            rect('fill',36*list[i][3]-27,-H,18,H)
+            setColor(.2,1,1,.5)
+            for j=1,#player.field do
+                if next(player.field[j][list[i][3]]) then setColor(1,1,1)
+                    draw(X,36*list[i][3]-36,-36*j)
+                else setColor(.2,1,1,.5)
+                    draw(O,36*list[i][3]-36,-36*j)
+                end
+            end
+
             else
-            setColor(1,.8,0,.4+(scene.time%.2<.1 and .2 or 0))
-            rect('fill',36*list[i][3]-18*player.w-27,-18*player.h,18,36*player.h)
+            setColor(1,.8,0,alpha/3)
+            rect('fill',36*list[i][3]-30,-H,24,H)
+            setColor(1,.8,0,alpha)
+            rect('fill',36*list[i][3]-27,-H,18,H)
+            setColor(1,.8,0,.5)
+            for j=1,#player.field do
+                if mb[j%5+1]==1 then
+                    draw(O,36*list[i][3]-36,-36*j)
+                end
+            end
             end
         end
     end
 
-    local parg=.5+.5*player.eventBeat/progressAct[player.laserLv][2]
+    parg=.15+player.eventBeat%4/3*.1
     for i=1,#nList do
         if nList[i][1]=='h' then
-            if nList[i][2]=='destroy' then
-            setColor(1,1,1,.25*parg)
-            rect('fill',-18*player.w,-36*nList[i][3]+18*player.w+9,36*player.w,18)
-            elseif nList[i][2]=='reverse' then
-            setColor(0,1,1,.25*parg)
-            rect('fill',-18*player.w,-36*nList[i][3]+18*player.w+9,36*player.w,18)
-            else
-            setColor(1,.8,0,.25*parg)
-            rect('fill',-18*player.w,-36*nList[i][3]+18*player.w+9,36*player.w,18)
-            end
+            if nList[i][2]=='destroy' then setColor(1,1,1,parg)
+            elseif nList[i][2]=='reverse' then setColor(0,1,1,parg)
+            else setColor(1,.8,0,parg) end
+            rect('fill',0,-36*nList[i][3]+9,W,18)
         else
-            if nList[i][2]=='destroy' then
-            setColor(1,1,1,.25*parg)
-            rect('fill',36*nList[i][3]-18*player.w-27,-18*player.h,18,36*player.h)
-            elseif nList[i][2]=='reverse' then
-            setColor(0,1,1,.25*parg)
-            rect('fill',36*nList[i][3]-18*player.w-27,-18*player.h,18,36*player.h)
-            else
-            setColor(1,.8,0,.25*parg)
-            rect('fill',36*nList[i][3]-18*player.w-27,-18*player.h,18,36*player.h)
-            end
+            if nList[i][2]=='destroy' then setColor(1,1,1,parg)
+            elseif nList[i][2]=='reverse' then setColor(0,1,1,parg)
+            else setColor(1,.8,0,parg) end
+            rect('fill',36*nList[i][3]-27,-H,18,H)
         end
     end
 
     for i=1,#aList do
-        setColor(1,1,1)
+        local animArg=aList[i][4]/animTMax
         if aList[i][1]=='h' then
-            rect('fill',-18*player.w,-36*aList[i][3]+18*player.w+18,36*player.w,36)
+            if aList[i][2]=='destroy' then setColor(1,1,1)
+            elseif aList[i][2]=='reverse' then setColor(0,1,1)
+            else setColor(1,.8,0) end
+            rect('fill',0,-36*aList[i][3]+18-18*animArg,W,36*animArg)
         else
-            rect('fill',36*aList[i][3]-18*player.w-18-18*aList[i][4]/animTMax,-18*player.h,36*aList[i][4]/animTMax,36*player.h)
+            if aList[i][2]=='destroy' then setColor(1,1,1)
+            elseif aList[i][2]=='reverse' then setColor(0,1,1)
+            else setColor(1,.8,0) end
+            rect('fill',36*aList[i][3]-18-18*animArg,-H,36*animArg,H)
         end
     end
-    --[[for i=1,#aList do
-        if aList[i][1]=='h' then
-            if aList[i][2]=='destroy' then
-            setColor(1,1,1)
-            rect('fill',-18*player.w,-36*aList[i][3]+18*player.w+9,36*player.w,18)
-            elseif aList[i][2]=='reverse' then
-            setColor(0,1,1)
-            rect('fill',-18*player.w,-36*aList[i][3]+18*player.w+9,36*player.w,18)
-            else
-            setColor(1,.8,0)
-            rect('fill',-18*player.w,-36*aList[i][3]+18*player.w+9,36*player.w,18)
-            end
-        else
-            if aList[i][2]=='destroy' then
-            setColor(1,1,1)
-            rect('fill',36*aList[i][3]-18*player.w-27,-18*player.h,18,36*player.h)
-            elseif aList[i][2]=='reverse' then
-            setColor(0,1,1)
-            rect('fill',36*aList[i][3]-18*player.w-27,-18*player.h,18,36*player.h)
-            else
-            setColor(1,.8,0)
-            rect('fill',36*aList[i][3]-18*player.w-27,-18*player.h,18,36*player.h)
-            end
-        end
-    end]]
+    gc.translate(18*player.w,-18*player.h)
 end
 return laser
