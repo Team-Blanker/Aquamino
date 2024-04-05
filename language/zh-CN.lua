@@ -104,5 +104,5 @@ return {
         "在Aquamino，你可以做到T旋消四！",
         "最好不要在游玩的时候拖动游戏窗口"
     },tipScale=.4,
-    territory={info="按下空格/Enter切换暂停/运行状态\n按esc退出"}
+    territory={info="空格/Enter 切换暂停/运行状态\nesc 退出"}
 }

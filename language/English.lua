@@ -101,5 +101,5 @@ return {
         "You can do a T-spin Aquad in Aquamino!",
         "It's best not to drag the game window while in game."
     },tipScale=.3,
-    territory={info="Space/Enter=pause/run\nesc=exit"}
+    territory={info="Space,Enter=pause/run\nesc=exit"}
 }
