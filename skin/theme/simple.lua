@@ -86,7 +86,22 @@ function simple.readyDraw(t)
         printf("GO!",font.Bender_B,0,0,1000,'center',0,1.2,1.2,500,76)
     end
 end
-local clearTxt={'Single','Double','Triple','Aquad'} local txt
+local clearTxt={
+    'Single','Double','Triple','Aquad',
+    'Boron','Carbon','Nitrogen','Oxygen',
+    'Fluorine','Neon','Sodium','Magnesium',
+    'Aluminium','Silicon','Phosphorus','Sulfur',
+    'Chlorine','Argon','Potassium','Calcium','AAAUUUGGGHHH'
+}
+local clearClr={
+    [0]={1,1,1},
+    {1,1,1},{1,1,1},{1,1,1},{.5,1,.75},
+    {1,1,0},{.9,.9,.9},{.64,.6,1},{.5,.75,1},
+    {.5,1,.5},{1,.9,.5},{1,1,.2},{1,1,1},
+    {1,1,1},{1,1,1},{1,1,1},{.64,.6,1},
+    {.75,1,.5},{1,.5,.96}
+}
+local txt
 function simple.clearTextDraw(player)
     W,H=36*player.w,36*player.h
     local CInfo=player.clearInfo
@@ -106,7 +121,7 @@ function simple.clearTextDraw(player)
     txt=(
         (CInfo.B2B>0 and CInfo.line>0 and "B2B " or "")
         ..(CInfo.spin and (CInfo.mini and "weak " or "")..CInfo.name.."-spin " or "")
-        ..(clearTxt[min(CInfo.line,4)] or "")
+        ..(clearTxt[min(CInfo.line,#clearTxt)] or "")
     )
 
     local alpha=min(player.clearTxtTimer*1.5/player.clearTxtTMax,1)*.9
@@ -115,11 +130,24 @@ function simple.clearTextDraw(player)
         printf(txt,font.Exo_2_SB,-3+i%2*6,387+6*floor(i/2),4000,'center',0,.375,.375,2000,0)
     end]]
     local s=(CInfo.line>=4 and .75 or .5)
-    if CInfo.line>=4 then setColor(.5,1,.75,alpha)
-    elseif CInfo.spin and not CInfo.mini then
+    local r,g,b
+    if CInfo.spin and not CInfo.mini then
         local c=player.color[CInfo.name]
-        setColor(c[1]+.3*(1-c[1]),c[2]+.3*(1-c[2]),c[3]+.3*(1-c[3]),alpha)
-    else setColor(1,1,1,alpha) end
+        r,g,b=c[1]+.3*(1-c[1]),c[2]+.3*(1-c[2]),c[3]+.3*(1-c[3])
+    else
+        local c=clearClr[min(CInfo.line,#clearClr)]
+        r,g,b=c[1],c[2],c[3]
+    end
+    if CInfo.line>8 then
+        setColor(r,g,b,alpha*min(CInfo.line-8,8)/96)
+        for i=1,3 do
+            for j=1,8 do
+                local m,n=2*i*cos(j*math.pi/4),2*i*sin(j*math.pi/4)
+                printf(txt,font.Bender,m,n,4000,'center',0,s,s,2000,76)
+            end
+        end
+    end
+    setColor(r,g,b,alpha)
     if CInfo.wide==4 and CInfo.line>0 then printf("4-wide",font.Bender,0,-64*s-20,4000,'center',0,.333,.333,2000,76) end
     printf(txt,font.Bender,0,0,4000,'center',0,s,s,2000,76)
 
