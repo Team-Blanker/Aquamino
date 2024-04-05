@@ -32,6 +32,7 @@ function thunder.init(P,mino)
         v.point=0
         v.step={r=-4,e=-4,x=-4}
         v.thunderList={}
+        v.scoreTxt={}--[1]={x,y,v,g,color,size,TTL,Tmax}
     end
 end
 function thunder.addLightning(player,x,y,sz,extp)
@@ -130,13 +131,15 @@ function thunder.postCheckClear(player,mino)
             player.step.x=0
         end
     end
-
-    if player.point%100~=99 then
-        player.point=player.point+1
-    end
 end
 function thunder.onLineClear(player,mino)
-    player.point=player.point+2^player.history.line-1+player.history.combo-1
+    local his=player.history
+    local point=2^player.history.line-1+player.history.combo-1
+    player.point=player.point+point
+    table.insert(player.scoreTxt,{
+        x=36*his.x-18-18*player.w,y=-36*his.y+18*player.h,v={0,-90},g=90,TTL=.4,tMax=.4,
+        size=40,color={1,1,1,.8},score=point
+    })
     if player.point>=player.stormLv*100 then
         if player.stormLv==10 then mino.win(player) return end
         player.stormLv=min(player.stormLv+1,10) sfx.play('lvup')
@@ -150,8 +153,11 @@ function thunder.onLineClear(player,mino)
         player.step.r,player.step.e,player.step.x=n,n,n
     end
 end
-function thunder.onPieceDrop(player,mino)
-    if player.point%100==99 then sfx.play('top') end
+function thunder.onPieceDrop(player)
+    if player.point%100~=99 then
+        player.point=player.point+1
+        if player.point%100==99 then sfx.play('top') end
+    elseif his.line>0 and player.point%100==99 then sfx.play('top') end
 end
 local tList
 function thunder.always(player,dt)
@@ -159,6 +165,14 @@ function thunder.always(player,dt)
     for i=#tList,1,-1 do
         tList[i].TTL=tList[i].TTL-dt
         if tList[i].TTL<0 then rem(tList,i) end
+    end
+    local txt=player.scoreTxt
+    for i=#txt,1,-1 do
+        txt[i].TTL=txt[i].TTL-dt
+        if txt[i].TTL<=0 then table.remove(txt,i) else
+            txt[i].x,txt[i].y=txt[i].x+txt[i].v[1]*dt,txt[i].y+txt[i].v[2]*dt
+            txt[i].v[2]=txt[i].v[2]+txt[i].g*dt
+        end
     end
 end
 function thunder.underFieldDraw(player)
@@ -193,6 +207,12 @@ function thunder.overFieldDraw(player)
             gc.line(tList[i].x+szarg,tList[i].y+szarg,tList[i].x-szarg,tList[i].y-szarg)
             gc.line(tList[i].x-szarg,tList[i].y+szarg,tList[i].x+szarg,tList[i].y-szarg)
         end
+    end
+    local txt=player.scoreTxt
+    for i=1,#txt do
+        local clr=txt[i].color
+        gc.setColor(clr[1],clr[2],clr[3],clr[4]*txt[i].TTL/txt[i].tMax)
+        gc.printf("+"..txt[i].score,font.Consolas_B,txt[i].x,txt[i].y,5000,'center',0,txt[i].size/128,txt[i].size/128,2500,56)
     end
 end
 return thunder

@@ -6,7 +6,7 @@ local progressAct={
     --{几分以前使用事件，事件间间隔几拍，下一波激光的位置}
     --随机边列
     {30,16,function(player)
-        return {{'s','destroy',player.laserList[1][3]==1 and player.w or 1}}
+        return {{'s','reverse',player.laserList[1][3]==1 and player.w or 1}}
     end},
     --随机全部
     {60,16,function(player)
@@ -86,6 +86,7 @@ function laser.init(P,mino)
     P[1].pDropped=0
     P[1].point=0
     P[1].laserLv=1
+    P[1].scoreTxt={}--[1]={x,y,v,g,color,size,TTL,Tmax}
     --P[1].posy=600
     --激光表，destroy摧毁，reverse反转，random随机；h水平(horizontal)，s竖直(straight)
     P[1].laserArg={}
@@ -161,15 +162,20 @@ function laser.postCheckClear(player,mino)
 end
 function laser.onLineClear(player,mino)
     local l,c=player.history.line,player.history.combo
-    --player.point=player.point+l*(l+1)/2+c-1
-    player.point=player.point+min(floor((c-1)/2),3)+ceil(l/8)*l
+    local point=min(floor((c-1)/2),3)+ceil(l/8)*l
+    player.point=player.point+point
+    table.insert(player.scoreTxt,{
+        x=36*player.history.x-18-18*player.w,y=-36*player.history.y+18*player.h,
+        v={0,-90},g=90,TTL=.4,tMax=.4,
+        size=40,color={1,1,1,.8},score=point
+    })
     for i=#progressAct,1,-1 do
         if player.point<progressAct[i][1] then
             break
         end
     end
     for i=1,#progressAct do
-        if player.point<=progressAct[i][1] then player.laserLv=i break end
+        if player.point<progressAct[i][1] then player.laserLv=i break end
     end
     if player.point>=300 then player.garbageTMax=1e99 player.garbageTimer=1e99 end
 end
@@ -210,6 +216,14 @@ function laser.always(player,dt)
     for i=#aList,1,-1 do
         aList[i][4]=aList[i][4]-dt
         if aList[i][4]<0 then rem(aList,i) end
+    end
+    local txt=player.scoreTxt
+    for i=#txt,1,-1 do
+        txt[i].TTL=txt[i].TTL-dt
+        if txt[i].TTL<=0 then table.remove(txt,i) else
+            txt[i].x,txt[i].y=txt[i].x+txt[i].v[1]*dt,txt[i].y+txt[i].v[2]*dt
+            txt[i].v[2]=txt[i].v[2]+txt[i].g*dt
+        end
     end
 end
 
@@ -361,5 +375,11 @@ function laser.overFieldDraw(player,mino)
         end
     end
     gc.translate(18*player.w,-18*player.h)
+    local txt=player.scoreTxt
+    for i=1,#txt do
+        local clr=txt[i].color
+        gc.setColor(clr[1],clr[2],clr[3],clr[4]*txt[i].TTL/txt[i].tMax)
+        gc.printf(txt[i].score,font.Consolas_B,txt[i].x,txt[i].y,5000,'center',0,txt[i].size/128,txt[i].size/128,2500,56)
+    end
 end
 return laser
