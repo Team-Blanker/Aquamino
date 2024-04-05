@@ -6,7 +6,7 @@ local progressAct={
     --{几分以前使用事件，事件间间隔几拍，下一波激光的位置}
     --随机边列
     {30,16,function(player)
-        return {{'s','reverse',player.laserList[1][3]==1 and player.w or 1}}
+        return {{'s','destroy',player.laserList[1][3]==1 and player.w or 1}}
     end},
     --随机全部
     {60,16,function(player)
