@@ -33,6 +33,11 @@ local function newBall(m,n,t)
     b.fixture:setMask(t)
     war.teamBelong[b.fixture]=t
     b.fixture:setFriction(0) b.fixture:setRestitution(.8)
+    war.onCollide[b.fixture]=function(this,other)
+        local body=this:getBody()
+        local vx,vy=body:getLinearVelocity()
+        if vx*vx+vy*vy<=16 then body:setLinearVelocity((rand()-.5)*32,(rand()-.5)*32) end--兄弟你动啊
+    end
 end
 function war.alivePlayer()
     local a=0
@@ -246,8 +251,6 @@ function war.update(dt)
         for i=1,#war.ctrl.ball do  for j=1,#war.ctrl.ball[i] do --所有小球受到40m/(s^2)的重力
             u=war.ctrl.ball[i][j]
             u.body:applyForce(0,u.body:getMass()*640)
-            local vx,vy=u.body:getLinearVelocity()
-            if abs(vx)<=4 and abs(vy)<=4 then u.body:setLinearVelocity((rand()-.5)*32,(rand()-.5)*32) end--兄弟你动啊
         end  end
 
         supplyT=supplyT-dt
