@@ -1,6 +1,6 @@
 local LP=love.physics
 local setColor=gc.setColor
-local circle,rect,poly=gc.circle,gc.rectangle,gc.polygon
+local circle,rect,poly,draw=gc.circle,gc.rectangle,gc.polygon,gc.draw
 local printf=gc.printf
 
 local supplyRemain=15
@@ -279,6 +279,13 @@ function war.update(dt)
         end
     end
 end
+
+local fieldCanvas=gc.newCanvas(16,16)
+gc.setCanvas(fieldCanvas)
+setColor(1,1,1)
+rect('fill',0,0,16,16)
+gc.setCanvas()
+
 local clr,u
 function war.draw()
     gc.push()
@@ -295,7 +302,7 @@ function war.draw()
             u=war.field[i][j]
             setColor(fieldColor[u.fixture:getMask()])
             --poly('fill',u.body:getWorldPoints(u.shape:getPoints()))
-            rect('fill',16*(i-25),16*(j-25),16,16)
+            draw(fieldCanvas,16*(i-25),16*(j-25))
         end
     end
     for i=1,#war.ctrl.edge do  for j=1,#war.ctrl.edge[i] do
