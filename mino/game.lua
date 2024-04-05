@@ -812,6 +812,7 @@ function mino.draw()
             end
 
             if P[i].theme.overFieldDraw then P[i].theme.overFieldDraw(P[i],mino) end
+            --消行文本
             P[i].theme.clearTextDraw(P[i])
 
             if mino.rule.overFieldDraw then mino.rule.overFieldDraw(P[i],mino) end
