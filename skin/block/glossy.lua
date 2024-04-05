@@ -15,9 +15,10 @@ function skin.unitDraw(player,x,y,clr,alpha)
 end
 function skin.fieldDraw(player,mino)
     local h=0 local n=player.event[1] and player.event[1]/player.history.CDelay
+
+    setShader(skin.sd)
     for y=1,#player.field do
         if player.field[y][1] then h=h+1
-            setShader(skin.sd)
             for x=1,player.w do
                 local F=player.field
                 if F[y][x] and next(F[y][x]) then
@@ -25,12 +26,16 @@ function skin.fieldDraw(player,mino)
                     draw(skin.pic,36*x,-36*h,0,1,1,18,18)
                 end
             end
-            setShader()
-        else h=h+n gc.push()
-            gc.translate(18,-36*h-18)
+        else h=h+n end
+    end
+    setShader()
+    h=0
+    for y=1,#player.field do
+        if player.field[y][1] then h=h+1
+        else h=h+n
             gc.setColor(1,1,1)
-            gc.rectangle('fill',0,0,36*player.w,n*36)
-        gc.pop() end
+            gc.rectangle('fill',18,-36*h-18,36*player.w,n*36)
+        end
     end
 end
 function skin.curDraw(player,piece,x,y,color)

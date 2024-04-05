@@ -133,12 +133,10 @@ function thunder.postCheckClear(player,mino)
 
     if player.point%100~=99 then
         player.point=player.point+1
-        if (player.point+1)%100==0 then sfx.play('top') end
     end
 end
 function thunder.onLineClear(player,mino)
     player.point=player.point+2^player.history.line-1+player.history.combo-1
-    if player.point%100==99 then sfx.play('top') end
     if player.point>=player.stormLv*100 then
         if player.stormLv==10 then mino.win(player) return end
         player.stormLv=min(player.stormLv+1,10) sfx.play('lvup')
@@ -151,6 +149,9 @@ function thunder.onLineClear(player,mino)
         local n=-4-2*max(player.stormLv-6,0)
         player.step.r,player.step.e,player.step.x=n,n,n
     end
+end
+function thunder.onPieceDrop(player,mino)
+    if player.point%100==99 then sfx.play('top') end
 end
 local tList
 function thunder.always(player,dt)
