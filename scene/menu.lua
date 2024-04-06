@@ -119,7 +119,7 @@ end
 function menu.draw()
     local l=1920/#menu.modelist
     local txt=menu.modeTxt[menu.modelist[menu.modeKey]]
-    local sz=min(1000/txt:getWidth(),1)
+    local sz=min(960/txt:getWidth(),1.25)
     gc.draw(txt,0,-400,0,sz,sz,txt:getWidth()/2,txt:getHeight()/2)
 
     gc.setColor(1,1,1,.5-.15*cos(scene.time%8*math.pi/4))
