@@ -123,7 +123,7 @@ function menu.draw()
     gc.draw(txt,0,-400,0,sz,sz,txt:getWidth()/2,txt:getHeight()/2)
 
     gc.setColor(1,1,1,.5-.15*cos(scene.time%8*math.pi/4))
-    gc.printf(m.illust,font.Exo_2,0,0,4000,'center',0,m.iScale,m.iScale,2000,512/3)
+    gc.printf(m.illust,font.Exo_2,0,0,4000,'center',0,m.iScale,m.iScale,2000,148)
 
     gc.setLineWidth(3)
     for i=1,#menu.modelist do
