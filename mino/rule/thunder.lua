@@ -157,7 +157,7 @@ function thunder.onPieceDrop(player)
     if player.point%100~=99 then
         player.point=player.point+1
         if player.point%100==99 then sfx.play('top') end
-    elseif his.line>0 and player.point%100==99 then sfx.play('top') end
+    elseif player.history.line>0 and player.point%100==99 then sfx.play('top') end
 end
 local tList
 function thunder.always(player,dt)
