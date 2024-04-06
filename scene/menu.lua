@@ -16,7 +16,7 @@ function menu.init()
     menu.lvl=1
 
     BUTTON.create('setting',{
-        x=-800,y=-400,type='rect',w=150,h=150,
+        x=-600,y=-400,type='rect',w=150,h=150,
         draw=function(bt,t)
             gc.setColor(.5,.5,.5,.8+t)
             gc.rectangle('fill',-75,-75,150,150)
@@ -40,6 +40,25 @@ function menu.init()
             function menu.send(destScene)
                 destScene.exitScene='scene/menu'
             end
+        end
+    },.2)
+    BUTTON.create('quit',{
+        x=-800,y=-400,type='rect',w=150,h=150,
+        draw=function(bt,t)
+            local w,h=bt.w,bt.h
+            gc.setColor(.5,.5,.5,.8+t)
+            gc.rectangle('fill',-w/2,-h/2,w,h)
+            gc.setColor(.8,.8,.8)
+            gc.setLineWidth(5)
+            gc.rectangle('line',-w/2,-h/2,w,h)
+            gc.setColor(1,1,1)
+            gc.draw(win.UI.back,0,0,0,1,1,60,35)
+        end,
+        event=function()
+            scene.switch({
+                dest='intro',swapT=.7,outT=.3,
+                anim=function() anim.cover(.3,.4,.3,0,0,0) end
+            })
         end
     },.2)
 end

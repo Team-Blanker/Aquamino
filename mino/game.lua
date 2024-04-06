@@ -298,11 +298,12 @@ function mino.keyP(k)
         if mino.rule.pause then mino.rule.pause(S,mino.paused) end
         if S.event[2]=='pause' then rem(S.event,1) rem(S.event,1) end
     elseif T.include(S.keySet.R,k) then
-        scene.dest='solo' scene.destScene=require('mino/game')
+        scene.dest='game' scene.destScene=require('mino/game')
         scene.swapT=(mino.paused and 1.5 or 0) scene.outT=.5
         scene.anim=mino.paused and function() anim.cover(.5,1,.5,0,0,0) end
             or function() anim.cover(0,0,.5,0,0,0) end
         if mino.resetStopMusic then mus.stop() end
+        scene.sendArg=mino.exitScene
     end
     if mino.paused then --nothing
     elseif mino.waitTime>0 then
@@ -840,6 +841,10 @@ end
 function mino.exit()
     mino.musInfo=""
     mino.exitScene=nil
+    scene.sendArg=nil
     --mino.mode=nil
+end
+function mino.send(destScene,arg)
+    destScene.exitScene=arg
 end
 return mino

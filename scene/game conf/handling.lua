@@ -37,7 +37,28 @@ function hand.init()
                 anim=function() anim.cover(.1,.05,.1,0,0,0) end
             })
         end
-    })
+    },.2)
+    scene.button.create('test',{
+        x=700,y=400,type='rect',w=200,h=100,
+        draw=function(bt,t)
+            local w,h=bt.w,bt.h
+            gc.setColor(.5,.5,.5,.8+t)
+            gc.rectangle('fill',-w/2,-h/2,w,h)
+            gc.setColor(.8,.8,.8)
+            gc.setLineWidth(3)
+            gc.rectangle('line',-w/2,-h/2,w,h)
+            gc.setColor(1,1,1)
+            gc.printf(user.lang.conf.test,font.Exo_2,0,0,1280,'center',0,.5,.5,640,84)
+        end,
+        event=function()
+            scene.switch({
+                dest='game',destScene=require'mino/game',
+                swapT=.7,outT=.3,
+                anim=function() anim.cover(.3,.4,.3,0,0,0) end
+            })
+            scene.sendArg='game conf/handling'
+        end
+    },.2)
 
     SLIDER.create('ASD',{
         x=-380,y=-250,type='hori',sz={1000,32},button={32,32},
@@ -140,6 +161,13 @@ function hand.draw()
     gc.setColor(1,1,1)
     gc.printf(user.lang.conf.main.ctrl,font.Exo_2,0,-460,1280,'center',0,1,1,640,84)
     BUTTON.draw() SLIDER.draw()
+end
+function hand.send(destScene,arg)
+    if scene.dest=='game' then
+    destScene.exitScene='game conf/handling'
+    destScene.mode='conf_test'
+    destScene.resetStopMusic=false
+    end
 end
 function hand.exit()
     hand.save()

@@ -39,7 +39,7 @@ function pause.init(mino)
             scene.swapT=.7 scene.outT=.3
             scene.anim=function() anim.cover(.3,.4,.3,0,0,0) end
             if scene.cur.resetStopMusic then mus.stop() end
-            --function scene.cur.send(scene) scene.mode=mode end
+            scene.sendArg=mino.exitScene
         end
     },.25)
     pause.button.create('pause_quit',{

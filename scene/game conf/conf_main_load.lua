@@ -37,7 +37,6 @@ scene.button.create('test',{
             swapT=.7,outT=.3,
             anim=function() anim.cover(.3,.4,.3,0,0,0) end
         })
-        scene.sendArg='game conf/conf_main'
     end
 },.2)
 

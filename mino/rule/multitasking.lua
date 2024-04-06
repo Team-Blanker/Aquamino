@@ -20,6 +20,7 @@ function marathon.init(P,mino)
         v.FDelay=2^(-(v.speedLv-1)/14*8)
         v.totalLine=0
     end
+    mino.fieldScale=min(mino.fieldScale,1)
 end
 function marathon.onLineClear(player,mino)
     local his=player.history
