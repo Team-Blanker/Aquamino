@@ -13,6 +13,10 @@ function menu.init()
         mus.add('music/Hurt Record/Nine Five','parts','mp3',61.847,224*60/130)
         mus.start()
     end
+    menu.modeTxt={}
+    for k,v in pairs(user.lang.menu.modeName) do
+        menu.modeTxt[k]=gc.newText(font.Exo_2,v)
+    end
     menu.lvl=1
 
     BUTTON.create('setting',{
@@ -25,11 +29,11 @@ function menu.init()
             gc.rectangle('line',-75,-75,150,150)
             gc.setColor(1,1,1)
             gc.setLineWidth(8)
-            gc.setColor(1,1,1,.75)
+            gc.setColor(1,1,1)
             gc.circle('line',0,0,50,6)
-            gc.setColor(1,1,1,.75*(1-t*5))
+            gc.setColor(1,1,1,(1-t*5))
             gc.circle('line',0,0,22.5)
-            gc.setColor(1,1,1,.75*(t*5))
+            gc.setColor(1,1,1,(t*5))
             gc.line(36,0,18,-18*3^.5) gc.line(-36,0,-18,-18*3^.5) gc.line(-18,18*3^.5,18,18*3^.5)
         end,
         event=function()
@@ -114,7 +118,9 @@ function menu.update(dt)
 end
 function menu.draw()
     local l=1920/#menu.modelist
-    gc.printf(menu.modeName[menu.modelist[menu.modeKey]],font.Exo_2,-750,-540,1000,'center',0,1.5,1.5)
+    local txt=menu.modeTxt[menu.modelist[menu.modeKey]]
+    local sz=min(1000/txt:getWidth(),1)
+    gc.draw(txt,0,-400,0,sz,sz,txt:getWidth()/2,txt:getHeight()/2)
 
     gc.setColor(1,1,1,.5-.15*cos(scene.time%8*math.pi/4))
     gc.printf(m.illust,font.Exo_2,0,0,4000,'center',0,m.iScale,m.iScale,2000,512/3)
