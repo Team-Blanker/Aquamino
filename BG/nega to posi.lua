@@ -9,36 +9,22 @@ local loopBeatLen=224
 
 local M=mymath
 local bg={}
-local function negaDrawStencil()
-    gc.rectangle('fill',-50,-10,100,20)
-end
-local function posiDrawStencil()
-    gc.rectangle('fill',-50,-10,100,20)
-    gc.rectangle('fill',-10,-50,20,100)
+
+local nCanvas,pCanvas=gc.newCanvas(100,100),gc.newCanvas(100,100)
+gc.setColor(1,1,1)
+gc.setCanvas(nCanvas)
+    gc.rectangle('fill',0,40,100,20)
+gc.setCanvas(pCanvas)
+    gc.rectangle('fill',0,40,100,20)
+    gc.rectangle('fill',40,0,20,100)
+gc.setCanvas()
+local function nsDraw(alpha)
+    gc.setColor(1,1,1,alpha)
+    gc.draw(nCanvas,-450,0,0,3-alpha,3-alpha,50,50)
 end
 local function psDraw(alpha)
-    gc.push()
-        gc.translate(-450,0)
-        gc.scale(3-alpha)
-        gc.stencil(negaDrawStencil,'replace',1)
-        gc.setStencilTest('gequal',1)
-            gc.setColor(1,1,1,alpha)
-            gc.setLineWidth(40)
-            gc.rectangle('fill',-50,-50,100,100)
-        gc.setStencilTest()
-    gc.pop()
-end
-local function nsDraw(alpha)
-    gc.push()
-        gc.translate( 450,0)
-        gc.scale(3-alpha)
-        gc.stencil(posiDrawStencil,'replace',1)
-        gc.setStencilTest('gequal',1)
-            gc.setColor(1,1,1,alpha)
-            gc.setLineWidth(40)
-            gc.rectangle('fill',-50,-50,100,100)
-        gc.setStencilTest()
-    gc.pop()
+    gc.setColor(1,1,1,alpha)
+    gc.draw(pCanvas, 450,0,0,3-alpha,3-alpha,50,50)
 end
 local function blink(a)
     gc.setColor(1,1,1,.2*a)
@@ -59,6 +45,8 @@ function bg.draw()
 
     rn,gn,bn=1-bg.progressN,1-.75*bg.progressN,1
     rp,gp,bp=1,1-.25*bg.progressP,1-bg.progressP
+
+    psDraw(1) nsDraw(1)
     if beat>=8 then
         local a=max(1.25-(beat-8))/1.25
         gc.setLineWidth(24)
@@ -93,7 +81,6 @@ function bg.draw()
 
         local b=max(1.25-(beat-8)%32,0)/1.25
         psDraw(b) nsDraw(b) blink(b)
-        psDraw(1) nsDraw(1)
         local b1=(1.25-max(beat-56,0))/1.25
         psDraw(b1) nsDraw(b1) blink(beat>=56 and b1 or 0)
         local b2=(1.25-max(beat-88,0))/1.25
