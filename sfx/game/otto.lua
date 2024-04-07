@@ -8,8 +8,7 @@ function otto.addSFX()
         move='sfx/game/otto/move.wav',
         moveFail='sfx/game/otto/move fail.wav',
         landedMove='sfx/game/otto/landed move.wav',
-        HD='sfx/game/otto/hard drop.wav',
-        --lock='sfx/game/otto/lock.wav',
+        lock='sfx/game/otto/lock.wav',
         hold='sfx/game/otto/hold.wav',
         rotate='sfx/game/otto/rotate.wav',
         spin='sfx/game/otto/spin.wav',
@@ -53,9 +52,7 @@ function otto.touch(player,touch)
     if touch then sfx.play('touch') end
 end
 function otto.lock(player)
-    --if player.history.dropHeight>0 then sfx.play('HD',.3+.7*player.history.dropHeight/player.h)
-    --else sfx.play('lock') end
-    sfx.play('HD')
+    sfx.play('lock')
 end
 function otto.clear(player)
     local his=player.history
