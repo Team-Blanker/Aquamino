@@ -14,7 +14,7 @@ function bg.draw()
     gc.clear(.04,.04,.04)
     gc.setColor(1,1,1,.16)
     for i=0,15 do
-        local p=sin((scene.time%8/4+i/16)*math.pi)
+        local p=sin((bg.time%8/4+i/16)*math.pi)
         gc.draw(pic,-960+120*i,-720+120*p)
     end
 end

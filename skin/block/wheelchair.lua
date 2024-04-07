@@ -21,7 +21,7 @@ function skin.fieldDraw(player,mino)
             for x=1,player.w do
                 local F=player.field
                 if F[y][x] and next(F[y][x]) then
-                    setColor(player.color[F[y][x].name])
+                    if F[y][x].loosen then setColor(.75,.75,.75) else setColor(player.color[F[y][x].name]) end
                     draw(skin.pic,36*x,-36*h,0,.5,.5,36,36)
                 end
             end
