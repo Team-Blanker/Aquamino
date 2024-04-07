@@ -62,7 +62,6 @@ touch=love.touch
 
 mymath=require'framework/mathextend' mytable=require'framework/tableextend'
 anim=require'scene/swapAnim'
-adjust=require'scene/window_adjust'
 COLOR=require'framework/color'
 json=require'json by rxi/json'
 
@@ -81,17 +80,6 @@ do
     gc.setDefaultFilter('linear','linear',16)
     fs.createDirectory('conf')
     fs.createDirectory('player')
-
-    --[[UI_mini=gc.newImage('UI/mini.png')
-    UI_mini_hv=gc.newImage('UI/mini_hover.png')
-    UI_FS=gc.newImage('UI/fullscreen.png')
-    UI_FS_hv=gc.newImage('UI/fullscreen_hover.png')
-    UI_win=gc.newImage('UI/windowed.png')
-    UI_win_hv=gc.newImage('UI/windowed_hover.png')
-    UI_close=gc.newImage('UI/X.png')
-    UI_close_hv=gc.newImage('UI/X_hover.png')
-    UI_adjust=gc.newImage('UI/adjust.png')
-    UI_adjust_hv=gc.newImage('UI/adjust_hover.png')]]
 end
 
 font={
@@ -117,10 +105,8 @@ canop=true--=can operate，是决定玩家是否能操作的变量
 love.window.setMode(love.window.getMode()) --看似废话，但是如果去掉的话在我的框架里窗口颜色就会出神秘问题（至少Love 11.4如此）
 
 win={
-    stat={launch=0,version="preview 0006"},
+    stat={launch=0,version="preview 0008"},
     showInfo=false,
-    --[[showAdjustKey=true,
-    isAdjusting=false,]]
     fullscr=false,
     distractTime=0,
     W=gc.getWidth(),
@@ -225,9 +211,7 @@ end
 function love.keypressed(k)
     lastkeyP=k
     if k=='f10' then win.showInfo=not win.showInfo
-    --[[elseif k=='f12' then win.showAdjustKey=not win.showAdjustKey end
-    if win.isAdjusting then adjust.keyP(k)]]
-    elseif k=='f11' --[[and not win.isAdjusting]] then
+    elseif k=='f11' then
         win.changeFullscr()
     elseif canop and scene.cur.keyP then
         scene.cur.keyP(k)
@@ -241,24 +225,7 @@ function love.keyreleased(k)
 end
 function love.mousepressed(x,y,button,istouch)
     local rx,ry=adaptAllWindow:inverseTransformPoint(x+.5,y+.5)
-    --[[if win.showAdjustKey then
-        if button==1 then
-            if mymath.pointInRect(x,y,0,36,win.W-36,win.W) then love.event.quit()
-            elseif mymath.pointInRect(x,y,0,36,win.W-72,win.W-36) then
-                win.setFullscr()
-                if win.fullscr then win.isAdjusting=false
-                    if win.isAdjusting then adjust.quit() end
-                else love.window.setPosition(win.x_win,win.y_win) end
-            elseif mymath.pointInRect(x,y,0,36,win.W-108,win.W-72) then love.window.minimize()
-            elseif not win.fullscr and mymath.pointInRect(x,y,0,36,0,36) then
-                win.isAdjusting=not win.isAdjusting
-                if win.isAdjusting then adjust.init() else adjust.quit() end
-                if scene.BG.init then scene.BG.init() end
-            elseif scene.cur.mouseP and not win.isAdjusting and canop then
-                scene.cur.mouseP(rx,ry,button,istouch)
-            end
-        end
-    else]]if scene.cur.mouseP and not win.isAdjusting and canop then
+    if scene.cur.mouseP and not win.isAdjusting and canop then
         scene.cur.mouseP(rx,ry,button,istouch)
     end
 end
@@ -314,7 +281,6 @@ function mainUpdate(dt)
         end
         sfx.timer=sfx.timer-5
     end
-    --if win.isAdjusting then adjust.update(dt) end
 end
 function love.update(dt)
     local dtRemain=dt
@@ -362,24 +328,4 @@ function love.draw()
         gc.print(infoL,font.Exo_2,10,25,0,.15,.15)
         gc.printf(infoR,font.Exo_2,win.W-10-114514*.15,25,114514,'right',0,.15,.15)
     end
-    --[[if win.showAdjustKey then
-        gc.setColor(1,1,1)
-        if mymath.pointInRect(ms.getX(),ms.getY(),0,36,win.W-36,win.W) then gc.draw(UI_close_hv,win.W-36,0)
-        else gc.draw(UI_close,win.W-36,0) end
-        if win.fullscr then
-            if mymath.pointInRect(ms.getX(),ms.getY(),0,36,win.W-72,win.W-36) then gc.draw(UI_win_hv,win.W-72,0)
-            else gc.draw(UI_win,win.W-72,0) end
-        else
-            if mymath.pointInRect(ms.getX(),ms.getY(),0,36,0,36) then gc.draw(UI_adjust_hv,0,0)
-            else gc.draw(UI_adjust,0,0) end
-            if mymath.pointInRect(ms.getX(),ms.getY(),0,36,win.W-72,win.W-36) then gc.draw(UI_FS_hv,win.W-72,0)
-            else gc.draw(UI_FS,win.W-72,0) end
-        end
-        if mymath.pointInRect(ms.getX(),ms.getY(),0,36,win.W-108,win.W-72) then gc.draw(UI_mini_hv,win.W-108,0)
-        else gc.draw(UI_mini,win.W-108,0) end
-    end]]
-
-    --gc.setLineWidth(2)
-    --gc.setColor(0,1,.75)
-    --gc.rectangle('line',0,0,win.W,win.H)
 end
