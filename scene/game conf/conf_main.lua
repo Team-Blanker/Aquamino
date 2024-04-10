@@ -1,7 +1,7 @@
 local BUTTON=scene.button
 local config={}
 function config.init()
-    scene.BG=require'BG/settings' scene.BG.init()
+    scene.BG=require'BG/settings' if not scene.BG.time then scene.BG.init() end
     local bt=fs.read('scene/game conf/conf_main_load.lua')
     assert(loadstring(bt))()
 end

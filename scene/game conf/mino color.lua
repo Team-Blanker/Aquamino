@@ -8,7 +8,7 @@ local bc={blockIndex=1}
 local defaultColor={
     Z={1,.16,.32},S={.5,.96,.04},J={0,.64,1},L={.99,.66,.33},T={.8,.2,1},O={1,1,0},I={.15,1,.75},
 }
-local canAdjustColor={pure=true,glossy=true,['carbon fibre']=true,wheelchair=true}
+local canAdjustColor={glossy=true,glass=true,pure=true,['carbon fibre']=true,wheelchair=true}
 local bList={'Z','S','J','L','T','O','I'}
 local skinName
 function bc.read()

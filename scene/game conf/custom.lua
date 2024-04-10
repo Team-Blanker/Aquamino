@@ -21,7 +21,7 @@ function custom.init()
     cfc=user.lang.conf.custom
     custom.read()
 
-    custom.blockSkinList={'glossy','pure','carbon fibre','wheelchair'}
+    custom.blockSkinList={'glossy','glass','pure','carbon fibre','wheelchair'}
     custom.themeList={'simple'}
     custom.sfxList={'krystal',
         'Dr Ocelot','meme','otto'
