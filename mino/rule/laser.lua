@@ -1,7 +1,7 @@
 local fLib=require('mino/fieldLib')
 
 local laser={}
-local setColor,rect,draw=gc.setColor,gc.rectangle,gc.draw
+local setColor,rect,draw,clear=gc.setColor,gc.rectangle,gc.draw,gc.clear
 local progressAct={
     --{几分以前使用事件，事件间间隔几拍，下一波激光的位置}
     --随机边列
@@ -256,10 +256,11 @@ end
 
 local X,O=gc.newCanvas(36,36),gc.newCanvas(36,36)
 gc.setLineWidth(4.5)
-gc.setCanvas(X) setColor(1,1,1)
+gc.setCanvas(X) clear(1,1,1,0) setColor(1,1,1)
 gc.line(3,3,33,33) gc.line(3,33,33,3)
 gc.setLineWidth(4)
 gc.setCanvas(O)
+clear(1,1,1,0)
 gc.rectangle('line',3,3,30,30)
 gc.setCanvas()
 
