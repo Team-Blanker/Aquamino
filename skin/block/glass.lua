@@ -9,16 +9,47 @@ function skin.unitDraw(player,x,y,color,alpha)
     setColor(color[1],color[2],color[3],color[4] or alpha or 1)
     rect('fill',-18+36*x,-18-36*y,36,36)
 end
+local blockCanvas=gc.newCanvas(36,36)
+local fieldCanvas=gc.newCanvas(36*50,36*100)--最多支持50*100场地
+gc.setCanvas(blockCanvas)
+setColor(1,1,1)
+rect('fill',0,0,36,36)
+gc.setCanvas()
 function skin.fieldDraw(player,mino)
     local h=0 local n=player.event[1] and player.event[1]/player.history.CDelay
+    local F=player.field
+
+    gc.push()
+    gc.origin()
+    gc.setCanvas(fieldCanvas)
+    gc.clear(0,0,0,0)
+    for y=1,#player.field do
+        if player.field[y][1] then
+        for x=1,player.w do
+            local C=player.color[F[y][x].name]
+            if F[y][x] and next(F[y][x]) and C then
+                setColor(C[1],C[2],C[3],1)
+                draw(blockCanvas,36*x-36,3600-36*y-36)
+            end
+        end
+        end
+    end
+    gc.setCanvas()
+    gc.pop()
+
+    setColor(1,1,1,.05)
+    draw(fieldCanvas,18,-3600+18)
+    for i=1,6 do  for j=1,4 do
+        local a,b=i*3*cos(j*math.pi/2),i*3*sin(j*math.pi/2)
+        draw(fieldCanvas,18+a,-3600+18+b)
+    end  end
+
+    h=0
     for y=1,#player.field do
         if player.field[y][1] then h=h+1
         for x=1,player.w do
-            local F=player.field
             local C=player.color[F[y][x].name]
             if F[y][x] and next(F[y][x]) and C then
-                setColor(C[1],C[2],C[3],.25)
-                rect('fill',-18+36*x,-18-36*h,36,36)
                 setColor(C)
                 draw(pic,-18+36*x,-18-36*h)
             end
