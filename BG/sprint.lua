@@ -11,19 +11,25 @@ function bg.update(dt)
     bg.pcAnimT=max(bg.pcAnimT-dt,0)
 end
 function  bg.newProgress(pc)
-    bg.postpc=bg.pc bg.pc=pc bg.pcAnimT=bg.pcAnimTMax
+    bg.postpc=bg.pc*(1-bg.pcAnimT/bg.pcAnimTMax)+bg.postpc*(bg.pcAnimT/bg.pcAnimTMax)
+    bg.pc=pc bg.pcAnimT=bg.pcAnimTMax
 end
-local alpha,beat,m,bt, k
+local alpha,beat,m,bt,clap, k
 local p=8
 function bg.draw()
     beat=bg.time*bg.BPM/60-bg.offsetBeat
     m=1-beat%1
     bt=beat-bg.introBeat
     if bg.pc==1 then gc.clear(.15,.145,.09) else gc.clear(0,0,0) end
-    gc.setColor(1,1,1,(bt>=0 and m/4 or bt>=-4 and 0 or m/12))
-    gc.rectangle('fill',-1000,-600,2000,1200)
-    if bg.pc==1 then gc.setColor(1,.96,.6) else gc.setColor(1,1,1) end
-    if beat>=bg.introBeat then
+    if beat<bg.introBeat then
+        gc.setColor(1,1,1,m/8)
+        --gc.rectangle('fill',-1000,-600,2000,1200)
+        gc.setLineWidth(36)
+        gc.circle('line',0,0,450)
+    else
+        gc.setColor(1,1,1,m/4)
+        gc.rectangle('fill',-1000,-600,2000,1200)
+        if bg.pc==1 then gc.setColor(1,.96,.6) else gc.setColor(1,1,1) end
         k=math.log(beat%4+1,2)
         gc.setLineWidth(36+36*k)
         gc.rectangle('line',-960*k,-960*k,1920*k,1920*k)
@@ -34,6 +40,8 @@ function bg.draw()
             gc.pop()
         end end
     end
+
+    if bg.pc==1 then gc.setColor(1,.96,.6) else gc.setColor(1,1,1) end
     gc.setLineWidth(40+(beat>=bg.introBeat and (20*max(2*m-1,0)) or 0))
     local P=bg.pc*(1-bg.pcAnimT/bg.pcAnimTMax)+bg.postpc*(bg.pcAnimT/bg.pcAnimTMax)
     gc.arc('line','open',0,0,450,-math.pi/2,(P*2-.5)*math.pi,120)
