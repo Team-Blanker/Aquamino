@@ -37,12 +37,14 @@ function skin.fieldDraw(player,mino)
     gc.setCanvas()
     gc.pop()
 
-    setColor(1,1,1,.05)
+    setColor(1,1,1,.03)
     draw(fieldCanvas,18,-3600+18)
     for i=1,6 do  for j=1,4 do
         local a,b=i*3*cos(j*math.pi/2),i*3*sin(j*math.pi/2)
         draw(fieldCanvas,18+a,-3600+18+b)
     end  end
+    setColor(1,1,1,.15)
+    draw(fieldCanvas,18,-3600+18)
 
     h=0
     for y=1,#player.field do
