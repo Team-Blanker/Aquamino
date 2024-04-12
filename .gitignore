@@ -6,5 +6,7 @@ Thumbs.db
 Icon?
 .Trash
 .file
-game.love
-game.exe
+*.love
+*.exe
+*.zip
+*.dll
