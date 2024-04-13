@@ -2,14 +2,21 @@ local ZNHJ={}
 function ZNHJ.init(P,mino)
     scene.BG=require('BG/stars') --scene.BG.init()
 
-    --[[local r=rand(2)
-    if r==1 then]]
+    --3 4 5春天 6 7 8夏天 9 10 11 秋天 12 1 2 冬天
+    local m=(os.date('*t').month-3)/4
+    if m<1 then    --春
+        mino.musInfo="おメガネ - 春を待ちながら"
+        mus.add('music/Hurt Record/Waiting for Spring to Come','parts','mp3')
+    elseif m<2 then--夏
         mino.musInfo="Mikiya Komaba - Look Up The Starlight"
         mus.add('music/Hurt Record/Look Up The Starlight','parts','mp3')
-    --[[else
-        mino.musInfo="K.Y. - NIGHT DRIVE"
-        mus.add('music/Hurt Record/NIGHT DRIVE','parts','mp3')
-    end]]
+    elseif m<3 then--秋
+        mino.musInfo="ミレラ - Got Of The Wind"
+        mus.add('music/Hurt Record/Got Of The Wind','parts','mp3')
+    else           --冬
+        mino.musInfo="周藤三日月 - 冬の人工衛星"
+        mus.add('music/Hurt Record/Winter Satellite','parts','mp3')
+    end
     mus.start()
     mino.rule.allowPush={Z=true,S=true,J=true,L=true,T=true,O=true,I=true,}
     mino.rule.loosen.fallTPL=.1
