@@ -8,6 +8,7 @@ function bg.init()
     bg.s2:setFilter('nearest')
     bg.s3=gc.newImage('BG/res/snow peak/snow3.png')
     bg.s3:setFilter('nearest')
+    bg.danger=false
     bg.dangerT=0
     bg.snowParList={}--[1]={x,y,a,as,sz,type,t}
 end
@@ -20,25 +21,26 @@ function bg.update(dt)
         pt.TTL=pt.TTL-dt
         if pt.TTL<=0 then table.remove(bg.snowParList,i) end
     end
+    bg.dangerUpdate(dt)
 end
-function bg.dangerUpdate(dt,danger)
-    bg.dangerT=danger and min(2,bg.dangerT+dt) or max(0,bg.dangerT-2*dt)
-    if danger then
-        if dt*16>rand() then
+function bg.dangerUpdate(dt)
+    bg.dangerT=bg.danger and min(2,bg.dangerT+dt) or max(0,bg.dangerT-2*dt)
+    if bg.danger then
+        if dt*20>rand() then
         table.insert(bg.snowParList,{
             x=3000*rand()-180-2040,y=-600,
             a=2*math.pi*rand(),as=.1*math.pi*(rand()-.5),
             sz=1,type=3,TTL=4
         })
         end
-        if dt*12>rand() then
+        if dt*15>rand() then
         table.insert(bg.snowParList,{
             x=3000*rand()-180-2040,y=-600,
             a=2*math.pi*rand(),as=.1*math.pi*(rand()-.5),
             sz=1.5,type=3,TTL=4
         })
         end
-        if dt*8>rand() then
+        if dt*10>rand() then
         table.insert(bg.snowParList,{
             x=3000*rand()-180-2040,y=-600,
             a=2*math.pi*rand(),as=.1*math.pi*(rand()-.5),

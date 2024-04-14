@@ -31,7 +31,7 @@ function rule.init(P,mino)
         end
         P[i].iceColumn={}
         for j=1,P[i].w do
-            P[i].iceColumn[j]={H=-1,topTimer=0,speed=0,speedmax=0,dvps=0,appearT=0,strikeT=0}
+            P[i].iceColumn[j]={H=-1,topTimer=0,speed=0,speedmax=0,dvps=0,appearT=0}
         end
         rule.rise(P[i],rand(2,P[i].w-1))
     end
@@ -45,7 +45,6 @@ function rule.rise(player,col)
     local ice=player.iceColumn[col]
     if ice.H<0 then ice.H=0
         ice.speed=(player.stormLv<12 and .02+player.stormLv*.015 or .24)*(.75+.5*rand())
-        ice.strikeT=0
     end
 end
 function rule.destroy(player,col,scoring,mtp)
@@ -78,7 +77,7 @@ function rule.destroy(player,col,scoring,mtp)
             })
         end
 
-        ice.H=-1 ice.topTimer=0 ice.appearT=0 ice.strikeT=0
+        ice.H=-1 ice.topTimer=0 ice.appearT=0
         AIce.preH,AIce.t=0,0
     end
 
@@ -132,8 +131,6 @@ function rule.update(player,dt,mino)
             --if ice.topTimer>=3 then mino.die(player) mino.lose(player) end
         elseif ice.H>=0 then ice.H=min(ice.H+dt*ice.speed,2)
         A.ice[i].t=max(A.ice[i].t-dt,0) ice.appearT=ice.appearT+dt end
-
-        ice.strikeT=max(ice.strikeT-dt,0)
     end
 
     A.lvupT=A.lvupT+dt
@@ -162,14 +159,12 @@ function  rule.always(player,dt,mino)
     for i=1,player.w do local ice=player.iceColumn[i]
         if ice.H>=1.75 then danger=true break end
     end
-    scene.BG.dangerUpdate(dt,danger)
+    scene.BG.danger=danger
 end
 
 function rule.onPieceDrop(player,mino)
     local his=player.history
     local r=B.getX(his.piece)
-
-    for i=1,#r do player.iceColumn[r[i]+his.x].strikeT=.075 end
 
     if his.spin and his.line==0 then for i=1,#his.piece do
         rule.decrease(player,his.piece[i][1]+his.x,.3,1.5)
@@ -239,10 +234,10 @@ function rule.overFieldDraw(player)
             g=ice.H==2 and .1 or ice.H>=1 and M.lerp(.9,.8,larg) or .8
             b=ice.H==2 and .1 or ice.H>=1 and M.lerp( 1,.8,larg) or  1
             --冰柱显示的高度
-            local H=max( M.lerp(min(ice.H,1),A.ice[i].preH, (A.ice[i].t/A.iceTMax)^2 ) -6*ice.strikeT/.075/FH ,0)
+            local H=max( M.lerp(min(ice.H,1),A.ice[i].preH,(A.ice[i].t/A.iceTMax)^2),0)
             --“底座”
             gc.setColor(.6,.9,1,1.25*ice.appearT)
-            gc.rectangle('fill',36*i,0,36,4)
+            gc.rectangle('fill',36*i,-4,36,4)
             gc.setColor(r,g,b,.2)
             --“柱体”
             gc.rectangle('fill',36*i,-FH*H,36,FH*H)
