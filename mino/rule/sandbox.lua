@@ -5,8 +5,8 @@ function ZNHJ.init(P,mino)
     --3 4 5春天 6 7 8夏天 9 10 11 秋天 12 1 2 冬天
     local m=(os.date('*t').month-3)/4
     if m<1 then    --春
-        mino.musInfo="おメガネ - 春を待ちながら"
-        mus.add('music/Hurt Record/Waiting for Spring to Come','parts','mp3')
+        mino.musInfo="Teada - 花ノ雨"
+        mus.add('music/Hurt Record/Rain of Flowers','parts','mp3')
     elseif m<2 then--夏
         mino.musInfo="Mikiya Komaba - Look Up The Starlight"
         mus.add('music/Hurt Record/Look Up The Starlight','parts','mp3')
