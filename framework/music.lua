@@ -2,6 +2,7 @@ local mus={
     volume=0.8,
     type='parts',
     path='',
+    tag={},
     intro=nil,ITrans=nil,loop=nil,
     introEnd=false,swapDelay=0,
     whole=nil,
@@ -13,12 +14,25 @@ local mus={
         mus.path=path mus.type=mode
         if mode=='parts' then
             if fs.getInfo(path..'/intro.'..form) then mus.intro=love.audio.newSource(path..'/intro.'..form,'stream') end
-            if fs.getInfo(path..'/loop.'..form) then mus.loop=love.audio.newSource(path..'/loop.'..form,'stream') end
+            if fs.getInfo(path..'/loop.'..form) then mus.loop=love.audio.newSource(path..'/loop.'..form,'stream')
+                mus.loop:seek(0)
+            end
             if fs.getInfo(path..'/ITrans.'..form) then mus.ITrans=love.audio.newSource(path..'/ITrans.'..form,'stream') end
         elseif fs.getInfo(path..'/whole.'..form) then mus.whole=love.audio.newSource(path..'/whole.'..form,'stream')
             mus.loopStart=loopStart mus.loopTime=loopTime
             mus.whole:seek(0)--新的音乐文件，第一次seek会卡
         end
+        mus.tag={}
+    end,
+    setTag=function(arg)
+        assert(type(arg)=='table','Tags must be a list')
+        mus.tag=arg
+    end,
+    checkTag=function(tag)
+        for k,v in pairs(mus.tag) do
+            if v==tag then return true end
+        end
+        return false
     end,
     start=function()
         if mus.type=='parts' then
