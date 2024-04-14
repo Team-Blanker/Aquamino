@@ -234,6 +234,7 @@ function rule.overFieldDraw(player)
             g=ice.H==2 and .1 or ice.H>=1 and M.lerp(.9,.8,larg) or .8
             b=ice.H==2 and .1 or ice.H>=1 and M.lerp( 1,.8,larg) or  1
             --冰柱显示的高度
+---@diagnostic disable-next-line: param-type-mismatch
             local H=max( M.lerp(min(ice.H,1),A.ice[i].preH,(A.ice[i].t/A.iceTMax)^2),0)
             --“底座”
             gc.setColor(.6,.9,1,1.25*ice.appearT)
