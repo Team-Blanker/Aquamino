@@ -6,7 +6,6 @@ local banned={'f1','f2','f3','f4','f5','f6','f7','f8','f9','f10','f11','f12', 'f
 'printscreen'
 }
 local intro={}
-local logo=gc.newImage('assets/pic/title.png')
 local mode={
     {'40 lines','marathon','dig 40','sandbox'},
     {'smooth','thunder','ice storm','master','laser','multitasking'},
@@ -42,10 +41,23 @@ function intro.init()
     intro.choose=0
     intro.lvl2animT=0
     intro.lvl=1
-    scene.BG=require'BG/blank'
-    if mus.path~='music/Hurt Record/Nine Five' then
-        mus.add('music/Hurt Record/Nine Five','parts','mp3',61.847,224*60/130)
+
+    local birthday=win.date.month==8 and win.date.day==14
+    if birthday then
+    scene.BG=require('BG/celebration') scene.BG.init()
+    else
+    scene.BG=require('BG/blank')
+    end
+
+    if not mus.checkTag('menu') then
+        if birthday then
+            mus.add('music/Hurt Record/Winter Story','whole','mp3',7.579,96)
         mus.start()
+        else
+        mus.add('music/Hurt Record/Nine Five','parts','mp3')
+        mus.start()
+        end
+        mus.setTag({'menu'})
     end
     intro.tip=user.lang.tip
     intro.order=rand(#intro.tip)
@@ -193,8 +205,19 @@ function intro.update(dt)
 
     BUTTON.update(dt,adaptAllWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5))
 end
+
+local logo=gc.newImage('assets/pic/title.png')
+local hat=gc.newImage('assets/pic/mizuki hat.png')
+
 local v
 function intro.draw()
+    if win.date.month==3 and win.date.day==21 then--水月的生日
+        gc.setColor(0,.03,.12)
+        gc.rectangle('fill',-1000,-600,2000,1200)
+        gc.setColor(1,1,1,.4)
+        gc.draw(hat,0,0,0,1.25,1.25,500,500)
+    end
+
     v=intro.lvl2animT/.4
     gc.setColor(0,0,0,(intro.lvl==3 and 1 or v))
     gc.rectangle('fill',-1000,-600,2000,1200)

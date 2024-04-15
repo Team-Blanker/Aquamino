@@ -109,6 +109,7 @@ win={
     showInfo=false,
     fullscr=false,
     distractTime=0,
+    date=os.date('*t'),
     W=gc.getWidth(),
     W_win=gc.getWidth(),
     H=gc.getHeight(),

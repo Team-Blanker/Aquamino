@@ -9,9 +9,15 @@ function menu.init()
     menu.modeName=m.modeName
     if menu.bgName then scene.BG=require('BG/'..menu.bgName) else scene.BG=require('BG/pond') end
     if scene.BG.init then scene.BG.init() end
-    if mus.path~='music/Hurt Record/Nine Five' then
-        mus.add('music/Hurt Record/Nine Five','parts','mp3',61.847,224*60/130)
+    if not mus.checkTag('menu') then
+        if win.date.month==8 and win.date.day==14 then
+        mus.add('music/Hurt Record/Winter Story','whole','mp3',7.579,96)
         mus.start()
+        else
+        mus.add('music/Hurt Record/Nine Five','parts','mp3')
+        mus.start()
+        end
+        mus.setTag({'menu'})
     end
     menu.modeTxt={}
     for k,v in pairs(user.lang.menu.modeName) do
