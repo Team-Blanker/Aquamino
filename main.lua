@@ -63,7 +63,7 @@ touch=love.touch
 mymath=require'framework/mathextend' mytable=require'framework/tableextend'
 anim=require'scene/swapAnim'
 COLOR=require'framework/color'
-json=require'json by rxi/json'
+json=require'framework/json'
 
 rand=math.random
 sin=math.sin cos=math.cos
