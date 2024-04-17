@@ -15,6 +15,20 @@ gc.setCanvas(blockCanvas)
 setColor(1,1,1)
 rect('fill',0,0,36,36)
 gc.setCanvas()
+function skin.init(player)
+    player.skinSpinTimer=0
+    player.spinAct=false
+end
+function skin.keyP(player,k)
+    if k=='CW' or k=='CCW' or k=='flip' then
+    player.spinAct=player.history.spin
+    if player.history.spin then player.skinSpinTimer=0 end
+    end
+end
+function skin.update(player,dt)
+    if player.spinAct then player.skinSpinTimer=player.skinSpinTimer+dt
+    else player.skinSpinTimer=0 end
+end
 function skin.fieldDraw(player,mino)
     local h=0 local n=player.event[1] and player.event[1]/player.history.CDelay
     local F=player.field
@@ -68,6 +82,10 @@ function skin.curDraw(player,piece,x,y,color)
         rect('fill',-18+36*(x+piece[i][1]),-18-36*(y+piece[i][2]),36,36)
         setColor(color)
         draw(pic,-18+36*(x+piece[i][1]),-18-36*(y+piece[i][2]))
+        if player.spinAct then
+            setColor(1,1,1,1-player.skinSpinTimer*4)
+            draw(pic,-18+36*(x+piece[i][1]),-18-36*(y+piece[i][2]))
+        end
     end
 end
 function skin.AscHoldDraw(player,piece,x,y,color)
