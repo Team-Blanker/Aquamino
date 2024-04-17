@@ -100,8 +100,8 @@ function fieldLib.kick(player,mode)
     --local originPiece,originO=T.copy(cur.piece),cur.O--先存一个，万一你没踢成功呢
     local originO=cur.O
     cur.O=B.rotate(cur.piece,cur.O,mode)
-    if player.RS.kick then
-        local kickOrder=RS[player.RS].kick(player,mode)
+    if player.RS.getKickList then
+        local kickOrder=RS[player.RS].getKickList(player,mode)
         if kickOrder then return kickOrder end
     else
         local ukick=player.RS['kickTable'][cur.name][mode][originO+1]
