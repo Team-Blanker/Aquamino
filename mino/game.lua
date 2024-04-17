@@ -33,7 +33,6 @@ local mino={
         dieAnim=function() end,
         winState=0,started=false
     },
-    --bag={},
     seqGenType='bag',
     bag={'Z','S','J','L','T','O','I'},orient={Z=0,S=0,J=0,L=0,T=0,O=0,I=0},
     player={},
@@ -67,7 +66,7 @@ function mino.blockLock(player)
     if mino.rule.onPieceDrop then mino.rule.onPieceDrop(player,mino) end
 
     if mino.blockSkin.onPieceDrop then player.blockSkin.onPieceDrop(player,mino) end
-    if player.theme.onPieceDrop then player.theme.onPieceDrop(player,mino) end
+    if mino.theme.onPieceDrop then mino.theme.onPieceDrop(player,mino) end
 end
 
 function mino.win(player)
@@ -150,7 +149,7 @@ function mino.checkClear(player,comboBreak,delayBreak)
         his.CDelay=player.CDelay
     elseif comboBreak then his.combo=0 end
     his.wide=fLib.wideDetect(player)
-    if player.theme.updateClearInfo then player.theme.updateClearInfo(player,mino) end
+    if mino.theme.updateClearInfo then mino.theme.updateClearInfo(player,mino) end
 end
 
 function mino.hold(player)
@@ -244,7 +243,7 @@ function mino.init()
         {block='pure',theme='simple',sfx='Dr Ocelot',smoothAnimAct=false,fieldScale=1}
         mino.fieldScale=pf.fieldScale
         mino.blockSkin=require('skin/block/'..pf.block)
-        P[1].theme=require('skin/theme/'..pf.theme)
+        mino.theme=require('skin/theme/'..pf.theme)
         P[1].smoothAnimAct=pf.smoothAnimAct
         mino.sfxPlay=require('sfx/game/'..pf.sfx)
         mino.sfxPlay.addSFX()
@@ -286,7 +285,7 @@ function mino.init()
             end
         end
         if mino.blockSkin.init then mino.blockSkin.init(P[i]) end
-        if P[i].theme.init then P[i].theme.init(P[i]) end
+        if mino.theme.init then mino.theme.init(P[i]) end
     end
     curPlayTxt=user.lang.game.nowPlaying..mino.musInfo
 end
@@ -412,7 +411,7 @@ function mino.keyP(k)
                     mino.sfxPlay.move(OP,success,landed)
 
                 elseif T.include(S.keySet.MR,k) then
-                    local success=not coincide(OP,1,0)
+                    success=not coincide(OP,1,0)
                     if success then mino.setAnimPrePiece(OP) A.timer=A.delay
                         C.x=C.x+1 C.moveSuccess=true his.spin=false
                         if landed and OP.LDR>0 then OP.LTimer=0 OP.LDR=OP.LDR-1 end
@@ -550,6 +549,15 @@ function mino.keyP(k)
                     while not coincide(OP,0,-1) do C.y=C.y-1 h=h+1 his.spin=false end
                     if h>0 then mino.sfxPlay.touch(OP,true) end
                 end
+
+                local keyAct
+                for key,v in pairs(S.keySet) do
+                    if T.include(v,k) then keyAct=key break end
+                end
+                if keyAct then
+                    if mino.theme.keyP then mino.theme.keyP(P[i],keyAct,mino) end
+                    if mino.blockSkin.keyP then mino.blockSkin.keyP(P[i],keyAct,mino) end
+                end
             end
         end
 
@@ -591,9 +599,7 @@ function mino.gameUpdate(dt)
             if coincide(OP,-1,0) then OP.MTimer=min(OP.MTimer+dt,cxk.ASD) end
 
             while OP.MTimer>=cxk.ASD and OP.moveDir=='L' and not coincide(OP,-1,0) do
-                mino.setAnimPrePiece(OP) A.timer=A.delay
                 C.x=C.x-1 his.spin=false m=m+1
-                OP.cur.ghostY=fLib.getGhostY(OP)
                 C.moveSuccess=true OP.MTimer=OP.MTimer-cxk.ASP
                 if coincide(OP,0,-1) and OP.LDR>0 then OP.LTimer=0 OP.LDR=OP.LDR-1 end
 
@@ -601,8 +607,20 @@ function mino.gameUpdate(dt)
 
                 if OP.FDelay==0 then
                     while not coincide(OP,0,-1) do C.y=C.y-1 end
+                else
+                    if love.keyboard.isDown(S.keySet.SD) then
+                    if coincide(OP,0,-1) then OP.DTimer=min(OP.DTimer+dt,cxk.SD_ASD)
+                    else OP.DTimer=OP.DTimer+dt
+                        while OP.DTimer>=cxk.SD_ASD and not coincide(OP,0,-1) do
+                            C.y=C.y-1 his.spin=false OP.DTimer=OP.DTimer-cxk.SD_ASP
+                            if mino.sfxPlay.SD then mino.sfxPlay.SD(OP) end
+                            mino.sfxPlay.touch(OP,coincide(OP,0,-1))
+                        end
+                    end
+                    else OP.DTimer=0 end
                 end
-                mino.setAnimPrePiece(OP)
+                OP.cur.ghostY=fLib.getGhostY(OP)
+                mino.setAnimPrePiece(OP) A.timer=A.delay
             end
         end
 
@@ -610,7 +628,6 @@ function mino.gameUpdate(dt)
             if coincide(OP,1,0) then OP.MTimer=min(OP.MTimer+dt,cxk.ASD) end
 
             while OP.MTimer>=cxk.ASD and OP.moveDir=='R' and not coincide(OP,1,0) do
-                mino.setAnimPrePiece(OP) A.timer=A.delay
                 C.x=C.x+1 his.spin=false m=m+1
                 OP.cur.ghostY=fLib.getGhostY(OP)
                 C.moveSuccess=true OP.MTimer=OP.MTimer-cxk.ASP
@@ -620,26 +637,36 @@ function mino.gameUpdate(dt)
 
                 if OP.FDelay==0 then
                     while not coincide(OP,0,-1) do C.y=C.y-1 end
+                else
+                    if love.keyboard.isDown(S.keySet.SD) then
+                    if coincide(OP,0,-1) then OP.DTimer=min(OP.DTimer+dt,cxk.SD_ASD)
+                    else OP.DTimer=OP.DTimer+dt
+                        while OP.DTimer>=cxk.SD_ASD and not coincide(OP,0,-1) do
+                            C.y=C.y-1 his.spin=false OP.DTimer=OP.DTimer-cxk.SD_ASP
+                            if mino.sfxPlay.SD then mino.sfxPlay.SD(OP) end
+                            mino.sfxPlay.touch(OP,coincide(OP,0,-1))
+                        end
+                    end
+                    else OP.DTimer=0 end
                 end
-                mino.setAnimPrePiece(OP)
+                mino.setAnimPrePiece(OP) A.timer=A.delay
             end
         end
-        if not(L or R) then OP.MTimer=0 end
-
-        if love.keyboard.isDown(S.keySet.SD) then
-            if OP.event[1] or coincide(OP,0,-1) then OP.DTimer=min(OP.DTimer+dt,cxk.SD_ASD)
-            else OP.DTimer=OP.DTimer+dt
-                while OP.DTimer>=cxk.SD_ASD and not coincide(OP,0,-1) do
-                    mino.setAnimPrePiece(OP) A.timer=A.delay
-                    C.y=C.y-1 his.spin=false OP.DTimer=OP.DTimer-cxk.SD_ASP
-                    if mino.sfxPlay.SD then mino.sfxPlay.SD(OP) end
-                    mino.sfxPlay.touch(OP,coincide(OP,0,-1))
+        if not(L or R) then OP.MTimer=0
+            if love.keyboard.isDown(S.keySet.SD) then
+                if OP.event[1] or coincide(OP,0,-1) then OP.DTimer=min(OP.DTimer+dt,cxk.SD_ASD)
+                else OP.DTimer=OP.DTimer+dt
+                    while OP.DTimer>=cxk.SD_ASD and not coincide(OP,0,-1) do
+                        mino.setAnimPrePiece(OP) A.timer=A.delay
+                        C.y=C.y-1 his.spin=false OP.DTimer=OP.DTimer-cxk.SD_ASP
+                        if mino.sfxPlay.SD then mino.sfxPlay.SD(OP) end
+                        mino.sfxPlay.touch(OP,coincide(OP,0,-1))
+                    end
+                    mino.setAnimPrePiece(OP)
+                    OP.cur.ghostY=fLib.getGhostY(OP)
                 end
-                mino.setAnimPrePiece(OP)
-                OP.cur.ghostY=fLib.getGhostY(OP)
-            end
-        else OP.DTimer=0 end
-
+            else OP.DTimer=0 end
+        end
         end
     end
 
@@ -649,7 +676,6 @@ function mino.gameUpdate(dt)
         A.timer=max(A.timer-dt,0)
         if P[i].started and P[i].deadTimer<0 and S.winState==0 then P[i].gameTimer=P[i].gameTimer+dt end
 
-        if P[i].theme.update then P[i].theme.update(P[i],dt) end
         if P[i].event[1] then
             P[i].event[1]=P[i].event[1]-dt
             if not P[i].event[3] and P[i].event[1]<=0 then remainTime=P[i].event[1] end
@@ -696,6 +722,9 @@ function mino.gameUpdate(dt)
 
         if mino.rule.update and P[i].started and P[i].deadTimer<0 and S.winState==0 then mino.rule.update(P[i],dt,mino) end
         if mino.rule.always then mino.rule.always(P[i],dt,mino) end
+
+        if mino.theme.update then mino.theme.update(P[i],dt,mino) end
+        if mino.blockSkin.update then mino.blockSkin.update(P[i],dt,mino) end
 
         for j=#P[i].dropAnim,1,-1 do
             P[i].dropAnim[j].TTL=P[i].dropAnim[j].TTL-dt
@@ -757,7 +786,7 @@ function mino.draw()
             --场地
             if mino.rule.underFieldDraw then mino.rule.underFieldDraw(P[i],mino) end
 
-            P[i].theme.fieldDraw(P[i],mino)
+            mino.theme.fieldDraw(P[i],mino)
 
             if mino.rule.underStackDraw then mino.rule.underStackDraw(P[i],mino) end
 
@@ -812,19 +841,19 @@ function mino.draw()
                 gc.pop()
             end
 
-            if P[i].theme.overFieldDraw then P[i].theme.overFieldDraw(P[i],mino) end
+            if mino.theme.overFieldDraw then mino.theme.overFieldDraw(P[i],mino) end
             --消行文本
-            P[i].theme.clearTextDraw(P[i])
+            mino.theme.clearTextDraw(P[i])
 
             if mino.rule.overFieldDraw then mino.rule.overFieldDraw(P[i],mino) end
             --Ready Set Go
-            if P[i].theme.readyDraw then P[i].theme.readyDraw(mino.waitTime) end
+            if mino.theme.readyDraw then mino.theme.readyDraw(mino.waitTime) end
             --诶你怎么死了
-            if P[i].deadTimer>=0 and P[i].theme.dieAnim then P[i].theme.dieAnim(P[i],mino) end
+            if P[i].deadTimer>=0 and mino.theme.dieAnim then mino.theme.dieAnim(P[i],mino) end
             --赢了
-            if P[i].winTimer>=0 and P[i].theme.winAnim then P[i].theme.winAnim(P[i],mino) end
+            if P[i].winTimer>=0 and mino.theme.winAnim then mino.theme.winAnim(P[i],mino) end
             --输了
-            if P[i].loseTimer>=0 and P[i].theme.loseAnim then P[i].theme.loseAnim(P[i],mino) end
+            if P[i].loseTimer>=0 and mino.theme.loseAnim then mino.theme.loseAnim(P[i],mino) end
         gc.pop()
     end
     --暂停

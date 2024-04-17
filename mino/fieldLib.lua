@@ -41,7 +41,7 @@ function fieldLib.newPlayer(arg)
         CDelay=0,EDelay=0,
         MTimer=0,DTimer=0,
         FDelay=1,FTimer=0,
-        LDelay=1,LTimer=0,LDR=15,LDRInit=15,
+        LDelay=1,LTimer=0,LDR=16,LDRInit=16,
 
         history={--上一个块放下的时候做了什么
             name=nil,piece={},x=0,y=0,O=0,
