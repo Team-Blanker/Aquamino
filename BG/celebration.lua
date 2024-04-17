@@ -35,7 +35,7 @@ function bg.update(dt)
         p.TTL=p.TTL-dt
         if p.TTL<=0 then
             local t=(rand()+.5+(p.sz-8)/8)*.625
-            local r,g,b=COLOR.hsv(2.75+24*(rand()-.5)^2,.5,1)
+            local r,g,b=COLOR.hsv(2.75+6*(2*rand()-1)^3,.5,1)
             --local r,g,b=COLOR.hsv(rand()*6,.5,1)
             ins(bg.fireList,{
                 sz=p.sz,x=p.x,y=p.y,

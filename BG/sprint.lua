@@ -22,10 +22,12 @@ function bg.draw()
     bt=beat-bg.introBeat
     if bg.pc==1 then gc.clear(.15,.145,.09) else gc.clear(0,0,0) end
     if beat<bg.introBeat then
+        if beat<bg.introBeat-4 then
         gc.setColor(1,1,1,m/8)
         --gc.rectangle('fill',-1000,-600,2000,1200)
         gc.setLineWidth(36)
         gc.circle('line',0,0,450)
+        end
     else
         gc.setColor(1,1,1,m/4)
         gc.rectangle('fill',-1000,-600,2000,1200)

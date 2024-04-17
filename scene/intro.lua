@@ -42,7 +42,7 @@ function intro.init()
     intro.lvl2animT=0
     intro.lvl=1
 
-    local birthday=win.date.month==8 and win.date.day==14
+    local birthday=win.date.month==8 and win.date.day==14--Aquamino的生日！也是海兰的生日！
     if birthday then
     scene.BG=require('BG/celebration') scene.BG.init()
     else
@@ -211,7 +211,7 @@ local hat=gc.newImage('assets/pic/mizuki hat.png')
 
 local v
 function intro.draw()
-    if win.date.month==3 and win.date.day==21 then--水月的生日
+    if win.date.month==3 and win.date.day==22 then--水月的生日
         gc.setColor(0,.03,.12)
         gc.rectangle('fill',-1000,-600,2000,1200)
         gc.setColor(1,1,1,.4)
