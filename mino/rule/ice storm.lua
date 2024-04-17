@@ -220,6 +220,14 @@ function rule.underFieldDraw(player)
         font.Consolas,-1250,160,10000,'center',0,.25,.25)
     gc.pop()
 end
+
+local ict=gc.newCanvas(18,1)
+gc.setCanvas(ict)
+for i=1,9 do
+    gc.setColor(1,1,1,(10-i)/9)
+    gc.points(i-.5,.5,18-i+.5,.5)
+end
+gc.setCanvas()
 local r,g,b,larg
 function rule.overFieldDraw(player)
     gc.push()
@@ -234,17 +242,18 @@ function rule.overFieldDraw(player)
             g=ice.H==2 and .1 or ice.H>=1 and M.lerp(.9,.8,larg) or .8
             b=ice.H==2 and .1 or ice.H>=1 and M.lerp( 1,.8,larg) or  1
             --冰柱显示的高度
----@diagnostic disable-next-line: param-type-mismatch
-            local H=max( M.lerp(min(ice.H,1),A.ice[i].preH,(A.ice[i].t/A.iceTMax)^2),0)
+            local H=M.lerp(min(ice.H,1),A.ice[i].preH,(A.ice[i].t/A.iceTMax)^2)
             --“底座”
-            gc.setColor(.6,.9,1,1.25*ice.appearT)
-            gc.rectangle('fill',36*i,-4,36,4)
-            gc.setColor(r,g,b,.2)
-            --“柱体”
-            gc.rectangle('fill',36*i,-FH*H,36,FH*H)
+            gc.setColor(.6,.9,1,2.5*ice.appearT)
+            gc.rectangle('fill',36*i,-2,36,2)
             gc.setColor(r,g,b,.4)
-            local topH=M.clamp(ice.H-1,0,1)
-            gc.rectangle('fill',36*i,-FH*topH,36,FH*topH)
+            --“柱体”
+            --gc.rectangle('fill',36*i,-FH*H,36,FH*H)
+            gc.draw(ict,36*i,-FH*H,0,2,FH*H)
+            gc.setColor(r,g,b,.3)
+            if ice.H>=1 then
+            gc.rectangle('fill',36*i,-FH*(ice.H-1),36,FH*(ice.H-1))
+            end
             gc.setColor(r,g,b,1)
             gc.rectangle('fill',36*i,-FH*H,4,FH*H)
             gc.rectangle('fill',36*i+32,-FH*H,4,FH*H)
