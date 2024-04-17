@@ -5,10 +5,11 @@ local mus={
     tag={},
     intro=nil,ITrans=nil,loop=nil,
     introEnd=false,swapDelay=0,
+    loopTime=0,--循环了几次
     whole=nil,
     paused=false,stopped=false,
     distractCut=false,
-    add=function(path,mode,form,loopStart,loopTime)
+    add=function(path,mode,form,loopStart,loopLen)
         mus.stop()
         assert(mode=='parts' or mode=='whole',"music type must be 'parts' or 'whole'")
         mus.path=path mus.type=mode
@@ -19,10 +20,10 @@ local mus={
             end
             if fs.getInfo(path..'/ITrans.'..form) then mus.ITrans=love.audio.newSource(path..'/ITrans.'..form,'stream') end
         elseif fs.getInfo(path..'/whole.'..form) then mus.whole=love.audio.newSource(path..'/whole.'..form,'stream')
-            mus.loopStart=loopStart mus.loopTime=loopTime
+            mus.loopStart=loopStart mus.loopLen=loopLen
             mus.whole:seek(0)--新的音乐文件，第一次seek会卡
         end
-        mus.tag={}
+        mus.tag={} mus.loopTime=0
     end,
     setTag=function(arg)
         assert(type(arg)=='table','Tags must be a list')
@@ -85,7 +86,8 @@ local mus={
                 end
             end
         elseif mus.whole then
-            if mus.whole:tell()>=mus.loopStart+mus.loopTime then mus.whole:seek(mus.whole:tell()-mus.loopTime) end
+            if mus.whole:tell()>=mus.loopStart+mus.loopLen then mus.whole:seek(mus.whole:tell()-mus.loopLen) end
+            mus.loopTime=mus.loopTime+1
         end
     end,
     setVolume=function(volume)
