@@ -593,6 +593,20 @@ function mino.gameUpdate(dt)
         if OP.event[1] then OP.MTimer=min(OP.MTimer+dt,cxk.ASD)
         elseif S.winState==0 and canop then
         --长按移动键
+        if love.keyboard.isDown(S.keySet.SD) then
+            if OP.event[1] or coincide(OP,0,-1) then OP.DTimer=min(OP.DTimer+dt,cxk.SD_ASD)
+            else OP.DTimer=OP.DTimer+dt
+                while OP.DTimer>=cxk.SD_ASD and not coincide(OP,0,-1) do
+                    mino.setAnimPrePiece(OP) A.timer=A.delay
+                    C.y=C.y-1 his.spin=false OP.DTimer=OP.DTimer-cxk.SD_ASP
+                    if mino.sfxPlay.SD then mino.sfxPlay.SD(OP) end
+                    mino.sfxPlay.touch(OP,coincide(OP,0,-1))
+                end
+                mino.setAnimPrePiece(OP)
+                OP.cur.ghostY=fLib.getGhostY(OP)
+            end
+        else OP.DTimer=0 end
+
         L,R=love.keyboard.isDown(S.keySet.ML),love.keyboard.isDown(S.keySet.MR)
         if L or R then OP.MTimer=OP.MTimer+dt end
         if L then local m=0
@@ -610,7 +624,7 @@ function mino.gameUpdate(dt)
                 else
                     if love.keyboard.isDown(S.keySet.SD) then
                     if coincide(OP,0,-1) then OP.DTimer=min(OP.DTimer+dt,cxk.SD_ASD)
-                    else OP.DTimer=OP.DTimer+dt
+                    else
                         while OP.DTimer>=cxk.SD_ASD and not coincide(OP,0,-1) do
                             C.y=C.y-1 his.spin=false OP.DTimer=OP.DTimer-cxk.SD_ASP
                             if mino.sfxPlay.SD then mino.sfxPlay.SD(OP) end
@@ -640,7 +654,7 @@ function mino.gameUpdate(dt)
                 else
                     if love.keyboard.isDown(S.keySet.SD) then
                     if coincide(OP,0,-1) then OP.DTimer=min(OP.DTimer+dt,cxk.SD_ASD)
-                    else OP.DTimer=OP.DTimer+dt
+                    else
                         while OP.DTimer>=cxk.SD_ASD and not coincide(OP,0,-1) do
                             C.y=C.y-1 his.spin=false OP.DTimer=OP.DTimer-cxk.SD_ASP
                             if mino.sfxPlay.SD then mino.sfxPlay.SD(OP) end
@@ -652,21 +666,7 @@ function mino.gameUpdate(dt)
                 mino.setAnimPrePiece(OP) A.timer=A.delay
             end
         end
-        if not(L or R) then OP.MTimer=0
-            if love.keyboard.isDown(S.keySet.SD) then
-                if OP.event[1] or coincide(OP,0,-1) then OP.DTimer=min(OP.DTimer+dt,cxk.SD_ASD)
-                else OP.DTimer=OP.DTimer+dt
-                    while OP.DTimer>=cxk.SD_ASD and not coincide(OP,0,-1) do
-                        mino.setAnimPrePiece(OP) A.timer=A.delay
-                        C.y=C.y-1 his.spin=false OP.DTimer=OP.DTimer-cxk.SD_ASP
-                        if mino.sfxPlay.SD then mino.sfxPlay.SD(OP) end
-                        mino.sfxPlay.touch(OP,coincide(OP,0,-1))
-                    end
-                    mino.setAnimPrePiece(OP)
-                    OP.cur.ghostY=fLib.getGhostY(OP)
-                end
-            else OP.DTimer=0 end
-        end
+        if not(L or R) then OP.MTimer=0 end
         end
     end
 
