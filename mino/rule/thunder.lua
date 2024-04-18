@@ -177,9 +177,9 @@ function thunder.always(player,dt)
 end
 function thunder.underFieldDraw(player)
     if player.point%100==99 then gc.setColor(1,.75,.5) else gc.setColor(1,1,1) end
-    gc.printf(""..player.point,font.Consolas_B,-player.w*18-110,-32,2048,'center',0,.5,.5,1024,56)
-    gc.printf(""..player.stormLv*100,font.Consolas_B,-player.w*18-110,32,2048,'center',0,.5,.5,1024,56)
-    gc.printf("Thunder Lv.\n"..player.stormLv,font.Consolas_B,-player.w*18-28,256,2048,'right',0,0.25,0.25,2048,56)
+    gc.printf(""..player.point,font.JB_B,-player.w*18-110,-32,2048,'center',0,.5,.5,1024,84)
+    gc.printf(""..player.stormLv*100,font.JB_B,-player.w*18-110,32,2048,'center',0,.5,.5,1024,84)
+    gc.printf("Thunder Lv.\n"..player.stormLv,font.JB_B,-player.w*18-28,256,2048,'right',0,0.25,0.25,2048,84)
     gc.setLineWidth(7)
     gc.line(-player.w*18-170,0,-player.w*18-50,0)
 end
@@ -212,7 +212,7 @@ function thunder.overFieldDraw(player)
     for i=1,#txt do
         local clr=txt[i].color
         gc.setColor(clr[1],clr[2],clr[3],clr[4]*txt[i].TTL/txt[i].tMax)
-        gc.printf("+"..txt[i].score,font.Consolas_B,txt[i].x,txt[i].y,5000,'center',0,txt[i].size/128,txt[i].size/128,2500,56)
+        gc.printf("+"..txt[i].score,font.JB_B,txt[i].x,txt[i].y,5000,'center',0,txt[i].size/128,txt[i].size/128,2500,84)
     end
 end
 return thunder

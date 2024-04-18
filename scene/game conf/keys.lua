@@ -98,7 +98,7 @@ function key.draw()
     if key.order then gc.rectangle('fill',key.order>6 and 200 or -600,(key.order-1)%6*100-300,600,100) end
     gc.setColor(1,1,1)
     gc.printf(user.lang.conf.main.keys,font.Exo_2,0,-460,1280,'center',0,1,1,640,84)
-    gc.printf(cfk.info,font.Consolas,800,400,8000,'right',0,.3,.3,8000,192)
+    gc.printf(cfk.info,font.JB,800,400,8000,'right',0,.3,.3,8000,192)
     for i=0,5 do
         if cfk.keyName[i+1] then gc.printf(cfk.keyName[i+1],font.Exo_2_SB,-700,-250+100*i,2000,'center',0,cfk.kScale,cfk.kScale,1000,84) end
         if cfk.keyName[i+7] then gc.printf(cfk.keyName[i+7],font.Exo_2_SB, 100,-250+100*i,2000,'center',0,cfk.kScale,cfk.kScale,1000,84) end
@@ -107,7 +107,7 @@ function key.draw()
     for i=1,#key.keyName do local K=key.keySet[key.keyName[i]]
         for j=1,#K do
             gc.printf(K[j]:len()==1 and K[j]:upper() or K[j],
-            font.Consolas,(i>6 and 100 or -700)+200*j,-300+100*((i-1)%6)+128*.4,2000,'center',0,.4,.4,1000,56)
+            font.JB,(i>6 and 100 or -700)+200*j,-300+100*((i-1)%6)+128*.4,2000,'center',0,.4,.4,1000,84)
         end
     end
     gc.setColor(.84,1,.92)

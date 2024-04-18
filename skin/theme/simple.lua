@@ -66,10 +66,10 @@ function simple.fieldDraw(player,mino)
     setColor(.2,.4,.3,.3)
     --计时
     for i=0,3 do
-        printf(timeTxt,font.Consolas_B,-W/2-31+i%2*6,H/2-19+6*floor(i/2),800,'right',0,.25,.25,800,56)
+        printf(timeTxt,font.JB_B,-W/2-30+i%2*4,H/2-18+4*floor(i/2),800,'right',0,.25,.25,800,84)
     end
     setColor(.5,1,.75)
-    printf(timeTxt,font.Consolas_B,-W/2-28,H/2-16,800,'right',0,.25,.25,800,56)
+    printf(timeTxt,font.JB_B,-W/2-28,H/2-16,800,'right',0,.25,.25,800,84)
 end
 --[[function simple.overFieldDraw(player,mino)
     local his=player.history

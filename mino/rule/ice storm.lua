@@ -215,9 +215,9 @@ function rule.underFieldDraw(player)
         gc.setColor(1,1,1,.1)
         gc.rectangle('fill',-45,-150,90,300)
         gc.setColor(1,1,1)
-        gc.printf("Lv."..player.stormLv,font.Consolas_B,-500,-194,3000,'center',0,1/3,1/3)
+        gc.printf("Lv."..player.stormLv,font.JB_B,-500,-194,3000,'center',0,1/3,1/3)
         gc.printf(player.stormLv<12 and ("%d/%d"):format(score,tar) or "???/???",
-        font.Consolas,-1250,160,10000,'center',0,.25,.25)
+        font.JB,-1250,160,10000,'center',0,.25,.25)
     gc.pop()
 end
 
@@ -271,12 +271,12 @@ function rule.overFieldDraw(player)
     for i=1,#txt do
         local clr=txt[i].color
         gc.setColor(clr[1],clr[2],clr[3],clr[4]*txt[i].TTL/txt[i].tMax)
-        gc.printf(""..txt[i].score,font.Consolas_B,txt[i].x,txt[i].y,5000,'center',0,txt[i].size/128,txt[i].size/128,2500,56)
+        gc.printf(""..txt[i].score,font.JB_B,txt[i].x,txt[i].y,5000,'center',0,txt[i].size/128,txt[i].size/128,2500,84)
     end
     gc.translate(18*player.w+36,-18*player.h)
     local t=A.lvupT
     gc.setColor(1,1,1,1.8-t/.3)
-    gc.printf("LEVEL UP",font.Consolas_B,0,-1200*(t-.16)*t,5000,'center',0,.8,.8,2500,56)
+    gc.printf("LEVEL UP",font.JB_B,0,-1200*(t-.16)*t,5000,'center',0,.8,.8,2500,84)
     gc.pop()
 end
 return rule

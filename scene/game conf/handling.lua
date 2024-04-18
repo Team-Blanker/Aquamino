@@ -71,7 +71,7 @@ function hand.init()
             gc.rectangle('line',-519,-19,1038,38)
             gc.setColor(1,1,1)
             gc.printf(string.format(cfh.ASD.."%.0fms = %.2fF(60 FPS)",hand.ctrl.ASD*1000,hand.ctrl.ASD*60),
-                font.Consolas,-519,-48,114514,'left',0,.3125,.3125,0,56)
+                font.JB,-519,-48,114514,'left',0,.3125,.3125,0,84)
         end,
         buttonDraw=function(pos)
             gc.setColor(1,1,1)
@@ -92,7 +92,7 @@ function hand.init()
             gc.rectangle('line',-519,-19,1038,38)
             gc.setColor(1,1,1)
             gc.printf(string.format(cfh.ASP.."%.0fms = %.2fF(60 FPS)",hand.ctrl.ASP*1000,hand.ctrl.ASP*60),
-                font.Consolas,-519,-48,114514,'left',0,.3125,.3125,0,56)
+                font.JB,-519,-48,114514,'left',0,.3125,.3125,0,84)
         end,
         buttonDraw=function(pos)
             gc.setColor(1,1,1)
@@ -113,7 +113,7 @@ function hand.init()
             gc.rectangle('line',-519,-19,1038,38)
             gc.setColor(1,1,1)
             gc.printf(string.format(cfh.SD_ASD.."%.0fms = %.2fF(60 FPS)",hand.ctrl.SD_ASD*1000,hand.ctrl.SD_ASD*60),
-                font.Consolas,-519,-48,114514,'left',0,.3125,.3125,0,56)
+                font.JB,-519,-48,114514,'left',0,.3125,.3125,0,84)
         end,
         buttonDraw=function(pos)
             gc.setColor(1,1,1)
@@ -134,7 +134,7 @@ function hand.init()
             gc.rectangle('line',-519,-19,1038,38)
             gc.setColor(1,1,1)
             gc.printf(string.format(cfh.SD_ASP.."%.0fms = %.2fF(60 FPS)",hand.ctrl.SD_ASP*1000,hand.ctrl.SD_ASP*60),
-                font.Consolas,-519,-48,114514,'left',0,.3125,.3125,0,56)
+                font.JB,-519,-48,114514,'left',0,.3125,.3125,0,84)
         end,
         buttonDraw=function(pos)
             gc.setColor(1,1,1)

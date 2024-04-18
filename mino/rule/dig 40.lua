@@ -44,9 +44,9 @@ end
 function rule.underFieldDraw(player)
     local x=-18*player.w-110
     gc.setColor(1,1,1)
-    gc.printf(""..player.remainLine,font.Consolas,x,-40,6000,'center',0,.75,.75,3000,96)
-    gc.printf(rd.remain,font.Consolas_B,x,0,6000,'center',0,.2,.2,3000,96)
-    gc.printf(""..player.pieceCount,font.Consolas,x,64,6000,'center',0,.5,.5,3000,96)
-    gc.printf(rd.piece,font.Consolas_B,x,96,6000,'center',0,.2,.2,3000,96)
+    gc.printf(""..player.remainLine,font.JB,x,-40,6000,'center',0,.75,.75,3000,96)
+    gc.printf(rd.remain,font.JB_B,x,0,6000,'center',0,.2,.2,3000,96)
+    gc.printf(""..player.pieceCount,font.JB,x,64,6000,'center',0,.5,.5,3000,96)
+    gc.printf(rd.piece,font.JB_B,x,96,6000,'center',0,.2,.2,3000,96)
 end
 return rule

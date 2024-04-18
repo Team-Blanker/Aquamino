@@ -239,8 +239,8 @@ function laser.underFieldDraw(player)
     gc.setColor(0,0,0) gc.rectangle('fill',-960,-540,1920,1080)
     end
     if player.point>=300 then gc.setColor(1,.95,.05) else gc.setColor(1,1,1) end
-    gc.printf(""..player.point,font.Consolas_B,-player.w*18-110,-32,2048,'center',0,.5,.5,1024,56)
-    gc.printf(300,font.Consolas_B,-player.w*18-110,32,2048,'center',0,.5,.5,1024,56)
+    gc.printf(""..player.point,font.JB_B,-player.w*18-110,-32,2048,'center',0,.5,.5,1024,84)
+    gc.printf(300,font.JB_B,-player.w*18-110,32,2048,'center',0,.5,.5,1024,84)
     gc.setLineWidth(7)
     gc.line(-player.w*18-170,0,-player.w*18-50,0)
 
@@ -380,7 +380,7 @@ function laser.overFieldDraw(player,mino)
     for i=1,#txt do
         local clr=txt[i].color
         gc.setColor(clr[1],clr[2],clr[3],clr[4]*txt[i].TTL/txt[i].tMax)
-        gc.printf(txt[i].score,font.Consolas_B,txt[i].x,txt[i].y,5000,'center',0,txt[i].size/128,txt[i].size/128,2500,56)
+        gc.printf(txt[i].score,font.JB_B,txt[i].x,txt[i].y,5000,'center',0,txt[i].size/128,txt[i].size/128,2500,84)
     end
 end
 return laser

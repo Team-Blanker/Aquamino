@@ -145,7 +145,7 @@ function bc.init()
             gc.setLineWidth(6)
             gc.rectangle('line',-219,-19,438,38)
             gc.setColor(1,.5,.5)
-            gc.printf(string.format("R:%.2f",bc.color[bList[bc.blockIndex]][1]),font.Consolas,-219,-48,1000,'left',0,.3125,.3125,0,56)
+            gc.printf(string.format("R:%.2f",bc.color[bList[bc.blockIndex]][1]),font.JB,-219,-48,1000,'left',0,.3125,.3125,0,84)
         end,
         buttonDraw=function(pos)
             if not canAdjustColor[skinName] then return end
@@ -168,7 +168,7 @@ function bc.init()
             gc.setLineWidth(6)
             gc.rectangle('line',-219,-19,438,38)
             gc.setColor(.5,1,.5)
-            gc.printf(string.format("G:%.2f",bc.color[bList[bc.blockIndex]][2]),font.Consolas,-219,-48,1000,'left',0,.3125,.3125,0,56)
+            gc.printf(string.format("G:%.2f",bc.color[bList[bc.blockIndex]][2]),font.JB,-219,-48,1000,'left',0,.3125,.3125,0,84)
         end,
         buttonDraw=function(pos)
             if not canAdjustColor[skinName] then return end
@@ -191,7 +191,7 @@ function bc.init()
             gc.setLineWidth(6)
             gc.rectangle('line',-219,-19,438,38)
             gc.setColor(.5,.5,1)
-            gc.printf(string.format("B:%.2f",bc.color[bList[bc.blockIndex]][3]),font.Consolas,-219,-48,1000,'left',0,.3125,.3125,0,56)
+            gc.printf(string.format("B:%.2f",bc.color[bList[bc.blockIndex]][3]),font.JB,-219,-48,1000,'left',0,.3125,.3125,0,84)
         end,
         buttonDraw=function(pos)
             if not canAdjustColor[skinName] then return end

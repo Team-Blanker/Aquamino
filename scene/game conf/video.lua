@@ -139,7 +139,7 @@ function video.init()
             gc.rectangle('line',-419,-19,838,38)
             gc.setColor(1,1,1)
             gc.printf(string.format(cf.video.frameLim.."%d",video.info.frameLim),
-                font.Consolas,-419,-48,114514,'left',0,.3125,.3125,0,56)
+                font.JB,-419,-48,114514,'left',0,.3125,.3125,0,84)
                 gc.setColor(1,1,1,.75)
             gc.printf(cf.video.frameTxt,font.Exo_2_SB,-419,48,114514,'left',0,.25,.25,0,84)
         end,

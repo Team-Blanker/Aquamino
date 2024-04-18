@@ -89,16 +89,17 @@ font={
     Exo_2=gc.newFont('font/Exo2-Regular.otf',128),
     Exo_2_SB=gc.newFont('font/Exo2-SemiBold.otf',128),
     Exo_2_B=gc.newFont('font/Exo2-Bold.otf',128),
-    haisi=gc.newFont('font/haisi.ttf',128), 
-    Consolas=gc.newFont('font/Consolas.ttf',128),
-    Consolas_B=gc.newFont('font/Consolas-Bold.ttf',128),
+    haisi=gc.newFont('font/haisi.ttf',128),
+    JB=gc.newFont('font/JetBrainsMono-Regular.ttf',128),
+    JB_B=gc.newFont('font/JetBrainsMono-Bold.ttf',128),
+    JB_L=gc.newFont('font/JetBrainsMono-Light.ttf',128),
 
     LED=gc.newFont('font/UniDreamLED.ttf',128)
 }
 font.Bender:setFallbacks(font.SYHT) font.Bender_B:setFallbacks(font.SYHT)
 font.Exo_2:setFallbacks(font.SYHT) font.Exo_2_SB:setFallbacks(font.SYHT)
 font.haisi:setFallbacks(font.SYHT)
-font.Consolas:setFallbacks(font.SYHT) font.Consolas_B:setFallbacks(font.SYHT)
+font.JB:setFallbacks(font.SYHT) font.JB_B:setFallbacks(font.SYHT)
 
 canop=true--=can operate，是决定玩家是否能操作的变量
 
@@ -307,9 +308,9 @@ function love.draw()
     if scene.cur.draw then scene.cur.draw() end
     if scene.watermark then
         gc.setColor(.5,1,.75,.15+.0*sin(scene.totalTime*5*math.pi))
-        gc.printf("作者：Aqua6623",font.Consolas_B,480*sin(scene.totalTime/2*math.pi),-440,5000,'center',0,.5,.5,2500,56)
-        gc.printf("作者：Aqua6623",font.Consolas_B,-480*sin(scene.totalTime/2*math.pi), 440,5000,'center',0,.5,.5,2500,56)
-        --gc.printf("未经授权禁止转载",Consolas_B,-480*sin(scene.totalTime/2*math.pi),440,5000,'center',0,.5,.5,2500,56)
+        gc.printf("作者：Aqua6623",font.JB_B,480*sin(scene.totalTime/2*math.pi),-440,5000,'center',0,.5,.5,2500,84)
+        gc.printf("作者：Aqua6623",font.JB_B,-480*sin(scene.totalTime/2*math.pi), 440,5000,'center',0,.5,.5,2500,84)
+        --gc.printf("未经授权禁止转载",Consolas_B,-480*sin(scene.totalTime/2*math.pi),440,5000,'center',0,.5,.5,2500,84)
     end
     gc.setColor(1,1,1)
     if scene.anim then scene.anim() end
