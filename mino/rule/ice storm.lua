@@ -215,9 +215,9 @@ function rule.underFieldDraw(player)
         gc.setColor(1,1,1,.1)
         gc.rectangle('fill',-45,-150,90,300)
         gc.setColor(1,1,1)
-        gc.printf("Lv."..player.stormLv,font.JB_B,-500,-194,3000,'center',0,1/3,1/3)
+        gc.printf("Lv."..player.stormLv,font.JB_B,0,-180,1000,'center',0,1/3,1/3,500,84)
         gc.printf(player.stormLv<12 and ("%d/%d"):format(score,tar) or "???/???",
-        font.JB,-1250,160,10000,'center',0,.25,.25)
+        font.JB,0,180,1000,'center',0,.25,.25,500,84)
     gc.pop()
 end
 

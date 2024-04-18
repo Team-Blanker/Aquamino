@@ -76,7 +76,7 @@ return {
     },
 
     rule={
-        dig={remain="Lines remain",piece="Pieces"}
+        dig={remain="Lines",piece="Pieces"}
     },
 
     tip={
