@@ -177,7 +177,9 @@ function laser.onLineClear(player,mino)
     for i=1,#progressAct do
         if player.point<progressAct[i][1] then player.laserLv=i break end
     end
-    if player.point>=300 then player.garbageTMax=1e99 player.garbageTimer=1e99 end
+    if player.point>=300 then
+        player.garbageTMax=max(3-(player.point-300)*.05,.1)
+    end
 end
 
 function laser.start()
