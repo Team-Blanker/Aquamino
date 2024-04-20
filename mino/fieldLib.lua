@@ -95,6 +95,11 @@ end
 
 --方块旋转&spin判定
 
+local gOff={--大方块附加的踢墙偏移
+    R={{ 0, 0},{ 0,-1},{ 0, 1},{-1, 0},{-1,-1},{-1, 1},{ 1, 0},{1, -1},{ 1, 1}},
+    L={{ 0, 0},{ 0,-1},{ 0, 1},{ 1, 0},{ 1,-1},{ 1, 1},{-1, 0},{-1,-1},{-1, 1}},
+    F={{ 0, 0},{-1, 0},{ 1, 0},{ 0,-1},{-1,-1},{ 1,-1},{ 0, 1},{-1, 1},{ 1, 1}}
+}
 function fieldLib.kick(player,mode)
     local cur=player.cur
     --local originPiece,originO=T.copy(cur.piece),cur.O--先存一个，万一你没踢成功呢
@@ -106,10 +111,19 @@ function fieldLib.kick(player,mode)
     else
         local ukick=player.RS['kickTable'][cur.name][mode][originO+1]
         if ukick and player.LDR>0 then
-            for i=1,#ukick do
-                local x,y=ukick[i][1],ukick[i][2]
-                if not fieldLib.coincide(player,x,y) then cur.x,cur.y=cur.x+x,cur.y+y
-                return i end
+            local x,y
+            if cur.piece.sz=='giant' then
+                for i=1,#ukick do  for j=1,#gOff[mode] do
+                    x,y=ukick[i][1]*2+gOff[mode][j][1],ukick[i][2]*2+gOff[mode][j][2]
+                    if not fieldLib.coincide(player,x,y) then cur.x,cur.y=cur.x+x,cur.y+y
+                    return i end
+                end  end
+            else
+                for i=1,#ukick do
+                    x,y=ukick[i][1],ukick[i][2]
+                    if not fieldLib.coincide(player,x,y) then cur.x,cur.y=cur.x+x,cur.y+y
+                    return i end
+                end
             end
         else
             if not fieldLib.coincide(player,x,y) then return 1 end
@@ -129,7 +143,7 @@ function fieldLib.isImmobile(player)
 end
 function fieldLib.corner(player)
     local x,y,c=player.cur.x,player.cur.y,0
-    if x%1~=0 then return 4 end
+    if x%1~=0 then return 4 end--非整数坐标方块(I O 大方块等)直接判定为四个“角”都有东西
     local bt=fieldLib.blockType
     if next(bt(player,x-1,y-1)) then c=c+1 end
     if next(bt(player,x-1,y+1)) then c=c+1 end
@@ -148,6 +162,14 @@ function fieldLib.getGhostY(player)
 end
 
 --方块与场地相关
+function fieldLib.entryPlace(player)--方块进场时使用，决定方块出块位置
+    local c=player.cur
+    local x,y,ox,oy=B.size(c.piece)
+    local dx,dy=ceil(player.w/2),player.h+1
+    c.x=dx+ox+(x%2==0 and .5 or 0)
+    local d=y/2+oy-0.5--旋转中心距离下底的高度
+    c.y=dy+d
+end
 function fieldLib.coincide(player,offX,offY)
     local c,ls=player.cur,player.loosen
     if not c.piece or #c.piece==0 then error("Fuck you!") end

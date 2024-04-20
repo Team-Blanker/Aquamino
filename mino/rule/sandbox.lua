@@ -1,5 +1,5 @@
-local ZNHJ={}
-function ZNHJ.init(P,mino)
+local sb={}
+function sb.init(P,mino)
     scene.BG=require('BG/stars') --scene.BG.init()
 
     --3 4 5春天 6 7 8夏天 9 10 11 秋天 12 1 2 冬天
@@ -26,13 +26,4 @@ function ZNHJ.init(P,mino)
         v.LDRInit=1e99 v.FDelay=5 v.LDelay=1e99 v.LDR=1e99
     end
 end
-
---[[local b=require'mino/blocks'
-function ZNHJ.onPieceEnter(player)
-    local c=player.cur
-    c.piece=b.giant(c.piece)
-    if (c.x+c.piece[1][1])%1~=0 then
-        c.x,c.y=c.x+.5,c.y+.5
-    end
-end]]
-return ZNHJ
+return sb
