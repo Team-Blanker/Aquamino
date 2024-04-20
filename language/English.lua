@@ -4,6 +4,20 @@ return {
         txt="A very small percent of people may experience epilepsy symptoms when exposed to specific visual images, including flashing lights or patterns that may appear in video games. \nThese symptoms include dizziness, blurred vision, eye or face twitching,\nlimb twitching, disorientation, confusion, or even loss of consciousness. \nEven people have no history of seizures or epilepsy may experience such symptoms while playing. \n\nIf you experience any symptoms, please stop playing immediately and consult your doctor.",
         txtScale=40/128,txtWidth=4500
     },
+    modeName={
+        ['40 lines']="Sprint",
+        marathon="Marathon",
+        ['ice storm']="Ice Storm",
+        thunder="Thunder",
+        smooth="Sprint Smooth",
+        master="Master",
+        multitasking="Multitasking",
+        sandbox="Sandbox",
+        ['dig 40']="Cheese",
+        laser="Laser",
+        conf_test="conf_test",
+        idea_test="idea_test"
+    },
     intro={
         start="Press any key to start",
         mode={"Practice","Challenge","Mystery","Phun"}

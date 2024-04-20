@@ -116,8 +116,8 @@ function mino.curIns(player)
         C.O=table.remove(player.NO,1)
         C.name=table.remove(player.next,1)
         C.piece=table.remove(player.NP,1)
-        C.x=ceil(player.w/2)+B.Soff[C.name][1]
-        C.y=player.h+1+B.Soff[C.name][2]
+        if mino.rule.onPieceSummon then mino.rule.onPieceSummon(player,mino) end
+        fLib.entryPlace(player)
 
         A.prePiece,A.drawPiece=T.copy(C.piece),T.copy(C.piece)
         for i=1,#A.prePiece do
@@ -127,7 +127,7 @@ function mino.curIns(player)
         player.canHold=true C.kickOrder=nil
     elseif player.hold.name then mino.hold(player)
     else C.piece,C.name=nil,nil end
-    if #player.next<=21 then NG[mino.seqGenType](mino.bag,player.next) end
+    if #player.next<=player.preview then NG[mino.seqGenType](mino.bag,player.next) end
     player.MTimer,player.DTimer=min(player.MTimer,S.ctrl.ASD),min(player.DTimer,S.ctrl.SD_ASD)
     player.LDR=player.LDRInit player.LTimer=0
 
@@ -137,12 +137,12 @@ function mino.curIns(player)
         mino.Ins20GDrop(player) end
     end
     player.started=true
-    if mino.rule.onPieceEnter then mino.rule.onPieceEnter(player) end
+    if mino.rule.onPieceEntry then mino.rule.onPieceEntry(player) end
     if C.piece then player.cur.ghostY=fLib.getGhostY(player) end
 end
 function mino.checkClear(player,comboBreak,delayBreak)
     local his=player.history
-    
+
     if his.line>0 then
         if delayBreak or player.CDelay==0 then fLib.eraseEmptyLine(player)
         else mino.addEvent(player,player.CDelay,'eraseEmptyLine') end
@@ -161,12 +161,15 @@ function mino.hold(player)
         H.x,H.y,C.x,C.y=C.x,C.y,H.x,H.y
         while C.piece and coincide(player) and C.y<player.h+B.Soff[C.name][2] do C.y=C.y+1 end
     elseif player.hold.mode=='S' then
-    if C.name then
-        C.x,C.y=ceil(player.w/2)+B.Soff[C.name][1],player.h+1+B.Soff[C.name][2]
+    if C.name and C.piece then
+        fLib.entryPlace(player)
         C.O=mino.orient[C.name]
 
-        A.prePiece=T.copy(C.piece)
+        A.prePiece,A.drawPiece=T.copy(C.piece),T.copy(C.piece)
         for i=1,#A.prePiece do
+            A.prePiece[i][1],A.prePiece[i][2]=A.prePiece[i][1]+C.x,A.prePiece[i][2]+C.y
+        end
+        for i=1,#A.drawPiece do
             A.prePiece[i][1],A.prePiece[i][2]=A.prePiece[i][1]+C.x,A.prePiece[i][2]+C.y
         end
     end
@@ -865,8 +868,9 @@ function mino.draw()
     if mino.paused then
         pause.button.draw()
         gc.setColor(1,1,1)
+        gc.printf(user.lang.modeName[mino.mode],font.Exo_2,400,-320,4096,'right',0,.4,.4,4096,84)
         gc.printf(S.winState==0 and user.lang.game.paused or user.lang.game.result,
-            font.Exo_2,0,-440,65536,'center',0,1,1,32768,84)
+            font.Exo_2,0,-440,4096,'center',0,.9,.9,2048,84)
         gc.printf(curPlayTxt,font.Exo_2,0,330,65536,'center',0,.4,.4,32768,84)
     end
 end
