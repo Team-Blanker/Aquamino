@@ -24,6 +24,7 @@ function menu.init()
         menu.modeTxt[k]=gc.newText(font.Exo_2,v)
     end
     menu.lvl=1
+    menu.rCount=0
 
     BUTTON.create('setting',{
         x=-600,y=-400,type='rect',w=150,h=150,
@@ -84,6 +85,15 @@ function menu.keyP(k)
         if k=='left' or k=='kp4' then menu.modeKey=(menu.modeKey-2)%len+1
         elseif k=='right' or k=='kp6' then menu.modeKey=menu.modeKey%len+1
         elseif k=='r' then menu.modeKey=rand(1,#menu.modelist)
+            menu.rCount=menu.rCount+1
+            if menu.rCount>=16 then
+                scene.dest='game' scene.destScene=require'mino/game'
+                scene.swapT=.7 scene.outT=.3
+                scene.anim=function() anim.cover(.3,.4,.3,0,0,0) end
+
+                scene.sendArg='idea_test'
+                menu.send=menu.gameSend
+            end
         end
     elseif menu.lvl==2 then
         scene.dest='game' scene.destScene=require'mino/game'
