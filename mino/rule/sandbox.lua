@@ -26,4 +26,13 @@ function ZNHJ.init(P,mino)
         v.LDRInit=1e99 v.FDelay=5 v.LDelay=1e99 v.LDR=1e99
     end
 end
+
+--[[local b=require'mino/blocks'
+function ZNHJ.onPieceEnter(player)
+    local c=player.cur
+    c.piece=b.giant(c.piece)
+    if (c.x+c.piece[1][1])%1~=0 then
+        c.x,c.y=c.x+.5,c.y+.5
+    end
+end]]
 return ZNHJ

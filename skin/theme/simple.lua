@@ -8,6 +8,11 @@ function simple.init(player)
     simple.next=gc.newText(font.Bender_B,"N E X T") simple.hold=gc.newText(font.Bender_B,"H O L D")
     simple.nextW,simple.nextH=simple.next:getWidth(),simple.next:getHeight()
     simple.holdW,simple.holdH=simple.hold:getWidth(),simple.hold:getHeight()
+
+    simple.winTxt=gc.newText(font.Bender_B,gts.win) simple.loseTxt=gc.newText(font.Bender_B,gts.lose)
+    simple.wtW,simple.wtH=simple.winTxt:getWidth(),simple.winTxt:getHeight()
+    simple.ltW,simple.ltH=simple.loseTxt:getWidth(),simple.loseTxt:getHeight()
+
     player.clearInfo=T.copy(player.history)
     player.PCInfo={} player.clearTxtTimer=0 player.clearTxtTMax=0
     simple.parList={}
@@ -182,12 +187,14 @@ end
 
 function simple.loseAnim(player)
     setColor(1,1,1,player.deadTimer*4)
-    printf(gts.lose,font.Bender_B,0,0,400,'center',0,1,1,200,76)
+    draw(simple.loseTxt,-simple.ltW/2,-simple.ltH/2)
 end
 function simple.winAnim(player)
     setColor(1,1,1,1-player.winTimer*4)
-    printf(gts.win,font.Bender_B,0,0,400,'center',0,1+player.winTimer*4,1+player.winTimer*4,200,76)
+    draw(simple.winTxt,0,0,0,1+player.winTimer*4,1+player.winTimer*4,simple.wtW/2,simple.wtH/2)
+    --printf(gts.win,font.Bender_B,0,0,400,'center',0,1+player.winTimer*4,1+player.winTimer*4,200,76)
     setColor(1,1,1)
-    printf(gts.win,font.Bender_B,0,0,400,'center',0,1,1,200,76)
+    draw(simple.winTxt,0,0,0,1,1,simple.wtW/2,simple.wtH/2)
+    --printf(gts.win,font.Bender_B,0,0,400,'center',0,1,1,200,76)
 end
 return simple

@@ -15,7 +15,7 @@ function rule.onLineClear(player,mino)
 end
 function rule.underFieldDraw(player)
     gc.setColor(1,1,1)
-    gc.printf(""..max(40-player.line,0),font.JB,-18*player.w-110,-48,6000,'center',0,.75,.75,3000,0)
+    gc.printf(""..max(40-player.line,0),font.JB,-18*player.w-110,0,800,'center',0,.75,.75,400,84)
 end
 function rule.overFieldDraw(player)
     gc.push()

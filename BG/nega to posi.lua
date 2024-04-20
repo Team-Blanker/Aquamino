@@ -40,7 +40,7 @@ end
 local rn,gn,bn, rp,gp,bp
 function bg.draw()
     local beat=(offset+scene.time)*BPM/60
-    if beat>loopStartBeat then gc.clear(COLOR.hsv(beat%16*3/8,1,.14))
+    if beat>loopStartBeat then gc.clear(COLOR.hsv(beat/4,1,.14))
     else gc.clear(.03,.03,.03) end
 
     rn,gn,bn=1-bg.progressN,1-.75*bg.progressN,1

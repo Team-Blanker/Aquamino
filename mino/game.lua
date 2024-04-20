@@ -113,19 +113,20 @@ function mino.curIns(player)
     local his=player.history
     his.line=0 his.spin=false his.mini=false his.dropHeight=0
     if player.next[1] then
-        C.x,C.y=ceil(player.w/2)+B.Soff[player.next[1]][1],player.h+1+B.Soff[player.next[1]][2]
+        C.O=table.remove(player.NO,1)
+        C.name=table.remove(player.next,1)
         C.piece=table.remove(player.NP,1)
+        C.x=ceil(player.w/2)+B.Soff[C.name][1]
+        C.y=player.h+1+B.Soff[C.name][2]
+
         A.prePiece,A.drawPiece=T.copy(C.piece),T.copy(C.piece)
         for i=1,#A.prePiece do
             A.prePiece[i][1],A.prePiece[i][2]=A.prePiece[i][1]+C.x,A.prePiece[i][2]+C.y
             A.drawPiece[i][1],A.drawPiece[i][2]=A.drawPiece[i][1]+C.x,A.drawPiece[i][2]+C.y
         end
-        C.O=table.remove(player.NO,1)
-        C.name=table.remove(player.next,1)
         player.canHold=true C.kickOrder=nil
     elseif player.hold.name then mino.hold(player)
     else C.piece,C.name=nil,nil end
-    if C.piece then player.cur.ghostY=fLib.getGhostY(player) end
     if #player.next<=21 then NG[mino.seqGenType](mino.bag,player.next) end
     player.MTimer,player.DTimer=min(player.MTimer,S.ctrl.ASD),min(player.DTimer,S.ctrl.SD_ASD)
     player.LDR=player.LDRInit player.LTimer=0
@@ -137,6 +138,7 @@ function mino.curIns(player)
     end
     player.started=true
     if mino.rule.onPieceEnter then mino.rule.onPieceEnter(player) end
+    if C.piece then player.cur.ghostY=fLib.getGhostY(player) end
 end
 function mino.checkClear(player,comboBreak,delayBreak)
     local his=player.history
@@ -162,6 +164,7 @@ function mino.hold(player)
     if C.name then
         C.x,C.y=ceil(player.w/2)+B.Soff[C.name][1],player.h+1+B.Soff[C.name][2]
         C.O=mino.orient[C.name]
+
         A.prePiece=T.copy(C.piece)
         for i=1,#A.prePiece do
             A.prePiece[i][1],A.prePiece[i][2]=A.prePiece[i][1]+C.x,A.prePiece[i][2]+C.y
@@ -321,7 +324,7 @@ function mino.keyP(k)
             if OP.event[1] then--提前操作
                 if T.include(S.keySet.hold,k) and OP.canInitHold then
                     OP.initOpQueue[#OP.initOpQueue+1]=function ()
-                        mino.hold(OP) mino.sfxPlay.hold(OP)
+                        mino.hold(OP) if mino.sfxPlay.hold then mino.sfxPlay.hold(OP) end
                     if not C.name then local LDR=OP.LDR mino.curIns(OP) OP.LDR=LDR end
                     OP.canHold=false OP.canInitHold=true
                     end
@@ -336,7 +339,7 @@ function mino.keyP(k)
                         end
                         OP.moveDir='L'
                         if love.keyboard.isDown(S.keySet.MR) then OP.MTimer=0 end
-                        mino.sfxPlay.move(OP,success,landed)
+                        if mino.sfxPlay.move then mino.sfxPlay.move(OP,success,landed) end
                         OP.canInitMove=true
                     end
                     OP.canInitMove=false
@@ -350,7 +353,7 @@ function mino.keyP(k)
                         end
                         OP.moveDir='R'
                         if love.keyboard.isDown(S.keySet.ML) then OP.MTimer=0 end
-                        mino.sfxPlay.move(OP,success,landed)
+                        if mino.sfxPlay.move then mino.sfxPlay.move(OP,success,landed) end
                         OP.canInitMove=true
                     end
                     OP.canInitMove=false
@@ -365,7 +368,7 @@ function mino.keyP(k)
                         end
                         OP.canInitRotate=true
 
-                        mino.sfxPlay.rotate(OP,C.kickOrder,mino.rule.allowSpin[C.name] and his.spin)
+                        if mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,his.spin) end
                     end
                     OP.canInitRotate=false
 
@@ -379,7 +382,7 @@ function mino.keyP(k)
                         end
                         OP.canInitRotate=true
 
-                        mino.sfxPlay.rotate(OP,C.kickOrder,mino.rule.allowSpin[C.name] and his.spin)
+                        if mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,his.spin) end
                     end
                     OP.canInitRotate=false
                 elseif T.include(S.keySet.flip,k) and OP.canInitRotate then
@@ -392,7 +395,7 @@ function mino.keyP(k)
                         end
                         OP.canInitRotate=true
 
-                        mino.sfxPlay.rotate(OP,C.kickOrder,mino.rule.allowSpin[C.name] and his.spin)
+                        if mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,his.spin) end
                     end
                     OP.canInitRotate=false
                 end
@@ -434,7 +437,7 @@ function mino.keyP(k)
                         else his.spin,his.mini=false,false end
                     end
 
-                    mino.sfxPlay.rotate(OP,C.kickOrder,mino.rule.allowSpin[C.name] and his.spin)
+                    mino.sfxPlay.rotate(OP,C.kickOrder,his.spin)
 
                 elseif T.include(S.keySet.CCW,k) then mino.setAnimPrePiece(OP)
                     C.kickOrder=fLib.kick(OP,'L')
@@ -448,7 +451,7 @@ function mino.keyP(k)
                         else his.spin,his.mini=false,false end
                     end
 
-                    mino.sfxPlay.rotate(OP,C.kickOrder,mino.rule.allowSpin[C.name] and his.spin)
+                    mino.sfxPlay.rotate(OP,C.kickOrder,his.spin)
 
                 elseif T.include(S.keySet.flip,k) then mino.setAnimPrePiece(OP)
                     C.kickOrder=fLib.kick(OP,'F')
@@ -462,7 +465,7 @@ function mino.keyP(k)
                         else his.spin,his.mini=false,false end
                     end
 
-                    mino.sfxPlay.rotate(OP,C.kickOrder,mino.rule.allowSpin[C.name] and his.spin)
+                    mino.sfxPlay.rotate(OP,C.kickOrder,his.spin)
 
                 elseif T.include(S.keySet.HD,k) then --硬降
                     local xmin,xmax,ymin,ymax=B.edge(C.piece)

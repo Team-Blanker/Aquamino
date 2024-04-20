@@ -78,8 +78,6 @@ for i=1,5 do rand() end
 
 do
     gc.setDefaultFilter('linear','linear',16)
-    fs.createDirectory('conf')
-    fs.createDirectory('player')
 end
 
 font={
@@ -177,7 +175,7 @@ scene={
 }
 
 --scene.cur=require('territory/territory')
---scene.cur=require('mino/game') scene.cur.mode='laser'
+--scene.cur=require('mino/game') scene.cur.mode='bot_test'
 
 win.x,win.y=love.window.getPosition()
 win.x_win,win.y_win=love.window.getPosition()

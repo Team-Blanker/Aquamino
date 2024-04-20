@@ -1,4 +1,18 @@
 --necessary loading.
+local fs=love.filesystem
+fs.createDirectory('conf')
+fs.createDirectory('player')
+fs.createDirectory('bot')
+
+
+local bot=fs.newFile('mino/bot/dllai.dll'):read()
+local saveBot=fs.newFile('bot/dllai.dll')
+saveBot:open('w')
+saveBot:write(bot)
+saveBot:close()
+
+--require('mino/bot/ai')
+
 do
     local audio=require'scene/game conf/audio'
     audio.read() audio.save()

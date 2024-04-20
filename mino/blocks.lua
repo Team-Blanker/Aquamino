@@ -80,5 +80,17 @@ function block.getX(b)
     end
     return n
 end
+function block.giant(b)--使方块巨大化并带上giant标签
+    local gb={}
+    local m,n
+    for i=1,#b do
+        for j=0,3 do
+            m=j%2-.5 n=j/2<1 and -.5 or .5
+            gb[#gb+1]={2*b[i][1]+m,2*b[i][2]+n}
+        end
+    end
+    gb.sz='giant'
+    return gb
+end
 
 return block

@@ -129,6 +129,7 @@ function fieldLib.isImmobile(player)
 end
 function fieldLib.corner(player)
     local x,y,c=player.cur.x,player.cur.y,0
+    if x%1~=0 then return 4 end
     local bt=fieldLib.blockType
     if next(bt(player,x-1,y-1)) then c=c+1 end
     if next(bt(player,x-1,y+1)) then c=c+1 end
