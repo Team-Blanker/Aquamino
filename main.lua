@@ -145,7 +145,6 @@ win.H=gc.getHeight()
 win.W=gc.getWidth()
 
 user={
-    freshman=true,
     langName='English',
     lang=nil
 }

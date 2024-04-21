@@ -36,7 +36,9 @@ local function btdraw(ch,w,h,o,t)
     edgeDraw(w,h,16)
 end
 
+local introCount=0
 function intro.init()
+    introCount=introCount+1
     local it=user.lang.intro
     intro.choose=0
     intro.lvl2animT=0
@@ -170,7 +172,7 @@ function intro.keyP(k)
     if intro.lvl==1 then
         if k=='escape' then love.event.quit()
         elseif not mytable.include(banned,k) then
-            if win.stat.launch==1 and user.freshman then
+            if win.stat.launch==1 and introCount==1 then
                 scene.switch({
                 dest='game conf',destScene=require('scene/game conf/conf_main'),swapT=.7,outT=.3,
                 anim=function() anim.cover(.3,.4,.3,0,0,0) end
@@ -178,7 +180,6 @@ function intro.keyP(k)
                 function scene.cur.send()
                     scene.cur.exitScene='scene/intro'
                 end
-                user.freshman=false
             elseif k==tchar:sub(cnum,cnum) then cnum=cnum+1
                 if cnum==tchar:len()+1 then
                     cnum=1
@@ -193,7 +194,15 @@ function intro.keyP(k)
 end
 function intro.mouseP(x,y,button,istouch)
     if intro.lvl==1 then
-        intro.lvl=2
+        if win.stat.launch==1 and introCount==1 then
+            scene.switch({
+            dest='game conf',destScene=require('scene/game conf/conf_main'),swapT=.7,outT=.3,
+            anim=function() anim.cover(.3,.4,.3,0,0,0) end
+            })
+            function scene.cur.send()
+                scene.cur.exitScene='scene/intro'
+            end
+        else intro.lvl=2 end
     else
         BUTTON.click(x,y,button,istouch)
     end
