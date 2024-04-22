@@ -530,23 +530,26 @@ function mino.keyP(k)
 
                 --推土机！
                 if mino.rule.allowPush[C.name] and C.kickOrder then
-                    local reset=true
+                    local reset=true local loose,push
                     if OP.moveDir=='R' and love.keyboard.isDown(S.keySet.MR) and coincide(OP,1,0) then
                         if T.include(S.keySet.CW,k) or T.include(S.keySet.CCW,k) or T.include(S.keySet.flip,k) then reset=false
-                        OP.pushAtt=OP.pushAtt+1 fLib.pushField(OP,'R')
+                        OP.pushAtt=OP.pushAtt+1 loose,push=fLib.pushField(OP,'R')
                         end
                     end
                     if OP.moveDir=='L' and love.keyboard.isDown(S.keySet.ML) and coincide(OP,-1,0) then
                         if T.include(S.keySet.CW,k) or T.include(S.keySet.CCW,k) or T.include(S.keySet.flip,k) then reset=false
-                        OP.pushAtt=OP.pushAtt+1 fLib.pushField(OP,'L')
+                        OP.pushAtt=OP.pushAtt+1 loose,push=fLib.pushField(OP,'L')
                         end
                     end
                     if love.keyboard.isDown(S.keySet.SD) and coincide(OP,0,-1) then
                         if T.include(S.keySet.CW,k) or T.include(S.keySet.CCW,k) or T.include(S.keySet.flip,k) then reset=false
-                        OP.pushAtt=OP.pushAtt+1 fLib.pushField(OP,'D')
+                        OP.pushAtt=OP.pushAtt+1 loose,push=fLib.pushField(OP,'D')
                         end
                     end
                     if reset then OP.pushAtt=0 end
+
+                    if loose and mino.sfxPlay.loose then mino.sfxPlay.loose(OP) end
+                    if push and mino.sfxPlay.push then mino.sfxPlay.push(OP) end
                 end
 
                 --最高下落速度
@@ -556,6 +559,7 @@ function mino.keyP(k)
                     if h>0 then mino.sfxPlay.touch(OP,true) end
                 end
 
+                --给皮肤传按键事件
                 local keyAct
                 for key,v in pairs(S.keySet) do
                     if T.include(v,k) then keyAct=key break end

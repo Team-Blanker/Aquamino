@@ -22,7 +22,9 @@ function krystal.addSFX()
         spin2='sfx/game/krystal/spin2.wav',
         spin3='sfx/game/krystal/spin3.wav',
         PC='sfx/game/krystal/PC.wav',
-        B2B='sfx/game/krystal/B2B.wav',
+
+        loose='sfx/game/krystal/loose.wav',
+        push='sfx/game/krystal/push.wav'
     })
 end
 function krystal.move(player,success,landed)
@@ -50,7 +52,13 @@ function krystal.clear(player)
     local clearType=(his.spin and 'spin' or '')..min(his.line,(his.spin and 3 or 4))
     local pitch=(his.line==0 or his.spin) and 1 or min(2^((his.combo-1)/12),2.848)
     sfx.play(clearType,1,pitch)
-    if his.PC then sfx.play('PC') end  if his.B2B>0 and his.line>0 then sfx.play('B2B') end
+    if his.PC then sfx.play('PC') end
+end
+function krystal.loose(player)
+    sfx.play('loose')
+end
+function krystal.push(player)
+    sfx.play('push')
 end
 function krystal.lose()
     sfx.play('lose')
