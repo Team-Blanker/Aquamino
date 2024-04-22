@@ -29,6 +29,9 @@ function otto.addSFX()
         B2B='sfx/game/otto/B2B.wav',
         megacombo='sfx/game/otto/megacombo.wav',
         wtf='sfx/game/otto/wtf.wav',
+
+        loose='sfx/game/otto/loose.wav',
+        push='sfx/game/otto/push.wav'
     })
 end
 function otto.start()
@@ -68,6 +71,12 @@ function otto.clear(player)
     if his.PC then sfx.play('PC') end
     if his.B2B>0 and his.line>0 then sfx.play('B2B') end
     if his.combo>=18 then sfx.play('megacombo') end
+end
+function otto.loose(player)
+    sfx.play('loose')
+end
+function otto.push(player)
+    sfx.play('push')
 end
 function otto.win()
     sfx.play('win')
