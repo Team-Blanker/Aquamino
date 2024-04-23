@@ -117,7 +117,10 @@ return {
         "冰风暴模式来自于宝石迷阵3的同名模式",
         "在Aquamino，你可以做到T旋消四！",
         "最好不要在游玩的时候拖动游戏窗口",
-        "唉，weak table"
+        "唉，weak table",
+        "脑袋空空……",
+        "少打方块多读书",
+        "远离现充。"
     },tipScale=.4,
     territory={info="空格/Enter 切换暂停/运行状态\nesc 退出"}
 }
