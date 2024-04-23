@@ -73,7 +73,7 @@ function laser.init(P,mino)
     scene.BG=require('BG/Symphonic Laser') scene.BG.init()
 
     mino.musInfo="Syun Nakano - Symphonic Laser"
-    mus.add('music/Hurt Record/Symphonic Laser','whole','mp3',45,200*60/128)
+    mus.add('music/Hurt Record/Symphonic Laser','whole','ogg',45,200*60/128)
     --mus.start()
     sfx.add({
         lvup='sfx/rule/laser/level up.ogg',

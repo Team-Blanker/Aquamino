@@ -5,7 +5,7 @@ function marathon.init(P,mino)
     })
     mino.musInfo="georhythm - nega to posi"
     scene.BG=require('BG/nega to posi') scene.BG.init()
-    mus.add('music/Hurt Record/nega to posi','whole','mp3',61.847,224*60/130)
+    mus.add('music/Hurt Record/nega to posi','whole','ogg',61.847,224*60/130)
     mus.start()
     mino.stacker.ctrl={
        ASD=.15,ASP=.03,SDType='D',SD_ASD=0,SD_ASP=.03

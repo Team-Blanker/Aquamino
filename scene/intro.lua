@@ -53,10 +53,10 @@ function intro.init()
 
     if not mus.checkTag('menu') then
         if birthday then
-            mus.add('music/Hurt Record/Winter Story','whole','mp3',7.579,96)
+            mus.add('music/Hurt Record/Winter Story','whole','ogg',7.579,96)
         mus.start()
         else
-        mus.add('music/Hurt Record/Nine Five','parts','mp3')
+        mus.add('music/Hurt Record/Nine Five','parts','ogg')
         mus.start()
         end
         mus.setTag({'menu'})
@@ -236,7 +236,7 @@ function intro.draw()
         gc.draw(logo,0,-200+12*sin(scene.time/5%2*math.pi)-600*v*v,0,1600/w,1600/w,w/2,h/2)
 
         gc.setColor(1,1,1,1-v)
-        gc.printf(user.lang.intro.start,font.Exo_2,-57257,150,114514,'center',0,1,1)
+        gc.printf(user.lang.intro.start,font.Exo_2,0,300,4000,'center',0,.625,.625,2000,84)
 
         gc.printf(intro.tip[intro.order],font.Exo_2,0,450,114514,'center',0,user.lang.tipScale,user.lang.tipScale,57257,84)
 

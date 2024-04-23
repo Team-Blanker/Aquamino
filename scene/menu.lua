@@ -11,10 +11,10 @@ function menu.init()
     if scene.BG.init then scene.BG.init() end
     if not mus.checkTag('menu') then
         if win.date.month==8 and win.date.day==14 then
-        mus.add('music/Hurt Record/Winter Story','whole','mp3',7.579,96)
+        mus.add('music/Hurt Record/Winter Story','whole','ogg',7.579,96)
         mus.start()
         else
-        mus.add('music/Hurt Record/Nine Five','parts','mp3')
+        mus.add('music/Hurt Record/Nine Five','parts','ogg')
         mus.start()
         end
         mus.setTag({'menu'})

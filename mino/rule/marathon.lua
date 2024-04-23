@@ -9,7 +9,7 @@ function marathon.init(P,mino)
     local r,g,b=COLOR.hsv(rand()*6,.8,.8)
     marathon.finalColor={r,g,b}
     mino.musInfo="つかスタジオ - リズムよく心地よく汗を流す時のテーマ"
-    mus.add('music/Hurt Record/sweat','whole','mp3',20.879,336*60/125)
+    mus.add('music/Hurt Record/sweat','whole','ogg',20.879,336*60/125)
     mus.start()
     sfx.add({
         lvup='sfx/rule/marathon/level up.ogg'

@@ -20,7 +20,7 @@ function thunder.init(P,mino)
     scene.BG.density=40 scene.BG.angle=0
     scene.BG.thunderDensity=0
     mino.musInfo="DiscreetDragon - Thunderbolt"
-    mus.add('music/Hurt Record/Thunderbolt','whole','mp3',15.857,240*6/14)
+    mus.add('music/Hurt Record/Thunderbolt','whole','ogg',15.857,240*6/14)
     mus.start()
     sfx.add({
         lvup='sfx/rule/thunder/level up.ogg',

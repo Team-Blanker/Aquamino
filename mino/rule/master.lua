@@ -24,7 +24,7 @@ function master.init(P,mino)
     scene.BG=require('BG/rise') scene.BG.init()
     scene.BG.density=1.5
     mino.musInfo="アキハバラ所司代 - TENSION"
-    mus.add('music/Hurt Record/TENSION','whole','mp3',1.761,160*60/84)
+    mus.add('music/Hurt Record/TENSION','whole','ogg',1.761,160*60/84)
     mus.start()
     sfx.add({
         lvup='sfx/rule/master/level up.ogg'
