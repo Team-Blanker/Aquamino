@@ -95,11 +95,17 @@ end
 
 --方块旋转&spin判定
 
-local gOff={--大方块附加的踢墙偏移
-    R={{ 0, 0},{ 0,-1},{ 0, 1},{-1, 0},{-1,-1},{-1, 1},{ 1, 0},{1, -1},{ 1, 1}},
-    L={{ 0, 0},{ 0,-1},{ 0, 1},{ 1, 0},{ 1,-1},{ 1, 1},{-1, 0},{-1,-1},{-1, 1}},
-    F={{ 0, 0},{-1, 0},{ 1, 0},{ 0,-1},{-1,-1},{ 1,-1},{ 0, 1},{-1, 1},{ 1, 1}}
+local gOffd={--大方块附加的踢墙偏移
+    R={{ 0, 0},{ 0,-1},{ 0, 1},{-1, 0},{-1,-1},{-1, 1}},
+    L={{ 0, 0},{ 0,-1},{ 0, 1},{ 1, 0},{ 1,-1},{ 1, 1}},
+    F={{ 0, 0},{-1, 0},{ 1, 0},{ 0,-1},{-1,-1},{ 1,-1}}
 }
+local gOffu={--大方块附加的踢墙偏移
+    R={{ 1, 0},{1, -1},{ 1, 1}},
+    L={{-1, 0},{-1,-1},{-1, 1}},
+    F={{ 0, 1},{-1, 1},{ 1, 1}}
+}
+
 function fieldLib.kick(player,mode)
     local cur=player.cur
     --local originPiece,originO=T.copy(cur.piece),cur.O--先存一个，万一你没踢成功呢
@@ -113,11 +119,18 @@ function fieldLib.kick(player,mode)
         if ukick and player.LDR>0 then
             local x,y
             if cur.piece.sz=='giant' then
-                for i=1,#ukick do  for j=1,#gOff[mode] do
-                    x,y=ukick[i][1]*2+gOff[mode][j][1],ukick[i][2]*2+gOff[mode][j][2]
-                    if not fieldLib.coincide(player,x,y) then cur.x,cur.y=cur.x+x,cur.y+y
-                    return i end
-                end  end
+                for i=1,#ukick do
+                    for j=1,#gOffd[mode] do
+                        x,y=ukick[i][1]*2+gOffd[mode][j][1],ukick[i][2]*2+gOffd[mode][j][2]
+                        if not fieldLib.coincide(player,x,y) then cur.x,cur.y=cur.x+x,cur.y+y
+                        return i end
+                    end
+                    for j=1,#gOffu[mode] do
+                        x,y=ukick[i][1]*2+gOffu[mode][j][1],ukick[i][2]*2+gOffu[mode][j][2]
+                        if not fieldLib.coincide(player,x,y) then cur.x,cur.y=cur.x+x,cur.y+y
+                        return i end
+                    end
+                end
             else
                 for i=1,#ukick do
                     x,y=ukick[i][1],ukick[i][2]
