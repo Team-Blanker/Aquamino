@@ -20,7 +20,7 @@ function rule.onPieceSummon(player)
     if rand()<1/2 then
         table.remove(c.piece,rand(#c.piece))
     end
-    if rand()<1/7 then
+    if rand()<1/14 then
         c.piece=b.giant(c.piece)
     end
 end
