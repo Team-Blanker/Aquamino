@@ -10,6 +10,7 @@ return {
         ['ice storm']="Ice Storm",
         thunder="Thunder",
         smooth="Sprint Smooth",
+        levitate="Levitate",
         master="Master",
         multitasking="Multitasking",
         sandbox="Sandbox",
@@ -23,18 +24,6 @@ return {
         mode={"Practice","Challenge","Mystery","Phun"}
     },
     menu={
-        modeName={
-            ['40 lines']="Sprint",
-            marathon="Marathon",
-            ['ice storm']="Ice Storm",
-            thunder="Thunder",
-            smooth="Sprint Smooth",
-            master="Master",
-            multitasking="Multitasking",
-            sandbox="Sandbox",
-            ['dig 40']="Cheese",
-            laser="Laser"
-        },
         illust="Double click or hit Enter to play.\nHit R to randomly choose a mode.",
         iScale=.4
     },

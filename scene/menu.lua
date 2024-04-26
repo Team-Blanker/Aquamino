@@ -6,7 +6,7 @@ local flashT,enterT,clickT=0,0,0
 menu.modelist={'40 lines','marathon','dig 40','sandbox'}
 function menu.init()
     m=user.lang.menu
-    menu.modeName=m.modeName
+    menu.modeName=user.lang.modeName
     if menu.bgName then scene.BG=require('BG/'..menu.bgName) else scene.BG=require('BG/pond') end
     if scene.BG.init then scene.BG.init() end
     if not mus.checkTag('menu') then
@@ -20,7 +20,7 @@ function menu.init()
         mus.setTag({'menu'})
     end
     menu.modeTxt={}
-    for k,v in pairs(user.lang.menu.modeName) do
+    for k,v in pairs(user.lang.modeName) do
         menu.modeTxt[k]=gc.newText(font.Exo_2,v)
     end
     menu.lvl=1

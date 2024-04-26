@@ -8,7 +8,7 @@ local banned={'f1','f2','f3','f4','f5','f6','f7','f8','f9','f10','f11','f12', 'f
 local intro={}
 local mode={
     {'40 lines','marathon','dig 40','sandbox'},
-    {'smooth','thunder','ice storm','master','laser','multitasking'},
+    {'smooth','levitate','thunder','ice storm','master','laser','multitasking'},
     {},
     {}
 }
@@ -22,10 +22,6 @@ do
     gc.setCanvas()
 end
 
-local function edgeDraw(w,h,l)
-    gc.rectangle('fill',-w/2,-h/2,w,l) gc.rectangle('fill',-w/2,h/2-l,w,l)
-    gc.rectangle('fill',-w/2,-h/2,l,h) gc.rectangle('fill',w/2-l,-h/2,l,h)
-end
 local function btdraw(ch,w,h,o,t)
     if unlocked[o] then
         gc.setColor(COLOR.hsv(ch,.6,.6,intro.choose==o and .35 or .15)) gc.rectangle('fill',-w/2,-h/2,w,h)
@@ -33,7 +29,8 @@ local function btdraw(ch,w,h,o,t)
     else gc.setColor(.5,.5,.5,.2) gc.rectangle('fill',-w/2,-h/2,w,h) end
 
     if unlocked[o] then gc.setColor(COLOR.hsv(ch,.5,.8,1)) else gc.setColor(.8,.8,.8) end
-    edgeDraw(w,h,16)
+    gc.setLineWidth(16)
+    gc.rectangle('line',-w/2+8,-h/2+8,w-16,h-16)
 end
 
 local introCount=0
@@ -86,7 +83,7 @@ function intro.init()
         end,
         always=function(dt,bt)
             local v=min(intro.lvl2animT/.4,1)
-            bt.x=-480-960*(1-v)*(1-v)
+            bt.x=-480-1000*(1-v)*(1-v)
         end
     },.4)
     BUTTON.create('challenge',{
@@ -112,7 +109,7 @@ function intro.init()
         end,
         always=function(dt,bt)
             local v=min(intro.lvl2animT/.4,1)
-            bt.x=480+960*(1-v)*(1-v)
+            bt.x=480+1000*(1-v)*(1-v)
         end
     },.4)
     BUTTON.create('mystery',{
@@ -137,7 +134,7 @@ function intro.init()
         end,
         always=function(dt,bt)
             local v=min(intro.lvl2animT/.4,1)
-            bt.x=-480-960*(1-v)*(1-v)
+            bt.x=-480-1000*(1-v)*(1-v)
         end
     },.4)
     BUTTON.create('phun',{
@@ -162,7 +159,7 @@ function intro.init()
         end,
         always=function(dt,bt)
             local v=min(intro.lvl2animT/.4,1)
-            bt.x=480+960*(1-v)*(1-v)
+            bt.x=480+1000*(1-v)*(1-v)
         end
     },.4)
 end

@@ -10,6 +10,7 @@ return {
         ['ice storm']="冰风暴",
         thunder="雷暴",
         smooth="丝滑40行",
+        levitate="飘浮 40行",
         master="宗师",
         multitasking="双线程",
         sandbox="沙盒子",
@@ -23,18 +24,6 @@ return {
         mode={"练习","挑战","秘境","理堂"}
     },
     menu={
-        modeName={
-            ['40 lines']="40行",
-            marathon="马拉松",
-            ['ice storm']="冰风暴",
-            thunder="雷暴",
-            smooth="丝滑40行",
-            master="宗师",
-            multitasking="双线程",
-            sandbox="沙盒子",
-            ['dig 40']="挖掘 40行",
-            laser="激光"
-        },
         illust="双击/按Enter键开始游戏\n按R键随机跳转",
         iScale=.6
     },
