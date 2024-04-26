@@ -4,7 +4,7 @@ local rule={}
 function rule.init(P,mino)
     mino.rule.allowPush={Z=true,S=true,J=true,L=true,T=true,O=true,I=true,}
     scene.BG=require('BG/jog') scene.BG.init(117.5,-0.443,0)
-    mino.musInfo="T.K Henry - LAsER"
+    mino.musInfo="Naoki Hirai - flex"
     mus.add('music/Hurt Record/flex','whole','ogg',.443,196*60/117.5)
     mus.start()
     P[1].line=0 P[1].LDRInit=20
