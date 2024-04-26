@@ -143,7 +143,6 @@ function thunder.onLineClear(player,mino)
     if player.point>=player.stormLv*100 then
         if player.stormLv==10 then mino.win(player) return end
         player.stormLv=min(player.stormLv+1,10) sfx.play('lvup')
-        player.FDelay=2^-((player.stormLv-1)/9*math.log(20,2))
 
         scene.BG.density=10+30*player.stormLv
         if player.stormLv>5 then scene.BG.thunderDensity=.2 scene.BG.angle=.25
