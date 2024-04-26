@@ -46,12 +46,13 @@ function fieldLib.newPlayer(arg)
         history={--上一个块放下的时候做了什么
             name=nil,piece={},x=0,y=0,O=0,
             dropHeight=0,kickOrder=0,
+            clearLine={},
             line=0,spin=false,mini=false,PC=false,combo=0,B2B=-1,push=0,
             CDelay=0,wide=0,
         },
         nWideDetect={},--空n列检测，仅消行时使用，不消就清空
         cur={
-            name=nil,piece={},x=5,y=21,O=0,ghostY=0,
+            name=nil,piece={},x=5,y=21,O=0,ghostY=0,spin=false,
             moveSuccess=false,
             kickOrder=0
         },

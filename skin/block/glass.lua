@@ -21,8 +21,8 @@ function skin.init(player)
 end
 function skin.keyP(player,k)
     if (k=='CW' or k=='CCW' or k=='flip') and player.cur.kickOrder then
-    player.spinAct=player.history.spin
-    if player.history.spin then player.skinSpinTimer=0 end
+    player.spinAct=player.cur.spin
+    if player.cur.spin then player.skinSpinTimer=0 end
     end
 end
 function skin.update(player,dt)
