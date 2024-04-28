@@ -21,7 +21,7 @@ function bg.draw()
     --if bg.pc==1 then gc.clear(0,.15,.15) else gc.clear(0,0,0) end
     gc.clear(0,.15,.15)
 
-    gc.setColor(1,1,1)
+    gc.setColor(1,1,1,.75+.25*max(1-beat%4,0))
     for i=0,3 do for j=1,p do
         gc.push()
         gc.rotate( (j%p/p)*2*math.pi*(i%2*2-1)+(i%2*2-1)*sin(beat%16/4*math.pi)*.01*math.pi)

@@ -3,6 +3,7 @@ local gc=love.graphics
 local rule={}
 function rule.init(P,mino)
     mino.rule.allowPush={Z=true,S=true,J=true,L=true,T=true,O=true,I=true,}
+    mino.rule.loosen.fallTPL=.1
     scene.BG=require('BG/jog') scene.BG.init(117.5,-0.443,0)
     mino.musInfo="Naoki Hirai - flex"
     mus.add('music/Hurt Record/flex','whole','ogg',.443,196*60/117.5)
