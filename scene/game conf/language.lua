@@ -1,10 +1,12 @@
 local lang={}
 local BUTTON,SLIDER=scene.button,scene.slider
+local langList={'English','zh-s','zh-t'}
 function lang.read()
-    lang.uage={'English'}
+    lang.uage={}
     if fs.getInfo('conf/lang') then
-        mytable.combine(lang.uage,json.decode(fs.newFile('conf/lang'):read()))
+        lang.uage=json.decode(fs.newFile('conf/lang'):read())
     end
+    if not mytable.include(langList,lang.uage[1]) then lang.uage[1]='English' end
     user.langName=lang.uage[1]
     user.lang=require('language/'..user.langName)
 end
@@ -35,8 +37,27 @@ function lang.init()
             })
         end
     },.2)
-    BUTTON.create('zh-CN',{
-        x=-400,y=0,type='rect',w=640,h=150,
+    BUTTON.create('zh-s',{
+        x=-500,y=0,type='rect',w=360,h=100,
+        draw=function(bt,t,ct)
+            local w,h=bt.w,bt.h
+            gc.setColor(.6,.4,.4,.8+t)
+            gc.rectangle('fill',-w/2,-h/2,w,h)
+            gc.setColor(.9,.6,.6)
+            gc.setLineWidth(3)
+            gc.rectangle('line',-w/2,-h/2,w,h)
+            gc.setColor(1,1,1)
+            gc.printf("简体中文",font.Exo_2,0,0,1280,'center',0,.5,.5,640,84)
+            gc.setColor(.9,.75,.6,1-4*ct)
+            gc.rectangle('line',-w/2-ct*80,-h/2-ct*80,w+ct*160,h+ct*160,6+ct*80)
+        end,
+        event=function()
+            lang.uage[1],user.langName="zh-s","zh-s"
+            user.lang=require('language/'..user.langName)
+        end
+    },.2)
+    BUTTON.create('zh-t',{
+        x=0,y=0,type='rect',w=360,h=100,
         draw=function(bt,t,ct)
             local w,h=bt.w,bt.h
             gc.setColor(.6,.5,.4,.8+t)
@@ -45,17 +66,17 @@ function lang.init()
             gc.setLineWidth(3)
             gc.rectangle('line',-w/2,-h/2,w,h)
             gc.setColor(1,1,1)
-            gc.printf("简体中文",font.Exo_2,0,0,1280,'center',0,.8,.8,640,84)
+            gc.printf("繁體中文",font.Exo_2,0,0,1280,'center',0,.5,.5,640,84)
             gc.setColor(.9,.75,.6,1-4*ct)
             gc.rectangle('line',-w/2-ct*80,-h/2-ct*80,w+ct*160,h+ct*160,6+ct*80)
         end,
         event=function()
-            lang.uage[1],user.langName="zh-CN","zh-CN"
+            lang.uage[1],user.langName="zh-t","zh-t"
             user.lang=require('language/'..user.langName)
         end
     },.2)
     BUTTON.create('English',{
-        x=400,y=0,type='rect',w=640,h=150,
+        x=500,y=0,type='rect',w=360,h=100,
         draw=function(bt,t,ct)
             local w,h=bt.w,bt.h
             gc.setColor(.4,.5,.6,.8+t)
@@ -64,7 +85,7 @@ function lang.init()
             gc.setLineWidth(3)
             gc.rectangle('line',-w/2,-h/2,w,h)
             gc.setColor(1,1,1)
-            gc.printf("English",font.Exo_2,0,0,1280,'center',0,.8,.8,640,84)
+            gc.printf("English",font.Exo_2,0,0,1280,'center',0,.5,.5,640,84)
             gc.setColor(.6,.75,.9,1-4*ct)
             gc.rectangle('line',-w/2-ct*80,-h/2-ct*80,w+ct*160,h+ct*160,6+ct*80)
         end,

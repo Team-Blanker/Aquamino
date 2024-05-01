@@ -1,7 +1,7 @@
 return {
     warning={
         title="光敏性癫痫警告",
-        txt="极小部分人可能会在看到特定视觉图像（包括可能出现在视频游戏中的闪烁效果或图案）时出现癫痫症状。\n此类症状包括头晕目眩、视线模糊、眼睛或面部抽搐、四肢抽搐、迷失方向感、精神错乱或短暂的意识丧失。\n\n即使没有癫痫史的人也可能出现此类症状。\n如果你出现任何症状，请立即停止游戏并咨询医生。",
+        txt="极小部分人可能会在看到特定视觉图像（包括可能出现在视频游戏中的闪烁效果或图案）时出现癫痫症状。\n此类症状包括头晕目眩、视线模糊、眼睛或面部抽搐、四肢抽搐、迷失方向感、精神错乱或短暂的意识丧失。\n\n即使没有癫痫史的人也可能出现此类症状。\n如果你出现任何上述症状，请立即停止游戏并尽快就医。",
         txtScale=50/128,txtWidth=4000
     },
     modeName={
@@ -10,13 +10,13 @@ return {
         ['ice storm']="冰风暴",
         thunder="雷暴",
         smooth="丝滑40行",
-        levitate="飘浮 40行",
+        levitate="悬浮 40行",
         master="宗师",
         multitasking="双线程",
         sandbox="沙盒子",
         ['dig 40']="挖掘 40行",
         laser="激光",
-        conf_test="设置测试界面",
+        conf_test="设置 - 测试界面",
         idea_test="idea_test"
     },
     intro={
@@ -39,7 +39,7 @@ return {
     },
     conf={
         back="返回",test="测试",
-        main={title="设置 - 主页",audio="音频设置",video="画面设置",custom="个性设置",ctrl="控制设置",keys="键位设置",other="其它..."},
+        main={title="设置 - 主页",audio="音频设置",video="画面设置",custom="样式设置",ctrl="控制设置",keys="键位设置",other="其它..."},
         audio={mus="音乐音量:",sfx="音效音量:",distract="失去焦点自动静音",DOX=0},
         video={
             unableBG="禁用游戏背景",unableTxt="若游戏背景导致你身体不适，请打开此选项。",
@@ -54,7 +54,7 @@ return {
             theme="主题",
             scale="场地缩放",scaleTxt="数值为1时，对于1920*1080的窗口，单格方块大小为36*36。",
             sfx="音效包",sfxWarning={
-                otto="该音效包包含音量过大内容，请谨慎选择。"
+                otto="该音效包包含音量过大内容，谨慎选择。"
             },
             colorSet={
                 title="调整方块颜色",
