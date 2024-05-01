@@ -43,6 +43,7 @@ function fieldLib.newPlayer(arg)
         FDelay=1,FTimer=0,
         LDelay=1,LTimer=0,LDR=16,LDRInit=16,
 
+        seqGen={count=0,buffer={}},
         history={--上一个块放下的时候做了什么
             name=nil,piece={},x=0,y=0,O=0,
             dropHeight=0,kickOrder=0,
