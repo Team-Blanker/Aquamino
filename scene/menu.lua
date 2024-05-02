@@ -72,6 +72,26 @@ function menu.init()
             })
         end
     },.2)
+    BUTTON.create('about',{
+        x=800,y=-400,type='rect',w=150,h=150,
+        draw=function(bt,t)
+            local w,h=bt.w,bt.h
+            gc.setColor(.5,.5,.5,.8+t)
+            gc.rectangle('fill',-w/2,-h/2,w,h)
+            gc.setColor(.8,.8,.8)
+            gc.setLineWidth(5)
+            gc.rectangle('line',-w/2,-h/2,w,h)
+            gc.setColor(1,1,1)
+            gc.circle('fill',0,-37.5,12.5,4)
+            gc.rectangle('fill',-6,-5,12,55)
+        end,
+        event=function()
+            scene.switch({
+                dest='about',swapT=.7,outT=.3,
+                anim=function() anim.cover(.3,.4,.3,0,0,0) end
+            })
+        end
+    },.2)
 end
 function menu.keyP(k)
     local len=#menu.modelist
