@@ -187,7 +187,7 @@ function fieldLib.entryPlace(player)--方块进场时使用，决定方块出块
 end
 function fieldLib.coincide(player,offX,offY)
     local c,ls=player.cur,player.loosen
-    if not c.piece or #c.piece==0 then error("Fuck you!") end
+    if not c.piece or #c.piece==0 then error("Attempt to test a empty piece") end
     if not offX then offX=0 end  if not offY then offY=0 end
     for i=1,#c.piece do
         local x,y=c.piece[i][1]+c.x+offX,c.piece[i][2]+c.y+offY

@@ -89,8 +89,8 @@ end
 function mino.revive(player,isStacker)
     
 end
-function mino.checkDie(player,isStacker)
-    if coincide(player) then mino.die(player,isStacker) end
+function mino.checkDie(player)
+    return coincide(player)
 end
 function mino.Ins20GDrop(player)
     while not coincide(player,0,-1) do player.cur.y=player.cur.y-1 end
@@ -500,8 +500,9 @@ function mino.keyP(k)
                             end
                         end
 
-                        mino.checkDie(OP,true)
+                        local die=mino.checkDie(OP)
                         mino.blockLock(OP,mino)
+                        if die then mino.die(OP,true) end
                     end
 
                     if S.winState==0 then
@@ -716,8 +717,9 @@ function mino.gameUpdate(dt)
                 P[i].LTimer=P[i].LTimer-P[i].LDelay
                 if C.piece and #C.piece~=0 then
                     his.dropHeight=0
-                    mino.checkDie(P[i],T.include(S.opList,i))
+                    local die=mino.checkDie(P[i])
                     mino.blockLock(P[i],mino)
+                    if die then mino.die(P[i],T.include(S.opList,i)) end
                 end
 
                 if S.winState==0 then
