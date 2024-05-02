@@ -61,7 +61,10 @@ function mino.blockLock(player)
         his.push=0
         his.line,his.PC,his.clearLine=fLib.lineClear(player)
         mino.checkClear(player,true) mino.sfxPlay.clear(player)
-        if his.line>0 and mino.rule.onLineClear then mino.rule.onLineClear(player,mino) end
+        if his.line>0 then
+            if mino.rule.onLineClear then mino.rule.onLineClear(player,mino) end
+            if mino.blockSkin.onLineClear then mino.blockSkin.onLineClear(player,mino) end
+        end
     end
     if mino.rule.onPieceDrop then mino.rule.onPieceDrop(player,mino) end
 
@@ -194,7 +197,10 @@ function mino.loosenDrop(player)
     if player.loosen[1] then mino.addEvent(player,delay,'loosenDrop')
     else his.line,his.PC,his.clearLine=fLib.lineClear(player)
         mino.checkClear(player,true) mino.sfxPlay.clear(player)
-        if his.line>0 and mino.rule.onLineClear then mino.rule.onLineClear(player,mino) end
+        if his.line>0 then
+            if mino.rule.onLineClear then mino.rule.onLineClear(player,mino) end
+            if mino.blockSkin.onLineClear then mino.blockSkin.onLineClear(player,mino) end
+        end
         if mino.rule.onPieceDrop then mino.rule.onPieceDrop(player,mino) end
         mino.addEvent(player,player.EDelay,'curIns')
     end
