@@ -131,6 +131,10 @@ function thunder.postCheckClear(player,mino)
             player.step.x=0
         end
     end
+
+    if player.point%100~=99 then
+        player.point=player.point+1
+    elseif player.history.line>0 and player.point%100==99 then sfx.play('top') end
 end
 function thunder.onLineClear(player,mino)
     local his=player.history
@@ -153,10 +157,7 @@ function thunder.onLineClear(player,mino)
     end
 end
 function thunder.onPieceDrop(player)
-    if player.point%100~=99 then
-        player.point=player.point+1
-        if player.point%100==99 then sfx.play('top') end
-    elseif player.history.line>0 and player.point%100==99 then sfx.play('top') end
+    if player.point%100==99 then sfx.play('top') end
 end
 local tList
 function thunder.always(player,dt)
