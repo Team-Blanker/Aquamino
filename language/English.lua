@@ -75,7 +75,7 @@ return {
             SD_ASD="Soft drop ASD:",SD_ASP="Soft drop ASP:"
         },
         other={title="Other",nothing="Nothing yet..."},
-        lang={cur="Current Language:English"}
+        lang={cur="Current Language: English"}
     },
 
     rule={

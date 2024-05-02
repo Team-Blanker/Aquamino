@@ -49,7 +49,7 @@ function lang.init()
             gc.setColor(1,1,1)
             gc.printf("简体中文",font.Exo_2,0,0,1280,'center',0,.5,.5,640,84)
             gc.setColor(.9,.75,.6,1-4*ct)
-            gc.rectangle('line',-w/2-ct*80,-h/2-ct*80,w+ct*160,h+ct*160,6+ct*80)
+            gc.rectangle('line',-w/2-ct*80,-h/2-ct*80,w+ct*160,h+ct*160)
         end,
         event=function()
             lang.uage[1],user.langName="zh-s","zh-s"
@@ -68,7 +68,7 @@ function lang.init()
             gc.setColor(1,1,1)
             gc.printf("繁體中文",font.Exo_2,0,0,1280,'center',0,.5,.5,640,84)
             gc.setColor(.9,.75,.6,1-4*ct)
-            gc.rectangle('line',-w/2-ct*80,-h/2-ct*80,w+ct*160,h+ct*160,6+ct*80)
+            gc.rectangle('line',-w/2-ct*80,-h/2-ct*80,w+ct*160,h+ct*160)
         end,
         event=function()
             lang.uage[1],user.langName="zh-t","zh-t"
@@ -87,7 +87,7 @@ function lang.init()
             gc.setColor(1,1,1)
             gc.printf("English",font.Exo_2,0,0,1280,'center',0,.5,.5,640,84)
             gc.setColor(.6,.75,.9,1-4*ct)
-            gc.rectangle('line',-w/2-ct*80,-h/2-ct*80,w+ct*160,h+ct*160,6+ct*80)
+            gc.rectangle('line',-w/2-ct*80,-h/2-ct*80,w+ct*160,h+ct*160)
         end,
         event=function()
             lang.uage[1],user.langName="English","English"
