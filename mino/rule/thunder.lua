@@ -33,6 +33,7 @@ function thunder.init(P,mino)
         v.step={r=-4,e=-4,x=-4}
         v.thunderList={}
         v.scoreTxt={}--[1]={x,y,v,g,color,size,TTL,Tmax}
+        v.top=false
     end
 end
 function thunder.addLightning(player,x,y,sz,extp)
@@ -146,7 +147,7 @@ function thunder.onLineClear(player,mino)
     })
     if player.point>=player.stormLv*100 then
         if player.stormLv==10 then mino.win(player) return end
-        player.stormLv=min(player.stormLv+1,10) sfx.play('lvup')
+        player.stormLv=min(player.stormLv+1,10) sfx.play('lvup') player.top=false
 
         scene.BG.density=10+30*player.stormLv
         if player.stormLv>5 then scene.BG.thunderDensity=.2 scene.BG.angle=.25
@@ -157,7 +158,7 @@ function thunder.onLineClear(player,mino)
     end
 end
 function thunder.onPieceDrop(player)
-    if player.point%100==99 then sfx.play('top') end
+    if player.point%100==99 and not player.top then sfx.play('top') player.top=true end
 end
 local tList
 function thunder.always(player,dt)
