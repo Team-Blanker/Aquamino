@@ -5,7 +5,7 @@ local custom={}
 local block=require'mino/blocks'
 local BUTTON,SLIDER=scene.button,scene.slider
 function custom.read()
-    custom.info={block='glossy',theme='simple',sfx='Dr Ocelot',smoothAnimAct=false,fieldScale=1}
+    custom.info={block='glossy',theme='simple',sfx='plastic',smoothAnimAct=false,fieldScale=1}
     custom.color={}
     if fs.getInfo('conf/custom') then
         T.combine(custom.info,json.decode(fs.newFile('conf/custom'):read()))
@@ -23,9 +23,7 @@ function custom.init()
 
     custom.blockSkinList={'glossy','glass','pure','carbon fibre','wheelchair'}
     custom.themeList={'simple'}
-    custom.sfxList={'krystal',
-        'Dr Ocelot','meme','otto'
-    }
+    custom.sfxList={'plastic','krystal','meme','otto'}
 
     custom.bOrder=T.include(custom.blockSkinList,custom.info.block) or 1
     custom.tOrder=T.include(custom.themeList,custom.info.theme) or 1
