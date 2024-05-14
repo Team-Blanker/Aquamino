@@ -159,11 +159,11 @@ end
 function fieldLib.corner(player)
     local x,y,c=player.cur.x,player.cur.y,0
     if x%1~=0 then return 4 end--非整数坐标方块(I O 大方块等)直接判定为四个“角”都有东西
-    local bt=fieldLib.blockType
-    if next(bt(player,x-1,y-1)) then c=c+1 end
-    if next(bt(player,x-1,y+1)) then c=c+1 end
-    if next(bt(player,x+1,y-1)) then c=c+1 end
-    if next(bt(player,x+1,y+1)) then c=c+1 end
+    local bt=fieldLib.blockType local lc=fieldLib.isLoosen
+    if next(bt(player,x-1,y-1)) or lc(player,x-1,y-1) then c=c+1 end
+    if next(bt(player,x-1,y+1)) or lc(player,x-1,y+1) then c=c+1 end
+    if next(bt(player,x+1,y-1)) or lc(player,x+1,y-1) then c=c+1 end
+    if next(bt(player,x+1,y+1)) or lc(player,x+1,y+1) then c=c+1 end
     return c
 end
 
