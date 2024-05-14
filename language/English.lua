@@ -53,7 +53,7 @@ return {
             smooth="Smooth move\n[test]",smoothTxt="Note that there is no intemediate state in any move or rotations.",
             smoothOffX=-0,smoothOffY=-64*.3,
             theme="Theme",
-            scale="Field scale",scaleTxt="1 means a single block is 36px*36px in a 1920*1080 window.",
+            scale="Field scale",scaleTxt="1 means a single cell is 36px*36px in a 1920*1080 window.",
             sfx="SFX pack",sfxWarning={
                 otto="LOUD SOUND WARNING. Please choose carefully."
             },
