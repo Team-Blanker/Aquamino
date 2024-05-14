@@ -19,10 +19,9 @@ function plastic.addSFX()
         ['2']='sfx/game/plastic/2.wav',
         ['3']='sfx/game/plastic/3.wav',
         ['4']='sfx/game/plastic/4.wav',
-        spin0='sfx/game/plastic/spin0.wav',
-        spin1='sfx/game/plastic/spin1.wav',
-        spin2='sfx/game/plastic/spin2.wav',
-        spin3='sfx/game/plastic/spin3.wav',
+        combo='sfx/game/plastic/combo.wav',
+
+        spinClear='sfx/game/plastic/spin clear.wav',
         PC='sfx/game/plastic/PC.wav',
 
         loose='sfx/game/plastic/loose.wav',
@@ -47,14 +46,15 @@ function plastic.touch(player,touch)
     if touch then sfx.play('touch') end
 end
 function plastic.lock(player)
-    if player.history.dropHeight>0 then sfx.play('HD')
-    else sfx.play('lock') end
+    if player.history.dropHeight>0 then sfx.play('HD') end
+    sfx.play('lock')
 end
 function plastic.clear(player)
     local his=player.history
-    local clearType=(his.spin and 'spin' or '')..min(his.line,(his.spin and 3 or 4))
-    local pitch=(his.line==0 or his.spin) and 1 or min(2^((his.combo-1)/12),2.848)
-    sfx.play(clearType,1,pitch)
+    local pitch=his.line==0 and 1 or min(2^((his.combo-1)/12),2.848)
+    sfx.play(''..his.line)
+    if his.spin then sfx.play('spinClear',his.line>0 and 1 or .5,his.mini and .75 or 1) end
+    if his.line>0 then sfx.play('combo',1,pitch) end
     if his.PC then sfx.play('PC') end
 end
 function plastic.loose(player)
