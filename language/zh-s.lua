@@ -11,7 +11,7 @@ return {
         thunder="雷暴",
         smooth="丝滑40行",
         levitate="悬浮 40行",
-        master="宗师",
+        master="大师",
         multitasking="双线程",
         sandbox="沙盒子",
         ['dig 40']="挖掘 40行",
