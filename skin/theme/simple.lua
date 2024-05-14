@@ -134,7 +134,7 @@ function simple.clearTextDraw(player)
     for i=0,3 do
         printf(txt,font.Exo_2_SB,-3+i%2*6,387+6*floor(i/2),4000,'center',0,.375,.375,2000,0)
     end]]
-    local s=(CInfo.line>=4 and .75 or .5)
+    local s=(CInfo.line>=4 and 1-.05*player.clearTxtTimer or .5)
     local r,g,b
     if CInfo.spin and not CInfo.mini then
         local c=player.color[CInfo.name]
