@@ -541,25 +541,28 @@ function mino.keyP(k)
 
                 --推土机！
                 if mino.rule.allowPush[C.name] and C.kickOrder then
-                    local reset=true local loose,push
+                    local reset=true local lBlock,push
                     if OP.moveDir=='R' and love.keyboard.isDown(S.keySet.MR) and coincide(OP,1,0) then
                         if T.include(S.keySet.CW,k) or T.include(S.keySet.CCW,k) or T.include(S.keySet.flip,k) then reset=false
-                        OP.pushAtt=OP.pushAtt+1 loose,push=fLib.pushField(OP,'R')
+                        OP.pushAtt=OP.pushAtt+1 lBlock,push=fLib.pushField(OP,'R')
                         end
                     end
                     if OP.moveDir=='L' and love.keyboard.isDown(S.keySet.ML) and coincide(OP,-1,0) then
                         if T.include(S.keySet.CW,k) or T.include(S.keySet.CCW,k) or T.include(S.keySet.flip,k) then reset=false
-                        OP.pushAtt=OP.pushAtt+1 loose,push=fLib.pushField(OP,'L')
+                        OP.pushAtt=OP.pushAtt+1 lBlock,push=fLib.pushField(OP,'L')
                         end
                     end
                     if love.keyboard.isDown(S.keySet.SD) and coincide(OP,0,-1) then
                         if T.include(S.keySet.CW,k) or T.include(S.keySet.CCW,k) or T.include(S.keySet.flip,k) then reset=false
-                        OP.pushAtt=OP.pushAtt+1 loose,push=fLib.pushField(OP,'D')
+                        OP.pushAtt=OP.pushAtt+1 lBlock,push=fLib.pushField(OP,'D')
                         end
                     end
                     if reset then OP.pushAtt=0 end
 
-                    if loose and mino.sfxPlay.loose then mino.sfxPlay.loose(OP) end
+                    if lBlock and #lBlock>0 then
+                        if mino.sfxPlay.loose then mino.sfxPlay.loose(OP) end
+                        if mino.blockSkin.onLoose then mino.blockSkin.onLoose(OP,lBlock) end
+                    end
                     if push and mino.sfxPlay.push then mino.sfxPlay.push(OP) end
                 end
 
@@ -838,6 +841,8 @@ function mino.draw()
                 gc.translate(36*H.x,-36*H.y)
                 for k=1,#H.piece do mino.blockSkin.unitDraw(H.piece[k][1],H.piece[k][2],P[i].color[H.name]) end
             gc.pop() end
+
+            if mino.blockSkin.overFieldDraw then mino.blockSkin.overFieldDraw(P[i],mino) end
 
             gc.pop()
 

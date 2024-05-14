@@ -333,7 +333,7 @@ function fieldLib.pushField(player,mode) --loosen[1]={x=1,y=1,name='Z'}
     local testP,BTM={},{} --BTM=Block To Move
     local canMove,moreTest=true,true
 
-    local loose --本应有两个返回值，是否有方块被转松，是否有松动块被推动，后者可用canMove表示
+    local looseBlock={} --本应有两个返回值，是否有方块被转松，是否有松动块被推动，后者可用canMove表示
     --生成检测点并向指定方向移动
     for i=1,#piece do testP[i]={piece[i][1]+dir[mode][1]+C.x,piece[i][2]+dir[mode][2]+C.y} end
 
@@ -348,8 +348,8 @@ function fieldLib.pushField(player,mode) --loosen[1]={x=1,y=1,name='Z'}
             canMove=false moreTest=false --不移动松动块，不进行之后的检测
             if P.pushAtt>=3 then --如果旋转计数>=3
                 table.insert(ls,{x=testP[i][1],y=testP[i][2],info=field[testP[i][2]][testP[i][1]]}) --将它加入松动块列表
+                table.insert(looseBlock,{x=testP[i][1],y=testP[i][2],info=field[testP[i][2]][testP[i][1]]})
                 field[testP[i][2]][testP[i][1]]={} --去掉场地上对应的块
-                loose=true
             end
             table.remove(testP,i) --最后销毁检测点
         elseif testO then --如果检测到了松动块
@@ -365,8 +365,8 @@ function fieldLib.pushField(player,mode) --loosen[1]={x=1,y=1,name='Z'}
         if fieldLib.isEdge(player,testP[i][1],testP[i][2]) then canMove=false --如果检测到墙，不移动松动块
         elseif fieldLib.isBlock(player,testP[i][1],testP[i][2]) then --如果检测到了固定块
             table.insert(ls,{x=testP[i][1],y=testP[i][2],info=field[testP[i][2]][testP[i][1]]}) --将它加入松动块列表
+            table.insert(looseBlock,{x=testP[i][1],y=testP[i][2],info=field[testP[i][2]][testP[i][1]]})
             canMove=false field[testP[i][2]][testP[i][1]]={} --不移动松动块
-            loose=true
         elseif testO then --如果检测到了松动块
             while testO do --只要检测到了松动块
                 table.insert(BTM,table.remove(ls,testO))  --将对应松动块暂时加入BTM
@@ -377,8 +377,8 @@ function fieldLib.pushField(player,mode) --loosen[1]={x=1,y=1,name='Z'}
             if fieldLib.isEdge(player,testP[i][1],testP[i][2]) then canMove=false --如果检测到墙，不移动松动块
             elseif next(fieldLib.blockType(player,testP[i][1],testP[i][2])) then --如果检测到了固定块
                 table.insert(ls,{x=testP[i][1],y=testP[i][2],info=field[testP[i][2]][testP[i][1]]}) --将它加入松动块列表
+                table.insert(looseBlock,{x=testP[i][1],y=testP[i][2],info=field[testP[i][2]][testP[i][1]]})
                 canMove=false field[testP[i][2]][testP[i][1]]={} --不移动松动块并去掉场地上对应的块
-                loose=true
             end
         end
         table.remove(testP,i) --检测点：我滴任务，完成啦！
@@ -389,6 +389,6 @@ function fieldLib.pushField(player,mode) --loosen[1]={x=1,y=1,name='Z'}
     end
     for i=1,#BTM do table.insert(ls,BTM[i]) end --放回松动块列表，结束
 
-    return loose,canMove
+    return looseBlock,canMove
 end
 return fieldLib

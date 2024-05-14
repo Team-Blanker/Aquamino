@@ -1,5 +1,4 @@
 local skin={}
-local color=require('framework/color')
 skin.sticker=gc.newImage('skin/block/carbon fibre/sticker1.png')
 skin.sticker:setFilter('nearest')
 skin.shadow=gc.newImage('skin/block/carbon fibre/ghost.png')
@@ -17,6 +16,13 @@ function skin.onLineClear(player)
     for k,v in pairs(player.history.clearLine) do
         for i=1,#v do
             if not v[i].loosen then ins(player.stickerList,{x=i,y=k,vx=3*(rand()-.5),avel=1.5*(rand()-.5),timer=0}) end
+        end
+    end
+end
+function skin.onLoose(player,lBlock)
+    for i=1,#lBlock do
+        if not lBlock[i].info.loosen then
+        ins(player.stickerList,{x=lBlock[i].x,y=lBlock[i].y,vx=3*(rand()-.5),avel=1.5*(rand()-.5),timer=0})
         end
     end
 end
@@ -48,15 +54,6 @@ function skin.fieldDraw(player,mino)
             setColor(1,1,1)
             rect('fill',0,0,36*player.w,n*36)
         gc.pop() end
-    end
-
-    local sList=player.stickerList
-    for i=1,#sList do
-        gc.setColor(1,1,1,(stickerTTL-sList[i].timer)/fadeTime)
-        local sx=sList[i].x+sList[i].vx*sList[i].timer
-        local sh=sList[i].y-sList[i].timer^2/max(player.CDelay,.1)*2.5
-        local sr=sList[i].avel*sList[i].timer
-        gc.draw(skin.sticker,36*sx,-36*sh,sr,1,1,18,18)
     end
 end
 function skin.curDraw(player,piece,x,y,clr)
@@ -96,6 +93,16 @@ function skin.loosenDraw(player,mino)
         local clr=player.color[ls[i].info.name]
         setColor(clr[1],clr[2],clr[3],.5)
         rect('fill',-18+36*ls[i].x,-18-36*(ls[i].y+N),36,36)
+    end
+end
+function skin.overFieldDraw(player)
+    local sList=player.stickerList
+    for i=1,#sList do
+        gc.setColor(1,1,1,(stickerTTL-sList[i].timer)/fadeTime)
+        local sx=sList[i].x+sList[i].vx*sList[i].timer
+        local sh=sList[i].y-sList[i].timer^2/max(player.CDelay,.1)*2.5
+        local sr=sList[i].avel*sList[i].timer
+        gc.draw(skin.sticker,36*sx,-36*sh,sr,1,1,18,18)
     end
 end
 function skin.dropAnim(player)
