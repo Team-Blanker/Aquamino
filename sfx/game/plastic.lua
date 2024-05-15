@@ -36,7 +36,7 @@ end
 function plastic.rotate(player,success,spin)
     if success then
         if spin then sfx.play('spin')
-        else sfx.play('rotate')end
+        else sfx.play('rotate') end
     else sfx.play('rotateFail') end
 end
 function plastic.hold()
@@ -52,7 +52,7 @@ end
 function plastic.clear(player)
     local his=player.history
     local pitch=his.line==0 and 1 or min(2^((his.combo-1)/12),2.848)
-    sfx.play(''..his.line)
+    sfx.play(''..min(his.line,4))
     if his.spin then sfx.play('spinClear',his.line>0 and 1 or .5,his.mini and .75 or 1) end
     if his.line>0 then sfx.play('combo',1,pitch) end
     if his.PC then sfx.play('PC') end
