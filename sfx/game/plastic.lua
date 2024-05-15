@@ -5,7 +5,6 @@ function plastic.addSFX()
         win='sfx/game/plastic/win.wav',
         move='sfx/game/plastic/move.wav',
         moveFail='sfx/game/plastic/move fail.wav',
-        landedMove='sfx/game/plastic/landed move.wav',
 
         HD='sfx/game/plastic/hard drop.wav',
         lock='sfx/game/plastic/lock.wav',
@@ -29,9 +28,7 @@ function plastic.addSFX()
     })
 end
 function plastic.move(player,success,landed)
-    if success then
-        if landed and sfx.pack.landedMove then sfx.play('landedMove') else sfx.play('move') end
-    else sfx.play('moveFail') end
+    if success then sfx.play('move') end
 end
 function plastic.rotate(player,success,spin)
     if success then
