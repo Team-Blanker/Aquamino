@@ -4,12 +4,20 @@ local cfc=user.lang.conf.custom
 local custom={}
 local block=require'mino/blocks'
 local BUTTON,SLIDER=scene.button,scene.slider
+
+blockSkinList={'glossy','glass','pure','carbon fibre','wheelchair'}
+themeList={'simple'}
+sfxList={'plastic','krystal','meme','otto'}
 function custom.read()
+    local defaultInfo={block='glossy',theme='simple',sfx='plastic',smoothAnimAct=false,fieldScale=1}
     custom.info={block='glossy',theme='simple',sfx='plastic',smoothAnimAct=false,fieldScale=1}
     custom.color={}
     if fs.getInfo('conf/custom') then
         T.combine(custom.info,json.decode(fs.newFile('conf/custom'):read()))
     end
+    if not T.include(blockSkinList,custom.info.block) then custom.info.block='glossy' end
+    if not T.include(themeList,custom.info.theme) then custom.info.theme='simple' end
+    if not T.include(sfxList,custom.info.sfx) then custom.info.sfx='plastic' end
 end
 function custom.save()
     local s=fs.newFile('conf/custom')
@@ -21,13 +29,11 @@ function custom.init()
     cfc=user.lang.conf.custom
     custom.read()
 
-    custom.blockSkinList={'glossy','glass','pure','carbon fibre','wheelchair'}
-    custom.themeList={'simple'}
-    custom.sfxList={'plastic','krystal','meme','otto'}
+    
 
-    custom.bOrder=T.include(custom.blockSkinList,custom.info.block) or 1
-    custom.tOrder=T.include(custom.themeList,custom.info.theme) or 1
-    custom.sOrder=T.include(custom.sfxList,custom.info.sfx) or 1
+    custom.bOrder=T.include(blockSkinList,custom.info.block) or 1
+    custom.tOrder=T.include(themeList,custom.info.theme) or 1
+    custom.sOrder=T.include(sfxList,custom.info.sfx) or 1
 
     BUTTON.create('quit',{
         x=-700,y=400,type='rect',w=200,h=100,
@@ -72,7 +78,7 @@ function custom.init()
     BUTTON.create('blockChoose',{
         x=0,y=-200,type='rect',w=400,h=100,
         draw=function(bt,t)
-            local o,l=custom.bOrder,#custom.blockSkinList
+            local o,l=custom.bOrder,#blockSkinList
             local w,h=bt.w,bt.h
             gc.setColor(.5,1,.75)
             gc.printf(cfc.texture,font.Exo_2_SB,0,-100,1280,'center',0,.5,.5,640,84)
@@ -82,14 +88,14 @@ function custom.init()
             if o>1 then gc.line(-(w-h)/2,h/2-8,-w/2+8,0,-(w-h)/2,-h/2+8) end
             if o<l then gc.line( (w-h)/2,h/2-8, w/2-8,0, (w-h)/2,-h/2+8) end
             gc.setColor(1,1,1)
-            gc.printf(custom.blockSkinList[custom.bOrder],font.Exo_2_SB,0,0,1280,'center',0,.4,.4,640,84)
+            gc.printf(blockSkinList[custom.bOrder],font.Exo_2_SB,0,0,1280,'center',0,.4,.4,640,84)
         end,
         event=function(x,y)
             if x<0 then
                 if custom.bOrder>1 then custom.bOrder=custom.bOrder-1 end
-            elseif custom.bOrder<#custom.blockSkinList then custom.bOrder=custom.bOrder+1
+            elseif custom.bOrder<#blockSkinList then custom.bOrder=custom.bOrder+1
             end
-            custom.info.block=custom.blockSkinList[custom.bOrder]
+            custom.info.block=blockSkinList[custom.bOrder]
         end
     },.2)
     BUTTON.create('colorChoose',{
@@ -144,7 +150,7 @@ function custom.init()
     BUTTON.create('themeChoose',{
         x=0,y=150,type='rect',w=400,h=100,
         draw=function(bt,t)
-            local o,l=custom.tOrder,#custom.themeList
+            local o,l=custom.tOrder,#themeList
             local w,h=bt.w,bt.h
             gc.setColor(1,.5,.5)
             gc.printf(cfc.theme,font.Exo_2_SB,0,-100,1280,'center',0,.5,.5,640,84)
@@ -154,20 +160,20 @@ function custom.init()
             if o>1 then gc.line(-(w-h)/2,h/2-8,-w/2+8,0,-(w-h)/2,-h/2+8) end
             if o<l then gc.line( (w-h)/2,h/2-8, w/2-8,0, (w-h)/2,-h/2+8) end
             gc.setColor(1,1,1)
-            gc.printf(custom.themeList[custom.tOrder],font.Exo_2_SB,0,0,1280,'center',0,.4,.4,640,84)
+            gc.printf(themeList[custom.tOrder],font.Exo_2_SB,0,0,1280,'center',0,.4,.4,640,84)
         end,
         event=function(x,y)
             if x<0 then
                 if custom.tOrder>1 then custom.tOrder=custom.tOrder-1 end
-            elseif custom.tOrder<#custom.themeList then custom.tOrder=custom.tOrder+1
+            elseif custom.tOrder<#themeList then custom.tOrder=custom.tOrder+1
             end
-            custom.info.theme=custom.themeList[custom.tOrder]
+            custom.info.theme=themeList[custom.tOrder]
         end
     },.2)
     BUTTON.create('sfxChoose',{
         x=600,y=150,type='rect',w=400,h=100,
         draw=function(bt,t)
-            local o,l=custom.sOrder,#custom.sfxList
+            local o,l=custom.sOrder,#sfxList
             local w,h=bt.w,bt.h
             gc.setColor(1,.5,1)
             gc.printf(cfc.sfx,font.Exo_2_SB,0,-100,1280,'center',0,.5,.5,640,84)
@@ -177,17 +183,17 @@ function custom.init()
             if o>1 then gc.line(-(w-h)/2,h/2-8,-w/2+8,0,-(w-h)/2,-h/2+8) end
             if o<l then gc.line( (w-h)/2,h/2-8, w/2-8,0, (w-h)/2,-h/2+8) end
             gc.setColor(1,1,1)
-            gc.printf(custom.sfxList[custom.sOrder],font.Exo_2_SB,0,0,1280,'center',0,.4,.4,640,84)
-            if cfc.sfxWarning[custom.sfxList[o]] then gc.setColor(1,0,0,.75)
-            gc.printf(cfc.sfxWarning[custom.sfxList[o]],font.Exo_2_SB,-w/2,h/2+48,1600,'left',0,.25,.25,0,152)
+            gc.printf(sfxList[custom.sOrder],font.Exo_2_SB,0,0,1280,'center',0,.4,.4,640,84)
+            if cfc.sfxWarning[sfxList[o]] then gc.setColor(1,0,0,.75)
+            gc.printf(cfc.sfxWarning[sfxList[o]],font.Exo_2_SB,-w/2,h/2+48,1600,'left',0,.25,.25,0,152)
             end
         end,
         event=function(x,y)
             if x<0 then
                 if custom.sOrder>1 then custom.sOrder=custom.sOrder-1 end
-            elseif custom.sOrder<#custom.sfxList then custom.sOrder=custom.sOrder+1
+            elseif custom.sOrder<#sfxList then custom.sOrder=custom.sOrder+1
             end
-            custom.info.sfx=custom.sfxList[custom.sOrder]
+            custom.info.sfx=sfxList[custom.sOrder]
         end
     },.2)
     BUTTON.create('scaleAdjust',{
