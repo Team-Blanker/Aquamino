@@ -68,7 +68,7 @@ function mino.blockLock(player)
     end
     if mino.rule.onPieceDrop then mino.rule.onPieceDrop(player,mino) end
 
-    if mino.blockSkin.onPieceDrop then player.blockSkin.onPieceDrop(player,mino) end
+    if mino.blockSkin.onPieceDrop then mino.blockSkin.onPieceDrop(player,mino) end
     if mino.theme.onPieceDrop then mino.theme.onPieceDrop(player,mino) end
 end
 
@@ -228,9 +228,6 @@ function mino.setAnimDrawPiece(player)
         A.drawPiece[i][1]=M.lerp(C.piece[i][1]+C.x,A.prePiece[i][1],A.timer/A.delay)
         A.drawPiece[i][2]=M.lerp(C.piece[i][2]+C.y-(player.FDelay==0 and 0 or player.FTimer/player.FDelay),A.prePiece[i][2],A.timer/A.delay)
     end
-end
-function mino.addDropAnim(player,x,ys,yf,TTL)
-    player.dropAnim[#player.dropAnim+1]={x=x,ys=ys,yf=yf,TTL=TTL,TMax=TTL}
 end
 
 --初始化
