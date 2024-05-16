@@ -7,6 +7,16 @@ skin.pic=gc.newImage('skin/block/glossy/glossy.png')
 --skin.pic:setFilter('nearest')
 local sd=fs.newFile('shader/grayscale stain.glsl'):read()
 skin.sd=gc.newShader(sd)
+function skin.init(player)
+    player.laTimer=0
+    player.laTMax=.1
+end
+function skin.update(player,dt)
+    player.laTimer=player.laTimer+dt
+end
+function skin.onPieceDrop(player)
+    if player.history.line==0 then player.laTimer=0 end
+end
 function skin.unitDraw(player,x,y,clr,alpha)
     setColor(clr[1],clr[2],clr[3],clr[4] or alpha or 1)
     setShader(skin.sd)
@@ -35,6 +45,26 @@ function skin.fieldDraw(player,mino)
         else h=h+n
             gc.setColor(1,1,1)
             gc.rectangle('fill',18,-36*h-18,36*player.w,n*36)
+        end
+    end
+end
+local laCanvas=gc.newCanvas(36,36)
+function skin.overFieldDraw(player)
+    local h=player.history local p=h.piece
+    if p then
+        gc.push()
+        gc.origin()
+        gc.setCanvas(laCanvas)
+        gc.clear(0,0,0,0)
+        gc.setColor(1,1,1)
+        gc.rectangle('fill',(-.5+1.5*(player.laTimer/player.laTMax))*36,0,18,36)
+        --gc.rectangle('fill',0,0,36,36)
+        gc.setCanvas()
+        gc.pop()
+
+        for i=1,#p do
+        gc.setColor(1,1,1,.5)
+        gc.draw(laCanvas,36*(p[i][1]+h.x),-36*(p[i][2]+h.y),0,1,1,18,18)
         end
     end
 end
