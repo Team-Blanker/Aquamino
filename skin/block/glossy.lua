@@ -3,6 +3,9 @@ local COLOR=require('framework/color')
 local M=mymath
 local setColor,draw,setShader,rect=gc.setColor,gc.draw,gc.setShader,gc.rectangle
 
+function skin.setDropAnimTTL(player)
+    return .25
+end
 skin.pic=gc.newImage('skin/block/glossy/glossy.png')
 --skin.pic:setFilter('nearest')
 local sd=fs.newFile('shader/grayscale stain.glsl'):read()
@@ -118,6 +121,15 @@ function skin.ghostDraw(player,piece,x,y,color)
         draw(skin.pic,36*(x+piece[i][1]),-36*(y+piece[i][2]),0,1,1,18,18)
     end
     setShader()
+end
+function skin.dropAnim(player)
+    local DA=player.dropAnim
+    for i=1,#DA do
+        local c=DA[i].color
+        setColor(c[1],c[2],c[3],0.125*DA[i].TTL/DA[i].TMax*(1+.25*DA[i].h/DA[i].w))
+        gc.setLineWidth(36)
+        rect('fill',36*(DA[i].x)-18,-36*(DA[i].y+.5),36,36*DA[i].len)
+    end
 end
 function skin.clearEffect(y,h,alpha,width)
 end
