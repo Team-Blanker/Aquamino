@@ -285,7 +285,7 @@ function mino.init()
         timer=0,
         allowPush={},allowSpin={T=true},spinType='default',loosen={fallTPL=0}--TPL=Time Per Line
     }
-    if mino.mode and fs.getInfo('mino/rule/'..mino.mode..'.lua') then T.combine(mino.rule,require('mino/rule/'..mino.mode)) end
+    if mino.mode and fs.getInfo('mino/mode/'..mino.mode..'.lua') then T.combine(mino.rule,require('mino/mode/'..mino.mode)) end
     if mino.rule.init then mino.rule.init(P,mino) end
 
     for i=1,#P do
@@ -481,6 +481,7 @@ function mino.keyP(k)
                     local xmin,xmax,ymin,ymax=B.edge(C.piece)
                     local xlist=B.getX(C.piece)
                     local smoothFall=(OP.smoothAnimAct and OP.FTimer/OP.FDelay or 0)
+                    local animTTL=mino.blockSkin.setDropAnimTTL and mino.blockSkin.setDropAnimTTL(OP,mino) or .5
                     for j=1,#xlist do
                         local lmax=ymax
                         while not T.include(C.piece,{xlist[j],lmax}) do
@@ -488,7 +489,7 @@ function mino.keyP(k)
                         end
                         OP.dropAnim[#OP.dropAnim+1]={
                             x=C.x+xlist[j],y=C.y-smoothFall+lmax,len=-smoothFall,
-                            TMax=.5,TTL=.5, w=xmax-xmin+1,h=ymax-ymin+1,
+                            TMax=animTTL,TTL=animTTL, w=xmax-xmin+1,h=ymax-ymin+1,
                             color=OP.color[C.name]
                         }
                     end
