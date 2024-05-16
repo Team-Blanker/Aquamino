@@ -1,7 +1,7 @@
 ﻿function love.conf(t)
     local w=t.window
     w.title ="Aquamino [Preview]"
-    w.icon='UI/icon.png'
+    w.icon='pic/UI/icon.png'
     w.borderless=false
     w.resizable=true
     w.minwidth=200

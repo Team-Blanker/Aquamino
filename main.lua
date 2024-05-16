@@ -137,8 +137,8 @@ win={
         win.scale=win.H/win.W<9/16 and win.H/1080 or win.W/1920
     end,
     UI={
-        back=gc.newImage('UI/sign/back.png'), --120*70
-        lang=gc.newImage('UI/sign/language.png')  --100*100
+        back=gc.newImage('pic/UI/sign/back.png'), --120*70
+        lang=gc.newImage('pic/UI/sign/language.png')  --100*100
     }
 }
 win.H=gc.getHeight()
