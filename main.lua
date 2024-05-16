@@ -281,7 +281,9 @@ function mainUpdate(dt)
         sfx.timer=sfx.timer-5
     end
 end
+local animInit=false
 function love.update(dt)
+    if not animInit then anim.init() animInit=true end
     local dtRemain=dt
     while dtRemain>=1/256 do mainUpdate(1/256) dtRemain=dtRemain-1/256 end
     mainUpdate(dtRemain)
