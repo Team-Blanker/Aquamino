@@ -14,16 +14,9 @@ function simple.init(player)
     simple.ltW,simple.ltH=simple.loseTxt:getWidth(),simple.loseTxt:getHeight()
 
     player.clearInfo=T.copy(player.history)
+    player.clearTxt=gc.newText(font.Bender)
+    player.spinTxt={txt=gc.newText(font.Bender),x=0}
     player.PCInfo={} player.clearTxtTimer=0 player.clearTxtTMax=0
-    simple.parList={}
-end
-function simple.updateClearInfo(player,mino)
-    local his=player.history
-    if his.line>0 or his.spin then player.clearInfo=T.copy(player.history)
-        player.clearTxtTMax=his.line>0 and (his.line>=4 and 1 or his.spin and .8 or .5) or .5
-        player.clearTxtTimer=player.clearTxtTMax
-    else player.clearInfo.combo=his.combo player.clearInfo.wide=-1 end
-    if his.PC then player.PCInfo[#player.PCInfo+1]=3 end
 end
 local W,H,timeTxt
 function simple.fieldDraw(player,mino)
@@ -106,34 +99,46 @@ local clearClr={
     {1,1,1},{1,1,1},{1,0,0},{.64,.6,1},
     {.75,1,.5},{1,.5,.96},{.7,.6,1},{1,.5,.4},{1,1,1}
 }
-local txt
+local ctxt
+function simple.updateClearInfo(player,mino)
+    local his=player.history
+    if his.line>0 or his.spin then player.clearInfo=T.copy(player.history)
+        player.clearTxtTMax=his.line>0 and (his.line>=4 and 1 or his.spin and .8 or .5) or .5
+        player.clearTxtTimer=player.clearTxtTMax
+
+        local CInfo=player.clearInfo
+
+        local t1=(CInfo.B2B>0 and CInfo.line>0 and "B2B " or "")..((CInfo.spin and CInfo.mini) and "weak " or "")
+        local t2=CInfo.name
+        local t3=(CInfo.spin and "-spin " or "")..(clearTxt[min(CInfo.line,#clearTxt)] or "")
+
+        player.clearTxt:set({{1,1,1},t1,{0,0,0,0},(CInfo.spin and t2 or ""),{1,1,1},t3})
+
+        if CInfo.spin then
+        player.spinTxt.x=-player.clearTxt:getWidth()/2+gc.newText(font.Bender,t1):getWidth()+gc.newText(font.Bender,t2):getWidth()/2
+        player.spinTxt.txt=gc.newText(font.Bender,t2)
+        else player.spinTxt.txt=gc.newText(font.Bender) end
+
+    else player.clearInfo.combo=his.combo player.clearInfo.wide=-1 end
+    if his.PC then player.PCInfo[#player.PCInfo+1]=3 end
+end
 function simple.clearTextDraw(player)
     W,H=36*player.w,36*player.h
     local CInfo=player.clearInfo
     gc.translate(-W/2-20,-250)
     if CInfo.combo>1 then
-        txt=""..CInfo.combo.." chain"..(CInfo.combo>19 and "?!?!" or CInfo.combo>15 and "!!" or CInfo.combo>7 and "!" or "")
+        ctxt=""..CInfo.combo.." chain"..(CInfo.combo>19 and "?!?!" or CInfo.combo>15 and "!!" or CInfo.combo>7 and "!" or "")
 
         setColor(.1,.1,.1,.3)
         for i=0,3 do
-            printf(txt,font.Bender_B,-19+i%2*6,9+6*floor(i/2),1200,'right',0,.25,.25,1200,76)
+            printf(ctxt,font.Bender_B,-19+i%2*6,9+6*floor(i/2),1200,'right',0,.25,.25,1200,76)
         end
         setColor(scene.time%.2<.1 and {1,1,1} or M.lerp({1,1,1},{.5,1,.75},min((CInfo.combo-8)/8,1)))
-        printf(txt,font.Bender_B,-16,12,1200,'right',0,.25,.25,1200,76)
+        printf(ctxt,font.Bender_B,-16,12,1200,'right',0,.25,.25,1200,76)
     end
     gc.translate(W/2+20,250)
 
-    txt=(
-        (CInfo.B2B>0 and CInfo.line>0 and "B2B " or "")
-        ..(CInfo.spin and (CInfo.mini and "weak " or "")..CInfo.name.."-spin " or "")
-        ..(clearTxt[min(CInfo.line,#clearTxt)] or "")
-    )
-
     local alpha=min(player.clearTxtTimer*1.5/player.clearTxtTMax,1)*.9
-    --[[setColor(CInfo.line>=4 and {0,.4,.2,.3*alpha*alpha} or {.1,.1,.1,.3*alpha*alpha})
-    for i=0,3 do
-        printf(txt,font.Exo_2_SB,-3+i%2*6,387+6*floor(i/2),4000,'center',0,.375,.375,2000,0)
-    end]]
     local s=(CInfo.line>=4 and 1-.05*player.clearTxtTimer or .5)
     local r,g,b
     if CInfo.spin and not CInfo.mini then
@@ -154,7 +159,10 @@ function simple.clearTextDraw(player)
     end
     setColor(r,g,b,alpha)
     if CInfo.wide==4 and CInfo.line>0 then printf("4-wide",font.Bender,0,-64*s-20,4000,'center',0,.333,.333,2000,76) end
-    printf(txt,font.Bender,0,0,4000,'center',0,s,s,2000,76)
+
+    gc.draw(player.clearTxt,0,0,0,s,s,player.clearTxt:getWidth()/2,player.clearTxt:getHeight()/2)
+    local angle=-max(2*(player.clearTxtTimer/player.clearTxtTMax-.5),0)^2*math.pi*.5
+    gc.draw(player.spinTxt.txt,s*player.spinTxt.x,0,angle,s,s,player.spinTxt.txt:getWidth()/2,player.spinTxt.txt:getHeight()/2)
 
     for i=1,#player.PCInfo do
         local t=player.PCInfo[i]
