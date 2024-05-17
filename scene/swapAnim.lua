@@ -9,6 +9,10 @@ function anim.init()--第一帧不能用来画图，会出问题
     gc.setCanvas(anim.e1cw) gc.circle('line',160,160,150,4)
     gc.setCanvas()
     print(anim.e1cw:newImageData():getPixel(160,1))
+
+    anim.e1stcf=function()
+        gc.circle('fill',0,0,100,4)
+    end
 end
 function anim.cover(intime,keeptime,outtime,r,g,b)
     if scene.swapT>keeptime then 

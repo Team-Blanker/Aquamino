@@ -21,7 +21,6 @@ return {
     },
     intro={
         start="Press any key to start",
-        mode={"Practice","Challenge","Mystery","Phun"}
     },
     menu={
         illust="Double click or hit Enter to play.\nHit R to randomly choose a mode.",

@@ -6,12 +6,6 @@ local banned={'f1','f2','f3','f4','f5','f6','f7','f8','f9','f10','f11','f12', 'f
 'printscreen'
 }
 local intro={}
-local mode={
-    {'40 lines','marathon','dig 40','sandbox'},
-    {'smooth','levitate','thunder','ice storm','master','laser','multitasking'},
-    {},
-    {}
-}
 local unlocked={true,true,false,false}
 local fl=gc.newCanvas(5,5)
 do
@@ -22,24 +16,10 @@ do
     gc.setCanvas()
 end
 
-local function btdraw(ch,w,h,o,t)
-    if unlocked[o] then
-        gc.setColor(COLOR.hsv(ch,.6,.6,intro.choose==o and .35 or .15)) gc.rectangle('fill',-w/2,-h/2,w,h)
-        gc.setColor(COLOR.hsv(ch,.6,.6,intro.choose==o and .75 or .2+.5*t)) gc.draw(fl,0,0,0,w/5,h/5,2.5,2.5)
-    else gc.setColor(.5,.5,.5,.2) gc.rectangle('fill',-w/2,-h/2,w,h) end
-
-    if unlocked[o] then gc.setColor(COLOR.hsv(ch,.5,.8,1)) else gc.setColor(.8,.8,.8) end
-    gc.setLineWidth(16)
-    gc.rectangle('line',-w/2+8,-h/2+8,w-16,h-16)
-end
-
 local introCount=0
 function intro.init()
     introCount=introCount+1
     local it=user.lang.intro
-    intro.choose=0
-    intro.lvl2animT=0
-    intro.lvl=1
 
     local birthday=win.date.month==8 and win.date.day==14--Aquamino的生日！也是海兰的生日！
     if birthday then
@@ -59,138 +39,13 @@ function intro.init()
         mus.setTag({'menu'})
     end
     intro.tip=user.lang.tip
-    intro.order=rand(#intro.tip)
-    BUTTON.create('practice',{
-        x=-1440,y=-270,type='rect',w=960,h=540,
-        draw=function(bt,t)
-            local w,h=bt.w,bt.h
-            btdraw(3.5,w,h,1,t)
-            gc.setColor(1,1,1)
-            gc.printf(unlocked[1] and it.mode[1] or "???",font.Exo_2_SB,0,0,1280,'center',0,.75,.75,640,84)
-        end,
-        event=function()
-            if not unlocked[1] then return end
-            intro.lvl=3 intro.choose=1
-            scene.switch({
-                dest='menu',swapT=.9,outT=.6,
-                anim=function() anim.enter2(.4,.5,.6) end
-            })
-            function scene.cur.send(destScene)
-                destScene.modelist=mytable.copy(mode[1])
-                destScene.modeKey=1
-                destScene.bgName='pond'
-            end
-        end,
-        always=function(dt,bt)
-            local v=min(intro.lvl2animT/.4,1)
-            bt.x=-480-1000*(1-v)*(1-v)
-        end
-    },.4)
-    BUTTON.create('challenge',{
-        x=1440,y=-270,type='rect',w=960,h=540,
-        draw=function(bt,t)
-            local w,h=bt.w,bt.h
-            btdraw(2.5,w,h,2,t)
-            gc.setColor(1,1,1)
-            gc.printf(unlocked[2] and it.mode[2] or "???",font.Exo_2_SB,0,0,1280,'center',0,.75,.75,640,84)
-        end,
-        event=function()
-            if not unlocked[2] then return end
-            intro.lvl=3 intro.choose=2
-            scene.switch({
-                dest='menu',swapT=.9,outT=.6,
-                anim=function() anim.enter2(.4,.5,.6) end
-            })
-            function scene.cur.send(destScene)
-                destScene.modelist=mytable.copy(mode[2])
-                destScene.modeKey=1
-                destScene.bgName='radio'
-            end
-        end,
-        always=function(dt,bt)
-            local v=min(intro.lvl2animT/.4,1)
-            bt.x=480+1000*(1-v)*(1-v)
-        end
-    },.4)
-    BUTTON.create('mystery',{
-        x=-1440,y=270,type='rect',w=960,h=540,
-        draw=function(bt,t)
-            local w,h=bt.w,bt.h
-            btdraw(2.5,w,h,3,t)
-            gc.setColor(1,1,1)
-            gc.printf(unlocked[3] and it.mode[3] or "???",font.Exo_2_SB,0,0,1280,'center',0,.75,.75,640,84)
-        end,
-        event=function()
-            if not unlocked[3] then return end
-            intro.lvl=3 intro.choose=3
-            scene.switch({
-                dest='menu',swapT=.9,outT=.6,
-                anim=function() anim.enter2(.4,.5,.6) end
-            })
-            function scene.cur.send(destScene)
-                destScene.modelist=mytable.copy(mode[3])
-                destScene.modeKey=1
-            end
-        end,
-        always=function(dt,bt)
-            local v=min(intro.lvl2animT/.4,1)
-            bt.x=-480-1000*(1-v)*(1-v)
-        end
-    },.4)
-    BUTTON.create('phun',{
-        x=1440,y=270,type='rect',w=960,h=540,
-        draw=function(bt,t)
-            local w,h=bt.w,bt.h
-            btdraw(2.5,w,h,4,t)
-            gc.setColor(1,1,1)
-            gc.printf(unlocked[4] and it.mode[4] or "???",font.Exo_2_SB,0,0,1280,'center',0,.75,.75,640,84)
-        end,
-        event=function()
-            if not unlocked[4] then return end
-            intro.lvl=3 intro.choose=4
-            scene.switch({
-                dest='menu',swapT=.9,outT=.6,
-                anim=function() anim.enter2(.4,.5,.6) end
-            })
-            function scene.cur.send(destScene)
-                destScene.modelist=mytable.copy(mode[1])
-                destScene.modeKey=1
-            end
-        end,
-        always=function(dt,bt)
-            local v=min(intro.lvl2animT/.4,1)
-            bt.x=480+1000*(1-v)*(1-v)
-        end
-    },.4)
+    intro.tipOrder=rand(#intro.tip)
 end
 
 local tchar='territory' local cnum=1
 function intro.keyP(k)
-    if intro.lvl==1 then
-        if k=='escape' then love.event.quit()
-        elseif not mytable.include(banned,k) then
-            if win.stat.launch==1 and introCount==1 then
-                scene.switch({
-                dest='game conf',destScene=require('scene/game conf/conf_main'),swapT=.7,outT=.3,
-                anim=function() anim.cover(.3,.4,.3,0,0,0) end
-                })
-                function scene.cur.send()
-                    scene.cur.exitScene='scene/intro'
-                end
-            elseif k==tchar:sub(cnum,cnum) then cnum=cnum+1
-                if cnum==tchar:len()+1 then
-                    cnum=1
-                    scene.switch({
-                        dest='territory',destScene=require('territory/territory'),swapT=.7,outT=.3,
-                        anim=function() anim.cover(.3,.4,.3,0,0,0) end
-                    })
-                end
-            else cnum=1 intro.lvl=2 end
-        end
-    else if k=='escape' then intro.lvl=1 end end
-end
-function intro.mouseP(x,y,button,istouch)
-    if intro.lvl==1 then
+    if k=='escape' then love.event.quit()
+    elseif not mytable.include(banned,k) then
         if win.stat.launch==1 and introCount==1 then
             scene.switch({
             dest='game conf',destScene=require('scene/game conf/conf_main'),swapT=.7,outT=.3,
@@ -199,16 +54,26 @@ function intro.mouseP(x,y,button,istouch)
             function scene.cur.send()
                 scene.cur.exitScene='scene/intro'
             end
-        else intro.lvl=2 end
-    else
-        BUTTON.click(x,y,button,istouch)
+        elseif k==tchar:sub(cnum,cnum) then cnum=cnum+1
+            if cnum==tchar:len()+1 then
+                cnum=1
+                scene.switch({
+                    dest='territory',destScene=require('territory/territory'),swapT=.7,outT=.3,
+                    anim=function() anim.cover(.3,.4,.3,0,0,0) end
+                })
+            end
+        else cnum=1
+            scene.switch({
+                dest='menu',swapT=.75,outT=.25,
+                anim=function() anim.enter1(.25,.5,.25) end
+            })
+        end
     end
 end
+function intro.mouseP(x,y,button,istouch)
+    intro.keyP('mouse')
+end
 function intro.update(dt)
-    --if intro.lvl==3 then intro.lvl2animT=.3
-    if intro.lvl==2 then intro.lvl2animT=min(intro.lvl2animT+dt,.4)
-    else intro.lvl2animT=max(0,intro.lvl2animT-dt) end
-
     BUTTON.update(dt,adaptAllWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5))
 end
 
@@ -224,22 +89,17 @@ function intro.draw()
         gc.draw(hat,0,0,0,1.25,1.25,500,500)
     end
 
-    v=intro.lvl2animT/.4
-    gc.setColor(0,0,0,(intro.lvl==3 and 1 or v))
-    gc.rectangle('fill',-1000,-600,2000,1200)
-    if intro.lvl<3 then
-        local w,h=logo:getPixelDimensions()
-        gc.setColor(1,1,1)
-        gc.draw(logo,0,-200+12*sin(scene.time/5%2*math.pi)-600*v*v,0,1600/w,1600/w,w/2,h/2)
+    local w,h=logo:getPixelDimensions()
+    gc.setColor(1,1,1)
+    gc.draw(logo,0,-200+12*sin(scene.time/5%2*math.pi),0,1600/w,1600/w,w/2,h/2)
 
-        gc.setColor(1,1,1,1-v)
-        gc.printf(user.lang.intro.start,font.Exo_2,0,300,4000,'center',0,.625,.625,2000,84)
+    gc.setColor(1,1,1)
+    gc.printf(user.lang.intro.start,font.Exo_2,0,300,4000,'center',0,.625,.625,2000,84)
 
-        gc.printf(intro.tip[intro.order],font.Exo_2,0,450,114514,'center',0,user.lang.tipScale,user.lang.tipScale,57257,84)
+    gc.printf(intro.tip[intro.tipOrder],font.Exo_2,0,450,114514,'center',0,user.lang.tipScale,user.lang.tipScale,57257,84)
 
-        gc.setColor(1,1,1,.25-v*.25)
-        gc.printf("Version : "..win.stat.version,font.Exo_2,-240,480,1600,'center',0,.3,.3)
-    end
+    gc.setColor(1,1,1,.25)
+    gc.printf("Version : "..win.stat.version,font.Exo_2,-240,480,1600,'center',0,.3,.3)
 
     BUTTON.draw()
 end

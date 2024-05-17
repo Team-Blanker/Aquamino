@@ -3,30 +3,11 @@ local BUTTON=scene.button
 
 local menu={modeKey=1}
 local flashT,enterT,clickT=0,0,0
-menu.modeList={
-    --xy都是绘制坐标
-    ['40 lines']={x=-300,y=0,borderColor={0,1,.75}},
-    marathon={x=-150,y=150,borderColor={0,1,.75}},
-    ['ice storm']={x=450,y=150,borderColor={0,1,1}},
-    thunder={x=-300,y=-300,borderColor={0,1,1}},
-    smooth={x=-450,y=150,borderColor={0,1,1}},
-    levitate={x=-450,y=-150,borderColor={0,1,1}},
-    master={x=-300,y=300,borderColor={0,1,1}},
-    multitasking={x=0,y=300,borderColor={0,1,1}},
-    sandbox={x=300,y=0,borderColor={.6,.6,.6}},
-    ['dig 40']={x=-150,y=-150,borderColor={0,1,.75}},
-    laser={x=450,y=-150,borderColor={0,1,1}},
-}
-menu.icon={
-    border=gc.newImage('pic/mode icon/border.png')
-}
-for k,v in pairs(menu.modeList) do
-    menu.icon[k]=gc.newImage('pic/mode icon/'..k..'.png')
-end
+menu.modelist={'40 lines','marathon','dig 40','sandbox'}
 function menu.init()
     m=user.lang.menu
     menu.modeName=user.lang.modeName
-    scene.BG=require('BG/blank')
+    if menu.bgName then scene.BG=require('BG/'..menu.bgName) else scene.BG=require('BG/pond') end
     if scene.BG.init then scene.BG.init() end
     if not mus.checkTag('menu') then
         if win.date.month==8 and win.date.day==14 then
@@ -46,7 +27,7 @@ function menu.init()
     menu.rCount=0
 
     BUTTON.create('setting',{
-        x=-800,y=-400,type='rect',w=150,h=150,
+        x=-600,y=-400,type='rect',w=150,h=150,
         draw=function(bt,t)
             gc.setColor(.5,.5,.5,.8+t)
             gc.rectangle('fill',-75,-75,150,150)
@@ -73,7 +54,7 @@ function menu.init()
         end
     },.2)
     BUTTON.create('quit',{
-        x=-800,y=400,type='rect',w=150,h=150,
+        x=-800,y=-400,type='rect',w=150,h=150,
         draw=function(bt,t)
             local w,h=bt.w,bt.h
             gc.setColor(.5,.5,.5,.8+t)
@@ -113,7 +94,7 @@ function menu.init()
     },.2)
 end
 function menu.keyP(k)
-    local len=#menu.modeList
+    local len=#menu.modelist
     if k=='return' then menu.lvl=min(menu.lvl+1,2)
     elseif k=='escape' then menu.lvl=max(menu.lvl-1,0) end
     if menu.lvl==0 then
@@ -123,7 +104,7 @@ function menu.keyP(k)
         if k=='left' or k=='right' or k=='r' or k=='kp4' or k=='kp6' then flashT=.3 end
         if k=='left' or k=='kp4' then menu.modeKey=(menu.modeKey-2)%len+1
         elseif k=='right' or k=='kp6' then menu.modeKey=menu.modeKey%len+1
-        elseif k=='r' then menu.modeKey=rand(1,#menu.modeList)
+        elseif k=='r' then menu.modeKey=rand(1,#menu.modelist)
             menu.rCount=menu.rCount+1
             if menu.rCount>=16 then
                 scene.dest='game' scene.destScene=require'mino/game'
@@ -139,22 +120,31 @@ function menu.keyP(k)
         scene.swapT=.7 scene.outT=.3
         scene.anim=function() anim.cover(.3,.4,.3,0,0,0) end
 
-        scene.sendArg=menu.modeList[menu.modeKey]
+        scene.sendArg=menu.modelist[menu.modeKey]
         menu.send=menu.gameSend
     end
 end
 function menu.mouseP(x,y,button,istouch)
-    if not BUTTON.click(x,y,button,istouch) then local len,l=#menu.modeList,1920/#menu.modeList
-        for k,v in pairs(menu.modeList) do
-            if abs(x-v.x)+abs(y-v.y)<=150 then
-                scene.switch({
-                    dest='game',destScene=require'mino/game',
-                    swapT=.7,outT=.3,
-                    anim=function() anim.cover(.3,.4,.3,0,0,0) end
-                })
-                scene.sendArg=k
-                menu.send=menu.gameSend
+    if not BUTTON.click(x,y,button,istouch) then local len,l=#menu.modelist,1920/#menu.modelist
+        if button==1 then
+            if y>=500 then
+            for i=1,len do
+                if x>-960+l*(i-1) and x<-960+l*i then
+                    menu.modeKey=i flashT=.3 break
+                end
             end
+            elseif x<-640 then menu.modeKey=(menu.modeKey-2)%len+1 flashT=.3
+            elseif x> 640 then menu.modeKey=menu.modeKey%len+1 flashT=.3
+            else
+                if clickT>0 then
+                    scene.dest='game' scene.destScene=require'mino/game'
+                    scene.swapT=.7 scene.outT=.3
+                    scene.anim=function() anim.cover(.3,.4,.3,0,0,0) end
+                    scene.sendArg=menu.modelist[menu.modeKey]
+                    menu.send=menu.gameSend
+                else clickT=.5 end
+            end
+            --menu.changeBG(menu.modeKey)
         end
     end
 end
@@ -163,16 +153,39 @@ function menu.update(dt)
     flashT=max(flashT-dt,0) clickT=max(clickT-dt,0)
 end
 function menu.draw()
-    for k,v in pairs(menu.modeList) do
-        if abs(v.x)+abs(v.y)<=150*(5*scene.time) then
-        gc.setColor(v.borderColor)
-        gc.draw(menu.icon.border,v.x,v.y,0,1,1,150,150)
-        local s=(abs(v.x)+abs(v.y)-150*(5*scene.time))/150
-        gc.setColor(1,1,1,1+s)
-        gc.draw(menu.icon.border,v.x,v.y,0,1,1,150,150)
-        gc.setColor(1,1,1)
-        gc.draw(menu.icon[k],v.x,v.y,0,1,1,150,150)
+    local l=1920/#menu.modelist
+    local txt=menu.modeTxt[menu.modelist[menu.modeKey]]
+    local sz=min(960/txt:getWidth(),1.25)
+    gc.draw(txt,0,-400,0,sz,sz,txt:getWidth()/2,txt:getHeight()/2)
+
+    gc.setColor(1,1,1,.5-.15*cos(scene.time%8*math.pi/4))
+    gc.printf(m.illust,font.Exo_2,0,0,4000,'center',0,m.iScale,m.iScale,2000,148)
+
+    gc.setLineWidth(3)
+    for i=1,#menu.modelist do
+        if i==menu.modeKey then
+            gc.setColor(1,1,1,.6)
+            gc.rectangle('fill',-960+l*(menu.modeKey-1),500,l,40)
+        else
+            gc.setColor(1,1,1,.2+.05*(i%2))
+            gc.rectangle('fill',-960+l*(i-1),500,l,40)
         end
+        gc.printf(menu.modeName[menu.modelist[i]],font.Exo_2_SB,-960+l*(i-.5),480,2000,'center',0,.3,.3,1000,84)
+    end
+    gc.setColor(1,1,1,.5)
+    gc.setLineWidth(20)
+    gc.line(-760,-100,-860,0,-760,100)
+    gc.line( 760,-100, 860,0, 760,100)
+    do
+        local s=scene.time%4/4
+        if.08-s>0 then
+            gc.setColor(1,1,1,10*(.08-s))
+            gc.line(-760-800*s,-100,-860-800*s,0,-760-800*s,100)
+            gc.line( 760+800*s,-100, 860+800*s,0, 760+800*s,100)
+        end
+    end
+    if flashT>0 then gc.setColor(1,1,1,flashT/.3*.15)
+        gc.rectangle('fill',-1000,-600,2000,1200)
     end
     BUTTON.draw()
 end

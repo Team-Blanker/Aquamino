@@ -21,7 +21,6 @@ return {
     },
     intro={
         start="按任意键开始",
-        mode={"练习","挑战","秘境","理堂"}
     },
     menu={
         illust="双击/按Enter键开始游戏\n按R键随机跳转",
