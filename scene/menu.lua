@@ -162,13 +162,20 @@ function menu.update(dt)
     BUTTON.update(dt,adaptAllWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5))
     flashT=max(flashT-dt,0) clickT=max(clickT-dt,0)
 end
+
+local cv=gc.newCanvas(300,300)
+gc.setCanvas(cv)
+gc.setColor(1,1,1,.25)
+gc.circle('fill',150,150,140,4)
+gc.setCanvas()
 function menu.draw()
     for k,v in pairs(menu.modeList) do
-        if abs(v.x)+abs(v.y)<=150*(5*scene.time) then
+        local s=(abs(v.x)+abs(v.y)-150*(8*(scene.time-.125)))/150/2
+        if s<=0 then
         gc.setColor(v.borderColor)
+        gc.draw(cv,v.x,v.y,0,1,1,150,150)
         gc.draw(menu.icon.border,v.x,v.y,0,1,1,150,150)
-        local s=(abs(v.x)+abs(v.y)-150*(5*scene.time))/150
-        gc.setColor(1,1,1,1+s)
+        gc.setColor(1,1,1,1+s*.5)
         gc.draw(menu.icon.border,v.x,v.y,0,1,1,150,150)
         gc.setColor(1,1,1)
         gc.draw(menu.icon[k],v.x,v.y,0,1,1,150,150)

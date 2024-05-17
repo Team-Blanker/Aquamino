@@ -25,25 +25,25 @@ function anim.cover(intime,keeptime,outtime,r,g,b)
         gc.rectangle('fill',-960,-540,1920,1080)
 end
 
-function anim.enter1(intime,keeptime,outtime)
+function anim.enterMenu(intime,keeptime,outtime)
     gc.setColor(0,0,0)
     if scene.swapT>0 then
-        local rect_w=(1-((scene.swapT-keeptime)/intime))
+        local rect_w=1-((scene.swapT-keeptime)/intime)^2
         if scene.swapT>keeptime then
             gc.rectangle('fill',-960,-540,960*rect_w,1080)
             gc.rectangle('fill',960-960*rect_w,-540,960*rect_w,1080)
             gc.setColor(1,1,1)
-            gc.draw(anim.e1cl,-960+960*rect_w,0,0,1,1,160,160)
-            gc.draw(anim.e1cr, 960-960*rect_w,0,0,1,1,0,160)
+            --gc.draw(anim.e1cl,-960+960*rect_w,0,0,1,1,160,160)
+            --gc.draw(anim.e1cr, 960-960*rect_w,0,0,1,1,0,160)
         else
             gc.rectangle('fill',-960,-540,1920,1080)
             gc.setColor(1,1,1)
-            gc.draw(anim.e1cw,0,0,0,1,1,160,160)
+            --gc.draw(anim.e1cw,0,0,0,1,1,160,160)
         end
     else
-        local rect_w=(scene.outT/outtime)^2
-        gc.rectangle('fill',-960,-540,960*rect_w,1080)
-        gc.rectangle('fill',960-960*rect_w,-540,960*rect_w,1080)
+        local sz=1920*(-(1-scene.outT/outtime)^2+1)
+        gc.circle('fill',-960,960,sz,4) gc.circle('fill',960,-960,sz,4)
+        gc.circle('fill',960,960,sz,4) gc.circle('fill',-960,-960,sz,4)
     end
 end
 function anim.enter2(intime,keeptime,outtime)
