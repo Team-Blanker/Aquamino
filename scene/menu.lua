@@ -170,7 +170,7 @@ gc.circle('fill',150,150,140,4)
 gc.setCanvas()
 function menu.draw()
     for k,v in pairs(menu.modeList) do
-        local s=(abs(v.x)+abs(v.y)-150*(8*(scene.time-.125)))/150/2
+        local s=(abs(v.x)+abs(v.y)-150*(16*(scene.time-.125)))/150/2
         if s<=0 then
         gc.setColor(v.borderColor)
         gc.draw(cv,v.x,v.y,0,1,1,150,150)
