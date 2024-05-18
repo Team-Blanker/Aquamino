@@ -72,11 +72,11 @@ function mymath.rotate3D(x,y,z,oplist,scale)--沿着作为旋转轴的坐标轴�
         elseif axis=='y' then z1,x1=z1*m-x1*n,z1*n+x1*m
         else x1,y1=x1*m-y1*n,x1*n+y1*m end
     end
-    x1=x1*scale[1] y1=y1*scale[2] z1=z1*scale[3]
+    if scale then x1=x1*scale[1] y1=y1*scale[2] z1=z1*scale[3] end
     return x1,y1,z1
 end
 function mymath.transpos(x,y)--将屏幕上某点转换成与画面显示匹配的坐标
-    local w,h=love.graphics.getDimensions() 
+    local w,h=love.graphics.getDimensions()
     x,y=x-w/2,y-h/2
     if h/w<9/16 then x,y=x*1080/h,y*1080/h
     else x,y=x*1920/w,y*1920/w end
