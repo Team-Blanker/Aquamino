@@ -1,7 +1,10 @@
 local star={}
 local c={}
+
+gc.setScissor(0,0,2000,2000)--默认的scissor是1920*1080，这里要改，否则一半地方画不了
 gc.setColor(1,1,1)
 for i=1,4 do
+    gc.origin()
     c[i]=gc.newCanvas(2000,2000)
     gc.setCanvas(c[i])
     for j=1,96 do
@@ -10,6 +13,8 @@ for i=1,4 do
     end
 end
 gc.setCanvas()
+gc.setScissor()
+
 function star.draw()
     gc.clear(.04,.04,.08)
     gc.push('transform')
