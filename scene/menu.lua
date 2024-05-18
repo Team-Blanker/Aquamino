@@ -11,12 +11,15 @@ menu.modeList={
     thunder={x=-300,y=-300,borderColor={0,1,1}},
     smooth={x=-450,y=150,borderColor={0,1,1}},
     levitate={x=-450,y=-150,borderColor={0,1,1}},
-    master={x=-300,y=300,borderColor={0,1,1}},
-    multitasking={x=0,y=300,borderColor={0,1,1}},
+    master={x=-300,y=300,borderColor={1,.25,.25}},
+    multitasking={x=0,y=300,borderColor={1,.25,.25}},
     sandbox={x=300,y=0,borderColor={.6,.6,.6}},
     ['dig 40']={x=-150,y=-150,borderColor={0,1,.75}},
     laser={x=450,y=-150,borderColor={0,1,1}},
 }
+for k,v in pairs(menu.modeList) do
+    v.hoverT=0
+end
 menu.icon={
     border=gc.newImage('pic/mode icon/border.png')
 }
@@ -26,7 +29,7 @@ end
 function menu.init()
     m=user.lang.menu
     menu.modeName=user.lang.modeName
-    scene.BG=require('BG/blank')
+    scene.BG=require('BG/menuBG')
     if scene.BG.init then scene.BG.init() end
     if not mus.checkTag('menu') then
         if win.date.month==8 and win.date.day==14 then
@@ -113,34 +116,17 @@ function menu.init()
     },.2)
 end
 function menu.keyP(k)
-    local len=#menu.modeList
-    if k=='return' then menu.lvl=min(menu.lvl+1,2)
-    elseif k=='escape' then menu.lvl=max(menu.lvl-1,0) end
-    if menu.lvl==0 then
-        scene.dest='intro' scene.swapT=.7 scene.outT=.3
-        scene.anim=function() anim.cover(.3,.4,.3,0,0,0) end
-    elseif menu.lvl==1 then
-        if k=='left' or k=='right' or k=='r' or k=='kp4' or k=='kp6' then flashT=.3 end
-        if k=='left' or k=='kp4' then menu.modeKey=(menu.modeKey-2)%len+1
-        elseif k=='right' or k=='kp6' then menu.modeKey=menu.modeKey%len+1
-        elseif k=='r' then menu.modeKey=rand(1,#menu.modeList)
+    if k=='r' then
             menu.rCount=menu.rCount+1
             if menu.rCount>=16 then
-                scene.dest='game' scene.destScene=require'mino/game'
-                scene.swapT=.7 scene.outT=.3
-                scene.anim=function() anim.cover(.3,.4,.3,0,0,0) end
-
+                scene.switch({
+                    dest='game',destScene=require'mino/game',
+                    swapT=.7,outT=.3,
+                    anim=function() anim.cover(.3,.4,.3,0,0,0) end
+                })
                 scene.sendArg='idea_test'
                 menu.send=menu.gameSend
             end
-        end
-    elseif menu.lvl==2 then
-        scene.dest='game' scene.destScene=require'mino/game'
-        scene.swapT=.7 scene.outT=.3
-        scene.anim=function() anim.cover(.3,.4,.3,0,0,0) end
-
-        scene.sendArg=menu.modeList[menu.modeKey]
-        menu.send=menu.gameSend
     end
 end
 function menu.mouseP(x,y,button,istouch)
@@ -159,27 +145,35 @@ function menu.mouseP(x,y,button,istouch)
     end
 end
 function menu.update(dt)
-    BUTTON.update(dt,adaptAllWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5))
+    local msx,msy=adaptAllWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5)
+    for k,v in pairs(menu.modeList) do
+        if abs(msx-v.x)+abs(msy-v.y)<=150 then
+            v.hoverT=min(v.hoverT+dt,.15)
+        else v.hoverT=max(v.hoverT-dt,0) end
+    end
+    BUTTON.update(dt,msx,msy)
     flashT=max(flashT-dt,0) clickT=max(clickT-dt,0)
 end
 
 local cv=gc.newCanvas(300,300)
 gc.setCanvas(cv)
-gc.setColor(1,1,1,.25)
+gc.setColor(1,1,1)
 gc.circle('fill',150,150,140,4)
 gc.setCanvas()
 function menu.draw()
     for k,v in pairs(menu.modeList) do
-        local s=(abs(v.x)+abs(v.y)-150*(16*(scene.time-.125)))/150/2
-        if s<=0 then
-        gc.setColor(v.borderColor)
+        --local s=(abs(v.x)+abs(v.y)-150*(16*(scene.time-.125)))/150/2
+        --if s<=0 then
+        local c=v.borderColor
+        gc.setColor(c[1],c[2],c[3],.25+v.hoverT)
         gc.draw(cv,v.x,v.y,0,1,1,150,150)
+        gc.setColor(c)
         gc.draw(menu.icon.border,v.x,v.y,0,1,1,150,150)
-        gc.setColor(1,1,1,1+s*.5)
-        gc.draw(menu.icon.border,v.x,v.y,0,1,1,150,150)
+        --gc.setColor(1,1,1,1+s*.5)
+        --gc.draw(menu.icon.border,v.x,v.y,0,1,1,150,150)
         gc.setColor(1,1,1)
         gc.draw(menu.icon[k],v.x,v.y,0,1,1,150,150)
-        end
+        --end
     end
     BUTTON.draw()
 end
