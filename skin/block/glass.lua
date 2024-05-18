@@ -7,15 +7,11 @@ function skin.unitDraw(player,x,y,color,alpha)
     setColor(color[1],color[2],color[3],.25)
     rect('fill',-18+36*x,-18-36*y,36,36)
     setColor(color[1],color[2],color[3],color[4] or alpha or 1)
-    rect('fill',-18+36*x,-18-36*y,36,36)
+    draw(pic,-18+36*x,-18-36*y)
 end
-local blockCanvas=gc.newCanvas(36,36)
-local fieldCanvas=gc.newCanvas(36*50,36*100)--最多支持50*100场地
-gc.setCanvas(blockCanvas)
-setColor(1,1,1)
-rect('fill',0,0,36,36)
-gc.setCanvas()
 function skin.init(player)
+    player.fieldCanvas=gc.newCanvas(50,100)--最多支持正常显示50*100场地
+    player.fieldCanvas:setFilter('nearest')
     player.skinSpinTimer=0
     player.spinAct=false
 end
@@ -35,7 +31,7 @@ function skin.fieldDraw(player,mino)
 
     gc.push()
     gc.origin()
-    gc.setCanvas(fieldCanvas)
+    gc.setCanvas(player.fieldCanvas)
     gc.clear(0,0,0,0)
     for y=1,#player.field do
         if player.field[y][1] then
@@ -43,7 +39,7 @@ function skin.fieldDraw(player,mino)
             local C=player.color[F[y][x].name]
             if F[y][x] and next(F[y][x]) and C then
                 setColor(C[1],C[2],C[3],1)
-                draw(blockCanvas,36*x-36,3600-36*y-36)
+                gc.points(x-.5,y-.5)
             end
         end
         end
@@ -52,13 +48,13 @@ function skin.fieldDraw(player,mino)
     gc.pop()
 
     setColor(1,1,1,.03)
-    draw(fieldCanvas,18,-3600+18)
+    draw(player.fieldCanvas,18,-18,0,36,-36)
     for i=1,6 do  for j=1,4 do
         local a,b=i*3*cos(j*math.pi/2),i*3*sin(j*math.pi/2)
-        draw(fieldCanvas,18+a,-3600+18+b)
+        draw(player.fieldCanvas,18+a,-18+b,0,36,-36)
     end  end
     setColor(1,1,1,.15)
-    draw(fieldCanvas,18,-3600+18)
+    draw(player.fieldCanvas,18,-18,0,36,-36)
 
     h=0
     for y=1,#player.field do
