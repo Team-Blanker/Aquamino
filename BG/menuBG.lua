@@ -41,12 +41,6 @@ function bg.draw()
         gc.setCanvas()
     gc.pop()
     gc.clear(0,0,0)
-    for i=1,5 do
-        gc.setColor(1,1,1,.08/i)
-        for j=1,6 do
-            gc.draw(pcv,cos(math.pi*j/2)*i*4,sin(math.pi*j/2)*i*4,0,1,1,500,500)
-        end
-    end
     gc.setColor(1,1,1,.25)
     gc.draw(pcv,0,0,0,1,1,500,500)
 end
