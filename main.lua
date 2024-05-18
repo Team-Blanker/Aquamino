@@ -297,9 +297,6 @@ function love.draw()
     --[[画面显示：找到最大的16:9的矩形，居中，以该矩形的中心为原点，向右为x轴正方向，向下为y轴正方向，
     矩形长边为1920单位，短边为1080单位，以此为基准进行绘制]]
     gc.applyTransform(adaptAllWindow)
-    local aw,ah=win.H/win.W<9/16 and win.H*16/9 or win.W,win.H/win.W<9/16 and win.H or win.W*9/16
-    gc.setScissor((win.W-aw)/2,(win.H-ah)/2,
-    aw,ah)
     local rx,ry=gc.inverseTransformPoint(ms.getX()+.5,ms.getY()+.5)
     gc.setColor(1,1,1)--若未说明，图像绘制统一为白色，下同
     if scene.BG.draw then scene.BG.draw() end
@@ -317,9 +314,15 @@ function love.draw()
     --gc.print("绘制帧率/逻辑帧率:"..draw_frame.FPS.."/"..love.timer.getFPS(),Exo_2_SB,-955,510,0,.2,.2)
     gc.print("FPS:"..love.timer.getFPS()..",gcinfo:"..gcinfo(),font.Exo_2_SB,-955,510,0,.2,.2)
 
-    --[[if win.isAdjusting then adjust.draw() end]]
-    gc.setScissor()
     gc.origin()
+
+    local aw,ah=win.H/win.W<9/16 and win.H*16/9 or win.W,win.H/win.W<9/16 and win.H or win.W*9/1
+    gc.setColor(0,0,0)
+    gc.rectangle('fill',0,0,(win.W-aw)/2,win.H)
+    gc.rectangle('fill',(win.W+aw)/2,0,(win.W-aw)/2,win.H)
+    gc.rectangle('fill',0,0,win.W,(win.H-ah)/2)
+    gc.rectangle('fill',0,(win.H+ah)/2,win.W,(win.H-ah)/2)
+
     gc.setColor(1,1,1)
     if win.showInfo then
         local infoL="Current scene: "..scene.pos.."\nCursor pos:"..("%.2f,%.2f"):format(rx,ry)
