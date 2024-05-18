@@ -237,9 +237,6 @@ function laser.BGUpdate(stacker,dt)
     if stacker.started and not stacker.paused or stacker.winState~=0 then scene.BG.time=mus.whole:tell() end
 end
 function laser.underFieldDraw(player)
-    if player.gameTimer==0 then
-    gc.setColor(0,0,0) gc.rectangle('fill',-960,-540,1920,1080)
-    end
     if player.point>=300 then gc.setColor(1,.95,.05) else gc.setColor(1,1,1) end
     gc.printf(""..player.point,font.JB_B,-player.w*18-110,-32,2048,'center',0,.5,.5,1024,84)
     gc.printf(300,font.JB_B,-player.w*18-110,32,2048,'center',0,.5,.5,1024,84)

@@ -38,6 +38,7 @@ local function diamondPos(sz,p)
     if k<1 then return sz-l,l elseif k<2 then return -l,sz-l elseif k<3 then return l-sz,-l else return l,l-sz end
 end
 function bg.draw()
+    if bg.time==0 then return end
     beat=(offset+bg.time)*BPM/60 intBeat=flore(beat)
 
     if beat<64 then
