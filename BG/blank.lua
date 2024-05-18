@@ -1,6 +1,5 @@
 local blank={}
 function blank.draw()
-	gc.setColor(.125,.125,.125)
-	gc.rectangle('fill',-1000,-600,2000,1200)
+	gc.clear(.1,.1,.1)
 end
 return blank
