@@ -1,16 +1,16 @@
 local cf=user.lang.conf
 local cfm=cf.main
+local arcs,arcf=math.pi/2,5*math.pi/2
 scene.button.create('quit',{
-    x=-700,y=400,type='rect',w=200,h=100,
+    x=-750,y=250*3^.5,type='circle',r=250,
     draw=function(bt,t)
-        local w,h=bt.w,bt.h
-        gc.setColor(.5,.5,.5,.8+t)
-        gc.rectangle('fill',-w/2,-h/2,w,h)
+        gc.setColor(.5,.5,.5,.3+t)
+        gc.arc('fill',0,0,bt.r,arcs,arcf,6)
         gc.setColor(.8,.8,.8)
-        gc.setLineWidth(3)
-        gc.rectangle('line',-w/2,-h/2,w,h)
+        gc.setLineWidth(9)
+        gc.arc('line','closed',0,0,bt.r,arcs,arcf,6)
         gc.setColor(1,1,1)
-        gc.draw(win.UI.back,0,0,0,1,1,60,35)
+        gc.draw(win.UI.back,0,0,0,1.5,1.5,60,35)
     end,
     event=function()
         scene.switch({
@@ -20,16 +20,15 @@ scene.button.create('quit',{
     end
 },.2)
 scene.button.create('test',{
-    x=700,y=400,type='rect',w=200,h=100,
+    x=750,y=250*3^.5,type='circle',r=250,
     draw=function(bt,t)
-        local w,h=bt.w,bt.h
-        gc.setColor(.5,.5,.5,.8+t)
-        gc.rectangle('fill',-w/2,-h/2,w,h)
+        gc.setColor(.5,.5,.5,.3+t)
+        gc.arc('fill',0,0,bt.r,arcs,arcf,6)
         gc.setColor(.8,.8,.8)
-        gc.setLineWidth(3)
-        gc.rectangle('line',-w/2,-h/2,w,h)
+        gc.setLineWidth(9)
+        gc.arc('line','closed',0,0,bt.r,arcs,arcf,6)
         gc.setColor(1,1,1)
-        gc.printf(cf.test,font.Exo_2,0,0,1280,'center',0,.5,.5,640,84)
+        gc.printf(cf.test,font.Bender,0,0,1280,'center',0,.75,.75,640,76)
     end,
     event=function()
         scene.switch({
@@ -41,16 +40,15 @@ scene.button.create('test',{
 },.2)
 
 scene.button.create('keys',{
-    x=360,y=-200,type='rect',w=600,h=160,
+    x=250,y=250*3^.5,type='circle',r=250,
     draw=function(bt,t)
-        local w,h=bt.w,bt.h
-        gc.setColor(.25,.5,.375,.8+t)
-        gc.rectangle('fill',-w/2,-h/2,w,h)
-        gc.setColor(.4,.8,.6)
-        gc.setLineWidth(3)
-        gc.rectangle('line',-w/2,-h/2,w,h)
+        gc.setColor(.25,.5,.4375,.3+t)
+        gc.arc('fill',0,0,bt.r,arcs,arcf,6)
+        gc.setColor(.5,1,.875)
+        gc.setLineWidth(9)
+        gc.arc('line','closed',0,0,bt.r,arcs,arcf,6)
         gc.setColor(1,1,1)
-        gc.printf(cfm.keys,font.Exo_2,0,0,1280,'center',0,.8,.8,640,84)
+        gc.printf(cfm.keys,font.Bender,0,0,1280,'center',0,.75,.75,640,76)
     end,
     event=function()
         scene.switch({
@@ -60,16 +58,15 @@ scene.button.create('keys',{
     end
 },.2)
 scene.button.create('ctrl',{
-    x=360,y=0,type='rect',w=600,h=160,
+    x=500,y=0,type='circle',r=250,
     draw=function(bt,t)
-        local w,h=bt.w,bt.h
-        gc.setColor(.125,.25,.5,.8+t)
-        gc.rectangle('fill',-w/2,-h/2,w,h)
-        gc.setColor(.2,.4,.8)
-        gc.setLineWidth(3)
-        gc.rectangle('line',-w/2,-h/2,w,h)
+        gc.setColor(.125,.25,.5,.3+t)
+        gc.arc('fill',0,0,bt.r,arcs,arcf,6)
+        gc.setColor(.25,.5,1)
+        gc.setLineWidth(9)
+        gc.arc('line','closed',0,0,bt.r,arcs,arcf,6)
         gc.setColor(1,1,1)
-        gc.printf(cfm.ctrl,font.Exo_2,0,0,1280,'center',0,.8,.8,640,84)
+        gc.printf(cfm.ctrl,font.Bender,0,0,1280,'center',0,.75,.75,640,76)
     end,
     event=function()
         scene.switch({
@@ -78,34 +75,14 @@ scene.button.create('ctrl',{
         })
     end
 },.2)
-scene.button.create('others',{
-    x=260,y=200,type='rect',w=400,h=160,
-    draw=function(bt,t)
-        local w,h=bt.w,bt.h
-        gc.setColor(.15,.125,.5,.8+t)
-        gc.rectangle('fill',-w/2,-h/2,w,h)
-        gc.setColor(.24,.2,.8)
-        gc.setLineWidth(3)
-        gc.rectangle('line',-w/2,-h/2,w,h)
-        gc.setColor(1,1,1)
-        gc.printf(cfm.other,font.Exo_2,0,0,1280,'center',0,.8,.8,640,84)
-    end,
-    event=function()
-        scene.switch({
-            dest='menu',destScene=require('scene/game conf/others'),swapT=.15,outT=.1,
-            anim=function() anim.cover(.1,.05,.1,0,0,0) end
-        })
-    end
-},.2)
 scene.button.create('language',{
-    x=580,y=200,type='rect',w=160,h=160,
+    x=250,y=-250*3^.5,type='circle',r=250,
     draw=function(bt,t)
-        local w,h=bt.w,bt.h
-        gc.setColor(.5,.125,.375,.8+t)
-        gc.rectangle('fill',-w/2,-h/2,w,h)
-        gc.setColor(.8,.2,.6)
-        gc.setLineWidth(3)
-        gc.rectangle('line',-w/2,-h/2,w,h)
+        gc.setColor(.5,.125,.375,.3+t)
+        gc.arc('fill',0,0,bt.r,arcs,arcf,6)
+        gc.setColor(1,.25,.75)
+        gc.setLineWidth(9)
+        gc.arc('line','closed',0,0,bt.r,arcs,arcf,6)
         gc.setColor(1,1,1)
         gc.draw(win.UI.lang,0,0,0,1.5,1.5,50,50)
     end,
@@ -119,16 +96,15 @@ scene.button.create('language',{
 },.2)
 
 scene.button.create('audio',{
-    x=-360,y=-200,type='rect',w=600,h=160,
+    x=-250,y=-250*3^.5,type='circle',r=250,
     draw=function(bt,t)
-        local w,h=bt.w,bt.h
-        gc.setColor(.5,.25,.25,.8+t)
-        gc.rectangle('fill',-w/2,-h/2,w,h)
-        gc.setColor(.8,.4,.4)
-        gc.setLineWidth(3)
-        gc.rectangle('line',-w/2,-h/2,w,h)
+        gc.setColor(.5,.25,.25,.3+t)
+        gc.arc('fill',0,0,bt.r,arcs,arcf,6)
+        gc.setColor(1,.5,.5)
+        gc.setLineWidth(9)
+        gc.arc('line','closed',0,0,bt.r,arcs,arcf,6)
         gc.setColor(1,1,1)
-        gc.printf(cfm.audio,font.Exo_2,0,0,1280,'center',0,.8,.8,640,84)
+        gc.printf(cfm.audio,font.Bender,0,0,1280,'center',0,.75,.75,640,76)
     end,
     event=function()
         scene.switch({
@@ -138,16 +114,15 @@ scene.button.create('audio',{
     end
 },.2)
 scene.button.create('video',{
-    x=-360,y=0,type='rect',w=600,h=160,
+    x=-500,y=0,type='circle',r=250,
     draw=function(bt,t)
-        local w,h=bt.w,bt.h
-        gc.setColor(.5,.375,.125,.8+t)
-        gc.rectangle('fill',-w/2,-h/2,w,h)
-        gc.setColor(.8,.6,.2)
-        gc.setLineWidth(3)
-        gc.rectangle('line',-w/2,-h/2,w,h)
+        gc.setColor(.5,.375,.125,.3+t)
+        gc.arc('fill',0,0,bt.r,arcs,arcf,6)
+        gc.setColor(1,.75,.25)
+        gc.setLineWidth(9)
+        gc.arc('line','closed',0,0,bt.r,arcs,arcf,6)
         gc.setColor(1,1,1)
-        gc.printf(cfm.video,font.Exo_2,0,0,1280,'center',0,.8,.8,640,84)
+        gc.printf(cfm.video,font.Bender,0,0,1280,'center',0,.75,.75,640,76)
     end,
     event=function()
         scene.switch({
@@ -157,16 +132,15 @@ scene.button.create('video',{
     end
 },.2)
 scene.button.create('custom',{
-    x=-360,y=200,type='rect',w=600,h=160,
+    x=-250,y=250*3^.5,type='circle',r=250,
     draw=function(bt,t)
-        local w,h=bt.w,bt.h
-        gc.setColor(.15,.5,.125,.8+t)
-        gc.rectangle('fill',-w/2,-h/2,w,h)
-        gc.setColor(.24,.8,.2)
-        gc.setLineWidth(3)
-        gc.rectangle('line',-w/2,-h/2,w,h)
+        gc.setColor(.15,.5,.125,.3+t)
+        gc.arc('fill',0,0,bt.r,arcs,arcf,6)
+        gc.setColor(.3,1,.25)
+        gc.setLineWidth(9)
+        gc.arc('line','closed',0,0,bt.r,arcs,arcf,6)
         gc.setColor(1,1,1)
-        gc.printf(cfm.custom,font.Exo_2,0,0,1280,'center',0,.8,.8,640,84)
+        gc.printf(cfm.custom,font.Bender,0,0,1280,'center',0,.75,.75,640,76)
     end,
     event=function()
         scene.switch({
