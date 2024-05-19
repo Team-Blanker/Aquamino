@@ -84,11 +84,11 @@ font={
     SYHT=gc.newFont('font/SourceHanSans-Regular.otf',128),
     Bender=gc.newFont('font/Bender.otf',128),
     Bender_B=gc.newFont('font/Bender-Bold.otf',128),
-    Exo_2=gc.newFont('font/Exo2-Regular.otf',128),
+    Exo_2=gc.newFont('font/Exo2-Medium.otf',128),
     Exo_2_SB=gc.newFont('font/Exo2-SemiBold.otf',128),
     Exo_2_B=gc.newFont('font/Exo2-Bold.otf',128),
     haisi=gc.newFont('font/haisi.ttf',128),
-    JB=gc.newFont('font/JetBrainsMono-Regular.ttf',128),
+    JB=gc.newFont('font/JetBrainsMono-Medium.ttf',128),
     JB_B=gc.newFont('font/JetBrainsMono-Bold.ttf',128),
     JB_L=gc.newFont('font/JetBrainsMono-Light.ttf',128),
 
