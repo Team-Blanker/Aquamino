@@ -5,16 +5,16 @@ return {
         txtScale=50/128,txtWidth=4000
     },
     modeName={
-        ['40 lines']="40行",
+        ['40 lines']="40 行",
         marathon="馬拉松",
         ['ice storm']="冰風暴",
         thunder="雷暴",
-        smooth="絲滑40行",
-        levitate="懸浮 40行",
+        smooth="絲滑 40 行",
+        levitate="懸浮 40 行",
         master="大師",
         multitasking="雙線程",
         sandbox="沙盒",
-        ['dig 40']="挖掘 40行",
+        ['dig 40']="挖掘 40 行",
         laser="雷射",
         conf_test="設定 - 測試介面",
         idea_test="idea_test"
