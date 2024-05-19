@@ -11,9 +11,13 @@ end
 --[[e.g.
 arg={
     x=0,y=0,
+
 1.  type='circle',r=36,
-2.  type='rect',w=72,h=48,
-3.  type='poly',edge={ 80,0 , 0,80 , -80,0 , 0,-80 },
+2.  type='diamond',r=48,
+3.  type='rect',w=72,h=48,
+4.  type='poly',edge={ 80,0 , 0,80 , -80,0 , 0,-80 }
+
+
     draw=function()
         gc.setColor(1,1,1,.6)
         gc.rectangle('fill',-16,-16,32,32)
@@ -40,6 +44,7 @@ end
 function BUTTON.check(butt,x,y)
     local ax,ay=x-butt.x,y-butt.y
     if butt.type=='circle' then return (x-butt.x)^2+(y-butt.y)^2<butt.r^2
+    elseif butt.type=='diamond' then return abs(x-butt.x)+abs(y-butt.y)<butt.r
     elseif butt.type=='rect' then
         return ax>-butt.w/2 and ax<butt.w/2 and ay>-butt.h/2 and ay<butt.h/2
     elseif butt.type=='poly' then return M.pointInPolygon(ax,ay,butt.edge) end
