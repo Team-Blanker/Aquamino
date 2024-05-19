@@ -3,6 +3,31 @@ local BUTTON=scene.button
 
 local menu={modeKey=1}
 local flashT,enterT,clickT=0,0,0
+
+local setIcon1,setIcon2=gc.newCanvas(120,120),gc.newCanvas(120,120)
+local aboutIcon=gc.newCanvas(120,120)
+gc.translate(60,60)
+gc.setColor(1,1,1)
+gc.setLineWidth(8)
+gc.setCanvas(setIcon1)
+    gc.push()
+    gc.rotate(math.pi/2)
+    gc.circle('line',0,0,50,6)
+    gc.pop()
+    gc.circle('line',0,0,22.5)
+gc.setCanvas(setIcon2)
+    gc.push()
+    gc.rotate(math.pi/2)
+    gc.circle('line',0,0,50,6)
+    gc.pop()
+    gc.line(0,36,-18*3^.5,18) gc.line(0,-36,-18*3^.5,-18) gc.line(18*3^.5,-18,18*3^.5,18)
+gc.setCanvas(aboutIcon)
+    gc.circle('line',0,0,55,8)
+    gc.circle('fill',0,-30,10,4)
+    gc.rectangle('fill',-5,-10,10,50)
+gc.setCanvas()
+gc.translate(-60,-60)
+
 menu.modeList={
     --xy都是绘制坐标
     ['40 lines']={x=-300,y=0,borderColor={0,1,.75}},
@@ -41,29 +66,31 @@ function menu.init()
         end
         mus.setTag({'menu'})
     end
+
     menu.modeTxt={}
     for k,v in pairs(user.lang.modeName) do
-        menu.modeTxt[k]=gc.newText(font.Exo_2,v)
+        menu.modeTxt[k]={}
+        menu.modeTxt[k].txt=gc.newText(font.Bender,v)
+
+        menu.modeTxt[k].w=menu.modeTxt[k].txt:getWidth()
+        menu.modeTxt[k].h=menu.modeTxt[k].txt:getHeight()
     end
+
     menu.lvl=1
     menu.rCount=0
 
     BUTTON.create('setting',{
-        x=-800,y=-400,type='rect',w=150,h=150,
+        x=-960,y=-540,type='diamond',r=225,
         draw=function(bt,t)
-            gc.setColor(.5,.5,.5,.8+t)
-            gc.rectangle('fill',-75,-75,150,150)
+            gc.setColor(.5,.5,.5,.3+t)
+            gc.circle('fill',0,0,bt.r,4)
             gc.setColor(.8,.8,.8)
             gc.setLineWidth(5)
-            gc.rectangle('line',-75,-75,150,150)
-            gc.setColor(1,1,1)
-            gc.setLineWidth(8)
-            gc.setColor(1,1,1)
-            gc.circle('line',0,0,50,6)
+            gc.circle('line',0,0,bt.r,4)
             gc.setColor(1,1,1,(1-t*5))
-            gc.circle('line',0,0,22.5)
+            gc.draw(setIcon1,0,0)
             gc.setColor(1,1,1,(t*5))
-            gc.line(36,0,18,-18*3^.5) gc.line(-36,0,-18,-18*3^.5) gc.line(-18,18*3^.5,18,18*3^.5)
+            gc.draw(setIcon2,0,0)
         end,
         event=function()
             scene.switch({
@@ -76,16 +103,15 @@ function menu.init()
         end
     },.2)
     BUTTON.create('quit',{
-        x=-800,y=400,type='rect',w=150,h=150,
+        x=-960,y=540,type='diamond',r=225,
         draw=function(bt,t)
-            local w,h=bt.w,bt.h
-            gc.setColor(.5,.5,.5,.8+t)
-            gc.rectangle('fill',-w/2,-h/2,w,h)
+            gc.setColor(.5,.5,.5,.3+t)
+            gc.circle('fill',0,0,bt.r,4)
             gc.setColor(.8,.8,.8)
             gc.setLineWidth(5)
-            gc.rectangle('line',-w/2,-h/2,w,h)
+            gc.circle('line',0,0,bt.r,4)
             gc.setColor(1,1,1)
-            gc.draw(win.UI.back,0,0,0,1,1,60,35)
+            gc.draw(win.UI.back,0,0,0,1,1,-5,95)
         end,
         event=function()
             scene.switch({
@@ -95,17 +121,15 @@ function menu.init()
         end
     },.2)
     BUTTON.create('about',{
-        x=800,y=-400,type='rect',w=150,h=150,
+        x=960,y=-540,type='diamond',r=225,
         draw=function(bt,t)
-            local w,h=bt.w,bt.h
-            gc.setColor(.5,.5,.5,.8+t)
-            gc.rectangle('fill',-w/2,-h/2,w,h)
+            gc.setColor(.5,.5,.5,.3+t)
+            gc.circle('fill',0,0,bt.r,4)
             gc.setColor(.8,.8,.8)
             gc.setLineWidth(5)
-            gc.rectangle('line',-w/2,-h/2,w,h)
+            gc.circle('line',0,0,bt.r,4)
             gc.setColor(1,1,1)
-            gc.circle('fill',0,-37.5,12.5,4)
-            gc.rectangle('fill',-6,-5,12,55)
+            gc.draw(aboutIcon,0,0,0,1,1,120,0)
         end,
         event=function()
             scene.switch({
@@ -114,19 +138,33 @@ function menu.init()
             })
         end
     },.2)
+    BUTTON.create('nothing',{
+        x=960,y=540,type='diamond',r=225,
+        draw=function(bt,t)
+            gc.setColor(.5,.5,.5,.3)
+            gc.circle('fill',0,0,bt.r,4)
+            gc.setColor(.8,.8,.8)
+            gc.setLineWidth(5)
+            gc.circle('line',0,0,bt.r,4)
+            gc.setColor(1,1,1)
+            gc.draw(aboutIcon,0,0,0,1,1,120,0)
+        end,
+        event=function()
+        end
+    },.2)
 end
 function menu.keyP(k)
     if k=='r' then
-            menu.rCount=menu.rCount+1
-            if menu.rCount>=16 then
-                scene.switch({
-                    dest='game',destScene=require'mino/game',
-                    swapT=.7,outT=.3,
-                    anim=function() anim.cover(.3,.4,.3,0,0,0) end
-                })
-                scene.sendArg='idea_test'
-                menu.send=menu.gameSend
-            end
+        menu.rCount=menu.rCount+1
+        if menu.rCount>=16 then
+            scene.switch({
+                dest='game',destScene=require'mino/game',
+                swapT=.7,outT=.3,
+                anim=function() anim.cover(.3,.4,.3,0,0,0) end
+            })
+            scene.sendArg='idea_test'
+            menu.send=menu.gameSend
+        end
     end
 end
 function menu.mouseP(x,y,button,istouch)
@@ -144,13 +182,20 @@ function menu.mouseP(x,y,button,istouch)
         end
     end
 end
+local hv=''
 function menu.update(dt)
     local msx,msy=adaptAllWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5)
+    local n=false
     for k,v in pairs(menu.modeList) do
-        if abs(msx-v.x)+abs(msy-v.y)<=150 then
+        if abs(msx-v.x)+abs(msy-v.y)<=150 then n=true
             v.hoverT=min(v.hoverT+dt,.15)
+            if k~=hv then
+            scene.BG.setPolyColor(v.borderColor[1],v.borderColor[2],v.borderColor[3])
+            hv=k
+        end
         else v.hoverT=max(v.hoverT-dt,0) end
     end
+    if (not n) and hv~='' then scene.BG.setPolyColor(1,1,1) hv='' end
     BUTTON.update(dt,msx,msy)
     flashT=max(flashT-dt,0) clickT=max(clickT-dt,0)
 end
@@ -160,11 +205,16 @@ gc.setCanvas(cv)
 gc.setColor(1,1,1)
 gc.circle('fill',150,150,140,4)
 gc.setCanvas()
+
+local mt
+local ts=.4
+local w,h,c
 function menu.draw()
+    mt=menu.modeTxt
     for k,v in pairs(menu.modeList) do
         --local s=(abs(v.x)+abs(v.y)-150*(16*(scene.time-.125)))/150/2
         --if s<=0 then
-        local c=v.borderColor
+        c=v.borderColor
         gc.setColor(c[1],c[2],c[3],.25+v.hoverT)
         gc.draw(cv,v.x,v.y,0,1,1,150,150)
         gc.setColor(c)
@@ -174,6 +224,17 @@ function menu.draw()
         gc.setColor(1,1,1)
         gc.draw(menu.icon[k],v.x,v.y,0,1,1,150,150)
         --end
+    end
+    for k,v in pairs(menu.modeList) do
+        w,h=mt[k].w*ts,mt[k].h*ts
+        c=v.borderColor
+
+        gc.setColor(c[1],c[2],c[3],v.hoverT/.15*.25)
+        for i=-2,2 do
+        gc.rectangle('fill',v.x-w/2+16*i,v.y-45-h-v.hoverT/.15*15,w,h)
+        end
+        gc.setColor(1,1,1,v.hoverT/.15)
+        gc.draw(mt[k].txt,v.x,v.y-45-v.hoverT/.15*15,0,.4,.4,mt[k].w/2,mt[k].h)
     end
     BUTTON.draw()
 end
