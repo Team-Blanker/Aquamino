@@ -16,7 +16,7 @@ function pause.init(mino)
             gc.setLineWidth(3)
             gc.rectangle('line',-200,-50,400,100)
             gc.setColor(1,1,1)
-            gc.printf(ptxt.resume,font.Exo_2,0,0,1280,'center',0,.5,.5,640,84)
+            gc.printf(ptxt.resume,font.Bender,0,0,1280,'center',0,.5,.5,640,76)
         end,
         event=function()
             scene.cur.paused=false
@@ -32,7 +32,7 @@ function pause.init(mino)
             gc.setLineWidth(3)
             gc.rectangle('line',-200,-50,400,100)
             gc.setColor(1,1,1)
-            gc.printf(ptxt.r,font.Exo_2,0,0,1280,'center',0,.5,.5,640,84)
+            gc.printf(ptxt.r,font.Bender,0,0,1280,'center',0,.5,.5,640,76)
         end,
         event=function()
             scene.dest='solo' scene.destScene=require'mino/game'
@@ -51,7 +51,7 @@ function pause.init(mino)
             gc.setLineWidth(3)
             gc.rectangle('line',-200,-50,400,100)
             gc.setColor(1,1,1)
-            gc.printf(ptxt.quit,font.Exo_2,0,0,1280,'center',0,.5,.5,640,84)
+            gc.printf(ptxt.quit,font.Bender,0,0,1280,'center',0,.5,.5,640,76)
         end,
         event=function()
             scene.dest=mino.exitScene or 'menu'

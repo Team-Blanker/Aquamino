@@ -16,7 +16,7 @@ function clock.draw()
     gc.line(0,0,sin(tau*abstime/43200)*256,-cos(tau*abstime/43200)*256)
     gc.circle('line',0,0,500)
     gc.setColor(.5,1,.75)
-    gc.printf(timetxt,font.Exo_2,0,-300,1000,'center',0,1,1,500,64)
+    gc.printf(timetxt,font.Bender,0,-300,1000,'center',0,1,1,500,64)
 end
 function clock.keyP(k)
 end

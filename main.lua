@@ -84,9 +84,7 @@ font={
     SYHT=gc.newFont('font/SourceHanSans-Regular.otf',128),
     Bender=gc.newFont('font/Bender.otf',128),
     Bender_B=gc.newFont('font/Bender-Bold.otf',128),
-    Exo_2=gc.newFont('font/Exo2-Medium.otf',128),
-    Exo_2_SB=gc.newFont('font/Exo2-SemiBold.otf',128),
-    Exo_2_B=gc.newFont('font/Exo2-Bold.otf',128),
+    Bender_L=gc.newFont('font/Bender-Light.otf',128),
     haisi=gc.newFont('font/haisi.ttf',128),
     JB=gc.newFont('font/JetBrainsMono-Medium.ttf',128),
     JB_B=gc.newFont('font/JetBrainsMono-Bold.ttf',128),
@@ -94,8 +92,7 @@ font={
 
     LED=gc.newFont('font/UniDreamLED.ttf',128)
 }
-font.Bender:setFallbacks(font.SYHT) font.Bender_B:setFallbacks(font.SYHT)
-font.Exo_2:setFallbacks(font.SYHT) font.Exo_2_SB:setFallbacks(font.SYHT)
+font.Bender:setFallbacks(font.SYHT) font.Bender_B:setFallbacks(font.SYHT) font.Bender_L:setFallbacks(font.SYHT)
 font.haisi:setFallbacks(font.SYHT)
 font.JB:setFallbacks(font.SYHT) font.JB_B:setFallbacks(font.SYHT)
 
@@ -312,7 +309,7 @@ function love.draw()
     if scene.anim then scene.anim() end
     gc.setColor(1,1,1,.5)
     --gc.print("绘制帧率/逻辑帧率:"..draw_frame.FPS.."/"..love.timer.getFPS(),Exo_2_SB,-955,510,0,.2,.2)
-    gc.print("FPS:"..love.timer.getFPS()..",gcinfo:"..gcinfo(),font.Exo_2_SB,-955,510,0,.2,.2)
+    gc.print("FPS: "..love.timer.getFPS()..", gcinfo: "..gcinfo(),font.Bender_B,-955,510,0,.2,.2)
 
     gc.origin()
 
@@ -329,7 +326,7 @@ function love.draw()
         if canop then infoL=infoL.."\nYou can operate now"
         else infoL=infoL.."\nYou can\'t operate now" end
         infoR="You\'ve stayed here for "..string.format("%.2f",scene.time).."s".."\nRes:"..win.W.."*"..win.H.."\nReal res:"..rw.."*"..rh.."\nWindow mode position:"..win.x_win..","..win.y_win.."\n"..drawCtrl.timer.."/"..drawCtrl.dtRestrict.."\n"..(lastkeyP and lastkeyP or "")
-        gc.print(infoL,font.Exo_2,10,25,0,.15,.15)
-        gc.printf(infoR,font.Exo_2,win.W-10-114514*.15,25,114514,'right',0,.15,.15)
+        gc.print(infoL,font.Bender,10,25,0,.15,.15)
+        gc.printf(infoR,font.Bender,win.W-10-114514*.15,25,114514,'right',0,.15,.15)
     end
 end

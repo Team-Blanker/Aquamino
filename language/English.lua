@@ -44,7 +44,7 @@ return {
         video={
             unableBG="Unable BGs",unableTxt="Turn on when ingame BGs discomfort you.",
             fullScr="Fullscreen",fullScrTxt="Press F11 to switch window mode immediately.",
-            vsync="Vertical Sync",vsyncTxt="Usually,it's not recommended to open this option.",
+            vsync="Vertical Sync",vsyncTxt="Usually, it's not recommended to open this option.",
             frameLim="Max draw FPS:",frameTxt="A value equal to your monitor's FPS is recommended."
         },
         custom={
