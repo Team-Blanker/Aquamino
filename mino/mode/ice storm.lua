@@ -14,12 +14,14 @@ function rule.init(P,mino)
         smash='sfx/rule/ice storm/smash.wav',
         lvup='sfx/rule/ice storm/level up.wav'
     })
+    mino.seqGenType='bagp1'
     rule.allowPush={}
     rule.scoreUp=480
     rule.scoreBase=960
     for i=1,#P do
         P[i].stormLv=1
         P[i].iceScore=0
+        P[i].iceFreezeTime=0
         P[i].ruleAnim={
             score={preScore=0,t=0,tMax=.15},
             ice={},iceTMax=.3, smashParList={},
@@ -126,11 +128,16 @@ function rule.update(player,dt,mino)
     if rand()<((player.stormLv-1)/40+.1)*dt then
         local col=rand(player.w) rule.rise(player,col)
     end
+    if player.iceFreezeTime<=0 then
     for i=1,player.w do local ice=player.iceColumn[i]
         if ice.H>=2 then ice.topTimer=ice.topTimer+dt
             --if ice.topTimer>=3 then mino.die(player) mino.lose(player) end
-        elseif ice.H>=0 then ice.H=min(ice.H+dt*ice.speed,2)
-        A.ice[i].t=max(A.ice[i].t-dt,0) ice.appearT=ice.appearT+dt end
+        elseif ice.H>=0 then ice.H=min(ice.H+dt*ice.speed,2) end
+    end
+    else player.iceFreezeTime=max(player.iceFreezeTime-dt,0) end
+
+    for i=1,player.w do local ice=player.iceColumn[i]
+        if ice.H>=0 then A.ice[i].t=max(A.ice[i].t-dt,0) ice.appearT=ice.appearT+dt end
     end
 
     A.lvupT=A.lvupT+dt
@@ -195,6 +202,7 @@ function rule.onLineClear(player,mino)
             for i=1,#r do rule.decrease(player,r[i]+his.x,his.line*.2*(.75+.25*his.combo)) end
         end
     end
+    if his.PC then player.iceFreezeTime=1.5 end
     rule.lvup(player,mino)
 end
 function rule.underFieldDraw(player)

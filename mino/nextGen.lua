@@ -9,6 +9,13 @@ function GenShin.bag(bag,player)
         table.insert(player.next,table.remove(new,rand(#new)))
     end
 end
+function GenShin.bagp1(bag,player)
+    local new=T.copy(bag)
+    table.insert(new,bag[rand(#bag)])
+    for i=1,#new do
+        table.insert(player.next,table.remove(new,rand(#new)))
+    end
+end
 function GenShin.pairs(bag,player)
     local cb=T.copy(bag)
     local a,b=rem(cb,rand(#cb)),rem(cb,rand(#cb))
