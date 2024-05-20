@@ -94,12 +94,12 @@ function intro.draw()
     gc.draw(logo,0,-200+12*sin(scene.time/5%2*math.pi),0,1600/w,1600/w,w/2,h/2)
 
     gc.setColor(1,1,1)
-    gc.printf(user.lang.intro.start,font.Bender_B,0,300,4000,'center',0,.625,.625,2000,84)
+    gc.printf(user.lang.intro.start,font.Bender,0,300,4000,'center',0,.625,.625,2000,84)
 
     gc.printf(intro.tip[intro.tipOrder],font.Bender,0,450,114514,'center',0,user.lang.tipScale,user.lang.tipScale,57257,84)
 
     gc.setColor(1,1,1,.25)
-    gc.printf("Version : "..win.stat.version,font.Bender,-240,480,1600,'center',0,.3,.3)
+    gc.printf("Version : "..win.stat.version,font.Bender,950,540,1600,'right',0,.3,.3,1600,160)
 
     BUTTON.draw()
 end
