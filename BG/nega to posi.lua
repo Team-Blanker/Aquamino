@@ -94,8 +94,5 @@ function bg.draw()
         if loopBeat>(i~=4 and 16+32*i or 100000) then blink(c) end
         end
     end
-
-    --gc.setColor(1,1,1)
-    --gc.printf(""..floor(beat),font.Bender,0,0,1000,'center',0,1,1,500,84)
 end
 return bg

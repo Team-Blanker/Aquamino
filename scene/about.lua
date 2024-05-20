@@ -33,7 +33,7 @@ function about.init()
         end,
         event=function()
             scene.switch({
-                dest='menu',destScene=require(scene.cur.exitScene or 'scene/menu'),swapT=.7,outT=.3,
+                dest='menu',destScene=require('scene/menu'),swapT=.7,outT=.3,
                 anim=function() anim.cover(.3,.4,.3,0,0,0) end
             })
         end
