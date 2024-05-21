@@ -130,7 +130,7 @@ function mino.curIns(player)
         player.canHold=true C.kickOrder=nil
     elseif player.hold.name then mino.hold(player)
     else C.piece,C.name=nil,nil end
-    if #player.next<=player.preview then NG[mino.seqGenType](mino.bag,player) end
+    if #player.next<=player.preview then NG[mino.seqGenType](mino.bag,player,player.seqGen.buffer) end
     player.MTimer,player.DTimer=min(player.MTimer,S.ctrl.ASD),min(player.DTimer,S.ctrl.SD_ASD)
     player.LDR=player.LDRInit player.LTimer=0
 
@@ -289,7 +289,7 @@ function mino.init()
     if mino.rule.init then mino.rule.init(P,mino) end
 
     for i=1,#P do
-        while #P[i].next<3*#mino.bag do NG[mino.seqGenType](mino.bag,P[i]) end
+        while #P[i].next<3*#mino.bag do NG[mino.seqGenType](mino.bag,P[i],P[i].seqGen.buffer) end
         for j=1,P[i].preview do --给所有玩家放上预览块
             P[i].NP[j]=T.copy(B[P[i].next[j]])
             P[i].NO[j]=mino.orient[P[i].next[j]]
