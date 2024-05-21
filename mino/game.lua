@@ -168,25 +168,26 @@ function mino.hold(player)
     if C.name and C.piece then
         fLib.entryPlace(player)
         C.O=mino.orient[C.name]
-
-        A.prePiece,A.drawPiece=T.copy(C.piece),T.copy(C.piece)
-        for i=1,#A.prePiece do
-            A.prePiece[i][1],A.prePiece[i][2]=A.prePiece[i][1]+C.x,A.prePiece[i][2]+C.y
-        end
-        for i=1,#A.drawPiece do
-            A.prePiece[i][1],A.prePiece[i][2]=A.prePiece[i][1]+C.x,A.prePiece[i][2]+C.y
-        end
-    end
+    else local LDR=player.LDR mino.curIns(player) player.LDR=LDR end
     while H.O~=0 do
         H.O=B.rotate(H.piece,H.O,'L')
     end
     else error("player.hold.mode must be 'S' or 'A'") end
+
     player.LTimer,player.FTimer=0,0
     if C.piece then
         player.cur.ghostY=fLib.getGhostY(player)
         if player.FDelay==0 then
             if player.event[3] then mino.addEvent(player,0,'Ins20GDrop') else
             mino.Ins20GDrop(player) end
+        end
+
+        A.prePiece,A.drawPiece=T.copy(C.piece),T.copy(C.piece)
+        for i=1,#A.prePiece do
+            A.prePiece[i][1],A.prePiece[i][2]=A.prePiece[i][1]+C.x,A.prePiece[i][2]+C.y
+        end
+        for i=1,#A.drawPiece do
+            A.drawPiece[i][1],A.drawPiece[i][2]=A.prePiece[i][1],A.prePiece[i][2]
         end
     end
 end
@@ -335,7 +336,6 @@ function mino.keyP(k)
                 if T.include(S.keySet.hold,k) and OP.canInitHold then
                     OP.initOpQueue[#OP.initOpQueue+1]=function ()
                         mino.hold(OP) if mino.sfxPlay.hold then mino.sfxPlay.hold(OP) end
-                    if not C.name then local LDR=OP.LDR mino.curIns(OP) OP.LDR=LDR end
                     OP.canHold=false OP.canInitHold=true
                     end
                     OP.canInitHold=false
@@ -533,7 +533,6 @@ function mino.keyP(k)
 
                 elseif T.include(S.keySet.hold,k) and OP.canHold then
                     mino.hold(OP) mino.sfxPlay.hold(OP)
-                    if not C.name then local LDR=OP.LDR mino.curIns(OP) OP.LDR=LDR end
                     OP.canHold=false
                 end
 
