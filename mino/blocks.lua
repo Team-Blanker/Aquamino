@@ -61,7 +61,7 @@ function block.size(b)--计算方块最小外包框大小以及旋转中心相�
         if b[i][2]<yMiao then yMiao=b[i][2] end
         if b[i][2]>ymax  then ymax =b[i][2] end
     end
-    return xmax-xMiao+1,ymax-yMiao+1,-(xmax+xMiao)/2,-(ymax+yMiao)/2
+    return xmax-xMiao+1,ymax-yMiao+1,-(xmax+xMiao)/2,-(ymax+yMiao)/2--宽，高，x偏移，y偏移
 end
 function block.edge(b)--获取最边缘的方块信息
     local xMiao,xmax,yMiao,ymax=b[1][1],b[1][1],b[1][2],b[1][2]
