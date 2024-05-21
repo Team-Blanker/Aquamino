@@ -14,7 +14,7 @@ function rule.init(P,mino)
         smash='sfx/rule/ice storm/smash.wav',
         lvup='sfx/rule/ice storm/level up.wav'
     })
-    mino.seqGenType='bagp1'
+    mino.seqGenType='bagp1FromBag'
     rule.allowPush={}
     rule.scoreUp=480
     rule.scoreBase=960
@@ -46,7 +46,7 @@ end
 function rule.rise(player,col)
     local ice=player.iceColumn[col]
     if ice.H<0 then ice.H=0
-        ice.speed=(player.stormLv<12 and .02+player.stormLv*.015 or .24)*(.75+.5*rand())
+        ice.speed=(player.stormLv<12 and .015+player.stormLv*.015 or .24)*(.75+.5*rand())
     end
 end
 function rule.destroy(player,col,scoring,mtp)
@@ -68,12 +68,13 @@ function rule.destroy(player,col,scoring,mtp)
         end
         sfx.play('smash')
 
-        for i=1,floor((1+.4*rand())*min(ice.H,1)*player.h+.5) do
+        local H=M.lerp(min(ice.H,1),A.ice[col].preH,(A.ice[col].t/A.iceTMax)^2)
+        for i=1,floor((1+.4*rand())*H*player.h+.5) do
             table.insert(player.ruleAnim.smashParList,{
                 x=36*(col+rand()),y=36*(-rand()*min(ice.H,1)*player.h),v={60*(rand()-.5),60*(rand()-.5)},g=1024,TTL=3
             })
         end
-        for i=1,floor(min(ice.H,1)*player.h+.5) do
+        for i=1,floor(H*player.h+.5) do
             table.insert(player.ruleAnim.smashParList,{
                 x=36*(col+rand()),y=36*(.5-rand()-i),v={60*(rand()-.5),60*(rand()-.5)},g=1024,TTL=3
             })
@@ -196,13 +197,21 @@ function rule.onLineClear(player,mino)
         for i=k-1,k+1 do rule.destroy(player,i,true,i==k and 2.5 or 1.5) end
         if PIC[k-2] then rule.decrease(player,k-2,min(PIC[k-2].H,1),2) end
         if PIC[k+2] then rule.decrease(player,k+2,min(PIC[k+2].H,1),2) end
+
+        player.iceFreezeTime=player.iceFreezeTime+.5
     else
-        if his.spin then for i=1,#r do rule.destroy(player,r[i]+his.x,true,.8+.2*his.line) end
+        if his.spin then
+            local x=B.size(his.piece)
+            if his.name=='I' and x==4 then--削弱I旋平放消一
+                for i=1,#r do rule.decrease(player,r[i]+his.x,1,.625) end
+            else
+                for i=1,#r do rule.destroy(player,r[i]+his.x,true,.8+.2*his.line) end
+            end
         else
             for i=1,#r do rule.decrease(player,r[i]+his.x,his.line*.2*(.75+.25*his.combo)) end
         end
     end
-    if his.PC then player.iceFreezeTime=1.5 end
+    if his.PC then player.iceFreezeTime=player.iceFreezeTime+2.5 end
     rule.lvup(player,mino)
 end
 function rule.underFieldDraw(player)
