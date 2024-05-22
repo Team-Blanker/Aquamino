@@ -170,7 +170,7 @@ end
 function menu.mouseP(x,y,button,istouch)
     if not BUTTON.click(x,y,button,istouch) then local len,l=#menu.modeList,1920/#menu.modeList
         for k,v in pairs(menu.modeList) do
-            if abs(x-v.x)+abs(y-v.y)<=150 then
+            if abs(x-v.x)+abs(y-v.y)<150 then
                 scene.switch({
                     dest='game',destScene=require'mino/game',
                     swapT=.7,outT=.3,
@@ -187,7 +187,7 @@ function menu.update(dt)
     local msx,msy=adaptAllWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5)
     local n=false
     for k,v in pairs(menu.modeList) do
-        if abs(msx-v.x)+abs(msy-v.y)<=150 then n=true
+        if abs(msx-v.x)+abs(msy-v.y)<150 then n=true
             v.hoverT=min(v.hoverT+dt,.15)
             if k~=hv then
             scene.BG.setPolyColor(v.borderColor[1],v.borderColor[2],v.borderColor[3])
