@@ -17,7 +17,7 @@ end
 function skin.update(player,dt)
     player.laTimer=player.laTimer+dt
 end
-function skin.onPieceDrop(player)
+function skin.afterPieceDrop(player)
     if player.history.line==0 then player.laTimer=0 end
 end
 function skin.unitDraw(player,x,y,clr,alpha)

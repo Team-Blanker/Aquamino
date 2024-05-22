@@ -38,7 +38,7 @@ function rule.onLineClear(player,mino)
     end
     if player.remainLine<=0 then mino.win(player) end
 end
-function rule.onPieceDrop(player)
+function rule.afterPieceDrop(player)
     player.pieceCount=player.pieceCount+1
 end
 function rule.underFieldDraw(player)

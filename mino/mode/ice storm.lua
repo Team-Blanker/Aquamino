@@ -170,7 +170,7 @@ function  rule.always(player,dt,mino)
     scene.BG.danger=danger
 end
 
-function rule.onPieceDrop(player,mino)
+function rule.afterPieceDrop(player,mino)
     local his=player.history
     local r=B.getX(his.piece)
 

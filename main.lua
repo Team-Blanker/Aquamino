@@ -171,7 +171,7 @@ scene={
 }
 
 --scene.cur=require('territory/territory')
---scene.cur=require('scene/menu') scene.cur.mode='menu'
+--scene.cur=require('mino/game') scene.cur.mode='backfire'
 
 win.x,win.y=love.window.getPosition()
 win.x_win,win.y_win=love.window.getPosition()

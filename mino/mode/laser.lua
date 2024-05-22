@@ -138,7 +138,7 @@ local laserAct={
 
 local animTMax=.1
 
-function laser.postCheckClear(player,mino)
+function laser.onPieceDrop(player,mino)
     local his=player.history
     local piece=his.piece
     local laserTouch=false

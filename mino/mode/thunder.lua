@@ -83,7 +83,7 @@ function thunder.find(player)
     end
     return rand(player.w),1 --啥都没找到，随便返回一个值
 end
-function thunder.postCheckClear(player,mino)
+function thunder.onPieceDrop(player,mino)
     if event[player.stormLv].step.r>0 then player.step.r=player.step.r+1
         if player.step.r>=event[player.stormLv].step.r then
             local f=event[player.stormLv].freq.r
@@ -157,7 +157,7 @@ function thunder.onLineClear(player,mino)
         player.step.r,player.step.e,player.step.x=n,n,n
     end
 end
-function thunder.onPieceDrop(player)
+function thunder.afterPieceDrop(player)
     if player.point%100==99 and not player.top then sfx.play('top') player.top=true end
 end
 local tList

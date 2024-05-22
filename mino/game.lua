@@ -50,7 +50,7 @@ end
 function mino.blockLock(player)
     local his=player.history
     fLib.lock(player) fLib.loosenFall(player) mino.sfxPlay.lock(player)
-    if mino.rule.postCheckClear then mino.rule.postCheckClear(player,mino) end
+    if mino.rule.onPieceDrop then mino.rule.onPieceDrop(player,mino) end
     if player.loosen[1] then
         his.push=#player.loosen
         if mino.rule.loosen.fallTPL==0 and player.CDelay==0 then
@@ -61,15 +61,16 @@ function mino.blockLock(player)
         his.push=0
         his.line,his.PC,his.clearLine=fLib.lineClear(player)
         mino.checkClear(player,true) mino.sfxPlay.clear(player)
+        if mino.rule.postCheckClear then mino.rule.postCheckClear(player,mino) end
         if his.line>0 then
             if mino.rule.onLineClear then mino.rule.onLineClear(player,mino) end
             if mino.blockSkin.onLineClear then mino.blockSkin.onLineClear(player,mino) end
         end
     end
-    if mino.rule.onPieceDrop then mino.rule.onPieceDrop(player,mino) end
+    if mino.rule.afterPieceDrop then mino.rule.afterPieceDrop(player,mino) end
 
-    if mino.blockSkin.onPieceDrop then mino.blockSkin.onPieceDrop(player,mino) end
-    if mino.theme.onPieceDrop then mino.theme.onPieceDrop(player,mino) end
+    if mino.blockSkin.afterPieceDrop then mino.blockSkin.afterPieceDrop(player,mino) end
+    if mino.theme.afterPieceDrop then mino.theme.afterPieceDrop(player,mino) end
 end
 
 function mino.win(player)
@@ -198,11 +199,12 @@ function mino.loosenDrop(player)
     if player.loosen[1] then mino.addEvent(player,delay,'loosenDrop')
     else his.line,his.PC,his.clearLine=fLib.lineClear(player)
         mino.checkClear(player,true) mino.sfxPlay.clear(player)
+        if mino.rule.postCheckClear then mino.rule.postCheckClear(player,mino) end
         if his.line>0 then
             if mino.rule.onLineClear then mino.rule.onLineClear(player,mino) end
             if mino.blockSkin.onLineClear then mino.blockSkin.onLineClear(player,mino) end
         end
-        if mino.rule.onPieceDrop then mino.rule.onPieceDrop(player,mino) end
+        if mino.rule.afterPieceDrop then mino.rule.afterPieceDrop(player,mino) end
         mino.addEvent(player,player.EDelay,'curIns')
     end
 end
@@ -809,6 +811,8 @@ function mino.draw()
             if mino.rule.underFieldDraw then mino.rule.underFieldDraw(P[i],mino) end
 
             mino.theme.fieldDraw(P[i],mino)
+            --垃圾槽
+            if P[i].garbage then mino.theme.garbageDraw(P[i],mino) end
 
             if mino.rule.underStackDraw then mino.rule.underStackDraw(P[i],mino) end
 
@@ -886,7 +890,7 @@ function mino.draw()
     if mino.paused then
         pause.button.draw()
         gc.setColor(1,1,1)
-        gc.printf(user.lang.modeName[mino.mode],font.Bender,400,-320,4096,'right',0,.4,.4,4096,76)
+        gc.printf(user.lang.modeName[mino.mode] or mino.mode,font.Bender,400,-320,4096,'right',0,.4,.4,4096,76)
         gc.printf(S.winState==0 and user.lang.game.paused or user.lang.game.result,
             font.Bender_B,0,-440,4096,'center',0,.9,.9,2048,76)
         gc.printf(curPlayTxt,font.Bender,0,330,65536,'center',0,.4,.4,32768,76)

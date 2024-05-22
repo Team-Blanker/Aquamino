@@ -69,6 +69,17 @@ function simple.fieldDraw(player,mino)
     setColor(.5,1,.75)
     printf(timeTxt,font.JB_B,-W/2-28,H/2-16,800,'right',0,.25,.25,800,84)
 end
+function simple.garbageDraw(player,mino)
+    local W,H=36*player.w,36*player.h
+    local tga=0 --总垃圾数
+    for i=1,#player.garbage do
+        tga=tga+player.garbage[i].amount
+        gc.setColor(1,1,1)
+        rect('fill',-W/2-18,H/2-36*tga,16,36*player.garbage[i].amount)
+        gc.setColor(1,0,0)
+        rect('fill',-W/2-17,H/2-36*tga+2,14,36*player.garbage[i].amount-4)
+    end
+end
 --[[function simple.overFieldDraw(player,mino)
     local his=player.history
     local w,h=player.w,player.h
@@ -158,7 +169,7 @@ function simple.clearTextDraw(player)
         end
     end
     setColor(r,g,b,alpha)
-    if CInfo.wide==4 and CInfo.line>0 then printf("4-wide",font.Bender,0,-64*s-20,4000,'center',0,.333,.333,2000,76) end
+    if CInfo.wide>=2 and CInfo.wide<=4 and CInfo.line>0 then printf(CInfo.wide.."-wide",font.Bender,0,-64*s-20,4000,'center',0,.333,.333,2000,76) end
 
     gc.draw(player.clearTxt,0,0,0,s,s,player.clearTxt:getWidth()/2,player.clearTxt:getHeight()/2)
     local angle=-max(2*(player.clearTxtTimer/player.clearTxtTMax-.5),0)^3*math.pi/2
