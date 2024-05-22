@@ -23,8 +23,6 @@ return {
         start="按任意键开始",
     },
     menu={
-        illust="双击/按Enter键开始游戏\n按R键随机跳转",
-        iScale=.6
     },
     pause={
         resume="继续",quit="退出",r="重开"
