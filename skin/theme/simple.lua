@@ -138,7 +138,7 @@ function simple.clearTextDraw(player)
     local CInfo=player.clearInfo
     gc.translate(-W/2-20,-250)
     if CInfo.combo>1 then
-        ctxt=""..CInfo.combo.." chain"..(CInfo.combo>19 and "?!?!" or CInfo.combo>15 and "!!" or CInfo.combo>7 and "!" or "")
+        ctxt=""..CInfo.combo.." chain"..(CInfo.combo>19 and "?!?!" or CInfo.combo>15 and "!!" or CInfo.combo>7 and "!" or "")..(CInfo.wide==4 and "\n4-wide" or "")
 
         setColor(.1,.1,.1,.3)
         for i=0,3 do
@@ -168,9 +168,11 @@ function simple.clearTextDraw(player)
             end
         end
     end
-    setColor(r,g,b,alpha)
-    if CInfo.wide>=2 and CInfo.wide<=4 and CInfo.line>0 then printf(CInfo.wide.."-wide",font.Bender,0,-64*s-20,4000,'center',0,.333,.333,2000,76) end
+    local beta=alpha*(player.clearTxtTimer%.2>=.1 and .4 or .5)
+    setColor(r,g,b,beta)
+    if CInfo.wide==4 and CInfo.line==1 then printf("4-wide",font.Bender,0,-64*s-20,4000,'center',0,.333,.333,2000,76) end
 
+    setColor(r,g,b,alpha)
     gc.draw(player.clearTxt,0,0,0,s,s,player.clearTxt:getWidth()/2,player.clearTxt:getHeight()/2)
     local angle=-max(2*(player.clearTxtTimer/player.clearTxtTMax-.5),0)^3*math.pi/2
     gc.draw(player.spinTxt.txt,s*player.spinTxt.x,0,angle,s,s,player.spinTxt.txt:getWidth()/2,player.spinTxt.txt:getHeight()/2)

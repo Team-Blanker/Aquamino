@@ -219,7 +219,7 @@ function rule.underFieldDraw(player)
     local score,tar=player.iceScore,rule.scoreUp*(player.stormLv-1)+rule.scoreBase
     local sz=M.lerp(score,A.preScore,(A.t/A.tMax)^2)/tar
     gc.push()
-        gc.translate(-18*player.w-110,0)
+        gc.translate(-18*player.w-110,36)
         gc.setColor(.1,.1,.1,.8)
         gc.rectangle('fill',-90,-210,180,420)
         gc.setColor(1,1,1)
