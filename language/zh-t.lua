@@ -16,6 +16,7 @@ return {
         sandbox="沙盒",
         ['dig 40']="挖掘 40 行",
         laser="雷射",
+        backfire="回旋鏢",
         conf_test="設定 - 測試介面",
         idea_test="idea_test"
     },

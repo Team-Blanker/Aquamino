@@ -16,6 +16,7 @@ return {
         sandbox="Sandbox",
         ['dig 40']="Cheese",
         laser="Laser",
+        backfire="Boomerang",
         conf_test="conf_test",
         idea_test="idea_test"
     },

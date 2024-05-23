@@ -32,14 +32,15 @@ menu.modeList={
     --xy都是绘制坐标
     ['40 lines']={x=-300,y=0,borderColor={0,1,.75}},
     marathon={x=-150,y=150,borderColor={0,1,.75}},
+    ['dig 40']={x=-150,y=-150,borderColor={0,1,.75}},
     ['ice storm']={x=450,y=150,borderColor={0,1,1}},
+    backfire={x=150,y=-150,borderColor={0,1,.75}},
+    sandbox={x=300,y=0,borderColor={.6,.6,.6}},
     thunder={x=-300,y=-300,borderColor={0,1,1}},
     smooth={x=-450,y=150,borderColor={0,1,1}},
     levitate={x=-450,y=-150,borderColor={0,1,1}},
     master={x=-300,y=300,borderColor={1,.25,.25}},
     multitasking={x=0,y=300,borderColor={1,.25,.25}},
-    sandbox={x=300,y=0,borderColor={.6,.6,.6}},
-    ['dig 40']={x=-150,y=-150,borderColor={0,1,.75}},
     laser={x=450,y=-150,borderColor={0,1,1}},
 }
 for k,v in pairs(menu.modeList) do
@@ -231,7 +232,7 @@ function menu.draw()
 
         gc.setColor(c[1],c[2],c[3],v.hoverT/.15*.25)
         for i=-2,2 do
-        gc.rectangle('fill',v.x-w/2+16*i,v.y-45-h-v.hoverT/.15*15,w,h)
+        gc.rectangle('fill',v.x-w/2+16*i,v.y-45-h-v.hoverT/.15*15-2,w,h+4)
         end
         gc.setColor(1,1,1,v.hoverT/.15)
         gc.draw(mt[k].txt,v.x,v.y-45-v.hoverT/.15*15,0,.4,.4,mt[k].w/2,mt[k].h)
