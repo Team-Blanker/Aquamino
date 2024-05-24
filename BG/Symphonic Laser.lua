@@ -1,6 +1,6 @@
 --[[
 song info:
-name: nega to posi  author: georhythm
+name: Symphonic Laser  author: Syun Nakano
 ]]
 --该背景依靠外部传入时间变量。
 local BPM=128
