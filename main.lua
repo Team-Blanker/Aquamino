@@ -123,7 +123,7 @@ win={
             win.x_win,win.y_win=love.window.getPosition()
         else
             win.W,win.H=win.W_win,win.H_win
-            win.x,win.y=win.x_win,win.y_win  
+            win.x,win.y=win.x_win,win.y_win
         end
         adaptAllWindow=love.math.newTransform(
             win.W/2,win.H/2,0,
@@ -132,6 +132,7 @@ win={
         love.window.setFullscreen(win.fullscr)
         win.W,win.H=gc.getDimensions()
         win.scale=win.H/win.W<9/16 and win.H/1080 or win.W/1920
+        love.resize(win.W,win.H)
     end,
     UI={
         back=gc.newImage('pic/UI/sign/back.png'), --120*70
@@ -203,6 +204,7 @@ function love.resize(w,h)
     )
     win.scale=win.H/win.W<9/16 and win.H/1080 or win.W/1920
     gc.setScissor(0,0,w,h)
+    print('Window resized:',w,h)
 end
 
 function love.keypressed(k)
@@ -314,7 +316,7 @@ function love.draw()
 
     gc.origin()
 
-    local aw,ah=win.H/win.W<9/16 and win.H*16/9 or win.W,win.H/win.W<9/16 and win.H or win.W*9/1
+    local aw,ah=win.H/win.W<9/16 and win.H*16/9 or win.W,win.H/win.W<9/16 and win.H or win.W*9/16
     gc.setColor(0,0,0)
     gc.rectangle('fill',0,0,(win.W-aw)/2,win.H)
     gc.rectangle('fill',(win.W+aw)/2,0,(win.W-aw)/2,win.H)
