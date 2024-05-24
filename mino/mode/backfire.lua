@@ -1,7 +1,11 @@
 local bf={}
 local battle=require'mino/battle'
 function bf.init(P,mino)
-    scene.BG=require'BG/blank'
+    scene.BG=require('BG/blank')
+    mino.musInfo="T-Malu - Energy Beat"
+    mus.add('music/Hurt Record/Energy Beat','whole','ogg',80.556,128*60/126)
+    mus.start()
+
     battle.init(P[1])
     P[1].recvLine=0
 end
@@ -12,7 +16,7 @@ function bf.postCheckClear(player,mino)
         player.recvLine=player.recvLine+player.garbage[i].amount
         end
         player.garbage={}
-    else battle.defense(player,battle.stdAtkCalculate(player))
+    else battle.defense(player,battle.stdAtkCalculate(player),mino)
     end
 end
 function bf.onLineClear(player,mino)
