@@ -38,8 +38,6 @@ function simple.fieldDraw(player,mino)
     line(-W/2-19,-H/2,-W/2-19,H/2+1,W/2+19,H/2+1,W/2+19,-H/2)
 
     setColor(0,0,0)
-    --printf("H O L D",font.Bender_B,-W/2-110,-375,800,'center',0,.2,.2,400,76)
-    --printf("N E X T",font.Bender_B, W/2+110,-375,800,'center',0,.2,.2,400,76)
     draw(simple.hold,-W/2-110,-375,0,.2,.2,simple.holdW/2,simple.holdH/2)
     draw(simple.next, W/2+110,-375,0,.2,.2,simple.nextW/2,simple.nextH/2)
 
@@ -85,11 +83,6 @@ function simple.garbageDraw(player,mino)
         rect('fill',-W/2-15,H/2-36*tga+4,4,1) rect('fill',-W/2-15,H/2-36*tga+4,1,4)
     end
 end
---[[function simple.overFieldDraw(player,mino)
-    local his=player.history
-    local w,h=player.w,player.h
-    if his.x~=0 then circle('fill',36*(his.x-w/2-.5),36*(-his.y+h/2+.5),12,4) end
-end]]
 function simple.readyDraw(t)
     if t>1 then
     elseif t>.5 then setColor(1,1,1,min((t-.5)/.25,1))
@@ -100,6 +93,7 @@ function simple.readyDraw(t)
         printf("GO!",font.Bender_B,0,0,1000,'center',0,1.2,1.2,500,76)
     end
 end
+
 local clearTxt={
     'Single','Double','Triple','Aquad',
     'Boron','Carbon','Nitrogen','Oxygen',
@@ -136,7 +130,7 @@ function simple.updateClearInfo(player,mino)
         else player.spinTxt.txt=gc.newText(font.Bender) end
 
     else player.clearInfo.combo=his.combo player.clearInfo.wide=-1 end
-    if his.PC then player.PCInfo[#player.PCInfo+1]=3 end
+    if his.PC then player.PCInfo[#player.PCInfo+1]=2.5 end
 end
 function simple.clearTextDraw(player)
     W,H=36*player.w,36*player.h
@@ -184,7 +178,7 @@ function simple.clearTextDraw(player)
 
     for i=1,#player.PCInfo do
         local t=player.PCInfo[i]
-        local ti=3-t
+        local ti=2.5-t
         local a,b,c,s=.3,.35,.4,1.35
         if ti>c then local ts=ti-c
         gc.push('transform')
