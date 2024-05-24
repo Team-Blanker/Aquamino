@@ -9,7 +9,6 @@ function rule.init(P,mino)
     mus.add('music/Hurt Record/flex','whole','ogg',.443,196*60/117.5)
     mus.start()
     P[1].line=0 P[1].LDRInit=20 P[1].fallAfterClear=false
-    P[1].CDelay=.25
 end
 function rule.onLineClear(player,mino)
     --[[local lh={}
