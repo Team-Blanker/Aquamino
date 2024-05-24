@@ -103,6 +103,20 @@ end
 function mino.operate(player,cmd)--准备重构整个操作流程
 end
 function mino.curIns(player)
+    local field=player.field
+    --清除全空的行
+    local stop=false
+    for y=#field,1,-1 do
+        if #field[y]~=0 then
+            local empty=true
+            for x=1,#field[y] do
+                if next(field[y][x]) then empty=false stop=true break end
+            end
+            if stop then break end
+            if empty then table.remove(field,y) end
+        end
+    end
+
     if player.next[player.preview+1] then
         local wtf=player.preview+1
         player.NP[wtf]=T.copy(B[player.next[wtf]])

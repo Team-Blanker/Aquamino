@@ -51,13 +51,14 @@ function fieldLib.newPlayer(arg)
             line=0,spin=false,mini=false,PC=false,combo=0,B2B=-1,push=0,
             CDelay=0,wide=0,
         },
-        nWideDetect={},--空n列检测，仅消行时使用，不消就清空
         cur={
             name=nil,piece={},x=5,y=21,O=0,ghostY=0,spin=false,
             moveSuccess=false,
             kickOrder=0
         },
-
+        
+        nWideDetect={},--空n列检测，仅消行时使用，不消就清空
+        fallAfterClear=true,
         smoothAnimAct=false,
         smoothAnim={prepiece={},drawPiece={},timer=0,delay=0.05},
         dropAnim={}
@@ -204,7 +205,8 @@ function fieldLib.lock(player)
     for i=1,#C.piece do
         local x=C.x+C.piece[i][1]
         local y=C.y+C.piece[i][2]
-        while not player.field[y] do fieldLib.addLine(player) end
+        --print(y,#player.field[5],#player.field)
+        while not player.field[y] do fieldLib.addLine(player)  end
         player.field[y][x]={name=C.name,loosen=false}
     end
     his.piece,his.name,his.o,his.x,his.y=C.piece,C.name,C.o,C.x,C.y
@@ -226,22 +228,16 @@ function fieldLib.lineClear(player)
     for y=#field,1,-1 do for x=1,#field[y] do
         if next(field[y][x]) then PC=false break end
     end end
-    --清除全空的行
-    local stop=false
-    for y=#field,1,-1 do
-        if #field[y]~=0 then
-            local empty=true
-            for x=1,#field[y] do
-            if next(field[y][x]) then empty=false stop=true break end
-            end
-            if stop then break end
-            if empty then field[y]=nil end
-        end
-    end
     return cunt,PC,cLine
 end
 function fieldLib.eraseEmptyLine(player)
-    for y=#player.field,1,-1 do if #player.field[y]==0 then table.remove(player.field,y) end end
+    for y=#player.field,1,-1 do
+        if #player.field[y]==0 then
+            if player.fallAfterClear then
+            table.remove(player.field,y)
+            else for x=1,player.w do player.field[y][x]={} end end
+        end
+    end
     if player.history.PC then player.field={} end
 end
 function fieldLib.wideDetect(player)--空n列检测，n<=4时数值才有意义

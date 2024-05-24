@@ -1,5 +1,5 @@
 local gc=love.graphics
-
+local fLib=require'mino/fieldLib'
 local rule={}
 function rule.init(P,mino)
     mino.rule.allowPush={Z=true,S=true,J=true,L=true,T=true,O=true,I=true,}
@@ -8,10 +8,11 @@ function rule.init(P,mino)
     mino.musInfo="Naoki Hirai - flex"
     mus.add('music/Hurt Record/flex','whole','ogg',.443,196*60/117.5)
     mus.start()
-    P[1].line=0 P[1].LDRInit=20
+    P[1].line=0 P[1].LDRInit=20 P[1].fallAfterClear=false
+    P[1].CDelay=.25
 end
 function rule.onLineClear(player,mino)
-    local lh={}
+    --[[local lh={}
     --排序
     for k,v in pairs(player.history.clearLine) do
         local o=#lh+1
@@ -25,7 +26,7 @@ function rule.onLineClear(player,mino)
         local line={}
         for j=1,player.w do line[j]={} end
         ins(player.field,lh[i],line)
-    end
+    end]]
 
     player.line=player.line+player.history.line
     if player.line>=40 then mino.win(player) end

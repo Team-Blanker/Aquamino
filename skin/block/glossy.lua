@@ -39,15 +39,15 @@ function skin.fieldDraw(player,mino)
                     draw(skin.pic,36*x,-36*h,0,1,1,18,18)
                 end
             end
-        else h=h+n end
+        else h=h+1 end
     end
     setShader()
     h=0
     for y=1,#player.field do
         if player.field[y][1] then h=h+1
-        else h=h+n
-            gc.setColor(1,1,1)
-            gc.rectangle('fill',18,-36*h-18,36*player.w,n*36)
+        else h=h+1
+            setColor(1,1,1,n)
+            rect('fill',18,-36*h-18,36*player.w,36)
         end
     end
 end

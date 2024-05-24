@@ -69,15 +69,20 @@ function simple.fieldDraw(player,mino)
     setColor(.5,1,.75)
     printf(timeTxt,font.JB_B,-W/2-28,H/2-16,800,'right',0,.25,.25,800,84)
 end
+function simple.setDefenseAnim(player,defList)
+    
+end
 function simple.garbageDraw(player,mino)
     local W,H=36*player.w,36*player.h
     local tga=0 --总垃圾数
     for i=1,#player.garbage do
         tga=tga+player.garbage[i].amount
-        gc.setColor(1,1,1)
+        gc.setColor(1,.75,.75)
         rect('fill',-W/2-18,H/2-36*tga,16,36*player.garbage[i].amount)
         gc.setColor(1,0,0)
         rect('fill',-W/2-17,H/2-36*tga+2,14,36*player.garbage[i].amount-4)
+        gc.setColor(1,1,1)
+        rect('fill',-W/2-15,H/2-36*tga+4,4,1) rect('fill',-W/2-15,H/2-36*tga+4,1,4)
     end
 end
 --[[function simple.overFieldDraw(player,mino)

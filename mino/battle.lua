@@ -25,11 +25,22 @@ function battle.atkRecv(player,atk)
     end
     player.lastHole=h
 end
-function battle.defense(player,amount)
-    while player.garbage[1] and amount>0 do
-        if amount>=player.garbage[1].amount then amount=amount-rem(player.garbage,1).amount
-        else player.garbage[1].amount=player.garbage[1].amount-amount break end
+function battle.defense(player,amount,mino)
+    local n=amount
+    local remList={}
+    while player.garbage[1] and n>0 do
+        if n>=player.garbage[1].amount then
+            remList[#remList+1]=amount-n
+            remList[#remList+1]=player.garbage[1].amount
+            n=n-rem(player.garbage,1).amount
+        else
+            player.garbage[1].amount=player.garbage[1].amount-n
+            remList[#remList+1]=amount-n
+            remList[#remList+1]=n
+        break end
     end
+    --remList={pos,amount,pos,amount,pos,amount...}
+    if mino.theme.setDefenseAnim then mino.theme.setDefenseAnim(player,remList) end
 end
 function battle.stdAtkCalculate(player)
     local his=player.history

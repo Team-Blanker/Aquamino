@@ -53,6 +53,7 @@ function skin.fieldDraw(player,mino)
             gc.translate(18,-36*h-18)
             setColor(1,1,1)
             rect('fill',0,0,36*player.w,n*36)
+            if not player.fallAfterClear then h=h+1-n end
         gc.pop() end
     end
 end

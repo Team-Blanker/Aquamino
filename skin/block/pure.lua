@@ -19,6 +19,7 @@ function skin.fieldDraw(player,mino)
         else h=h+n
             setColor(1,1,1)
             rect('fill',18,-36*h-18,36*player.w,n*36)
+            if not player.fallAfterClear then h=h+1-n end
         end
     end
 end

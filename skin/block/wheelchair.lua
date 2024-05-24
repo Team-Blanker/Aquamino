@@ -25,7 +25,7 @@ function skin.fieldDraw(player,mino)
                     draw(skin.pic,36*x,-36*h,0,.5,.5,36,36)
                 end
             end
-        else h=h+n end
+        else h=h+(player.fallAfterClear and n or 1) end
     end
     setShader()
     h=0
@@ -34,6 +34,7 @@ function skin.fieldDraw(player,mino)
         else h=h+n
             setColor(1,1,1)
             rect('fill',18,-36*h-18,36*player.w,n*36)
+            if not player.fallAfterClear then h=h+1-n end
         end
     end
 end
