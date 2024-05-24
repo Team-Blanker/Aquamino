@@ -240,7 +240,7 @@ function custom.update(dt)
 end
 function custom.draw()
     gc.setColor(1,1,1)
-    gc.printf(user.lang.conf.main.custom,font.Bender,0,-460,1280,'center',0,1,1,640,76)
+    gc.printf(user.lang.conf.main.custom,font.Bender,0,-430,1280,'center',0,1,1,640,76)
     BUTTON.draw() SLIDER.draw()
 end
 function custom.exit()

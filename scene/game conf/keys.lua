@@ -97,7 +97,7 @@ function key.draw()
     gc.setColor(1,1,1,.25)
     if key.order then gc.rectangle('fill',key.order>6 and 200 or -600,(key.order-1)%6*100-300,600,100) end
     gc.setColor(1,1,1)
-    gc.printf(user.lang.conf.main.keys,font.Bender,0,-460,1280,'center',0,1,1,640,76)
+    gc.printf(user.lang.conf.main.keys,font.Bender,0,-430,1280,'center',0,1,1,640,76)
     gc.printf(cfk.info,font.JB,800,400,8000,'right',0,.3,.3,8000,192)
     for i=0,5 do
         if cfk.keyName[i+1] then gc.printf(cfk.keyName[i+1],font.Bender_B,-700,-250+100*i,2000,'center',0,cfk.kScale,cfk.kScale,1000,76) end

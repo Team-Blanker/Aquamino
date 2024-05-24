@@ -159,7 +159,7 @@ function hand.update(dt)
 end
 function hand.draw()
     gc.setColor(1,1,1)
-    gc.printf(user.lang.conf.main.ctrl,font.Bender,0,-460,1280,'center',0,1,1,640,76)
+    gc.printf(user.lang.conf.main.ctrl,font.Bender,0,-430,1280,'center',0,1,1,640,76)
     BUTTON.draw() SLIDER.draw()
 end
 function hand.send(destScene,arg)
