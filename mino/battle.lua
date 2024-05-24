@@ -56,16 +56,12 @@ function battle.stdAtkGen(player)
     local his=player.history
     local l,s,m,w,b,c=his.line,his.spin,his.mini,his.wide,his.B2B,his.combo
 
-    local bl=(s and not m) and 2*l-1 or l>=4 and l or l-.5
-    local ba=b>0 and (3+b)/4 or 0
-    local ca=(w>=2 and w<=4) and min(c-1,.5) or min((c-1)/3+.01,3.67)
-    local pc=his.PC and 6.67 or 0
-    local atk=floor(bl+ba+ca+pc)
+    local atk=battle.stdAtkCalculate(player)
     if atk==0 then return end
     return {
         amount=atk,
         block='g1',
-        M_IS=(w==4 or his.PC) and 0 or s and (.2-.05*b) or 0,
+        M_IS=(w==4 or his.PC) and 0 or s and (1-.25*b)*1/atk or 0,
         M_OC=(w==4 or his.PC) and 0 or b>0 and 1/b or 1
     }
 end

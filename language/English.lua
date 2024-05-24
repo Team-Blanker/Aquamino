@@ -79,7 +79,8 @@ return {
     },
 
     rule={
-        dig={remain="Lines",piece="Pieces"}
+        dig={remain="To dig",piece="Pieces"},
+        backfire={remain="To receive",eff="Effeciency"}
     },
 
     tip={

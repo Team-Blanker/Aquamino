@@ -75,7 +75,8 @@ return {
     },
 
     rule={
-        dig={remain="剩餘行數",piece="使用塊數"}
+        dig={remain="剩餘行數",piece="使用塊數"},
+        backfire={remain="剩餘垃圾行數",eff="效率"}
     },
 
     tip={
