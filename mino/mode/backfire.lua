@@ -37,12 +37,14 @@ end
 function bf.afterPieceDrop(player,mino)
     if player.recvLine>=80 then mino.win(player) end
 end
+local efftxt
 function bf.underFieldDraw(player)
     local x=-18*player.w-110
     gc.setColor(1,1,1)
     gc.printf(""..max(80-player.recvLine,0),font.JB,x,-48,6000,'center',0,.625,.625,3000,96)
     gc.printf(rb.remain,font.JB_B,x,0,6000,'center',0,.2,.2,3000,96)
-    gc.printf(string.format("%.2f",player.atk/player.line),font.JB,x,56,6000,'center',0,.4,.4,3000,96)
+    efftxt=player.line==0 and "-" or string.format("%.2f",player.atk/player.line)
+    gc.printf(efftxt,font.JB,x,56,6000,'center',0,.4,.4,3000,96)
     gc.printf(rb.eff,font.JB_B,x,96,6000,'center',0,.2,.2,3000,96)
 end
 return bf
