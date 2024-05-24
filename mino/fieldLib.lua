@@ -205,7 +205,6 @@ function fieldLib.lock(player)
     for i=1,#C.piece do
         local x=C.x+C.piece[i][1]
         local y=C.y+C.piece[i][2]
-        --print(y,#player.field[5],#player.field)
         while not player.field[y] do fieldLib.addLine(player)  end
         player.field[y][x]={name=C.name,loosen=false}
     end

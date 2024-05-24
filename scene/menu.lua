@@ -147,8 +147,6 @@ function menu.init()
             gc.setColor(.8,.8,.8)
             gc.setLineWidth(5)
             gc.circle('line',0,0,bt.r,4)
-            gc.setColor(1,1,1)
-            gc.draw(aboutIcon,0,0,0,1,1,120,0)
         end,
         event=function()
         end

@@ -8,7 +8,7 @@ function battle.sendAtk(player,dest,atk)
     --[[arg={
     amount=垃圾行数量
     block=什么颜色的方块，建议使用'g1' 'g2'
-    M_IS=Messiness In Set，该组垃圾行内孔洞散乱度
+    cut=该组垃圾会被切割成几行一组一起进入，允许浮点数
     M_OC=Messiness On Change，该组与上一组垃圾的洞位置不一致的概率
     M_IS=0 M_OC=1即标准对战垃圾
     }]]
@@ -16,14 +16,18 @@ function battle.sendAtk(player,dest,atk)
 end
 function battle.atkRecv(player,atk)
     if atk.amount==0 then return end
-    print(atk.M_IS)
     player.lastHole=rand()<atk.M_OC and rand(player.w) or player.lastHole
     local h
+    local l=0
+    print(atk.cut)
     for i=1,atk.amount do
-        h=(rand()<atk.M_IS) and rand(player.w) or player.lastHole
+        l=l+1
+        local sw=rand()<(l-atk.cut)
+        h=sw and rand(player.w) or player.lastHole
+        player.lastHole=h
+        if sw then l=0 end
         fLib.garbage(player,atk.block,1,h)
     end
-    player.lastHole=h
 end
 function battle.defense(player,amount,mino)
     local n=amount
@@ -61,7 +65,7 @@ function battle.stdAtkGen(player)
     return {
         amount=atk,
         block='g1',
-        M_IS=(w==4 or his.PC) and 0 or s and (1-.25*b)*1/atk or 0,
+        cut=(w==4 or his.PC) and 1e99 or s and 1.5+b or 1e99,
         M_OC=(w==4 or his.PC) and 0 or b>0 and 1/b or 1
     }
 end
