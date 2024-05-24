@@ -202,6 +202,7 @@ function love.resize(w,h)
         win.H/win.W<9/16 and win.H/1080 or win.W/1920,win.H/win.W<9/16 and win.H/1080 or win.W/1920
     )
     win.scale=win.H/win.W<9/16 and win.H/1080 or win.W/1920
+    gc.setScissor(0,0,w,h)
 end
 
 function love.keypressed(k)
