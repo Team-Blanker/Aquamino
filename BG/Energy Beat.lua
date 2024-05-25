@@ -32,16 +32,18 @@ function bg.draw()
         end
     elseif beat<6 then
         setColor(1,1,1,.5)
-        local k=max(1-beat%2*2,0)^3
-        local n=beat%4<2 and 1-k or k
+        local s=max(1-beat%2,0)
+        local k=2*s*s-s
+        local n=1-k
         for i=0,3 do
             gc.rectangle('fill',-960+480*i+60,-570,360,540+n*270*(1-i%2*2))
             gc.rectangle('fill',-960+480*i+60,30+n*270*(1-i%2*2),360,1080)
         end
     else
         setColor(1,1,1,.5)
-        local k=max(1-beat%2*2,0)^2
-        local n=beat%4<2 and 1 or 0
+        local s=max(1-beat%2,0)
+        local k=1+s-2*s*s
+        local n=beat%4<2 and 0 or 1
         local a,b=270,540
         for i=0,3 do
             gc.rectangle('fill',-960+480*i+60,-570,360,a+b*(((i+n)%2)==0 and k or 1-k))

@@ -50,10 +50,11 @@ function battle.stdAtkCalculate(player)
     local his=player.history
     local l,s,m,w,b,c=his.line,his.spin,his.mini,his.wide,his.B2B,his.combo
 
-    local bl=(s and not m) and 2*l-1 or l>=4 and l+.5 or l-.5
+    local bl=(s and not m) and 2*l-1 or l>=4 and 1.5*l-1.5 or l-.5
     local ba=b>0 and (3+b)/4 or 0
-    local ca=(w>=2 and w<=4) and min(c-1,.5) or min((c-(l==4 and 1 or 2))/2,3.5)
+    local ca=(w>=2 and w<=4) and min(c-1,.5) or max(min((c-(l==4 and 1 or 2))/2,3.5),0)
     local pc=his.PC and 6.5 or 0
+    print(bl,ba,ca,pc)
     return l==0 and 0 or floor(bl+ba+ca+pc)
 end
 function battle.stdAtkGen(player)
