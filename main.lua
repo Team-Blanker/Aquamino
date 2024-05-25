@@ -100,6 +100,18 @@ canop=true--=can operate，是决定玩家是否能操作的变量
 
 love.window.setMode(love.window.getMode()) --看似废话，但是如果去掉的话在我的框架里窗口颜色就会出神秘问题（至少Love 11.4如此）
 
+function love.resize(w,h)
+    win.H=h
+    win.W=w
+    adaptAllWindow=love.math.newTransform(
+        win.W/2,win.H/2,0,
+        win.H/win.W<9/16 and win.H/1080 or win.W/1920,win.H/win.W<9/16 and win.H/1080 or win.W/1920
+    )
+    win.scale=win.H/win.W<9/16 and win.H/1080 or win.W/1920
+    gc.setScissor(0,0,w,h)
+    print('Window resized:',w,h)
+end
+
 win={
     stat={launch=0,version="preview 0008"},
     showInfo=false,
@@ -194,18 +206,6 @@ scene.cur.init()
 if scene.BG.init then scene.BG.init() end
 
 lastkeyP=nil lastkeyR=nil
-
-function love.resize(w,h)
-    win.H=h
-    win.W=w
-    adaptAllWindow=love.math.newTransform(
-        win.W/2,win.H/2,0,
-        win.H/win.W<9/16 and win.H/1080 or win.W/1920,win.H/win.W<9/16 and win.H/1080 or win.W/1920
-    )
-    win.scale=win.H/win.W<9/16 and win.H/1080 or win.W/1920
-    gc.setScissor(0,0,w,h)
-    print('Window resized:',w,h)
-end
 
 function love.keypressed(k)
     lastkeyP=k
