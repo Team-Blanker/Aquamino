@@ -163,7 +163,7 @@ function simple.clearTextDraw(player)
         for i=1,3 do
             for j=1,8 do
                 local m,n=2*i*cos(j*math.pi/4),2*i*sin(j*math.pi/4)
-                printf(txt,font.Bender,m,n,4000,'center',0,s,s,2000,76)
+                gc.draw(player.clearTxt,0,0,0,s,s,player.clearTxt:getWidth()/2,player.clearTxt:getHeight()/2)
             end
         end
     end
@@ -184,15 +184,22 @@ function simple.clearTextDraw(player)
         gc.push('transform')
         gc.scale(ts+1)
         setColor(1,.9,.2,1-3*ts)
-        printf("ALL",font.Bender_B,0,-68,1000,'center',0,.9,.9,500,76)
-        printf("CLEAR",font.Bender_B,0,28,1000,'center',0,.9,.9,500,76)
+        printf("ALL",font.Bender,0,-68,1000,'center',0,.9,.9,500,76)
+        printf("CLEAR",font.Bender,0,28,1000,'center',0,.9,.9,500,76)
         gc.pop()
         end
         gc.push('transform')
         gc.scale(ti<a and (s-s*((ti-a)/a)^2) or ti<b and s or max(s+(s-1)/(c-b)*(b-ti),1))
-        setColor(1,.96,.2,t>1 and min(ti*20,1) or t)
-        printf("ALL",font.Bender_B,0,-68,1000,'center',0,.9,.9,500,76)
-        printf("CLEAR",font.Bender_B,0,28,1000,'center',0,.9,.9,500,76)
+
+        setColor(1,.96,.2,min(t,1)*.1)
+        for j=1,8 do
+            local ox,oy=4*cos(j/4*math.pi),4*sin(j/4*math.pi)
+            printf("ALL",font.Bender,ox,-68+oy,1000,'center',0,.9,.9,500,76)
+            printf("CLEAR",font.Bender,ox,28+oy,1000,'center',0,.9,.9,500,76)
+        end
+        setColor(1,.96,.2,t)
+        printf("ALL",font.Bender,0,-68,1000,'center',0,.9,.9,500,76)
+        printf("CLEAR",font.Bender,0,28,1000,'center',0,.9,.9,500,76)
         gc.pop()
     end
 end
