@@ -162,6 +162,7 @@ function mino.checkClear(player,comboBreak,delayBreak)
     local his=player.history
     his.spin,his.mini=player.cur.spin,player.cur.mini
 
+    local b2b=his.B2B
     if his.line>0 then
         if delayBreak or player.CDelay==0 then fLib.eraseEmptyLine(player)
         else mino.addEvent(player,player.CDelay,'eraseEmptyLine') end
@@ -170,6 +171,7 @@ function mino.checkClear(player,comboBreak,delayBreak)
         his.CDelay=player.CDelay
     elseif comboBreak then his.combo=0 end
     his.wide=fLib.wideDetect(player)
+    if his.B2B==-1 and b2b>0 and mino.sfxPlay.B2BBreak then mino.sfxPlay.B2BBreak(player,b2b) end
     if mino.theme.updateClearInfo then mino.theme.updateClearInfo(player,mino) end
 end
 
