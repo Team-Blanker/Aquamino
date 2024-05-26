@@ -66,8 +66,8 @@ function bg.draw()
                 local d=beat%4<2 and 1 or -1
                 for i=-3.5,3.5 do
                     if (beat*8+i-4)%16<8 then
-                    gc.rectangle('fill',100*d*i-30,-510,60,120)
-                    gc.rectangle('fill',-100*d*i-30,390,60,120)
+                    gc.rectangle('fill',120*d*i-30,-510,60,120)
+                    gc.rectangle('fill',-120*d*i-30,390,60,120)
                     end
                 end
             end
