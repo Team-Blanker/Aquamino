@@ -105,7 +105,8 @@ return {
         "唉，weak table",
         "腦袋空空…",
         "少打方塊多讀書",
-        "遠離現充。"
+        "遠離現充。",
+        "a and b or c and d or e and f or g"
     },tipScale=.4,
     territory={info="空格/Enter 切換暫停/運轉狀態\nesc 退出"}
 }

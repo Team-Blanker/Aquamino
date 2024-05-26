@@ -282,7 +282,7 @@ function mino.init()
         mino.unableBG=vi.unableBG
 
         for i=1,#P do
-            P[i].color={Z={1,.16,.32},S={.5,.96,.04},J={0,.64,1},L={.99,.66,.33},T={.8,.2,1},O={1,1,0},I={.15,1,.75},
+            P[i].color={Z={.96,.16,.32},S={.48,.96,0},J={0,.64,.96},L={.96,.64,.32},T={.8,.2,.96},O={.96,.96,0},I={.16,.96,.72},
                 g1={.5,.5,.5},g2={.75,.75,.75},
             }
             if fs.getInfo('conf/mino color') then T.combine(P[i].color,json.decode(fs.newFile('conf/mino color'):read())) end

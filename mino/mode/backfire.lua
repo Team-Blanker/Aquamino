@@ -11,6 +11,7 @@ function bf.init(P,mino)
     mus.start()
 
     battle.init(P[1])
+    mino.seqGenType='bagp1FromBag'
     P[1].recvLine=0
     P[1].atk=0
     P[1].line=0

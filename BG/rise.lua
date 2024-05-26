@@ -5,7 +5,7 @@ local insTime=0
 function bg.init()
     bg.density=1.5
     parList={}
-    bg.BGColor={0,0,0}
+    bg.BGColor={.05,.05,.05}
     bg.parColor={1,1,1}
 end
 function bg.update(dt)

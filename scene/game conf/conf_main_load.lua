@@ -98,9 +98,9 @@ scene.button.create('language',{
 scene.button.create('audio',{
     x=-250,y=-250*3^.5,type='circle',r=250,
     draw=function(bt,t)
-        gc.setColor(.5,.25,.25,.3+t)
+        gc.setColor(.5,.125,.125,.3+t)
         gc.arc('fill',0,0,bt.r,arcs,arcf,6)
-        gc.setColor(1,.5,.5)
+        gc.setColor(1,.25,.25)
         gc.setLineWidth(9)
         gc.arc('line','closed',0,0,bt.r,arcs,arcf,6)
         gc.setColor(1,1,1)

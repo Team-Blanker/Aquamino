@@ -167,7 +167,7 @@ function simple.clearTextDraw(player)
             end
         end
     end
-    local beta=alpha*(player.clearTxtTimer%.2>=.1 and .4 or .5)
+    local beta=alpha*(player.clearTxtTimer%.2>=.1 and .4 or .6)
     setColor(r,g,b,beta)
     if CInfo.wide==4 and CInfo.line==1 then printf("4-wide",font.Bender,0,-64*s-20,4000,'center',0,.333,.333,2000,76) end
 
