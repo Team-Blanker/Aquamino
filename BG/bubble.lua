@@ -15,7 +15,7 @@ gc.setCanvas()
 
 local  pi,tau=math.pi,2*math.pi
 function bg.newBubble()
-    local nb={x=3000*(rand()-.5),t=0,distance=.3+rand()*1.2,phase=rand()*tau}
+    local nb={x=3000*(rand()-.5),t=0,distance=.3+rand()*1.2,phase=rand()*tau} 
     if #bbList==0 then ins(bbList,nb)
     else for i=1,#bbList do
         if nb.distance>=bbList[i].distance then ins(bbList,nb) break end--按距离从远到近排序
