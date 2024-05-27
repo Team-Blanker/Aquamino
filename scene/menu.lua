@@ -170,6 +170,7 @@ function menu.mouseP(x,y,button,istouch)
     if not BUTTON.click(x,y,button,istouch) then local len,l=#menu.modeList,1920/#menu.modeList
         for k,v in pairs(menu.modeList) do
             if abs(x-v.x)+abs(y-v.y)<150 then
+                menu.lvl=2
                 scene.switch({
                     dest='game',destScene=require'mino/game',
                     swapT=.7,outT=.3,
