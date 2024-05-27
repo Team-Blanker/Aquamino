@@ -15,7 +15,7 @@ gc.setCanvas()
 
 local  pi,tau=math.pi,2*math.pi
 function bg.newBubble()
-    local nb={x=3000*(rand()-.5),t=0,distance=.3+rand()*1.2,phase=rand()*tau} 
+    local nb={x=3000*(rand()-.5),t=0,distance=.3+rand()*1.2,phase=rand()*tau,sz=.5+rand()}
     if #bbList==0 then ins(bbList,nb)
     else for i=1,#bbList do
         if nb.distance>=bbList[i].distance then ins(bbList,nb) break end--按距离从远到近排序
@@ -50,14 +50,15 @@ gc.setLineWidth(4)
 gc.setColor(1,1,1)
 gc.circle('line',32,32,30)
 gc.setCanvas()
-local s
+local s,b
 function bg.draw()
     gc.draw(c,0,0,0,1920,540,.5,1)
     gc.push('transform')
     for i=1,#bbList do
-        s=1/bbList[i].distance
+        b=bbList[i]
+        s=1/b.distance
         gc.setColor(.96,.96,.96,.12*s)
-        gc.draw(bb,(bbList[i].x+12*sin(pi*bbList[i].t))*s,(1200-300*bbList[i].t)*s,0,s,s,32,32)
+        gc.draw(bb,(b.x+12*sin(pi*b.t))*s,(1200-300*b.t)*s,0,s*b.sz,s*b.sz,32,32)
     end
     gc.pop()
 end
