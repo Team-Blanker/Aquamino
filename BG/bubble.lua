@@ -1,54 +1,39 @@
 local ins,rem=table.insert,table.remove
 
 local bg={}
-local bbListS,bbListM,bbListL={},{},{}
-local insTimeS,insTimeM,insTimeL=0,0,0
+local bbList={}
+local insTime=0
 function bg.init()
-    bbListS,bbListM,bbListL={},{},{}
-    bg.density=12
-    bg.thunderDensity=0.25
-    bg.angle=0
+    bbList={}
+    bg.density=18
 end
 local c=gc.newCanvas(1,2)
 gc.setCanvas(c)
 gc.setColor(.06, .1, .2) gc.points(.5, .5)
 gc.setColor(.04,.04,.08) gc.points(.5,1.5)
 gc.setCanvas()
+
+local  pi,tau=math.pi,2*math.pi
+function bg.newBubble()
+    local nb={x=3000*(rand()-.5),t=0,distance=.3+rand()*1.2,phase=rand()*tau}
+    print(nb.distance)
+    if #bbList==0 then ins(bbList,nb)
+    else for i=1,#bbList do
+        if nb.distance>=bbList[i].distance then ins(bbList,nb) break end--按距离从远到近排序
+    end end
+end
 function bg.update(dt)
-    insTimeS=insTimeS+dt
-    for i=#bbListS,1,-1 do
-        bbListS[i].t=bbListS[i].t+dt
-        if bbListS[i].t>20 then rem(bbListS,i) end
+    insTime=insTime+dt
+    for i=#bbList,1,-1 do
+        bbList[i].t=bbList[i].t+dt
+        if bbList[i].t>20 then rem(bbList,i) end
     end
-    if insTimeS>2/bg.density then
-        ins(bbListS,{x=2000*(rand()-.5),t=0})
-        insTimeS=insTimeS-2/bg.density
+    if insTime>2/bg.density then
+        bg.newBubble()
+        insTime=insTime-2/bg.density
     end
     if math.random()<dt*bg.density/2 then
-        ins(bbListS,{x=2000*(rand()-.5),t=0})
-    end
-    insTimeM=insTimeM+dt
-    for i=#bbListM,1,-1 do
-        bbListM[i].t=bbListM[i].t+dt
-        if bbListM[i].t>15 then rem(bbListM,i) end
-    end
-    if insTimeM>8/bg.density then
-        ins(bbListM,{x=2000*(rand()-.5),t=0})
-        insTimeM=insTimeM-4/bg.density
-    end
-    if math.random()<dt*bg.density/8 then
-        ins(bbListM,{x=2000*(rand()-.5),t=0})
-    end
-    for i=#bbListL,1,-1 do
-        bbListL[i].t=bbListL[i].t+dt
-        if bbListL[i].t>10 then rem(bbListL,i) end
-    end
-    if insTimeL>12/bg.density then
-        ins(bbListL,{x=2000*(rand()-.5),t=0})
-        insTimeL=insTimeL-16/bg.density
-    end
-    if math.random()<dt*bg.density/12 then
-        ins(bbListL,{x=2000*(rand()-.5),t=0})
+        bg.newBubble()
     end
 
     gc.setCanvas(c)
@@ -66,22 +51,14 @@ gc.setLineWidth(4)
 gc.setColor(1,1,1)
 gc.circle('line',32,32,30)
 gc.setCanvas()
+local s
 function bg.draw()
     gc.draw(c,0,0,0,1920,540,.5,1)
     gc.push('transform')
-    gc.rotate(bg.angle)
-    gc.setColor(.8,.8,.84,.08)
-    for i=1,#bbListS do
-        --gc.circle('line',bbListS[i].x,1200-300*bbListS[i].t,20)
-        gc.draw(bb,bbListS[i].x,1200-300*bbListS[i].t,0,.625,.625,32,32)
-    end
-    gc.setColor(.8,.8,.84,.16)
-    for i=1,#bbListM do
-        gc.draw(bb,bbListM[i].x,1800-450*bbListM[i].t,0,.9375,.9375,32,32)
-    end
-    gc.setColor(.8,.8,.84,.24)
-    for i=1,#bbListL do
-        gc.draw(bb,bbListL[i].x,2400-600*bbListL[i].t,0,1.25,1.25,32,32)
+    for i=1,#bbList do
+        s=1/bbList[i].distance
+        gc.setColor(.96,.96,.96,.12*s)
+        gc.draw(bb,(bbList[i].x+12*sin(pi*bbList[i].t))*s,(1200-300*bbList[i].t)*s,0,s,s,32,32)
     end
     gc.pop()
 end
