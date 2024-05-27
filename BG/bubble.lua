@@ -15,11 +15,14 @@ gc.setCanvas()
 
 local  pi,tau=math.pi,2*math.pi
 function bg.newBubble()
-    local nb={x=3000*(rand()-.5),t=0,distance=.3+rand()*1.2,phase=rand()*tau,sz=.5+rand()}
+    local nb={x=4000*(rand()-.5),t=0,distance=.5+rand()*1.5,phase=rand()*tau,sz=.5+rand()}
     if #bbList==0 then ins(bbList,nb)
-    else for i=1,#bbList do
-        if nb.distance>=bbList[i].distance then ins(bbList,nb) break end--按距离从远到近排序
-    end end
+    else local s=false
+        for i=1,#bbList do
+        if nb.distance>=bbList[i].distance then s=true ins(bbList,i,nb) break end--按距离从远到近排序
+        end
+        if not s then ins(bbList,nb) end
+    end
 end
 function bg.update(dt)
     insTime=insTime+dt
