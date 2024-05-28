@@ -224,15 +224,15 @@ function love.keyreleased(k)
 end
 function love.mousepressed(x,y,button,istouch)
     local rx,ry=adaptAllWindow:inverseTransformPoint(x+.5,y+.5)
-    if scene.cur.mouseP and not win.isAdjusting and canop then
+    if scene.cur.mouseP and canop then
         scene.cur.mouseP(rx,ry,button,istouch)
     end
 end
 
 
 function love.mousereleased(x,y,button,istouch)
-    local rx,ry=gc.inverseTransformPoint(x+.5,y+.5)
-    if scene.cur.mouseR and not win.isAdjusting and canop then
+    local rx,ry=adaptAllWindow:inverseTransformPoint(x+.5,y+.5)
+    if scene.cur.mouseR and canop then
     scene.cur.mouseR(rx,ry,button,istouch) end
 end
 

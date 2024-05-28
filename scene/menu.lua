@@ -79,6 +79,7 @@ function menu.init()
 
     menu.lvl=1
     menu.rCount=0
+    menu.selectedMode=''
 
     BUTTON.create('setting',{
         x=-960,y=-540,type='diamond',r=225,
@@ -170,15 +171,23 @@ function menu.mouseP(x,y,button,istouch)
     if not BUTTON.click(x,y,button,istouch) then local len,l=#menu.modeList,1920/#menu.modeList
         for k,v in pairs(menu.modeList) do
             if abs(x-v.x)+abs(y-v.y)<150 then
-                menu.lvl=2
-                scene.switch({
-                    dest='game',destScene=require'mino/game',
-                    swapT=.7,outT=.3,
-                    anim=function() anim.cover(.3,.4,.3,0,0,0) end
-                })
-                scene.sendArg=k
-                menu.send=menu.gameSend
+                menu.selectedMode=k
+                print(menu.selectedMode)
             end
+        end
+    end
+end
+function menu.mouseR(x,y,button,istouch)
+    for k,v in pairs(menu.modeList) do
+        if abs(x-v.x)+abs(y-v.y)<150 and k==menu.selectedMode then
+            menu.lvl=2
+            scene.switch({
+                dest='game',destScene=require'mino/game',
+                swapT=.7,outT=.3,
+                anim=function() anim.cover(.3,.4,.3,0,0,0) end
+            })
+            scene.sendArg=k
+            menu.send=menu.gameSend
         end
     end
 end
