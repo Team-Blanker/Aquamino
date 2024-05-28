@@ -1,4 +1,4 @@
-uniform highp float H;
+extern highp float H;
 vec4 effect( vec4 color, Image texture, vec2 texCoord, vec2 scrCoord ){
     vec4 pixel = texture2D(texture,texCoord);
     float Cmax=max(pixel.r,max(pixel.g,pixel.b));

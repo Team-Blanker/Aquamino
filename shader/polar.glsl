@@ -1,5 +1,5 @@
-uniform highp float wins;uniform Image img;
-uniform float scale;uniform float angle;uniform float yShift;
+extern highp float wins;extern Image img;
+extern float scale;extern float angle;extern float yShift;
 vec4 effect( vec4 color, Image texture, vec2 texCoord, vec2 scrCoord ){
     float x=(scrCoord.x-love_ScreenSize.x/2)/wins/1080/scale;
     float y=(scrCoord.y-love_ScreenSize.y/2)/wins/1080/scale;
