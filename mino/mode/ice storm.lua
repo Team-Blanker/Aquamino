@@ -7,7 +7,7 @@ function rule.init(P,mino)
     mino.musInfo="カモキング - 大氷河時代"
     mus.add('music/Hurt Record/The Great Ice Age','whole','ogg',14.884,63)
     mus.start()
-    mino.player[1].w=4
+    --mino.player[1].w=4
     --mino.player[1].h=4
     mino.rule.allowSpin={Z=true,S=true,J=true,L=true,T=true,O=true,I=true,}
     sfx.add({
