@@ -7,11 +7,6 @@ function bg.init()
     bbList={}
     bg.density=18
 end
-local c=gc.newCanvas(1,2)
-gc.setCanvas(c)
-gc.setColor(.06, .1, .2) gc.points(.5, .5)
-gc.setColor(.04,.04,.08) gc.points(.5,1.5)
-gc.setCanvas()
 
 local  pi,tau=math.pi,2*math.pi
 function bg.newBubble()
@@ -37,31 +32,40 @@ function bg.update(dt)
     if math.random()<dt*bg.density/2 then
         bg.newBubble()
     end
-
-    gc.setCanvas(c)
-    gc.setColor(COLOR.hsv(3.75,.8,.16+.02*sin(scene.time%6/3*math.pi))) gc.points(.5, .5)
-    gc.setCanvas()
 end
+
 local bb=gc.newCanvas(64,64)
 gc.setCanvas(bb)
-gc.setLineWidth(1)
-for i=1,10 do
-    gc.setColor(1,1,1,.75*i/16)
-    gc.circle('line',32,32,18+i)
+gc.setLineWidth(2)
+for i=1,32,2 do
+    gc.setColor(1,1,1,.75*i/64)
+    gc.circle('line',32,32,i)
 end
-gc.setLineWidth(4)
+gc.setLineWidth(2)
 gc.setColor(1,1,1)
-gc.circle('line',32,32,30)
+gc.circle('line',32,32,31)
 gc.setCanvas()
-local s,b
+
+local bgShader=gc.newShader[[
+    uniform vec4 clru=vec4(.03,.06,.15,1);
+    uniform vec4 clrd=vec4(.06,.06,.09,1);
+    vec4 effect( vec4 color, Image texture, vec2 texCoord, vec2 scrCoord ){
+        return mix(clru,clrd,scrCoord.y/love_ScreenSize.y+0.);
+    }
+]]
+local s,bl
 function bg.draw()
-    gc.draw(c,0,0,0,1920,540,.5,1)
+    gc.setShader(bgShader)
+    gc.rectangle('fill',-960,-540,1920,1080)
+    gc.setShader()
+    gc.setColor(.04,.04,.06,.05+.05*sin(scene.time%5/2.5*math.pi))
+    gc.rectangle('fill',-960,-540,1920,1080)
     gc.push('transform')
     for i=1,#bbList do
-        b=bbList[i]
-        s=1/b.distance
-        gc.setColor(.96,.96,.96,.12*s)
-        gc.draw(bb,(b.x+12*sin(pi*b.t))*s,(1200-300*b.t)*s,0,s*b.sz,s*b.sz,32,32)
+        bl=bbList[i]
+        s=1/bl.distance
+        gc.setColor(1,1,1,.16*s)
+        gc.draw(bb,(bl.x+12*sin(pi*bl.t))*s,(1200-300*bl.t)*s,0,s*bl.sz,s*bl.sz,32,32)
     end
     gc.pop()
 end
