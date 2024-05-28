@@ -23,7 +23,7 @@ function thunder.init(P,mino)
     mus.add('music/Hurt Record/Thunderbolt','whole','ogg',15.857,240*6/14)
     mus.start()
     sfx.add({
-        lvup='sfx/rule/thunder/level up.ogg',
+        lvup='sfx/rule/general/level up.ogg',
         top='sfx/rule/thunder/top.wav',
         thunder='sfx/rule/thunder/thunder1.wav'
     })
