@@ -12,7 +12,7 @@
     w.msaa=24
     w.vsync=0
 
-    w.highdpi=false
+    w.highdpi=true
 
     t.identity="AquaminoPreview"
     t.modules.touch=false
