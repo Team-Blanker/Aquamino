@@ -15,9 +15,17 @@ function video.save()
     love.window.setVSync(video.info.vsync and 1 or 0)
     drawCtrl.dtRestrict=1/video.info.frameLim
 end
+
+local iq=gc.newImage('pic/UI/sign/info_question.png') --64*64
+local vit,vir=0,0
+local vsf=function() gc.rectangle('fill',vir/2-635,vir+3,645,(video.vth*.25+10)*4*vit) end
 function video.init()
     cf=user.lang.conf
     video.info.fullscr=win.fullscr video.save() video.read()
+
+    video.vsyncTxt=gc.newText(font.Bender_B)
+    video.vsyncTxt:addf(cf.video.vsyncTxt,2500,'left')
+    video.vth=video.vsyncTxt:getHeight()
 
     BUTTON.create('quit',{
         x=-700,y=400,type='rect',w=200,h=100,
@@ -90,14 +98,30 @@ function video.init()
             gc.rectangle('fill',-w/2,-h/2,h,h)
             gc.setColor(1,1,1)
             gc.printf(cf.video.vsync,font.Bender_B,w/2+50,0,1200,'left',0,.35,.35,0,76)
-            gc.setColor(1,1,1,.75)
-            gc.printf(cf.video.vsyncTxt,font.Bender_B,-w/2,h/2+64,1840,'left',0,.25,.25,0,152)
         end,
         event=function()
             video.info.vsync=not video.info.vsync
             love.window.setVSync(video.info.vsync and 1 or 0)
         end
     },.2)
+    BUTTON.create('vsyncInfo',{
+        x=800,y=-160,type='circle',r=32,
+        draw=function(bt,t,ct)
+            gc.setColor(1,1,1)
+            gc.draw(iq,0,0,0,.5,.5,32,32)
+            gc.setColor(0,0,0,.5)
+            gc.rectangle('fill',bt.r/2-635,bt.r+3,645,(video.vth*.25+10)*4*t)
+
+            vit=t vir=bt.r
+            gc.stencil(vsf,'replace',1)
+            gc.setStencilTest('equal',1)
+            gc.setColor(1,1,1)
+            gc.draw(video.vsyncTxt,bt.r/2,bt.r+8,0,.25,.25,2500,0)
+            gc.setStencilTest()
+        end,
+        event=function()
+        end
+    },.25)
     BUTTON.create('fullscr',{
         x=-180,y=-240,type='rect',w=100,h=100,
         draw=function(bt,t,ct)

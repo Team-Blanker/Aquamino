@@ -45,7 +45,8 @@ return {
         video={
             unableBG="Disable BGs",unableTxt="Turn on when ingame BGs discomfort you.",
             fullScr="Fullscreen",fullScrTxt="Press F11 to switch window mode immediately.",
-            vsync="Vertical Sync",vsyncTxt="Usually, it's not recommended to open this option.",
+            vsync="Vertical Sync",
+            vsyncTxt="The drawing code and computing code of this program are separated in form. How many times The drawing code executed in 1 second is FPS, so as TPS.\nIf the maximum FPS is lower than or equal to the vertical sync limit FPS, the TPS is not limited.\nThis program mainly considers PC performance, and this option is turned off by default.\nLow-performance devices can turn on this option to optimize the execution of the computing code.",
             frameLim="Max draw FPS:",frameTxt="A value equal to your monitor's FPS is recommended."
         },
         custom={
