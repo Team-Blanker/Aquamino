@@ -13,7 +13,7 @@
     w.vsync=0
 
     local sys=love.system.getOS()
-    w.highdpi=sys=='Android' or sys=='iOS' or false
+    w.highdpi=false
 
     t.identity="AquaminoPreview"
     t.modules.touch=false
