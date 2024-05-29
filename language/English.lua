@@ -96,7 +96,7 @@ return {
         "This is Kairan,neither capable nor cute,only making nonsense in tips",
         "I'm not the first one who add tips into a block game,anyway",
         "A Project by TEAM BLANKER",
-        "The game's' birthday...Kairan set it to August 14th!",
+        "The game's birthday...Kairan set it to August 14th!",
         "Block skin \"Carbon Fibre\" is inspired by Speedcubes that use carbon fibre stickers.",
         "Try Aquamino's Push mechanic in Sandbox mode!",
         "Not every modes are related to water,although the game was named \"Aqua\".",
