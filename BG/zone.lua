@@ -1,4 +1,4 @@
-local wave={
+local bg={
     --Y=Asin(ωx+φ)+c
     base=0,--基础亮度
     amp=.5,--振幅
@@ -9,14 +9,14 @@ local wave={
 }
 local hsv=COLOR.hsv
 local tau=2*math.pi
-function wave.init(base,amp,ring,freq,speed,edge)
-    wave.base=base or 0  wave.amp=amp or .5  wave.ring=ring or 60  wave.freq=freq or 5  wave.speed=speed or .75  wave.edge=edge or 8
+function bg.init(base,amp,ring,freq,speed,edge)
+    bg.base=base or 0  bg.amp=amp or .5  bg.ring=ring or 60  bg.freq=freq or 5  bg.speed=speed or .75  bg.edge=edge or 8
 end
-function wave.update(dt)
+function bg.update(dt)
     --wave.freq=(wave.freq+2*dt)%wave.ring
 end
-function wave.draw()
-    local W=wave
+function bg.draw()
+    local W=bg
     gc.setColor(hsv(scene.time,1,.16))
     gc.rectangle('fill',-960,-540,1920,1080)
     for i=1,W.ring do
@@ -26,4 +26,4 @@ function wave.draw()
     end
     gc.setColor(1,1,1)
 end
-return wave
+return bg
