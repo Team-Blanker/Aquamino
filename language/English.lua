@@ -38,8 +38,8 @@ return {
         }
     },
     conf={
-        back="Back",test="Test",
-        main={title="Settings",audio="Audio",video="Video",custom="Custom",ctrl="Handling",keys="Keys",other="Other..."},
+        test="Test",
+        main={title="Settings",audio="Audio",video="Video",custom="Custom",ctrl="Handling",keys="Keys"},
 
         audio={mus="Music Volume:",sfx="SFX Volume:",distract="Mute when unfocus",DOX=-22},
         video={

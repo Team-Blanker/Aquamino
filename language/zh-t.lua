@@ -36,8 +36,8 @@ return {
         }
     },
     conf={
-        back="返回",test="測試",
-        main={title="設定 - 首頁",audio="音頻設定",video="畫面設定",custom="主题設定",ctrl="控制設定",keys="鍵位設定",other=" 其它..."},
+        test="測試",
+        main={title="設定 - 首頁",audio="音頻設定",video="畫面設定",custom="主题設定",ctrl="控制設定",keys="鍵位設定"},
         audio={mus="音樂音量:",sfx="音效音量:",distract="失去焦點自動靜音",DOX=0},
         video={
             unableBG="禁用遊戲背景",unableTxt="若遊戲背景導致你身體不適，請開啟此選項。",
