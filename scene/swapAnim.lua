@@ -26,7 +26,7 @@ function anim.cover(intime,keeptime,outtime,r,g,b)
 end
 
 function anim.enterMenu(intime,keeptime,outtime)
-    gc.setColor(0,0,0)
+    gc.setColor(.05,.05,.05)
     if scene.swapT>0 then
         local rect_w=1-((scene.swapT-keeptime)/intime)^2
         if scene.swapT>keeptime then
@@ -44,6 +44,26 @@ function anim.enterMenu(intime,keeptime,outtime)
         local sz=1920*(-(1-scene.outT/outtime)^2+1)
         gc.circle('fill',-960,960,sz,4) gc.circle('fill',960,-960,sz,4)
         gc.circle('fill',960,960,sz,4) gc.circle('fill',-960,-960,sz,4)
+    end
+end
+local r=960*2/3^.5
+function anim.enterConf(intime,keeptime,outtime)
+    if scene.swapT>0 then
+        local w=1-((scene.swapT-keeptime)/intime)^2
+        if scene.swapT>keeptime then
+            local l=.08*w
+            gc.setColor(l,l,l)
+            gc.setLineWidth(1920*w)
+            gc.arc('line','closed',0,0,r,math.pi/2,5*math.pi/2,6)
+        else
+            gc.setColor(.08,.08,.08)
+            gc.rectangle('fill',-960,-540,1920,1080)
+        end
+    else
+        gc.setColor(.08,.08,.08)
+        local w=(-(1-scene.outT/outtime)^2+1)
+        gc.setLineWidth(1920*w)
+        gc.arc('line','closed',0,0,r,math.pi/2,5*math.pi/2,6)
     end
 end
 function anim.enter2(intime,keeptime,outtime)

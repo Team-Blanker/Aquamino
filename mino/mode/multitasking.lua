@@ -1,7 +1,7 @@
 local marathon={}
 function marathon.init(P,mino)
     sfx.add({
-        lvup='sfx/rule/marathon/level up.ogg'
+        lvup='sfx/rule/general/level up.ogg'
     })
     mino.musInfo="georhythm - nega to posi"
     scene.BG=require('BG/nega to posi') scene.BG.init()
