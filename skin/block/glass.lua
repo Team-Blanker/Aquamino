@@ -10,7 +10,7 @@ function skin.unitDraw(player,x,y,color,alpha)
     draw(pic,-18+36*x,-18-36*y)
 end
 function skin.init(player)
-    player.fieldCanvas=gc.newCanvas(50,100)--最多支持正常显示50*100场地
+    player.fieldCanvas=gc.newCanvas(50*36,100*36)--最多支持正常显示50*100场地
     player.fieldCanvas:setFilter('nearest')
     player.skinSpinTimer=0
     player.spinAct=false
@@ -32,6 +32,7 @@ function skin.fieldDraw(player,mino)
     gc.push()
     gc.origin()
     gc.setCanvas(player.fieldCanvas)
+    gc.setScissor(0,0,50*36,100*36)
     gc.clear(0,0,0,0)
     for y=1,#player.field do
         if player.field[y][1] then
@@ -39,22 +40,23 @@ function skin.fieldDraw(player,mino)
             local C=player.color[F[y][x].name]
             if F[y][x] and next(F[y][x]) and C then
                 setColor(C[1],C[2],C[3],1)
-                gc.points(x-.5,y-.5)
+                gc.rectangle('fill',36*x-36,36*y-36,36,36)
             end
         end
         end
     end
+    gc.setScissor()
     gc.setCanvas()
     gc.pop()
 
     setColor(1,1,1,.03)
-    draw(player.fieldCanvas,18,-18,0,36,-36)
+    draw(player.fieldCanvas,18,-18,0,1,-1)
     for i=1,6 do  for j=1,4 do
         local a,b=i*3*cos(j*math.pi/2),i*3*sin(j*math.pi/2)
-        draw(player.fieldCanvas,18+a,-18+b,0,36,-36)
+        draw(player.fieldCanvas,18+a,-18+b,0,1,-1)
     end  end
     setColor(1,1,1,.15)
-    draw(player.fieldCanvas,18,-18,0,36,-36)
+    draw(player.fieldCanvas,18,-18,0,1,-1)
 
     h=0
     for y=1,#player.field do
