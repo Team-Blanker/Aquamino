@@ -154,7 +154,12 @@ function menu.init()
     },.2)
 end
 function menu.keyP(k)
-    if k=='r' then
+    if k=='escape' then
+        scene.switch({
+            dest='intro',swapT=.7,outT=.3,
+            anim=function() anim.cover(.3,.4,.3,0,0,0) end
+        })
+    elseif k=='r' then
         menu.rCount=menu.rCount+1
         if menu.rCount>=16 then
             scene.switch({

@@ -10,13 +10,13 @@ function anim.cover(intime,keeptime,outtime,r,g,b)
     else
         gc.setColor(r,g,b,scene.outT/outtime)
     end
-        gc.rectangle('fill',-960,-540,1920,1080)
+    gc.rectangle('fill',-960,-540,1920,1080)
 end
 
 function anim.enterMenu(intime,keeptime,outtime)
     gc.setColor(.05,.05,.05)
     if scene.swapT>0 then
-        local rect_w=1-((scene.swapT-keeptime)/intime)^2
+        local rect_w=1-((scene.swapT-keeptime)/intime)^3
         if scene.swapT>keeptime then
             gc.rectangle('fill',-960,-540,960*rect_w,1080)
             gc.rectangle('fill',960-960*rect_w,-540,960*rect_w,1080)
@@ -25,7 +25,7 @@ function anim.enterMenu(intime,keeptime,outtime)
             gc.arc('line','open',-960+960*rect_w,0,150,math.pi/2,3*math.pi/2,2)
             gc.arc('line','open', 960-960*rect_w,0,150,-math.pi/2, math.pi/2,2)
         else
-            local angle=mymath.clamp((scene.swapT-keeptime/2)/keeptime*2.5,0,1)^2*math.pi/2
+            local angle=mymath.clamp((scene.swapT/keeptime-1/2)*2,0,1)^2*math.pi/2
             gc.rectangle('fill',-960,-540,1920,1080)
             gc.setColor(1,1,1)
             gc.setLineWidth(15)
