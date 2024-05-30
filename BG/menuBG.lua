@@ -31,7 +31,7 @@ function bg.update(dt)
     sf=max(sf-4*dt,0)
 end
 function bg.draw()
-    op[4]=scene.time/2.5+scene.time/8 op[8]=-scene.time/8
+    op[4]=scene.totalTime/2.5+scene.totalTime/8 op[8]=-scene.totalTime/8
     gc.push()
         gc.origin()
         gc.setScissor(0,0,1000,1000)

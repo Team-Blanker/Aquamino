@@ -56,7 +56,7 @@ return {
             theme="Theme",
             scale="Field scale",scaleTxt="1 means a single cell is 36px*36px in a 1920*1080 window.",
             sfx="SFX pack",sfxWarning={
-                otto="LOUD SOUND WARNING. Please choose carefully."
+                otto="LOUD SOUND WARNING. TAKE AT YOUR OWN RISK."
             },
 
             colorSet={

@@ -70,7 +70,7 @@ function otto.clear(player)
     if his.wide==4 and his.line>0 then sfx.play('4wide') end
     if his.mini then sfx.play('mini') end
     if his.PC then sfx.play('PC') end
-    if his.B2B>0 and his.line>0 then sfx.play('B2B',1,min(2^((his.B2B-1)/12),2.848)) end
+    if his.B2B>0 and his.line>0 then sfx.play('B2B',1,2^(min(his.B2B-1,18)/12)) end
     if his.combo>=18 then sfx.play('megacombo') end
 end
 function otto.B2BBreak()
