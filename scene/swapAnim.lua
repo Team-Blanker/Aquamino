@@ -1,18 +1,6 @@
 local anim={}--animation的缩写
 
 function anim.init()--第一帧不能用来画图，会出问题
-    anim.e1cl=gc.newCanvas(160,320) anim.e1cr=gc.newCanvas(160,320)
-    anim.e1cw=gc.newCanvas(320,320)
-    gc.setLineWidth(20) gc.setColor(1,1,1)
-    gc.setCanvas(anim.e1cl) gc.circle('line',160,160,150,4)
-    gc.setCanvas(anim.e1cr) gc.circle('line',0,160,150,4)
-    gc.setCanvas(anim.e1cw) gc.circle('line',160,160,150,4)
-    gc.setCanvas()
-    print(anim.e1cw:newImageData():getPixel(160,1))
-
-    anim.e1stcf=function()
-        gc.circle('fill',0,0,100,4)
-    end
 end
 function anim.cover(intime,keeptime,outtime,r,g,b)
     if scene.swapT>keeptime then 
@@ -28,22 +16,28 @@ end
 function anim.enterMenu(intime,keeptime,outtime)
     gc.setColor(.05,.05,.05)
     if scene.swapT>0 then
-        local rect_w=1-((scene.swapT-keeptime)/intime)^2
+        local rect_w=1-((scene.swapT-keeptime)/intime)
         if scene.swapT>keeptime then
             gc.rectangle('fill',-960,-540,960*rect_w,1080)
             gc.rectangle('fill',960-960*rect_w,-540,960*rect_w,1080)
             gc.setColor(1,1,1)
-            --gc.draw(anim.e1cl,-960+960*rect_w,0,0,1,1,160,160)
-            --gc.draw(anim.e1cr, 960-960*rect_w,0,0,1,1,0,160)
+            gc.setLineWidth(15)
+            gc.arc('line','open',-960+960*rect_w,0,150,math.pi/2,3*math.pi/2,2)
+            gc.arc('line','open', 960-960*rect_w,0,150,-math.pi/2, math.pi/2,2)
         else
+            local angle=mymath.clamp((scene.swapT-keeptime/2)/keeptime*4,0,1)^2*math.pi/2
             gc.rectangle('fill',-960,-540,1920,1080)
             gc.setColor(1,1,1)
-            --gc.draw(anim.e1cw,0,0,0,1,1,160,160)
+            gc.setLineWidth(15)
+            gc.arc('line','closed',0,0,150,-math.pi/2+angle,math.pi+angle,3)
         end
     else
         local sz=1920*(-(1-scene.outT/outtime)^2+1)
         gc.circle('fill',-960,960,sz,4) gc.circle('fill',960,-960,sz,4)
         gc.circle('fill',960,960,sz,4) gc.circle('fill',-960,-960,sz,4)
+        gc.setColor(1,1,1)
+        gc.setLineWidth(1920-sz<=150 and 15 or 5+10*(1920-sz-150)/(1920-150))
+        gc.arc('line','open',0,0,max(150,1920-sz),-math.pi/2,3*math.pi/2,4)
     end
 end
 local r=960*2/3^.5

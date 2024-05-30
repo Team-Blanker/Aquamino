@@ -64,8 +64,8 @@ function intro.keyP(k)
             end
         else cnum=1
             scene.switch({
-                dest='menu',swapT=.75,outT=.5,
-                anim=function() anim.enterMenu(.5,.25,.5) end
+                dest='menu',swapT=1,outT=.5,
+                anim=function() anim.enterMenu(.2,.8,.5) end
             })
         end
     end
