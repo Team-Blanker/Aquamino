@@ -163,6 +163,7 @@ user.lang=require('language/'..user.langName)
 scene={
     watermark=true,
     totalTime=0,
+    enterNewScene=false,
     cur=require('scene/warning'),pos='warning',
     dest=nil,destScene=nil,
     BG=require('BG/blank'),
@@ -257,7 +258,7 @@ function mainUpdate(dt)
             if scene.nextBG then scene.BG=require('BG/'..scene.nextBG)
                 if scene.BG.init then scene.BG.init() end
             end
-            if scene.cur.init then scene.cur.init() end
+            if scene.cur.init then scene.cur.init() scene.enterNewScene=true end
             if scene.cur.recv then scene.cur.recv(recvArg) end scene.recvArg=nil
             canop=true scene.dest=nil
             scene.time=0
@@ -285,8 +286,14 @@ local animInit=false
 function love.update(dt)
     if not animInit then anim.init() animInit=true end
     local dtRemain=dt
-    while dtRemain>=1/256 do mainUpdate(1/256) dtRemain=dtRemain-1/256 end
-    mainUpdate(dtRemain)
+    while dtRemain>=1/256 do
+        if scene.enterNewScene then
+            dtRemain=0
+        else
+            mainUpdate(1/256) dtRemain=dtRemain-1/256
+        end
+    end
+    if scene.enterNewScene then scene.enterNewScene=false else mainUpdate(dtRemain) end
     mus.update(dt)
     mus.distract(mus.distractCut and win.distractTime>0 and 1 or 0)
 end
