@@ -3,6 +3,7 @@
     stacker是你自己，player存储的是“玩家”的所有信息。
     stacker是可以操控多个player的。stacker.opList存储着你所操控的player序号。
 ]]
+local BUTTON,SLIDER=scene.button,scene.slider
 
 local gc=love.graphics
 local fs=love.filesystem
@@ -15,7 +16,6 @@ local B=require'mino/blocks'
 local NG=require'mino/nextGen'
 local SC=require'mino/spinCheck'
 
-local pause=require'mino/special/pause'
 --math.randomseed(os.time())
 
 local mino={
@@ -254,7 +254,6 @@ local curPlayTxt
 function mino.init()
     mino.profile=require'profile'
 
-    pause.init(mino)
     mino.endPaused=false
     mino.waitTime=2
     scene.BG=require('BG/blank')
@@ -320,6 +319,83 @@ function mino.init()
         if mino.theme.init then mino.theme.init(P[i]) end
     end
     curPlayTxt=user.lang.game.nowPlaying..mino.musInfo
+
+    --三个暂停时按钮
+    local ptxt=user.lang.pause
+    mino.pauseTime=0
+    mino.ptList={
+        resume={txt=gc.newText(font.Bender,ptxt.resume)},
+        retry={txt=gc.newText(font.Bender,ptxt.r)},
+        quit={txt=gc.newText(font.Bender,ptxt.quit)},
+    }
+    local pt=mino.ptList
+    for k,v in pairs(pt) do
+        v.w,v.h=v.txt:getDimensions()
+    end
+    BUTTON.create('pause_resume',{
+        x=-600,y=420,type='rect',w=400,h=100,
+        draw=function(bt,t)
+            if mino.paused then
+            gc.setColor(.75,.75,.75,.5+min(2*t,.3))
+            gc.rectangle('fill',-200,-50,400,100)
+            gc.setColor(1,1,1)
+            gc.setLineWidth(3)
+            gc.rectangle('line',-200,-50,400,100)
+            gc.setColor(1,1,1)
+            gc.draw(pt.resume.txt,0,0,0,.5,.5,pt.resume.w/2,pt.resume.h/2)
+            end
+        end,
+        event=function()
+            if mino.paused then
+            scene.cur.paused=false
+            if mino.rule.pause then mino.rule.pause(mino.stacker,mino.paused) end
+            end
+        end
+    },.25)
+    BUTTON.create('pause_retry',{
+        x=0,y=420,type='rect',w=400,h=100,
+        draw=function(bt,t)
+            if mino.paused then
+            gc.setColor(.75,.75,.75,.5+min(2*t,.3))
+            gc.rectangle('fill',-200,-50,400,100)
+            gc.setColor(1,1,1)
+            gc.setLineWidth(3)
+            gc.rectangle('line',-200,-50,400,100)
+            gc.setColor(1,1,1)
+            gc.draw(pt.retry.txt,0,0,0,.5,.5,pt.retry.w/2,pt.retry.h/2)
+            end
+        end,
+        event=function()
+            if mino.paused then
+            scene.dest='solo' scene.destScene=require'mino/game'
+            scene.swapT=.7 scene.outT=.3
+            scene.anim=function() anim.cover(.3,.4,.3,0,0,0) end
+            if scene.cur.resetStopMusic then mus.stop() end
+            scene.sendArg=mino.exitScene
+            end
+        end
+    },.25)
+    BUTTON.create('pause_quit',{
+        x=600,y=420,type='rect',w=400,h=100,
+        draw=function(bt,t)
+            if mino.paused then
+            gc.setColor(.75,.75,.75,.5+min(2*t,.3))
+            gc.rectangle('fill',-200,-50,400,100)
+            gc.setColor(1,1,1)
+            gc.setLineWidth(3)
+            gc.rectangle('line',-200,-50,400,100)
+            gc.setColor(1,1,1)
+            gc.draw(pt.quit.txt,0,0,0,.5,.5,pt.quit.w/2,pt.quit.h/2)
+            end
+        end,
+        event=function()
+            if mino.paused then
+            scene.dest=mino.exitScene or 'menu'
+            scene.swapT=.7 scene.outT=.3
+            scene.anim=function() anim.cover(.3,.4,.3,0,0,0) end
+            end
+        end
+    },.25)
 end
 
 local success
@@ -617,8 +693,12 @@ function mino.keyR(k)
 end
 
 function mino.mouseP(x,y,button,istouch)
-    if mino.paused then pause.mouseP(x,y,button,istouch) end
+    BUTTON.press(x,y,button,istouch)
 end
+function mino.mouseR(x,y,button,istouch)
+    BUTTON.release(x,y,button,istouch)
+end
+
 local cxk,remainTime
 local L,R
 function mino.gameUpdate(dt)
@@ -781,7 +861,8 @@ function mino.update(dt)
     if not (love.window.hasFocus() or mino.paused) then mino.paused=true
         if mino.rule.pause then mino.rule.pause(S,mino.paused) end
     end
-    if mino.paused then pause.update(dt) mino.pauseTimer=mino.pauseTimer+dt mino.pauseAnimTimer=min(mino.pauseAnimTimer+dt,.25)
+    if mino.paused then BUTTON.update(dt,adaptAllWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5))
+        mino.pauseTimer=mino.pauseTimer+dt mino.pauseAnimTimer=min(mino.pauseAnimTimer+dt,.25)
     else mino.pauseAnimTimer=max(mino.pauseAnimTimer-dt,0)
         mino.waitTime=mino.waitTime-dt
         if mino.waitTime<=0 then mino.gameUpdate(dt)
@@ -904,7 +985,7 @@ function mino.draw()
     gc.setColor(.04,.04,.04,min(mino.pauseAnimTimer*(S.winState==0 and 4 or 2),S.winState==0 and 1 or .5))
     gc.rectangle('fill',-1000,-1000,2000,2000)
     if mino.paused then
-        pause.button.draw()
+        BUTTON.draw()
         gc.setColor(1,1,1)
         gc.printf(user.lang.modeName[mino.mode] or mino.mode,font.Bender,400,-320,4096,'right',0,.4,.4,4096,76)
         gc.printf(S.winState==0 and user.lang.game.paused or user.lang.game.result,

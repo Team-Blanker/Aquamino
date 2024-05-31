@@ -77,13 +77,16 @@ function key.keyP(k)
     --[[elseif k=='escape' then key.quit() love.event.quit()]] end
 end
 function key.mouseP(x,y,button,istouch)
-    if not (button==1 and BUTTON.click(x,y,button,istouch)) then
+    if not (button==1 and BUTTON.press(x,y,button,istouch)) then
         if button==1 and (x>-800 and x<800 and y>-300 and y<300) then
             local o=ceil(y/100)+3+(x>0 and 6 or 0)
             key.order=o<=#key.keyName and o~=key.order and o or nil
             print(key.order)
         else key.order=nil end
     end
+end
+function key.mouseR(x,y,button,istouch)
+    BUTTON.release(x,y,button,istouch)
 end
 function key.update(dt)
     BUTTON.update(dt,adaptAllWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5))

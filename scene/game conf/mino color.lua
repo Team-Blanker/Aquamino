@@ -6,7 +6,7 @@ local cfcc=user.lang.conf.custom.colorSet
 
 local bc={blockIndex=1}
 local defaultColor={
-    Z={1,.16,.32},S={.5,.96,.04},J={0,.64,1},L={.99,.66,.33},T={.8,.2,1},O={1,1,0},I={.15,1,.75},
+    Z={.96,.16,.32},S={.48,.96,0},J={0,.64,.96},L={.96,.64,.32},T={.8,.2,.96},O={.96,.96,0},I={.16,.96,.72},
 }
 local canAdjustColor={glossy=true,glass=true,pure=true,['carbon fibre']=true,wheelchair=true}
 local bList={'Z','S','J','L','T','O','I'}
@@ -64,9 +64,7 @@ function bc.init()
         end,
         event=function()
             if not canAdjustColor[skinName] then return end
-            bc.color={
-                Z={.96,.16,.32},S={.48,.96,0},J={0,.64,.96},L={.96,.64,.32},T={.8,.2,.96},O={.96,.96,0},I={.16,.96,.72},
-            }
+            bc.color=mytable.copy(defaultColor)
             SLIDER.setPos('colorR',bc.color[bList[bc.blockIndex]][1])
             SLIDER.setPos('colorG',bc.color[bList[bc.blockIndex]][2])
             SLIDER.setPos('colorB',bc.color[bList[bc.blockIndex]][3])
@@ -205,10 +203,11 @@ function bc.init()
     })
 end
 function bc.mouseP(x,y,button,istouch)
-    if not BUTTON.click(x,y,button,istouch) and SLIDER.mouseP(x,y,button,istouch) then
+    if not BUTTON.press(x,y,button,istouch) and SLIDER.mouseP(x,y,button,istouch) then
     end
 end
 function bc.mouseR(x,y,button,istouch)
+    BUTTON.release(x,y,button,istouch)
     SLIDER.mouseR(x,y,button,istouch)
 end
 function bc.update(dt)

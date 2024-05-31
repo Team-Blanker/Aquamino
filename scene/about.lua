@@ -5,7 +5,7 @@ local devList={
         member={'Aqua6623(Aquamarine6623, Kairan, 海兰)'}
     },
     program={'Aqua6623'},
-    sfx={'Aqua6623','Dr Ocelot'},
+    sfx={'Aqua6623'},
     art={'Aqua6623','MrZ_26'},
     UI={'Aqua6623'},
     music={
@@ -16,6 +16,9 @@ local devList={
         }
     },
     specialThanks={'MrZ_26'}
+}
+local repo={
+    {'json','rxi'}
 }
 local about={}
 function about.init()
@@ -40,8 +43,12 @@ function about.init()
     },.2)
 end
 function about.mouseP(x,y,button,istouch)
-    BUTTON.click(x,y,button,istouch)
+    BUTTON.press(x,y,button,istouch)
 end
+function about.mouseR(x,y,button,istouch)
+    BUTTON.release(x,y,button,istouch)
+end
+
 function about.update(dt)
     BUTTON.update(dt,adaptAllWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5))
 end

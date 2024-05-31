@@ -170,7 +170,10 @@ function config.init()
     },.2)
 end
 function config.mouseP(x,y,button,istouch)
-    if not BUTTON.click(x,y,button,istouch) then end
+    if not BUTTON.press(x,y,button,istouch) then end
+end
+function config.mouseR(x,y,button,istouch)
+    if not BUTTON.release(x,y,button,istouch) then end
 end
 --function AnV.mouseR(x,y,button,istouch)
 --end

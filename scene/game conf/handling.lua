@@ -146,9 +146,10 @@ function hand.init()
     })
 end
 function hand.mouseP(x,y,button,istouch)
-    if not BUTTON.click(x,y,button,istouch) and SLIDER.mouseP(x,y,button,istouch) then end
+    if not BUTTON.press(x,y,button,istouch) and SLIDER.mouseP(x,y,button,istouch) then end
 end
 function hand.mouseR(x,y,button,istouch)
+    BUTTON.release(x,y,button,istouch)
     SLIDER.mouseR(x,y,button,istouch)
 end
 function hand.update(dt)

@@ -43,9 +43,6 @@ menu.modeList={
     multitasking={x=0,y=300,borderColor={1,.25,.25}},
     laser={x=450,y=-150,borderColor={0,1,1}},
 }
-for k,v in pairs(menu.modeList) do
-    v.hoverT=0
-end
 menu.icon={
     border=gc.newImage('pic/mode icon/border.png')
 }
@@ -53,6 +50,9 @@ for k,v in pairs(menu.modeList) do
     menu.icon[k]=gc.newImage('pic/mode icon/'..k..'.png')
 end
 function menu.init()
+    for k,v in pairs(menu.modeList) do
+        v.hoverT=0
+    end
     m=user.lang.menu
     menu.modeName=user.lang.modeName
     scene.BG=require('BG/menuBG')
@@ -173,7 +173,7 @@ function menu.keyP(k)
     end
 end
 function menu.mouseP(x,y,button,istouch)
-    if not BUTTON.click(x,y,button,istouch) then local len,l=#menu.modeList,1920/#menu.modeList
+    if not BUTTON.press(x,y) then
         for k,v in pairs(menu.modeList) do
             if abs(x-v.x)+abs(y-v.y)<150 then
                 menu.selectedMode=k
@@ -183,16 +183,18 @@ function menu.mouseP(x,y,button,istouch)
     end
 end
 function menu.mouseR(x,y,button,istouch)
-    for k,v in pairs(menu.modeList) do
-        if abs(x-v.x)+abs(y-v.y)<150 and k==menu.selectedMode then
-            menu.lvl=2
-            scene.switch({
-                dest='game',destScene=require'mino/game',
-                swapT=.7,outT=.3,
-                anim=function() anim.cover(.3,.4,.3,0,0,0) end
-            })
-            scene.sendArg=k
-            menu.send=menu.gameSend
+    if not BUTTON.release(x,y) then
+        for k,v in pairs(menu.modeList) do
+            if abs(x-v.x)+abs(y-v.y)<150 and k==menu.selectedMode then
+                menu.lvl=2
+                scene.switch({
+                    dest='game',destScene=require'mino/game',
+                    swapT=.7,outT=.3,
+                    anim=function() anim.cover(.3,.4,.3,0,0,0) end
+                })
+                scene.sendArg=k
+                menu.send=menu.gameSend
+            end
         end
     end
 end
