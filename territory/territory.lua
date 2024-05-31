@@ -50,7 +50,7 @@ function war.init()
     war.team={
         alive={true,true,true,true},
         bulletS={1,1,1,1},--储存多少子弹
-        bulletR={1024,1024,1024,1024},--要射出多少子弹
+        bulletR={256,256,256,256},--要射出多少子弹
         rCool={0,0,0,0},rCoolT=1/64--子弹发射速度频率为1/rCoolT，cool意为冷却
     }
     war.teamBelong={}
@@ -272,7 +272,7 @@ function war.update(dt)
             if war.team.rCool[i]<0 then
                 war.team.rCool[i]=war.team.rCool[i]+war.team.rCoolT
                 war.team.bulletR[i]=war.team.bulletR[i]-1
-                local r=((i==1 and 0 or i==2 and .5 or i==3 and 1.5 or i==4 and 1)+(war.angle*.52-.01))*math.pi
+                local r=((i==1 and 0 or i==2 and .5 or i==3 and 1.5 or i==4 and 1)+(war.angle-war.angle%(1/64))*.5)*math.pi
                 war.shoot(a*11*32+30*cos(r),b*11*32+30*sin(r),256*cos(r),256*sin(r),i)
             end
         end
@@ -356,7 +356,7 @@ function war.draw()
         gc.translate(x,y)
         setColor(teamColor[m])
         circle('fill',0,0,16)
-        gc.rotate(((m==1 and 0 or m==2 and .5 or m==3 and 1.5 or m==4 and 1)+(war.angle*.52-.01))*math.pi)
+        gc.rotate(((m==1 and 0 or m==2 and .5 or m==3 and 1.5 or m==4 and 1)+(war.angle-war.angle%(1/64))*.5)*math.pi)
         gc.setLineWidth(8)
         gc.line(18,12,30,0,18,-12)
         gc.pop()
