@@ -178,8 +178,8 @@ function thunder.always(player,dt)
 end
 function thunder.underFieldDraw(player)
     if player.point%100==99 then gc.setColor(1,.75,.5) else gc.setColor(1,1,1) end
-    gc.printf(""..player.point,font.JB_B,-player.w*18-110,-32,2048,'center',0,.5,.5,1024,84)
-    gc.printf(""..player.stormLv*100,font.JB_B,-player.w*18-110,32,2048,'center',0,.5,.5,1024,84)
+    gc.printf(""..player.point,font.JB_B,-player.w*18-110,-36,2048,'center',0,.5,.5,1024,84)
+    gc.printf(""..player.stormLv*100,font.JB_B,-player.w*18-110,36,2048,'center',0,.5,.5,1024,84)
     gc.printf("Thunder Lv.\n"..player.stormLv,font.JB_B,-player.w*18-28,256,2048,'right',0,0.25,0.25,2048,84)
     gc.setLineWidth(7)
     gc.line(-player.w*18-170,0,-player.w*18-50,0)

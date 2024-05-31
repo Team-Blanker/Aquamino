@@ -238,8 +238,8 @@ function laser.BGUpdate(stacker,dt)
 end
 function laser.underFieldDraw(player)
     if player.point>=300 then gc.setColor(1,.95,.05) else gc.setColor(1,1,1) end
-    gc.printf(""..player.point,font.JB_B,-player.w*18-110,-32,2048,'center',0,.5,.5,1024,84)
-    gc.printf(300,font.JB_B,-player.w*18-110,32,2048,'center',0,.5,.5,1024,84)
+    gc.printf(""..player.point,font.JB_B,-player.w*18-110,-36,2048,'center',0,.5,.5,1024,84)
+    gc.printf(300,font.JB_B,-player.w*18-110,36,2048,'center',0,.5,.5,1024,84)
     gc.setLineWidth(7)
     gc.line(-player.w*18-170,0,-player.w*18-50,0)
 
