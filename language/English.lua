@@ -104,7 +104,6 @@ return {
         "\"How similar to Techmino but with nice color\"",
         "\"Ice Storm\" mode is from the mode with same name in Bejeweled 3",
         "You can do a T-spin Aquad in Aquamino!",
-        "It's best not to drag the game window while in game.",
         "...weak table...",
         "a and b or c and d or e and f or g"
     },tipScale=.3,
