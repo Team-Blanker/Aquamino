@@ -15,7 +15,7 @@ function marathon.init(P,mino)
     --P[1].posx=-6666 P[2].posx=6666
     for k,v in pairs(P) do
         v.CDelay=.2
-
+        v.EDelay=.1
         v.speedLv=1
         v.FDelay=2^(-(v.speedLv-1)/14*8)
         v.totalLine=0
