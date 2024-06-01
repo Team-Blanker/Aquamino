@@ -2,6 +2,8 @@ local simple={}
 local T,M=mytable,mymath
 local setColor,rect,line,circle,printf,draw=gc.setColor,gc.rectangle,gc.line,gc.circle,gc.printf,gc.draw
 
+local defAnimTMax=.2
+
 local gts
 function simple.init(player)
     gts=user.lang.game.theme.simple
@@ -67,22 +69,41 @@ function simple.fieldDraw(player,mino)
     setColor(.5,1,.75)
     printf(timeTxt,font.JB_B,-W/2-28,H/2-16,800,'right',0,.25,.25,800,84)
 end
-function simple.setDefenseAnim(player,defList)
-    
+
+function simple.updateDefenseAnim(player,defList)
+    local dal=player.defAnimList
+    for i=1,#defList do
+        dal[#dal+1]=defList[i]
+        dal[#dal].t=0
+    end
 end
 function simple.garbageDraw(player,mino)
     local W,H=36*player.w,36*player.h
+    local t
+    local dal=player.defAnimList
     local tga=0 --总垃圾数
+    for i=1,#dal do
+        t=max(1-dal[i].t/defAnimTMax*2,0)
+        tga=tga+dal[i].amount*t
+    end
     for i=1,#player.garbage do
         tga=tga+player.garbage[i].amount
-        gc.setColor(1,.75,.75)
-        rect('fill',-W/2-18,H/2-36*tga,16,36*player.garbage[i].amount)
-        gc.setColor(1,0,0)
-        rect('fill',-W/2-17,H/2-36*tga+2,14,36*player.garbage[i].amount-4)
-        gc.setColor(1,1,1)
-        rect('fill',-W/2-15,H/2-36*tga+4,4,1) rect('fill',-W/2-15,H/2-36*tga+4,1,4)
+        t=(1-min(player.garbage[i].appearT,.075)/.075)^2
+        gc.setColor(1,.75,.75,1-t)
+        rect('fill',-W/2-18,H/2-36*(tga+t*.75),16,36*player.garbage[i].amount)
+        gc.setColor(1,0,0,1-t)
+        rect('fill',-W/2-17,H/2-36*(tga+t*.75)+2,14,36*player.garbage[i].amount-4)
+        gc.setColor(1,1,1,1-t)
+        rect('fill',-W/2-15,H/2-36*(tga+t*.75)+4,4,1) rect('fill',-W/2-15,H/2-36*(tga+t*.75)+4,1,4)
+    end
+
+    for i=1,#dal do
+        t=dal[i].t/defAnimTMax
+        gc.setColor(1,1,1,1-t)
+        rect('fill',-W/2-18-8*t,H/2-36*(dal[i].amount+dal[i].pos)-12*t,16+16*t,36*dal[i].amount+24*t)
     end
 end
+
 function simple.readyDraw(t)
     if t>1 then
     elseif t>.5 then setColor(1,1,1,min((t-.5)/.25,1))
@@ -210,6 +231,18 @@ function simple.update(player,dt)
         if PCInfo[i]<=0 then rem(PCInfo,i) end
     end
     player.clearTxtTimer=max(player.clearTxtTimer-dt,0)
+
+    if player.garbage then
+        for i=1,#player.garbage do player.garbage[i].appearT=player.garbage[i].appearT+dt end
+    end
+
+    if player.defAnimList then
+        local dal=player.defAnimList
+        for i=#dal,1,-1 do
+            dal[i].t=dal[i].t+dt
+            if dal[i].t>=defAnimTMax then rem(dal,i) end
+        end
+    end
 end
 
 function simple.loseAnim(player)

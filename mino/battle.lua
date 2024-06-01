@@ -1,7 +1,7 @@
 local fLib=require'mino/fieldLib'
 local battle={}
 function battle.init(player)
-    player.garbage={}
+    player.garbage={} player.defAnimList={}
     player.lastHole=rand(player.w)
 end
 function battle.sendAtk(player,dest,atk)
@@ -10,7 +10,8 @@ function battle.sendAtk(player,dest,atk)
     block=什么颜色的方块，建议使用'g1' 'g2'
     cut=该组垃圾会被切割成几行一组一起进入，允许浮点数
     M_OC=Messiness On Change，该组与上一组垃圾的洞位置不一致的概率
-    M_IS=0 M_OC=1即标准对战垃圾
+    appearT=垃圾进槽时间
+    cut=1e99 M_OC=1即标准对战垃圾
     }]]
     ins(dest.garbage,atk)
 end
@@ -34,17 +35,15 @@ function battle.defense(player,amount,mino)
     local remList={}
     while player.garbage[1] and n>0 do
         if n>=player.garbage[1].amount then
-            remList[#remList+1]=amount-n
-            remList[#remList+1]=player.garbage[1].amount
+            remList[#remList+1]={pos=amount-n,amount=player.garbage[1].amount}
             n=n-rem(player.garbage,1).amount
         else
             player.garbage[1].amount=player.garbage[1].amount-n
-            remList[#remList+1]=amount-n
-            remList[#remList+1]=n
+            remList[#remList+1]={pos=amount-n,amount=n}
         break end
     end
-    --remList={pos,amount,pos,amount,pos,amount...}
-    if mino.theme.setDefenseAnim then mino.theme.setDefenseAnim(player,remList) end
+    --remList[i]={pos,amount}
+    if mino.theme.updateDefenseAnim then mino.theme.updateDefenseAnim(player,remList) end
 end
 function battle.stdAtkCalculate(player)
     local his=player.history
@@ -66,7 +65,8 @@ function battle.stdAtkGen(player)
         amount=atk,
         block='g1',
         cut=(w==4 or his.PC) and 1e99 or s and atk/2+b or 1e99,
-        M_OC=(w==4 or his.PC) and 0 or b>0 and 1/b or 1
+        M_OC=(w==4 or his.PC) and 0 or b>0 and 1/b or 1,
+        appearT=0
     }
 end
 return battle
