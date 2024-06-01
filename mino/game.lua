@@ -320,6 +320,8 @@ function mino.init()
     end
     curPlayTxt=user.lang.game.nowPlaying..mino.musInfo
 
+    --禁用背景就不画背景了，节省性能
+    if mino.unableBG then scene.BG=require('BG/blank') end
     --三个暂停时按钮
     local ptxt=user.lang.pause
     mino.pauseTime=0
