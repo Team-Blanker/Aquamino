@@ -145,7 +145,7 @@ function mino.curIns(player)
         player.canHold=true C.kickOrder=nil
     elseif player.hold.name then mino.hold(player)
     else C.piece,C.name=nil,nil end
-    if #player.next<=player.preview then NG[mino.seqGenType](mino.bag,player,player.seqGen.buffer) end
+    if #player.next<=player.preview then mino.insertNextQueue(player) end
     player.MTimer,player.DTimer=min(player.MTimer,S.ctrl.ASD),min(player.DTimer,S.ctrl.SD_ASD)
     player.LDR=player.LDRInit player.LTimer=0
 
@@ -248,7 +248,19 @@ function mino.setAnimDrawPiece(player)
         A.drawPiece[i][2]=M.lerp(C.piece[i][2]+C.y-(player.FDelay==0 and 0 or player.FTimer/player.FDelay),A.prePiece[i][2],A.timer/A.delay)
     end
 end
-
+function mino.insertNextQueue(player)
+    if mino.seqSync then
+        mino.publicPlayer.next={}
+        NG[mino.seqGenType](mino.bag,mino.publicPlayer,mino.publicPlayer.seqGen.buffer)
+        for k,v in pairs(mino.player) do
+            for i=1,#mino.publicPlayer.next do
+                table.insert(v.next,mino.publicPlayer.next[i])
+            end
+        end
+    else
+        NG[mino.seqGenType](mino.bag,player,player.seqGen.buffer)
+    end
+end
 --初始化
 local curPlayTxt
 function mino.init()
@@ -306,8 +318,11 @@ function mino.init()
     if mino.mode and fs.getInfo('mino/mode/'..mino.mode..'.lua') then T.combine(mino.rule,require('mino/mode/'..mino.mode)) end
     if mino.rule.init then mino.rule.init(P,mino) end
 
+    --如果设定了多个玩家块序一致，设置一个“公共玩家”，其并不位于player内
+    if mino.seqSync then mino.publicPlayer=fLib.newPlayer() end
+
     for i=1,#P do
-        while #P[i].next<3*#mino.bag do NG[mino.seqGenType](mino.bag,P[i],P[i].seqGen.buffer) end
+        while #P[i].next<3*#mino.bag do mino.insertNextQueue(P[i]) end
         for j=1,P[i].preview do --给所有玩家放上预览块
             P[i].NP[j]=T.copy(B[P[i].next[j]])
             P[i].NO[j]=mino.orient[P[i].next[j]]
@@ -853,6 +868,7 @@ function mino.gameUpdate(dt)
             if P[i].dropAnim[j].TTL<=0 then rem(P[i].dropAnim,j) end
         end
     end
+    if mino.rule.botUpdate and S.winState==0 then mino.rule.botUpdate(P,dt,mino) end
 end
 function mino.BGUpdate(dt)
     if mino.rule.BGUpdate then mino.rule.BGUpdate(S,dt)
