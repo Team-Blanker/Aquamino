@@ -52,8 +52,9 @@ function battle.stdAtkCalculate(player)
     local bl=(s and not m) and 2*l-1 or l>=4 and 1.5*l-1.5 or l-.5
     local ba=b>0 and (3+b)/4 or 0
     local ca=(w>=2 and w<=4) and min(c-1,.5) or max(min((c-(l==4 and 1 or 2))/2,3.5),0)
-    local pc=his.PC and 6 or 0
-    return l==0 and 0 or floor(bl+ba+ca+pc)
+    if his.PC then return 6 else
+    return l==0 and 0 or floor(bl+ba+ca)
+    end
 end
 function battle.stdAtkGen(player)
     local his=player.history
