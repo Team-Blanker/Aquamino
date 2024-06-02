@@ -56,7 +56,7 @@ function fieldLib.newPlayer(arg)
             moveSuccess=false,
             kickOrder=0
         },
-        
+
         nWideDetect={},--空n列检测，仅消行时使用，不消就清空
         fallAfterClear=true,
         smoothAnimAct=false,

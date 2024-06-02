@@ -68,7 +68,7 @@ function battle.stdAtkGen(player)
         amount=atk,
         block='g1',
         cut=(w==4 or his.PC) and 1e99 or s and atk/2+b or 1e99,
-        M_OC=(w==4 or his.PC) and 0 or b>0 and 1/b or 1,
+        M_OC=(w>=2 and w<=4) and (4-w)*.025 or his.PC and 0 or b>0 and 1/b or 1,
         appearT=0
     }
 end

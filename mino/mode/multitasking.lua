@@ -1,5 +1,5 @@
-local marathon={}
-function marathon.init(P,mino)
+local rule={}
+function rule.init(P,mino)
     sfx.add({
         lvup='sfx/rule/general/level up.ogg'
     })
@@ -7,6 +7,7 @@ function marathon.init(P,mino)
     scene.BG=require('BG/nega to posi') scene.BG.init()
     mus.add('music/Hurt Record/nega to posi','whole','ogg',61.847,224*60/130)
     mus.start()
+
     mino.stacker.ctrl={
        ASD=.15,ASP=.03,SDType='D',SD_ASD=0,SD_ASP=.03
     }
@@ -22,7 +23,7 @@ function marathon.init(P,mino)
     end
     mino.fieldScale=min(mino.fieldScale,1)
 end
-function marathon.onLineClear(player,mino)
+function rule.onLineClear(player,mino)
     local his=player.history
     player.totalLine=player.totalLine+his.line
     while player.totalLine>=player.speedLv*5 do
@@ -40,7 +41,7 @@ function marathon.onLineClear(player,mino)
         scene.BG.sendProgress(mino.player[1].speedLv/15,mino.player[2].speedLv/15)
     end
 end
-function marathon.underFieldDraw(player)
+function rule.underFieldDraw(player)
     gc.setColor(1,1,1)
     gc.printf(""..player.totalLine,font.JB_B,-player.w*18-110,-36,2048,'center',0,.5,.5,1024,84)
     gc.printf(""..min(player.speedLv,15)*5,font.JB_B,-player.w*18-110,36,2048,'center',0,.5,.5,1024,84)
@@ -48,4 +49,4 @@ function marathon.underFieldDraw(player)
     gc.setLineWidth(7)
     gc.line(-player.w*18-170,0,-player.w*18-50,0)
 end
-return marathon
+return rule
