@@ -50,7 +50,7 @@ function war.init()
     war.team={
         alive={true,true,true,true},
         bulletS={1,1,1,1},--储存多少子弹
-        bulletR={256,256,256,256},--要射出多少子弹
+        bulletR={0,0,0,0},--要射出多少子弹
         rCool={0,0,0,0},rCoolT=1/64--子弹发射速度频率为1/rCoolT，cool意为冷却
     }
     war.teamBelong={}
