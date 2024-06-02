@@ -60,7 +60,7 @@ function rule.destroy(player,col,scoring,mtp)
             rule.addScore(player,score)
             if player.stormLv<12 then
                 table.insert(player.ruleAnim.scoreTxt,{
-                    x=36*col+18,y=-36*player.h*min(ice.H,1),v={128*(rand()-.5),-90},g=864,TTL=.8,tMax=.4,
+                    x=36*col+18,y=-36*player.h*min(ice.H,.5),v={128*(rand()-.5),-90},g=864,TTL=.8,tMax=.4,
                     size=72,color=(ice.H<=h1 and {1,.7,.4,1} or ice.H<=h2 and {1,.9,.1,1} or {.6,.8,1,1}),
                     score=score
                 })

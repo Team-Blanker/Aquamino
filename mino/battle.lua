@@ -45,9 +45,11 @@ function battle.defense(player,amount,mino)
     --remList[i]={pos,amount}
     if mino.theme.updateDefenseAnim then mino.theme.updateDefenseAnim(player,remList) end
 end
+
+local l,s,m,w,b,c
 function battle.stdAtkCalculate(player)
     local his=player.history
-    local l,s,m,w,b,c=his.line,his.spin,his.mini,his.wide,his.B2B,his.combo
+    l,s,m,w,b,c=his.line,his.spin,his.mini,his.wide,his.B2B,his.combo
 
     local bl=(s and not m) and 2*l-1 or l>=4 and 1.5*l-1.5 or l-.5
     local ba=b>0 and (3+b)/4 or 0
@@ -58,7 +60,7 @@ function battle.stdAtkCalculate(player)
 end
 function battle.stdAtkGen(player)
     local his=player.history
-    local l,s,m,w,b,c=his.line,his.spin,his.mini,his.wide,his.B2B,his.combo
+    l,s,m,w,b,c=his.line,his.spin,his.mini,his.wide,his.B2B,his.combo
 
     local atk=battle.stdAtkCalculate(player)
     if atk==0 then return end

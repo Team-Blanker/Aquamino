@@ -3,14 +3,14 @@ function sb.init(P,mino)
     scene.BG=require('BG/stars') --scene.BG.init()
 
     --3 4 5春天 6 7 8夏天 9 10 11 秋天 12 1 2 冬天
-    local m=(os.date('*t').month-3)/4
-    if m<1 then    --春
+    local m=(os.date('*t').month-3)%12
+    if m<3 then    --春
         mino.musInfo="Teada - 花ノ雨"
         mus.add('music/Hurt Record/Rain of Flowers','parts','ogg')
-    elseif m<2 then--夏
+    elseif m<6 then--夏
         mino.musInfo="Mikiya Komaba - Look Up The Starlight"
         mus.add('music/Hurt Record/Look Up The Starlight','parts','ogg')
-    elseif m<3 then--秋
+    elseif m<9 then--秋
         mino.musInfo="ミレラ - Got Of The Wind"
         mus.add('music/Hurt Record/Got Of The Wind','parts','ogg')
     else           --冬
