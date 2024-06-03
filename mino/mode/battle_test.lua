@@ -15,11 +15,12 @@ function rule.init(P,mino)
     mino.fieldScale=min(mino.fieldScale,1)
     battle.init(P[1]) battle.init(P[2])
 
+    mino.stacker.opList={1,2}
     bot_zzz.init() bot_zzz.start(1)
     rule.opTimer=0
 end
 local eq,hold
-function rule.botUpdate(P,dt,mino)
+--[[function rule.gameUpdate(P,dt,mino)
     rule.opTimer=rule.opTimer+dt
     if rule.opTimer>.25 then
         bot_zzz.think(P[2])
@@ -34,7 +35,7 @@ function rule.botUpdate(P,dt,mino)
         end
         bot_zzz.execute(P[2],'V',mino)
     end
-end
+end]]
 function rule.postCheckClear(player,mino)
     if player.history.line==0 then
         for i=1,#player.garbage do

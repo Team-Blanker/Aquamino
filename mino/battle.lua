@@ -3,6 +3,9 @@ local battle={}
 function battle.init(player)
     player.garbage={} player.defAnimList={}
     player.lastHole=rand(player.w)
+    player.defAmount=0
+    player.atkScale=1 player.defScale=1
+    player.atkMinusByDef=true
 end
 function battle.sendAtk(player,dest,atk)
     --[[arg={
@@ -31,19 +34,24 @@ function battle.atkRecv(player,atk)
     end
 end
 function battle.defense(player,amount,mino)
-    local n=amount
+    local n=amount*player.defScale
     local remList={}
+    local defAmount=0
     while player.garbage[1] and n>0 do
         if n>=player.garbage[1].amount then
             remList[#remList+1]={pos=amount-n,amount=player.garbage[1].amount}
+            defAmount=defAmount+player.garbage[1].amount
             n=n-rem(player.garbage,1).amount
         else
             player.garbage[1].amount=player.garbage[1].amount-n
             remList[#remList+1]={pos=amount-n,amount=n}
+            defAmount=defAmount+n
         break end
     end
     --remList[i]={pos,amount}
     if mino.theme.updateDefenseAnim then mino.theme.updateDefenseAnim(player,remList) end
+
+    player.defAmount=defAmount --抵消了多少攻击
 end
 
 local l,s,m,w,b,c
@@ -62,8 +70,9 @@ function battle.stdAtkGen(player)
     local his=player.history
     l,s,m,w,b,c=his.line,his.spin,his.mini,his.wide,his.B2B,his.combo
 
-    local atk=battle.stdAtkCalculate(player)
-    if atk==0 then return end
+    local atk=(battle.stdAtkCalculate(player)-(player.atkMinusByDef and player.defAmount or 0))*player.atkScale
+    player.defAmount=0
+    if atk<=0 then return end
     return {
         amount=atk,
         block='g1',

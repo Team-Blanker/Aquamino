@@ -10,7 +10,7 @@ function bf.init(P,mino)
     mus.add('music/Hurt Record/Energy Beat','whole','ogg',80.556,128*60/126)
     mus.start()
 
-    battle.init(P[1])
+    battle.init(P[1]) P[1].atkMinusByDef=false
     mino.seqGenType='bagp1FromBag'
     P[1].recvLine=0
     P[1].atk=0

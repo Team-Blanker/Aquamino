@@ -868,7 +868,7 @@ function mino.gameUpdate(dt)
             if P[i].dropAnim[j].TTL<=0 then rem(P[i].dropAnim,j) end
         end
     end
-    if mino.rule.botUpdate and S.winState==0 then mino.rule.botUpdate(P,dt,mino) end
+    if mino.rule.gameUpdate and S.winState==0 then mino.rule.gameUpdate(P,dt,mino) end
 end
 function mino.BGUpdate(dt)
     if mino.rule.BGUpdate then mino.rule.BGUpdate(S,dt)
