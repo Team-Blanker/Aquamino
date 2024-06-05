@@ -47,6 +47,8 @@ function war.alivePlayer()
     return a
 end
 function war.init()
+    supplyRemain=15
+    supplyT,supplyTLimit=60,60
     war.team={
         alive={true,true,true,true},
         bulletS={1,1,1,1},--储存多少子弹
