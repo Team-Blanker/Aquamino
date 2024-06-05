@@ -916,6 +916,7 @@ function mino.draw()
     if mino.unableBG then gc.setColor(.06,.06,.06)
     gc.rectangle('fill',-1000,-600,2000,1200) end
 
+    if mino.rule.underAllDraw then mino.rule.underAllDraw(P,mino) end
     for i=#P,1,-1 do
         C,H,A=P[i].cur,P[i].hold,P[i].smoothAnim
 
