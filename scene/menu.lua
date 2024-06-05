@@ -97,7 +97,7 @@ function menu.init()
         event=function()
             scene.switch({
                 dest='conf',destScene=require('scene/game conf/conf_main'),swapT=.6,outT=.4,
-                anim=function() anim.enterConf(.4,.2,.4,0,0,0) end
+                anim=function() anim.confEnter(.4,.2,.4,0,0,0) end
             })
             function menu.send(destScene)
                 destScene.exitScene='scene/menu'

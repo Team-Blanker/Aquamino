@@ -40,15 +40,15 @@ function anim.enterMenu(intime,keeptime,outtime)
         gc.arc('line','open',0,0,max(150,1920-sz),-math.pi/2,3*math.pi/2,4)
     end
 end
-local r=960*2/3^.5
-function anim.enterConf(intime,keeptime,outtime)
+local r6=960*2/3^.5 local r4=1500
+function anim.confEnter(intime,keeptime,outtime)
     if scene.swapT>0 then
         local w=1-((scene.swapT-keeptime)/intime)^2
         if scene.swapT>keeptime then
             local l=.08*w
             gc.setColor(l,l,l)
             gc.setLineWidth(1920*w)
-            gc.arc('line','closed',0,0,r,math.pi/2,5*math.pi/2,6)
+            gc.arc('line','closed',0,0,r6,math.pi/2,5*math.pi/2,6)
         else
             gc.setColor(.08,.08,.08)
             gc.rectangle('fill',-960,-540,1920,1080)
@@ -57,7 +57,62 @@ function anim.enterConf(intime,keeptime,outtime)
         gc.setColor(.08,.08,.08)
         local w=(-(1-scene.outT/outtime)^2+1)
         gc.setLineWidth(1920*w)
-        gc.arc('line','closed',0,0,r,math.pi/2,5*math.pi/2,6)
+        gc.arc('line','closed',0,0,r6,math.pi/2,5*math.pi/2,6)
+    end
+end
+function anim.confExit(intime,keeptime,outtime)
+    if scene.swapT>0 then
+        local w=1-((scene.swapT-keeptime)/intime)^2
+        if scene.swapT>keeptime then
+            local l=.12*(1-w)
+            gc.setColor(l,l,l)
+            gc.setLineWidth(3000*w/2^.5)
+            gc.arc('line','closed',0,0,r4,math.pi/2,5*math.pi/2,4)
+        else
+            gc.setColor(0,0,0)
+            gc.rectangle('fill',-960,-540,1920,1080)
+        end
+    else
+        gc.setColor(0,0,0)
+        local w=(-(1-scene.outT/outtime)^2+1)
+        gc.setLineWidth(3000*w/2^.5)
+        gc.arc('line','closed',0,0,r4,math.pi/2,5*math.pi/2,4)
+    end
+end
+function anim.confSelect(intime,keeptime,outtime)
+    if scene.swapT>0 then
+        local w=1-((scene.swapT-keeptime)/intime)
+        if scene.swapT>keeptime then
+            gc.setColor(.08,.08,.08)
+            gc.setLineWidth(1920*w)
+            gc.arc('fill','closed',0,0,r6*w,math.pi/2,5*math.pi/2,6)
+        else
+            gc.setColor(.08,.08,.08)
+            gc.rectangle('fill',-960,-540,1920,1080)
+        end
+    else
+        gc.setColor(.08,.08,.08)
+        local w=(-(1-scene.outT/outtime)+1)
+        gc.setLineWidth(1920*w)
+        gc.arc('line','closed',0,0,r6,math.pi/2,5*math.pi/2,6)
+    end
+end
+function anim.confBack(intime,keeptime,outtime)
+    if scene.swapT>0 then
+        local w=1-((scene.swapT-keeptime)/intime)
+        if scene.swapT>keeptime then
+            gc.setColor(.08,.08,.08)
+            gc.setLineWidth(1920*w)
+            gc.arc('line','closed',0,0,r6,math.pi/2,5*math.pi/2,6)
+        else
+            gc.setColor(.08,.08,.08)
+            gc.rectangle('fill',-960,-540,1920,1080)
+        end
+    else
+        local w=(-(1-scene.outT/outtime)+1)
+        gc.setColor(.08,.08,.08)
+        gc.setLineWidth(1920*w)
+        gc.arc('fill','closed',0,0,r6*w,math.pi/2,5*math.pi/2,6)
     end
 end
 function anim.enter2(intime,keeptime,outtime)

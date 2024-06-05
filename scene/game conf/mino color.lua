@@ -44,7 +44,7 @@ function bc.init()
         event=function()
             scene.switch({
                 dest='custom',destScene=require('scene/game conf/custom'),swapT=.15,outT=.1,
-                anim=function() anim.cover(.1,.05,.1,0,0,0) end
+                anim=function() anim.confBack(.1,.05,.1,0,0,0) end
             })
         end
     })

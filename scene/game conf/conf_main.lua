@@ -33,8 +33,8 @@ function config.init()
         end,
         event=function()
             scene.switch({
-                dest='menu',destScene=require(scene.cur.exitScene or 'scene/menu'),swapT=.7,outT=.3,
-                anim=function() anim.cover(.3,.4,.3,0,0,0) end
+                dest='menu',destScene=require(scene.cur.exitScene or 'scene/menu'),swapT=.6,outT=.4,
+                anim=function() anim.confExit(.4,.2,.4,0,0,0) end
             })
         end
     },.2)
@@ -72,7 +72,7 @@ function config.init()
         event=function()
             scene.switch({
                 dest='menu',destScene=require('scene/game conf/keys'),swapT=.15,outT=.1,
-                anim=function() anim.cover(.1,.05,.1,0,0,0) end
+                anim=function() anim.confSelect(.1,.05,.1,0,0,0) end
             })
         end
     },.2)
@@ -90,7 +90,7 @@ function config.init()
         event=function()
             scene.switch({
                 dest='menu',destScene=require('scene/game conf/handling'),swapT=.15,outT=.1,
-                anim=function() anim.cover(.1,.05,.1,0,0,0) end
+                anim=function() anim.confSelect(.1,.05,.1,0,0,0) end
             })
         end
     },.2)
@@ -109,7 +109,7 @@ function config.init()
             scene.switch({
                 dest='language',destScene=require('scene/game conf/language'),
                 swapT=.15,outT=.1,
-                anim=function() anim.cover(.1,.05,.1,0,0,0) end
+                anim=function() anim.confSelect(.1,.05,.1,0,0,0) end
             })
         end
     },.2)
@@ -128,7 +128,7 @@ function config.init()
         event=function()
             scene.switch({
                 dest='menu',destScene=require('scene/game conf/audio'),swapT=.15,outT=.1,
-                anim=function() anim.cover(.1,.05,.1,0,0,0) end
+                anim=function() anim.confSelect(.1,.05,.1,0,0,0) end
             })
         end
     },.2)
@@ -146,7 +146,7 @@ function config.init()
         event=function()
             scene.switch({
                 dest='menu',destScene=require('scene/game conf/video'),swapT=.15,outT=.1,
-                anim=function() anim.cover(.1,.05,.1,0,0,0) end
+                anim=function() anim.confSelect(.1,.05,.1,0,0,0) end
             })
         end
     },.2)
@@ -164,7 +164,7 @@ function config.init()
         event=function()
             scene.switch({
                 dest='menu',destScene=require('scene/game conf/custom'),swapT=.15,outT=.1,
-                anim=function() anim.cover(.1,.05,.1,0,0,0) end
+                anim=function() anim.confSelect(.1,.05,.1,0,0,0) end
             })
         end
     },.2)
