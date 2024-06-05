@@ -106,7 +106,7 @@ function key.draw()
         if cfk.keyName[i+1] then gc.printf(cfk.keyName[i+1],font.Bender_B,-700,-250+100*i,2000,'center',0,cfk.kScale,cfk.kScale,1000,76) end
         if cfk.keyName[i+7] then gc.printf(cfk.keyName[i+7],font.Bender_B, 100,-250+100*i,2000,'center',0,cfk.kScale,cfk.kScale,1000,76) end
     end
-    gc.setColor(.5,1,.75)
+    gc.setColor(.5,1,.875)
     for i=1,#key.keyName do local K=key.keySet[key.keyName[i]]
         for j=1,#K do
             gc.printf(K[j]:len()==1 and K[j]:upper() or K[j],

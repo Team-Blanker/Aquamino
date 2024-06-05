@@ -310,7 +310,7 @@ function love.draw()
     gc.setColor(1,1,1)
     if scene.cur.draw then scene.cur.draw() end
     if scene.watermark then
-        gc.setColor(.5,1,.75,.15+.0*sin(scene.totalTime*5*math.pi))
+        gc.setColor(.5,1,.875,.15+.0*sin(scene.totalTime*5*math.pi))
         gc.printf("作者：Aqua6623",font.JB_B,480*sin(scene.totalTime/2*math.pi),-440,5000,'center',0,.5,.5,2500,84)
         gc.printf("作者：Aqua6623",font.JB_B,-480*sin(scene.totalTime/2*math.pi), 440,5000,'center',0,.5,.5,2500,84)
         --gc.printf("未经授权禁止转载",Consolas_B,-480*sin(scene.totalTime/2*math.pi),440,5000,'center',0,.5,.5,2500,84)

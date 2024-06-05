@@ -78,7 +78,7 @@ function custom.init()
         draw=function(bt,t)
             local o,l=custom.bOrder,#blockSkinList
             local w,h=bt.w,bt.h
-            gc.setColor(.5,1,.75)
+            gc.setColor(.5,1,.875)
             gc.printf(cfc.texture,font.Bender_B,0,-100,1280,'center',0,.5,.5,640,76)
             gc.setLineWidth(3)
             gc.rectangle('line',-bt.w/2,-bt.h/2,bt.w,bt.h)
@@ -123,7 +123,7 @@ function custom.init()
             local r=M.lerp(1,.5,animArg)
             local g=1
             local b=M.lerp(1,.75,animArg)
-            gc.setColor(.5,1,.75,.4)
+            gc.setColor(.5,1,.875,.4)
             gc.rectangle('fill',w/2,-h/2,300*animArg,h)
             gc.setColor(1,1,1,.4)
             gc.rectangle('fill',w/2+300*animArg,-h/2,300*(1-animArg),h)
