@@ -206,7 +206,7 @@ function custom.init()
             gc.setLineWidth(4)
             gc.circle('line',-(w-h)/2,0,h/2)
             gc.circle('line', (w-h)/2,0,h/2)
-            gc.setLineWidth(16)
+            gc.setLineWidth(12)
             gc.setColor(1,1,1)
             if sz>0.76 then gc.line(-(w-h)/2-h/2*.625,0,-(w-h)/2+h/2*.625,0) end
             if sz<1.24 then

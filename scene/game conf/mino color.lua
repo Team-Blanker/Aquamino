@@ -218,7 +218,7 @@ end
 local w,h,x,y
 function bc.draw()
     gc.setColor(1,1,1)
-    gc.printf(cfcc.title,font.Bender,0,-500,1280,'center',0,.6,.6,640,76)
+    gc.printf(cfcc.title,font.Bender,0,-450,1280,'center',0,.75,.75,640,76)
     if canAdjustColor[skinName] then gc.setColor(1,1,1,.6)
         gc.printf(cfcc.adjY,font.Bender,0,-40,10000,'center',0,.4,.4,5000,76)
     else gc.setColor(1,1,1,.6)
