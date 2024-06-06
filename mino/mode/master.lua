@@ -54,9 +54,11 @@ function master.onLineClear(player,mino)
         cxk.ASD=ASDList[player.speedLv]
         cxk.ASP=ASPList[player.speedLv]
 
+        if not mino.unableBG then
         scene.BG.density=1.5+4.5*(player.speedLv-1)/19
         scene.BG.BGColor=(player.speedLv>15 and {.04,.12,.08} or player.speedLv>10 and {.12,.06,.06} or player.speedLv>5 and {.04,.06,.12} or {0,0,0})
         scene.BG.parColor=(player.speedLv>15 and {0,1,.6} or player.speedLv>10 and {1,.4,.4} or player.speedLv>5 and {0,.5,1} or {1,1,1})
+        end
     end
 end
 function master.underFieldDraw(player)

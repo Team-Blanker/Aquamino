@@ -1,6 +1,6 @@
 local sb={}
 function sb.init(P,mino)
-    scene.BG=require('BG/stars') --scene.BG.init()
+    scene.BG=require('BG/stars')
 
     --3 4 5春天 6 7 8夏天 9 10 11 秋天 12 1 2 冬天
     local m=(os.date('*t').month-3)%12

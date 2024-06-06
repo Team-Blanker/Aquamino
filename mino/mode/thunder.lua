@@ -149,9 +149,11 @@ function thunder.onLineClear(player,mino)
         if player.stormLv==10 then mino.win(player) return end
         player.stormLv=min(player.stormLv+1,10) sfx.play('lvup') player.top=false
 
+        if not mino.unableBG then
         scene.BG.density=10+30*player.stormLv
         if player.stormLv>5 then scene.BG.thunderDensity=.2 scene.BG.angle=.25
         scene.BG.addLightning() end
+        end
 
         local n=-4-2*max(player.stormLv-6,0)
         player.step.r,player.step.e,player.step.x=n,n,n

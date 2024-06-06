@@ -29,24 +29,22 @@ function rule.onLineClear(player,mino)
 
     player.line=player.line+player.history.line
     if player.line>=40 then mino.win(player) end
-    scene.BG.newProgress(min(player.line/40,1))
+    if not mino.unableBG then scene.BG.newProgress(min(player.line/40,1)) end
 end
 function rule.underFieldDraw(player)
     gc.setColor(1,1,1)
     gc.printf(""..max(40-player.line,0),font.JB,-18*player.w-110,0,800,'center',0,.625,.625,400,84)
 end
+local clra,clrb={.6,1,.2,1},{1,1,1,1}
 function rule.overFieldDraw(player)
-    gc.push()
     local remain=max(40-player.line,0)
     if remain<=player.h and remain>0 then
         local lx,rx,y=-18*player.w,18*player.w,18*(player.h-2*remain)
-        local clr=(remain<=10 and player.gameTimer%.2<.1) and {.6,1,.2,1} or {1,1,1,1}
-        gc.setColor(clr)
+        gc.setColor((remain<=10 and player.gameTimer%.2<.1) and clra or clrb)
         gc.setLineWidth(2)
         gc.line(lx,y,rx,y)
         gc.circle('fill',lx,y,9,4)
         gc.circle('fill',rx,y,9,4)
     end
-    gc.pop()
 end
 return rule

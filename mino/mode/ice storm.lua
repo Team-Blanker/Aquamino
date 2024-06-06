@@ -167,7 +167,7 @@ function  rule.always(player,dt,mino)
     for i=1,player.w do local ice=player.iceColumn[i]
         if ice.H>=1.75 then danger=true break end
     end
-    scene.BG.danger=danger
+    if not mino.unableBG then scene.BG.danger=danger end
 end
 
 function rule.afterPieceDrop(player,mino)

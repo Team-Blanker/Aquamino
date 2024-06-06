@@ -38,7 +38,7 @@ function rule.onLineClear(player,mino)
         player.FDelay=2^(-min(player.speedLv-1,14)/14*8)
         mino.stacker.ctrl.SD_ASP=2^(-(player.speedLv-1)/14*8)*.03
         sfx.play('lvup')
-        scene.BG.sendProgress(mino.player[1].speedLv/15,mino.player[2].speedLv/15)
+        if not mino.unableBG then scene.BG.sendProgress(mino.player[1].speedLv/15,mino.player[2].speedLv/15) end
     end
 end
 function rule.underFieldDraw(player)

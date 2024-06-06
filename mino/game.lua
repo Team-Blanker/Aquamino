@@ -938,7 +938,7 @@ function mino.gameUpdate(dt)
 end
 function mino.BGUpdate(dt)
     if mino.rule.BGUpdate then mino.rule.BGUpdate(S,dt)
-    elseif scene.BG.update then scene.BG.update(dt) end
+    elseif not mino.unableBG and scene.BG.update then scene.BG.update(dt) end
 end
 
 function mino.update(dt)
