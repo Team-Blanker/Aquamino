@@ -169,7 +169,8 @@ mino.operate={
         if mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,C.spin) end
     end
 }
-function mino.curIns(player)
+function mino.curIns(player,initOP)
+    if initOP==nil then initOP=true end
     local field=player.field
     --清除全空的行
     local stop=false
@@ -216,22 +217,24 @@ function mino.curIns(player)
     player.MTimer,player.DTimer=min(player.MTimer,S.ctrl.ASD),min(player.DTimer,S.ctrl.SD_ASD)
     player.LDR=player.LDRInit player.LTimer=0
 
-    if love.keyboard.isDown(S.keySet.hold) and player.canInitHold then
-        player.initOpQueue[#player.initOpQueue+1]='initHold'
-    elseif love.keyboard.isDown(S.keySet.ML) and player.canInitMove then
-        player.initOpQueue[#player.initOpQueue+1]='initML'
-    elseif love.keyboard.isDown(S.keySet.MR) and player.canInitMove then
-        player.initOpQueue[#player.initOpQueue+1]='initMR'
+    if initOP then
+        if love.keyboard.isDown(S.keySet.hold) and player.canInitHold then
+            player.initOpQueue[#player.initOpQueue+1]='initHold'
+        elseif love.keyboard.isDown(S.keySet.ML) and player.canInitMove then
+            player.initOpQueue[#player.initOpQueue+1]='initML'
+        elseif love.keyboard.isDown(S.keySet.MR) and player.canInitMove then
+            player.initOpQueue[#player.initOpQueue+1]='initMR'
 
-    elseif love.keyboard.isDown(S.keySet.CW) and player.canInitRotate then
-        player.initOpQueue[#player.initOpQueue+1]='initRotateCW'
-    elseif love.keyboard.isDown(S.keySet.CCW) and player.canInitRotate then
-        player.initOpQueue[#player.initOpQueue+1]='initRotateCCW'
-    elseif love.keyboard.isDown(S.keySet.flip) and player.canInitRotate then
-        player.initOpQueue[#player.initOpQueue+1]='initRotate180'
+        elseif love.keyboard.isDown(S.keySet.CW) and player.canInitRotate then
+            player.initOpQueue[#player.initOpQueue+1]='initRotateCW'
+        elseif love.keyboard.isDown(S.keySet.CCW) and player.canInitRotate then
+            player.initOpQueue[#player.initOpQueue+1]='initRotateCCW'
+        elseif love.keyboard.isDown(S.keySet.flip) and player.canInitRotate then
+            player.initOpQueue[#player.initOpQueue+1]='initRotate180'
+        end
+        for i=1,#player.initOpQueue do mino.operate[player.initOpQueue[i]](player) end
+        player.initOpQueue={}
     end
-    for i=1,#player.initOpQueue do mino.operate[player.initOpQueue[i]](player) end
-    player.initOpQueue={}
 
     if player.FDelay==0 then
         if player.event[3] then mino.addEvent(player,0,'Ins20GDrop') else
@@ -268,7 +271,7 @@ function mino.hold(player)
     if C.name and C.piece then
         fLib.entryPlace(player)
         C.O=mino.orient[C.name]
-    else local LDR=player.LDR mino.curIns(player) player.LDR=LDR end
+    else local LDR=player.LDR mino.curIns(player,false) player.LDR=LDR end
     while H.O~=0 do
         H.O=B.rotate(H.piece,H.O,'L')
     end
