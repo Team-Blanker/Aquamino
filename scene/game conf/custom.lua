@@ -9,8 +9,7 @@ blockSkinList={'glossy','glass','pure','carbon fibre','wheelchair'}
 themeList={'simple'}
 sfxList={'plastic','krystal','meme','otto'}
 function custom.read()
-    local defaultInfo={block='glossy',theme='simple',sfx='plastic',smoothAnimAct=false,fieldScale=1}
-    custom.info={block='glossy',theme='simple',sfx='plastic',smoothAnimAct=false,fieldScale=1}
+    custom.info={block='glossy',theme='simple',sfx='plastic',smoothAnimAct=false,smoothTime=.05,fieldScale=1}
     custom.color={}
     if fs.getInfo('conf/custom') then
         T.combine(custom.info,json.decode(fs.newFile('conf/custom'):read()))
@@ -27,7 +26,7 @@ function custom.save()
 end
 function custom.init()
     cfc=user.lang.conf.custom
-    custom.read() 
+    custom.read()
 
     custom.bOrder=T.include(blockSkinList,custom.info.block) or 1
     custom.tOrder=T.include(themeList,custom.info.theme) or 1
@@ -122,7 +121,7 @@ function custom.init()
             local w,h=bt.w,bt.h
             local r=M.lerp(1,.5,animArg)
             local g=1
-            local b=M.lerp(1,.75,animArg)
+            local b=M.lerp(1,.875,animArg)
             gc.setColor(.5,1,.875,.4)
             gc.rectangle('fill',w/2,-h/2,300*animArg,h)
             gc.setColor(1,1,1,.4)
@@ -144,6 +143,34 @@ function custom.init()
             custom.info.smoothAnimAct=not custom.info.smoothAnimAct
         end
     },.2)
+    SLIDER.create('smoothAnimTime',{
+        x=-600,y=-320,type='hori',sz={400,32},button={32,32},
+        gear=0,pos=(custom.info.smoothTime-1/30)*15,
+        sliderDraw=function(g,s)
+            if custom.info.smoothAnimAct then
+            gc.setColor(.24,.48,.42,.8)
+            gc.rectangle('fill',-s.sz[1]/2-16,-16,s.sz[1]+32,32)
+            gc.setColor(.44,.88,.77)
+            gc.setLineWidth(6)
+            gc.rectangle('line',-s.sz[1]/2-19,-19,s.sz[1]+38,38)
+            gc.setColor(1,1,1)
+            gc.printf(string.format(cfc.smoothTime.."%.0fms",custom.info.smoothTime*1000),
+                font.JB,-s.sz[1]/2-19,-48,114514,'left',0,.3125,.3125,0,84)
+            end
+        end,
+        buttonDraw=function(pos,s)
+            if custom.info.smoothAnimAct then
+            gc.setColor(1,1,1)
+            gc.rectangle('fill',s.sz[1]*(pos-.5)-16,-18,32,36)
+            end
+        end,
+        always=function(pos,s)
+            if custom.info.smoothAnimAct then
+            custom.info.smoothTime=(1+2*(floor(8*pos+.5)/8))/30
+            end
+            s.pos=(custom.info.smoothTime-1/30)*15
+        end
+    })
 
     BUTTON.create('themeChoose',{
         x=0,y=150,type='rect',w=400,h=100,
@@ -230,7 +257,7 @@ function custom.mouseP(x,y,button,istouch)
     if not BUTTON.press(x,y,button,istouch) and SLIDER.mouseP(x,y,button,istouch) then end
 end
 function custom.mouseR(x,y,button,istouch)
-    BUTTON.release(x,y,button,istouch)
+    BUTTON.release(x,y,button,istouch) SLIDER.mouseR(x,y,button,istouch)
 end
 function custom.update(dt)
     BUTTON.update(dt,adaptAllWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5))

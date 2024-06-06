@@ -54,7 +54,7 @@ function video.init()
             local w,h=bt.w,bt.h
             local r=M.lerp(1,.5,animArg)
             local g=1
-            local b=M.lerp(1,.75,animArg)
+            local b=M.lerp(1,.875,animArg)
             gc.setColor(.5,1,.875,.4)
             gc.rectangle('fill',w/2,-h/2,360*animArg,h)
             gc.setColor(1,1,1,.4)
@@ -83,7 +83,7 @@ function video.init()
             local w,h=bt.w,bt.h
             local r=M.lerp(1,.5,animArg)
             local g=1
-            local b=M.lerp(1,.75,animArg)
+            local b=M.lerp(1,.875,animArg)
             gc.setColor(.5,1,.875,.4)
             gc.rectangle('fill',w/2,-h/2,360*animArg,h)
             gc.setColor(1,1,1,.4)
@@ -129,7 +129,7 @@ function video.init()
             local w,h=bt.w,bt.h
             local r=M.lerp(1,.5,animArg)
             local g=1
-            local b=M.lerp(1,.75,animArg)
+            local b=M.lerp(1,.875,animArg)
             gc.setColor(.5,1,.875,.4)
             gc.rectangle('fill',w/2,-h/2,360*animArg,h)
             gc.setColor(1,1,1,.4)

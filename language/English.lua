@@ -55,7 +55,7 @@ return {
         custom={
             texture="Block texture",color="Color adjust",
             smooth="Smooth move\n[test]",smoothTxt="Note that there is no intemediate state in any move or rotations.",
-            smoothOffX=-0,smoothOffY=-64*.3,
+            smoothOffX=-0,smoothOffY=-64*.3,smoothTime="Time:",
             theme="Theme",
             scale="Field scale",scaleTxt="1 means a single cell is 36px*36px in a 1920*1080 window.",
             sfx="SFX pack",sfxWarning={

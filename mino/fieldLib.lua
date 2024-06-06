@@ -51,7 +51,7 @@ function fieldLib.newPlayer(arg)
             line=0,spin=false,mini=false,PC=false,combo=0,B2B=-1,push=0,
             CDelay=0,wide=0,
         },
-        cur={
+        cur={--当前块的所有信息
             name=nil,piece={},x=5,y=21,O=0,ghostY=0,spin=false,
             moveSuccess=false,
             kickOrder=0
@@ -60,7 +60,7 @@ function fieldLib.newPlayer(arg)
         nWideDetect={},--空n列检测，仅消行时使用，不消就清空
         fallAfterClear=true,
         smoothAnimAct=false,
-        smoothAnim={prepiece={},drawPiece={},timer=0,delay=0.05},
+        smoothAnim={prepiece={},drawPiece={},timer=0},
         dropAnim={}
         --e.g. dropAnim[1]={x=0,ys=0,yf=0,TMax=0.5,TTL=0.5}
     }

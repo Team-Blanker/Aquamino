@@ -19,7 +19,7 @@ arg={
 function slider.draw()
     for k,v in pairs(slider.list) do gc.push()
         gc.translate(v.x,v.y)
-        v.sliderDraw(v.gear) v.buttonDraw(v.gear==0 and v.pos or v.pos/(v.gear-1))
+        v.sliderDraw(v.gear,v) v.buttonDraw(v.gear==0 and v.pos or v.pos/(v.gear-1),v)
     gc.pop() end
 end
 function slider.check(slid,x,y)
@@ -48,7 +48,7 @@ function slider.always(slid,x,y)
     if slid.gear==0 then slid.pos=pos else
         slid.pos=floor((slid.gear-1)*pos+.5)
     end
-    if slid.always then slid.always(slid.pos) end
+    if slid.always then slid.always(slid.pos,slid) end
 end
 function slider.setPos(slidName,pos)
     local v=slider.list[slidName]
