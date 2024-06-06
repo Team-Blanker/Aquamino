@@ -171,8 +171,7 @@ mino.operate={
         if mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,C.spin) end
     end
 }
-function mino.nextIns(player,initOP)
-    if initOP==nil then initOP=true end
+function mino.nextIns(player)
     local field=player.field
     --清除全空的行
     local stop=false
@@ -219,24 +218,22 @@ function mino.nextIns(player,initOP)
     player.MTimer,player.DTimer=min(player.MTimer,S.ctrl.ASD),min(player.DTimer,S.ctrl.SD_ASD)
     player.LDR=player.LDRInit player.LTimer=0
 
-    if initOP then
-        if love.keyboard.isDown(S.keySet.hold) and player.canInitHold then
-            player.initOpQueue[#player.initOpQueue+1]='initHold'
-        elseif love.keyboard.isDown(S.keySet.ML) and player.canInitMove then
-            player.initOpQueue[#player.initOpQueue+1]='initML'
-        elseif love.keyboard.isDown(S.keySet.MR) and player.canInitMove then
-            player.initOpQueue[#player.initOpQueue+1]='initMR'
+    if love.keyboard.isDown(S.keySet.hold) and player.canInitHold then
+        player.initOpQueue[#player.initOpQueue+1]='initHold'
+    elseif love.keyboard.isDown(S.keySet.ML) and player.canInitMove then
+        player.initOpQueue[#player.initOpQueue+1]='initML'
+    elseif love.keyboard.isDown(S.keySet.MR) and player.canInitMove then
+        player.initOpQueue[#player.initOpQueue+1]='initMR'
 
-        elseif love.keyboard.isDown(S.keySet.CW) and player.canInitRotate then
-            player.initOpQueue[#player.initOpQueue+1]='initRotateCW'
-        elseif love.keyboard.isDown(S.keySet.CCW) and player.canInitRotate then
-            player.initOpQueue[#player.initOpQueue+1]='initRotateCCW'
-        elseif love.keyboard.isDown(S.keySet.flip) and player.canInitRotate then
-            player.initOpQueue[#player.initOpQueue+1]='initRotate180'
-        end
-        for i=1,#player.initOpQueue do mino.operate[player.initOpQueue[i]](player) end
-        player.initOpQueue={}
+    elseif love.keyboard.isDown(S.keySet.CW) and player.canInitRotate then
+        player.initOpQueue[#player.initOpQueue+1]='initRotateCW'
+    elseif love.keyboard.isDown(S.keySet.CCW) and player.canInitRotate then
+        player.initOpQueue[#player.initOpQueue+1]='initRotateCCW'
+    elseif love.keyboard.isDown(S.keySet.flip) and player.canInitRotate then
+        player.initOpQueue[#player.initOpQueue+1]='initRotate180'
     end
+    for i=1,#player.initOpQueue do mino.operate[player.initOpQueue[i]](player) end
+    player.initOpQueue={}
 
     if player.FDelay==0 then
         if player.event[3] then mino.addEvent(player,0,'Ins20GDrop') else
@@ -601,7 +598,7 @@ function mino.keyP(k)
                     OP.moveDir='L'
                     if love.keyboard.isDown(S.keySet.MR) then OP.MTimer=0 end
 
-                    mino.sfxPlay.move(OP,success,landed)
+                    if mino.sfxPlay.move then mino.sfxPlay.move(OP,success,landed) end
 
                 elseif T.include(S.keySet.MR,k) then
                     success=not coincide(OP,1,0)
@@ -613,7 +610,7 @@ function mino.keyP(k)
                     OP.moveDir='R'
                     if love.keyboard.isDown(S.keySet.ML) then OP.MTimer=0 end
 
-                    mino.sfxPlay.move(OP,success,landed)
+                    if mino.sfxPlay.move then mino.sfxPlay.move(OP,success,landed) end
 
                 elseif T.include(S.keySet.CW,k) then mino.setAnimPrePiece(OP)
                     C.kickOrder=fLib.kick(OP,'R')
@@ -627,7 +624,7 @@ function mino.keyP(k)
                         else C.spin,C.mini=false,false end
                     end
 
-                    mino.sfxPlay.rotate(OP,C.kickOrder,C.spin)
+                    if mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,C.spin) end
 
                 elseif T.include(S.keySet.CCW,k) then mino.setAnimPrePiece(OP)
                     C.kickOrder=fLib.kick(OP,'L')
@@ -641,7 +638,7 @@ function mino.keyP(k)
                         else C.spin,C.mini=false,false end
                     end
 
-                    mino.sfxPlay.rotate(OP,C.kickOrder,C.spin)
+                    if mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,C.spin) end
 
                 elseif T.include(S.keySet.flip,k) then mino.setAnimPrePiece(OP)
                     C.kickOrder=fLib.kick(OP,'F')
@@ -655,7 +652,7 @@ function mino.keyP(k)
                         else C.spin,C.mini=false,false end
                     end
 
-                    mino.sfxPlay.rotate(OP,C.kickOrder,C.spin)
+                    if mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,C.spin) end
 
                 elseif T.include(S.keySet.HD,k) then --硬降
                     local xmin,xmax,ymin,ymax=B.edge(C.piece)
