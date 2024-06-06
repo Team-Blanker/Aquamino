@@ -25,6 +25,11 @@ return {
     },
     menu={
     },
+    about={
+        engineText="使用LÖVE引擎製作",
+        tool="使用工具",
+        repo="使用庫"
+    },
     pause={
         resume="繼續",quit="退出",r="重開"
     },

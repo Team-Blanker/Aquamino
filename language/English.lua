@@ -24,8 +24,11 @@ return {
         start="Press any key to start",
     },
     menu={
-        illust="Double click or hit Enter to play.\nHit R to randomly choose a mode.",
-        iScale=.4
+    },
+    about={
+        engineText="Powered by LÖVE",
+        tool="Tools used:",
+        repo="Repos used:"
     },
     pause={
         resume="Return",quit="Quit",r="Restart"
