@@ -40,7 +40,9 @@ local mino={
 }
 local P,S=mino.player,mino.stacker
 
-function mino.start(player) end
+function mino.start(player)
+    player.started=true
+end
 function mino.pause(player)
     mino.paused=true
 end
@@ -169,7 +171,7 @@ mino.operate={
         if mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,C.spin) end
     end
 }
-function mino.curIns(player,initOP)
+function mino.nextIns(player,initOP)
     if initOP==nil then initOP=true end
     local field=player.field
     --清除全空的行
@@ -240,7 +242,7 @@ function mino.curIns(player,initOP)
         if player.event[3] then mino.addEvent(player,0,'Ins20GDrop') else
         mino.Ins20GDrop(player) end
     end
-    player.started=true
+
     if mino.rule.onPieceEntry then mino.rule.onPieceEntry(player) end
     if C.piece then player.cur.ghostY=fLib.getGhostY(player) end
 end
@@ -271,7 +273,43 @@ function mino.hold(player)
     if C.name and C.piece then
         fLib.entryPlace(player)
         C.O=mino.orient[C.name]
-    else local LDR=player.LDR mino.curIns(player,false) player.LDR=LDR end
+    else
+        if player.next[player.preview+1] then
+            local wtf=player.preview+1
+            player.NP[wtf]=T.copy(B[player.next[wtf]])
+            player.NO[wtf]=mino.orient[player.next[wtf]]
+            for k=1,player.NO[wtf] do
+                player.NP[wtf]=B.rotate(player.NP[wtf],0,'R')
+            end
+        end
+
+        local C=player.cur
+        local A=player.smoothAnim
+        local his=player.history
+        his.line=0 C.spin=false C.mini=false his.dropHeight=0
+        if player.next[1] then
+            C.O=table.remove(player.NO,1)
+            C.name=table.remove(player.next,1)
+            C.piece=table.remove(player.NP,1)
+            if mino.rule.onPieceSummon then mino.rule.onPieceSummon(player,mino) end
+            fLib.entryPlace(player)
+
+            A.prePiece,A.drawPiece=T.copy(C.piece),T.copy(C.piece)
+            for i=1,#A.prePiece do
+                A.prePiece[i][1],A.prePiece[i][2]=A.prePiece[i][1]+C.x,A.prePiece[i][2]+C.y
+                A.drawPiece[i][1],A.drawPiece[i][2]=A.drawPiece[i][1]+C.x,A.drawPiece[i][2]+C.y
+            end
+            player.canHold=true C.kickOrder=nil
+        elseif player.hold.name then mino.hold(player)
+        else C.piece,C.name=nil,nil end
+        if #player.next<=player.preview then mino.insertNextQueue(player) end
+        player.MTimer,player.DTimer=min(player.MTimer,S.ctrl.ASD),min(player.DTimer,S.ctrl.SD_ASD)
+
+        if player.FDelay==0 then mino.Ins20GDrop(player) end
+        if mino.rule.onPieceEntry then mino.rule.onPieceEntry(player) end
+        if C.piece then player.cur.ghostY=fLib.getGhostY(player) end
+
+    end
     while H.O~=0 do
         H.O=B.rotate(H.piece,H.O,'L')
     end
@@ -307,7 +345,7 @@ function mino.loosenDrop(player)
             if mino.blockSkin.onLineClear then mino.blockSkin.onLineClear(player,mino) end
         end
         if mino.rule.afterPieceDrop then mino.rule.afterPieceDrop(player,mino) end
-        mino.addEvent(player,player.EDelay,'curIns')
+        mino.addEvent(player,player.EDelay,'nextIns')
     end
 end
 
@@ -653,8 +691,8 @@ function mino.keyP(k)
 
                     if S.winState==0 then
                         if (#OP.loosen==0 or OP.loosen.fallTPL==0) then
-                            if OP.EDelay==0 and OP.CDelay==0 then mino.curIns(OP)
-                                else mino.addEvent(OP,OP.EDelay,'curIns')
+                            if OP.EDelay==0 and OP.CDelay==0 then mino.nextIns(OP)
+                                else mino.addEvent(OP,OP.EDelay,'nextIns')
                             end
                         end
                     end
@@ -876,8 +914,8 @@ function mino.gameUpdate(dt)
 
                 if S.winState==0 then
                     if (#P[i].loosen==0 or P[i].loosen.fallTPL==0) then
-                        if P[i].EDelay==0 and P[i].CDelay==0 then mino.curIns(P[i])
-                        else mino.addEvent(P[i],P[i].EDelay,'curIns') end
+                        if P[i].EDelay==0 and P[i].CDelay==0 then mino.nextIns(P[i])
+                        else mino.addEvent(P[i],P[i].EDelay,'nextIns') end
                     end
                 end
                 P[i].LTimer=0

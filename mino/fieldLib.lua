@@ -21,7 +21,7 @@ function fieldLib.newPlayer(arg)
     local stdPlayer={
         started=false,gameTimer=0,deadTimer=-1,loseTimer=-1,winTimer=-1,
 
-        event={0,'curIns'},
+        event={0,'start',0,'nextIns'},
         initOpQueue={},--I_S操作序列
         posx=0,posy=0,r=0,scale=1,
         field={},w=10,h=20,loosen={},
