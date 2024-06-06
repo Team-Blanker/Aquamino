@@ -101,6 +101,7 @@ function about.init()
     }
     for i=1,4 do
         about.edge[i].fixture=LP.newFixture(about.edge[i].body,about.edge[i].shape,1)
+        about.edge[i].fixture:setRestitution(.75)
     end
     about.obs1={
         body=LP.newBody(about.world,-700,400,'static'),
