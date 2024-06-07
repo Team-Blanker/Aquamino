@@ -220,12 +220,13 @@ function mino.nextIns(player)
 
     if love.keyboard.isDown(S.keySet.hold) and player.canInitHold then
         player.initOpQueue[#player.initOpQueue+1]='initHold'
-    elseif love.keyboard.isDown(S.keySet.ML) and player.canInitMove then
+    end
+    if love.keyboard.isDown(S.keySet.ML) and player.canInitMove then
         player.initOpQueue[#player.initOpQueue+1]='initML'
     elseif love.keyboard.isDown(S.keySet.MR) and player.canInitMove then
         player.initOpQueue[#player.initOpQueue+1]='initMR'
-
-    elseif love.keyboard.isDown(S.keySet.CW) and player.canInitRotate then
+    end
+    if love.keyboard.isDown(S.keySet.CW) and player.canInitRotate then
         player.initOpQueue[#player.initOpQueue+1]='initRotateCW'
     elseif love.keyboard.isDown(S.keySet.CCW) and player.canInitRotate then
         player.initOpQueue[#player.initOpQueue+1]='initRotateCCW'
