@@ -85,7 +85,6 @@ font={
     Bender=gc.newFont('font/Bender.otf',128),
     Bender_B=gc.newFont('font/Bender-Bold.otf',128),
     Bender_L=gc.newFont('font/Bender-Light.otf',128),
-    haisi=gc.newFont('font/haisi.ttf',128),
     JB=gc.newFont('font/JetBrainsMono-Medium.ttf',128),
     JB_B=gc.newFont('font/JetBrainsMono-Bold.ttf',128),
     JB_L=gc.newFont('font/JetBrainsMono-Light.ttf',128),
@@ -93,7 +92,6 @@ font={
     LED=gc.newFont('font/UniDreamLED.ttf',128)
 }
 font.Bender:setFallbacks(font.SYHT) font.Bender_B:setFallbacks(font.SYHT) font.Bender_L:setFallbacks(font.SYHT)
-font.haisi:setFallbacks(font.SYHT)
 font.JB:setFallbacks(font.SYHT) font.JB_B:setFallbacks(font.SYHT)
 
 canop=true--=can operate，是决定玩家是否能操作的变量
