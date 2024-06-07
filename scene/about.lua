@@ -31,7 +31,7 @@ local tool={'Beepbox','Malody','VS Code','GFIE(Greenfish Icon Editor)'}
 
 local about={}
 function about.init()
-    scene.BG=require('BG/menuBG')
+    scene.BG=require('BG/menuBG') scene.BG.setPolyColor(1,1,1)
     if scene.BG.init then scene.BG.init() end
     if not mus.checkTag('menu') then
         if win.date.month==8 and win.date.day==14 then
@@ -51,7 +51,7 @@ function about.init()
     about.rTxt=gc.newText(font.Bender)
     about.rTxt:setf(txt,500*3,'left')
     txt=user.lang.about.tool..'\n'
-    for i=1,#repo do
+    for i=1,#tool do
         txt=txt..string.format('%s\n',tool[i])
     end
     about.tTxt=gc.newText(font.Bender)
@@ -135,6 +135,8 @@ function about.draw()
     gc.draw(about.eTxt,425,-400+800/w*h/4,0,1/3,1/3,0,128)
     gc.draw(about.rTxt,-810,-270,0,1/3,1/3,0,0)
     gc.draw(about.tTxt,-270,-270,0,1/3,1/3,0,0)
+    gc.printf(user.lang.about.time:format(win.stat.launch,win.stat.totalTime+scene.totalTime),
+        font.Bender,-810,0,1500,'left',0,1/3,1/3)
     BUTTON.draw()
     gc.draw(loveLogo,about.loveBall.body:getX(),about.loveBall.body:getY(),about.loveBall.body:getAngle(),ballR*2/lw,ballR*2/lh,lw/2,lh/2)
 end

@@ -111,7 +111,7 @@ function love.resize(w,h)
 end
 
 win={
-    stat={launch=0,version="preview 0008"},
+    stat={launch=0,version="preview 0008",totalTime=0},
     showInfo=false,
     fullscr=false,
     distractTime=0,
@@ -335,5 +335,21 @@ function love.draw()
         infoR="You\'ve stayed here for "..string.format("%.2f",scene.time).."s".."\nRes:"..win.W.."*"..win.H.."\nReal res:"..rw.."*"..rh.."\nWindow mode position:"..win.x_win..","..win.y_win.."\n"..drawCtrl.timer.."/"..drawCtrl.dtRestrict.."\n"..(lastkeyP and lastkeyP or "")
         gc.print(infoL,font.Bender,10,25,0,.15,.15)
         gc.printf(infoR,font.Bender,win.W-10-114514*.15,25,114514,'right',0,.15,.15)
+    end
+end
+
+function love.quit()
+    if fs.getInfo('player/game stat') then
+        win.stat.totalTime=win.stat.totalTime+scene.totalTime
+        local s=fs.newFile('player/game stat')
+        s:open('w')
+        s:write(json.encode(win.stat))
+        s:close()
+    else
+        local s=fs.newFile('player/game stat')
+        win.stat.launch=1
+        s:open('w')
+        s:write(json.encode(win.stat))
+        s:close()
     end
 end

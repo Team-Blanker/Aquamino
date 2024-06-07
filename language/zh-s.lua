@@ -28,7 +28,8 @@ return {
     about={
         engineText="使用LÖVE引擎制作",
         tool="使用工具",
-        repo="使用库"
+        repo="使用库",
+        time="你已启动过%d次 Aquamino，\n总运行时间为%d秒。"
     },
     pause={
         resume="继续",quit="退出",r="重开"
