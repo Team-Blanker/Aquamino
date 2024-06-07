@@ -156,6 +156,7 @@ end
 function simple.clearTextDraw(player)
     W,H=36*player.w,36*player.h
     local CInfo=player.clearInfo
+    local r,g,b
     gc.translate(-W/2-20,-250)
     if CInfo.combo>1 then
         ctxt=""..CInfo.combo.." chain"..(CInfo.combo>19 and "?!?!" or CInfo.combo>15 and "!!" or CInfo.combo>7 and "!" or "")..(CInfo.wide==4 and "\n4-wide" or "")
@@ -164,7 +165,9 @@ function simple.clearTextDraw(player)
         for i=0,3 do
             printf(ctxt,font.Bender_B,-19+i%2*6,9+6*floor(i/2),1200,'right',0,.25,.25,1200,76)
         end
-        setColor(scene.time%.2<.1 and {1,1,1} or M.lerp({1,1,1},{.5,1,.75},min((CInfo.combo-8)/8,1)))
+        if scene.time%.2<.1 then setColor(1,1,1) else local k=min((CInfo.combo-8)/8,1)
+        setColor(1-.5*k,1,1-.125*k) end
+        --setColor(scene.time%.2<.1 and {1,1,1} or M.lerp({1,1,1},{.5,1,.75},min((CInfo.combo-8)/8,1)))
         printf(ctxt,font.Bender_B,-16,12,1200,'right',0,.25,.25,1200,76)
     end
     gc.translate(W/2+20,250)

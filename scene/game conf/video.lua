@@ -69,8 +69,6 @@ function video.init()
             gc.rectangle('fill',-w/2,-h/2,h,h)
             gc.setColor(1,1,1)
             gc.printf(cf.video.unableBG,font.Bender_B,w/2+50,0,1200,'left',0,.35,.35,0,76)
-            gc.setColor(1,1,1,.75)
-            gc.printf(cf.video.unableTxt,font.Bender_B,-w/2,h/2+60,1840,'left',0,.25,.25,0,152)
         end,
         event=function()
             video.info.unableBG=not video.info.unableBG

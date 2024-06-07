@@ -18,7 +18,7 @@ function bg.update(dt)
         ins(bg.parList,{
             sz=7+rand(17),x=2100*(rand()-.5),y=600,
             vx=900*(rand()-.5),vy=-500-1000*(rand()^.5),
-            TTL=rand()*1.5
+            TTL=.5+rand(),angle=2*rand()
         })
         bg.parTimer=bg.parTimer-bg.emitAvgPeriod/2
     end
@@ -26,7 +26,7 @@ function bg.update(dt)
         ins(bg.parList,{
             sz=7+rand(17),x=2100*(rand()-.5),y=600,
             vx=900*(rand()-.5),vy=-500-1000*(rand()^.5),
-            TTL=.5+rand()
+            TTL=.5+rand(),angle=2*rand()
         })
     end
 
@@ -42,7 +42,7 @@ function bg.update(dt)
                 vx=p.vx,vy=p.vy,
                 vs=100+rand()*(4500/p.sz),
                 clr={r,g,b},
-                timer=0,TTL=t
+                timer=0,TTL=t,angle=p.angle
             })
             rem(bg.parList,i)
         else
@@ -74,7 +74,7 @@ function bg.draw()
 
         gc.setColor(p.clr[1],p.clr[2],p.clr[3],2-2*(p.timer/p.TTL))
         for j=1,p.sz do
-            gc.circle('fill', p.x+p.vx*s+r*cos(j/p.sz*tau),p.y+p.vy*s+r*sin(j/p.sz*tau), 6,4)
+            gc.circle('fill', p.x+p.vx*s+r*cos((j/p.sz+p.angle)*tau),p.y+p.vy*s+r*sin((j/p.sz+p.angle)*tau), 6,4)
             --gc.circle('line',p.x+p.vx*s,p.y+p.vy*s,p.vs*p.timer)
         end
     end
