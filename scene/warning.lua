@@ -22,9 +22,9 @@ function warn.draw()
     gc.clear(.08,.08,.08)
 
     gc.setColor(1,1,1,2*scene.time-.5)
-    gc.printf(w.title,font.Bender_B,0,-300,3000,'center',0,.6,.6,1500,76)
+    gc.printf(w.title,font.Bender_B,0,-300,3000,'center',0,.6,.6,1500,72)
     gc.setColor(.5,1,.875,2*scene.time-.5)
-    gc.printf(w.txt,font.Bender,0,-160,w.txtWidth,'center',0,w.txtScale,w.txtScale,w.txtWidth*.5,76)
+    gc.printf(w.txt,font.Bender,0,-160,w.txtWidth,'center',0,w.txtScale,w.txtScale,w.txtWidth*.5,72)
 end
 --function intro.send() scene.cur.modename[1]="40行" end
 return warn

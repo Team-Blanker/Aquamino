@@ -64,7 +64,7 @@ function audio.init()
             gc.setColor(r,g,b,2*t)
             gc.rectangle('fill',-w/2,-h/2,h,h)
             gc.setColor(1,1,1)
-            gc.printf(cf.audio.distract,font.Bender_B,w/2+25+cf.audio.DOX,0,1200,'left',0,.25,.25,0,76)
+            gc.printf(cf.audio.distract,font.Bender_B,w/2+25+cf.audio.DOX,0,1200,'left',0,.25,.25,0,72)
             --DOX=Distract Offset X
         end,
         event=function()
@@ -137,7 +137,7 @@ function audio.update(dt)
 end
 function audio.draw()
     gc.setColor(1,1,1)
-    gc.printf(cf.main.audio,font.Bender,0,-430,1280,'center',0,1,1,640,76)
+    gc.printf(cf.main.audio,font.Bender,0,-430,1280,'center',0,1,1,640,72)
     BUTTON.draw() SLIDER.draw()
 end
 function audio.exit()

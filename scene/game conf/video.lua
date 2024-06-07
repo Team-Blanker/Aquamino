@@ -68,7 +68,7 @@ function video.init()
             gc.setColor(r,g,b,2*t)
             gc.rectangle('fill',-w/2,-h/2,h,h)
             gc.setColor(1,1,1)
-            gc.printf(cf.video.unableBG,font.Bender_B,w/2+50,0,1200,'left',0,.35,.35,0,76)
+            gc.printf(cf.video.unableBG,font.Bender_B,w/2+50,0,1200,'left',0,.35,.35,0,72)
         end,
         event=function()
             video.info.unableBG=not video.info.unableBG
@@ -95,7 +95,7 @@ function video.init()
             gc.setColor(r,g,b,2*t)
             gc.rectangle('fill',-w/2,-h/2,h,h)
             gc.setColor(1,1,1)
-            gc.printf(cf.video.vsync,font.Bender_B,w/2+50,0,1200,'left',0,.35,.35,0,76)
+            gc.printf(cf.video.vsync,font.Bender_B,w/2+50,0,1200,'left',0,.35,.35,0,72)
         end,
         event=function()
             video.info.vsync=not video.info.vsync
@@ -141,7 +141,7 @@ function video.init()
             gc.setColor(r,g,b,2*t)
             gc.rectangle('fill',-w/2,-h/2,h,h)
             gc.setColor(1,1,1)
-            gc.printf(cf.video.fullScr,font.Bender_B,w/2+50,0,1200,'left',0,.35,.35,0,76)
+            gc.printf(cf.video.fullScr,font.Bender_B,w/2+50,0,1200,'left',0,.35,.35,0,72)
             gc.setColor(1,1,1,.75)
             gc.printf(cf.video.fullScrTxt,font.Bender_B,-w/2,h/2+64,1840,'left',0,.25,.25,0,152)
         end,
@@ -163,7 +163,7 @@ function video.init()
             gc.printf(string.format(cf.video.frameLim.."%d",video.info.frameLim),
                 font.JB,-419,-48,114514,'left',0,.3125,.3125,0,84)
                 gc.setColor(1,1,1,.75)
-            gc.printf(cf.video.frameTxt,font.Bender_B,-419,48,114514,'left',0,.25,.25,0,76)
+            gc.printf(cf.video.frameTxt,font.Bender_B,-419,48,114514,'left',0,.25,.25,0,72)
         end,
         buttonDraw=function(pos)
             gc.setColor(1,1,1)
@@ -196,7 +196,7 @@ function video.update(dt)
 end
 function video.draw()
     gc.setColor(1,1,1)
-    gc.printf(cf.main.video,font.Bender,0,-430,1280,'center',0,1,1,640,76)
+    gc.printf(cf.main.video,font.Bender,0,-430,1280,'center',0,1,1,640,72)
     BUTTON.draw() SLIDER.draw()
 end
 function video.exit()

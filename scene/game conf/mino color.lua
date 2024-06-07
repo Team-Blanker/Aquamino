@@ -60,7 +60,7 @@ function bc.init()
             gc.setLineWidth(3)
             gc.rectangle('line',-w/2,-h/2,w,h)
             gc.setColor(1,1,1)
-            gc.printf(cfcc.rAll,font.Bender,0,0,1280,'center',0,.5,.5,640,76)
+            gc.printf(cfcc.rAll,font.Bender,0,0,1280,'center',0,.5,.5,640,72)
         end,
         event=function()
             if not canAdjustColor[skinName] then return end
@@ -81,7 +81,7 @@ function bc.init()
             gc.setLineWidth(3)
             gc.rectangle('line',-w/2,-h/2,w,h)
             gc.setColor(1,1,1)
-            gc.printf(cfcc.rCur,font.Bender,0,0,1280,'center',0,.5,.5,640,76)
+            gc.printf(cfcc.rCur,font.Bender,0,0,1280,'center',0,.5,.5,640,72)
         end,
         event=function()
             if not canAdjustColor[skinName] then return end
@@ -218,11 +218,11 @@ end
 local w,h,x,y
 function bc.draw()
     gc.setColor(1,1,1)
-    gc.printf(cfcc.title,font.Bender,0,-450,1280,'center',0,.75,.75,640,76)
+    gc.printf(cfcc.title,font.Bender,0,-450,1280,'center',0,.75,.75,640,72)
     if canAdjustColor[skinName] then gc.setColor(1,1,1,.6)
-        gc.printf(cfcc.adjY,font.Bender,0,-40,10000,'center',0,.4,.4,5000,76)
+        gc.printf(cfcc.adjY,font.Bender,0,-40,10000,'center',0,.4,.4,5000,72)
     else gc.setColor(1,1,1,.6)
-        gc.printf(cfcc.adjN,font.Bender,0,-40,10000,'center',0,.4,.4,5000,76)
+        gc.printf(cfcc.adjN,font.Bender,0,-40,10000,'center',0,.4,.4,5000,72)
     end
     BUTTON.draw() SLIDER.draw()
 

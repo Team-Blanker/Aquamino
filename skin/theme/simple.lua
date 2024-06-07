@@ -58,7 +58,7 @@ function simple.fieldDraw(player,mino)
     setColor(.5,1,.75)
     rect('fill',-W/2,H/2+4,W*(1-player.LTimer/player.LDelay),20)
     setColor(0,0,0)
-    printf(("%02d"):format(min(player.LDR,99)),font.Bender_B,-W/2+4,H/2+2+64*.2,400,'left',0,5/32,5/32,0,76)
+    printf(("%02d"):format(min(player.LDR,99)),font.Bender_B,-W/2+4,H/2+2+64*.2,400,'left',0,5/32,5/32,0,72)
     local t=player.gameTimer
     timeTxt=string.format("%d:%d%.3f",t/60,t/10%6,t%10)
     setColor(.2,.4,.3,.3)
@@ -107,11 +107,11 @@ end
 function simple.readyDraw(t)
     if t>1 then
     elseif t>.5 then setColor(1,1,1,min((t-.5)/.25,1))
-        printf("READY",font.Bender_B,0,0,1000,'center',0,.9,.9,500,76)
+        printf("READY",font.Bender_B,0,0,1000,'center',0,.9,.9,500,72)
     elseif t>0 then setColor(1,1,1,min(t/.25,1))
-        printf("SET",font.Bender_B,0,0,1000,'center',0,.9,.9,500,76)
+        printf("SET",font.Bender_B,0,0,1000,'center',0,.9,.9,500,72)
     elseif t>-.5 then setColor(1,1,1,min((t+.5)/.25,1))
-        printf("GO!",font.Bender_B,0,0,1000,'center',0,1.2,1.2,500,76)
+        printf("GO!",font.Bender_B,0,0,1000,'center',0,1.2,1.2,500,72)
     end
 end
 
@@ -163,12 +163,12 @@ function simple.clearTextDraw(player)
 
         setColor(.1,.1,.1,.3)
         for i=0,3 do
-            printf(ctxt,font.Bender_B,-19+i%2*6,9+6*floor(i/2),1200,'right',0,.25,.25,1200,76)
+            printf(ctxt,font.Bender_B,-19+i%2*6,9+6*floor(i/2),1200,'right',0,.25,.25,1200,72)
         end
         if scene.time%.2<.1 then setColor(1,1,1) else local k=min((CInfo.combo-8)/8,1)
         setColor(1-.5*k,1,1-.125*k) end
         --setColor(scene.time%.2<.1 and {1,1,1} or M.lerp({1,1,1},{.5,1,.75},min((CInfo.combo-8)/8,1)))
-        printf(ctxt,font.Bender_B,-16,12,1200,'right',0,.25,.25,1200,76)
+        printf(ctxt,font.Bender_B,-16,12,1200,'right',0,.25,.25,1200,72)
     end
     gc.translate(W/2+20,250)
 
@@ -193,7 +193,7 @@ function simple.clearTextDraw(player)
     end
     local beta=alpha*(player.clearTxtTimer%.2>=.1 and .4 or .6)
     setColor(r,g,b,beta)
-    if CInfo.wide==4 and CInfo.line==1 then printf("4-wide",font.Bender,0,-64*s-20,4000,'center',0,.333,.333,2000,76) end
+    if CInfo.wide==4 and CInfo.line==1 then printf("4-wide",font.Bender,0,-64*s-20,4000,'center',0,.333,.333,2000,72) end
 
     setColor(r,g,b,alpha)
     gc.draw(player.clearTxt,0,0,0,s,s,player.clearTxt:getWidth()/2,player.clearTxt:getHeight()/2)
@@ -208,8 +208,8 @@ function simple.clearTextDraw(player)
         gc.push('transform')
         gc.scale(ts+1)
         setColor(1,.9,.2,1-3*ts)
-        printf("ALL",font.Bender,0,-68,1000,'center',0,.9,.9,500,76)
-        printf("CLEAR",font.Bender,0,28,1000,'center',0,.9,.9,500,76)
+        printf("ALL",font.Bender,0,-68,1000,'center',0,.9,.9,500,72)
+        printf("CLEAR",font.Bender,0,28,1000,'center',0,.9,.9,500,72)
         gc.pop()
         end
         gc.push('transform')
@@ -218,12 +218,12 @@ function simple.clearTextDraw(player)
         setColor(1,.96,.2,min(t,1)*.1)
         for j=1,8 do
             local ox,oy=4*cos(j/4*math.pi),4*sin(j/4*math.pi)
-            printf("ALL",font.Bender,ox,-68+oy,1000,'center',0,.9,.9,500,76)
-            printf("CLEAR",font.Bender,ox,28+oy,1000,'center',0,.9,.9,500,76)
+            printf("ALL",font.Bender,ox,-68+oy,1000,'center',0,.9,.9,500,72)
+            printf("CLEAR",font.Bender,ox,28+oy,1000,'center',0,.9,.9,500,72)
         end
         setColor(1,.96,.2,t)
-        printf("ALL",font.Bender,0,-68,1000,'center',0,.9,.9,500,76)
-        printf("CLEAR",font.Bender,0,28,1000,'center',0,.9,.9,500,76)
+        printf("ALL",font.Bender,0,-68,1000,'center',0,.9,.9,500,72)
+        printf("CLEAR",font.Bender,0,28,1000,'center',0,.9,.9,500,72)
         gc.pop()
     end
 end
@@ -255,9 +255,9 @@ end
 function simple.winAnim(player)
     setColor(1,1,1,1-player.winTimer*4)
     draw(simple.winTxt,0,0,0,1+player.winTimer*4,1+player.winTimer*4,simple.wtW/2,simple.wtH/2)
-    --printf(gts.win,font.Bender_B,0,0,400,'center',0,1+player.winTimer*4,1+player.winTimer*4,200,76)
+    --printf(gts.win,font.Bender_B,0,0,400,'center',0,1+player.winTimer*4,1+player.winTimer*4,200,72)
     setColor(1,1,1)
     draw(simple.winTxt,0,0,0,1,1,simple.wtW/2,simple.wtH/2)
-    --printf(gts.win,font.Bender_B,0,0,400,'center',0,1,1,200,76)
+    --printf(gts.win,font.Bender_B,0,0,400,'center',0,1,1,200,72)
 end
 return simple

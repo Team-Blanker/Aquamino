@@ -67,7 +67,7 @@ function config.init()
             gc.setLineWidth(9)
             gc.arc('line','closed',0,0,bt.r,arcs,arcf,6)
             gc.setColor(1,1,1)
-            gc.printf(cfm.keys,font.Bender,0,0,1280,'center',0,.75,.75,640,76)
+            gc.printf(cfm.keys,font.Bender,0,0,1280,'center',0,.75,.75,640,72)
         end,
         event=function()
             scene.switch({
@@ -85,7 +85,7 @@ function config.init()
             gc.setLineWidth(9)
             gc.arc('line','closed',0,0,bt.r,arcs,arcf,6)
             gc.setColor(1,1,1)
-            gc.printf(cfm.ctrl,font.Bender,0,0,1280,'center',0,.75,.75,640,76)
+            gc.printf(cfm.ctrl,font.Bender,0,0,1280,'center',0,.75,.75,640,72)
         end,
         event=function()
             scene.switch({
@@ -123,7 +123,7 @@ function config.init()
             gc.setLineWidth(9)
             gc.arc('line','closed',0,0,bt.r,arcs,arcf,6)
             gc.setColor(1,1,1)
-            gc.printf(cfm.audio,font.Bender,0,0,1280,'center',0,.75,.75,640,76)
+            gc.printf(cfm.audio,font.Bender,0,0,1280,'center',0,.75,.75,640,72)
         end,
         event=function()
             scene.switch({
@@ -141,7 +141,7 @@ function config.init()
             gc.setLineWidth(9)
             gc.arc('line','closed',0,0,bt.r,arcs,arcf,6)
             gc.setColor(1,1,1)
-            gc.printf(cfm.video,font.Bender,0,0,1280,'center',0,.75,.75,640,76)
+            gc.printf(cfm.video,font.Bender,0,0,1280,'center',0,.75,.75,640,72)
         end,
         event=function()
             scene.switch({
@@ -159,7 +159,7 @@ function config.init()
             gc.setLineWidth(9)
             gc.arc('line','closed',0,0,bt.r,arcs,arcf,6)
             gc.setColor(1,1,1)
-            gc.printf(cfm.custom,font.Bender,0,0,1280,'center',0,.75,.75,640,76)
+            gc.printf(cfm.custom,font.Bender,0,0,1280,'center',0,.75,.75,640,72)
         end,
         event=function()
             scene.switch({
@@ -182,7 +182,7 @@ function config.update(dt)
 end
 function config.draw()
     gc.setColor(1,1,1)
-    gc.printf(user.lang.conf.main.title,font.Bender_B,0,0,1280,'center',0,.75,.75,640,76)
+    gc.printf(user.lang.conf.main.title,font.Bender_B,0,0,1280,'center',0,.75,.75,640,72)
     BUTTON.draw()
 end
 function config.send(destScene,arg)
