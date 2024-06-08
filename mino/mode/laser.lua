@@ -76,7 +76,6 @@ function laser.init(P,mino)
     mus.add('music/Hurt Record/Symphonic Laser','whole','ogg',45,200*60/128)
     --mus.start()
     sfx.add({
-        lvup='sfx/rule/laser/level up.ogg',
         destroy='sfx/rule/laser/destroy.wav',mayhem='sfx/rule/laser/mayhem.wav',reverse='sfx/rule/laser/reverse.wav',
         forceGarbage='sfx/rule/laser/garbage.wav',
     })

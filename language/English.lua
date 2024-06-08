@@ -32,6 +32,14 @@ return {
         time="You've launched Aquamino %d time(s),\nwith a total run time of\n%d second(s).",
         staff="Staff"
     },
+    staff={
+        program="Programming",
+        UI="UI & Art Design",
+        music="Music by",
+        sfx="SFX Design",
+        specialThanks="Special Thanks",
+        tester="...and all other testers"
+    },
     pause={
         resume="Return",quit="Quit",r="Restart"
     },

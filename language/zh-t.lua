@@ -32,6 +32,14 @@ return {
         time="你已啓動過%d次 Aquamino，\n縂運行時間為%d秒。",
         staff="製作人員"
     },
+    staff={
+        program="程序",
+        UI="UI & 視覺設計",
+        music="音樂来自",
+        sfx="音效",
+        specialThanks="特別感謝",
+        tester="以及其他所有内測成員"
+    },
     pause={
         resume="繼續",quit="退出",r="重開"
     },

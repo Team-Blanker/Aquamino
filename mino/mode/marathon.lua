@@ -12,7 +12,7 @@ function marathon.init(P,mino)
     mus.add('music/Hurt Record/sweat','whole','ogg',20.879,336*60/125)
     mus.start()
     sfx.add({
-        lvup='sfx/rule/general/level up.ogg'
+        lvup='sfx/rule/general/level up.wav'
     })
     mino.stacker.ctrl={
        ASD=.15,ASP=.03,SD_ASD=0,SD_ASP=.03

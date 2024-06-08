@@ -4,26 +4,40 @@ local logo=gc.newImage('assets/pic/title.png')
 local w,h=logo:getPixelDimensions()
 
 local devList={
-    devTeam={
-        name="Team Blanker",
-        member={'Aqua6623(Aquamarine6623, Kairan, 海兰)'}
-    },
-    program={'Aqua6623'},
-    art={'Aqua6623','MrZ_26'},
-    UI={'Aqua6623'},
+    program={'Aqua6623 (Aquamarine6623, Kairan, 海兰)'},
+    UI={'Aqua6623','MrZ_26'},
+    sfx={'Aqua6623'},
     music={
         hurtRecord={
-            'たかゆき','R-side','T-Malu','守己','カモキング','龍飛','Syun Nakano','Naoki Hirai',
-            'つかスタジオ','アキハバラ所司代','georhythm','Teada','Mikiya Komaba','ミレラ','周藤三日月',
-            'DiscreetDragon'
+            {'たかゆき','R-side','T-Malu','守己','カモキング','龍飛'},
+            {'Syun Nakano','Naoki Hirai','つかスタジオ'},
+            {'アキハバラ所司代','georhythm','Teada','Mikiya Komaba'},
+            {'ミレラ','周藤三日月','DiscreetDragon'}
         }
     },
-    sfx={'Aqua6623'},
-    --{谁,字多大,……}
-    specialThanks={'MrZ_26',1.75,'XMiao小渺(Chumo2791)',1,'User670',1,'MianSoft',1,'沙盒子',1,'Sunday',1,'Not-A-Normal-Robot',1,'SweetSea-ButImNotSweet',1}
+    specialThanks={
+        {'MrZ_26'},
+        {'XMiao小渺 (Chumo2791)','User670','MianSoft','沙盒子','Sunday'},
+        {'Not-A-Normal-Robot','SweetSea-ButImNotSweet'}
+    }
 }
 
 local stf={}
+local uls
+local c1,c2={.5,1,.875},{1,1,1}
+
+stf.s={.4,.6,.4}
+stf.h={}
+local function getH(num)
+    local th=0
+    for i=1,num do
+        th=th+stf.h[i]*stf.s[i]
+    end
+    return th
+end
+
+local posyMax=2160
+
 function stf.init()
     scene.BG=require('BG/menuBG') scene.BG.setPolyColor(1,1,1)
     if scene.BG.init then scene.BG.init() end
@@ -38,7 +52,70 @@ function stf.init()
         mus.setTag({'menu'})
     end
 
+    uls=user.lang.staff
     stf.posy=0
+    stf.txt1={c1,uls.program,c2,'\n\n'..devList.program[1],c1,'\n\n'..uls.UI,c2}
+
+
+    local t1='\n\n'
+    for i=1,#devList.UI do
+        t1=t1..devList.UI[i]
+        if i~=#devList.UI then t1=t1..'    ' end
+    end
+    stf.txt1[#stf.txt1+1]=t1
+
+    stf.txt1[#stf.txt1+1]=c1
+    stf.txt1[#stf.txt1+1]='\n\n'..uls.sfx
+    stf.txt1[#stf.txt1+1]=c2
+    stf.txt1[#stf.txt1+1]='\n\n'..devList.sfx[1]
+    stf.txt1[#stf.txt1+1]=c1
+    stf.txt1[#stf.txt1+1]='\n\n'..uls.music
+    stf.txt1[#stf.txt1+1]={1,.75,.75}
+    stf.txt1[#stf.txt1+1]=' HURT RECORD (https://www.hurtrecord.com)'
+
+    stf.txt1[#stf.txt1+1]=c2
+    t1='\n\n'
+    local hr=devList.music.hurtRecord
+    for i=1,#hr do
+        for j=1,#hr[i] do
+        t1=t1..hr[i][j]
+        if i~=#hr[i] then t1=t1..'    ' end
+        end
+        t1=t1..'\n'
+    end
+    stf.txt1[#stf.txt1+1]=t1
+
+    stf.txt1[#stf.txt1+1]=c1
+    stf.txt1[#stf.txt1+1]='\n'..uls.specialThanks..'\n'
+
+    stf.stftxt1=gc.newText(font.Bender)
+    stf.stftxt1:addf(stf.txt1,4000,'center')
+    stf.h[1]=stf.stftxt1:getHeight()
+
+    stf.stftxt2=gc.newText(font.Bender)
+    stf.stftxt2:addf(devList.specialThanks[1][1],4000,'center')
+    stf.h[2]=stf.stftxt2:getHeight()
+    print(stf.h[2])
+
+    t1=''
+    local sp=devList.specialThanks
+    for i=2,#sp do
+        for j=1,#sp[i] do
+        t1=t1..sp[i][j]
+        if i~=#sp[i] then t1=t1..'    ' end
+        end
+        t1=t1..'\n'
+    end
+    t1=t1..uls.tester
+    t1=t1..'\n\nThank you for playing.'
+    print(t1)
+
+    stf.stftxt3=gc.newText(font.Bender)
+    stf.stftxt3:addf(t1,4000,'center')
+    stf.h[3]=stf.stftxt3:getHeight()
+
+
+    posyMax=400+getH(3)
 
     BUTTON.create('quit',{
         x=-700,y=400,type='rect',w=200,h=100,
@@ -61,7 +138,6 @@ function stf.init()
     },.2)
 end
 
-local posyMax=1080
 local mp=false local opy,mpy=0,0
 function stf.mouseP(x,y,button,istouch)
     mp=true opy,mpy=stf.posy,y
@@ -73,8 +149,7 @@ function stf.mouseR(x,y,button,istouch)
 end
 
 function stf.wheelMove(dx,dy)
-    stf.posy=max(min(stf.posy-dy*108,posyMax),0)
-    print(dy)
+    stf.posy=max(min(stf.posy-dy*90,posyMax),0)
 end
 
 function stf.update(dt)
@@ -82,14 +157,17 @@ function stf.update(dt)
     if love.mouse.isDown(1) then stf.posy=max(min(opy-my+mpy,posyMax),0) end
     BUTTON.update(dt,mx,my)
 
-    if kb.isDown('up') then stf.posy=max(stf.posy-540*dt,0) end
-    if kb.isDown('down') then stf.posy=min(stf.posy+540*dt,posyMax) end
+    if kb.isDown('up') then stf.posy=max(stf.posy-720*dt,0) end
+    if kb.isDown('down') then stf.posy=min(stf.posy+720*dt,posyMax) end
 end
 function stf.draw()
     gc.translate(0,-stf.posy)
     gc.setColor(1,1,1)
     gc.draw(logo,0,0,0,1280/w,1280/w,w/2,h/2)
-    gc.printf('by Team Blanker',font.Bender,0,280,10000,'center',0,.8,.8,5000,72)
+    gc.printf("by Team Blanker",font.Bender,0,240,10000,'center',0,.75,.75,5000,72)
+    gc.draw(stf.stftxt1,0,400,0,stf.s[1],stf.s[1],2000)
+    gc.draw(stf.stftxt2,0,400+getH(1),0,stf.s[2],stf.s[2],2000)
+    gc.draw(stf.stftxt3,0,400+getH(2),0,stf.s[3],stf.s[3],2000)
     gc.translate(0,stf.posy)
     BUTTON.draw()
 end
