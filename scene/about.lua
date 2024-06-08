@@ -9,7 +9,7 @@ local ballR=32
 local repo={
     {'json.lua','rxi'},{'profile.lua','itraykov'}
 }
-local tool={'Beepbox','GoldWave','Malody','VS Code','GFIE(Greenfish Icon Editor)'}
+local tool={'Beepbox','GoldWave','Malody','VS Code','vecta.io','GFIE (Greenfish Icon Editor)'}
 
 local about={}
 function about.init()
