@@ -23,8 +23,8 @@ do
     if fs.getInfo('player/game stat') then
         local s=fs.newFile('player/game stat')
         local k=json.decode(s:read())
-        win.stat.totalTime=k.totalTime
-        win.stat.launch=k.launch+1
+        mytable.combine(win.stat,k)
+        win.stat.launch=win.stat.launch+1
         s:open('w')
         s:write(json.encode(win.stat))
         s:close()

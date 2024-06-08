@@ -314,7 +314,7 @@ function love.draw()
     gc.setColor(1,1,1)
     if scene.anim then scene.anim() end
     gc.setColor(1,1,1,.5)
-    gc.print("TPS: "..love.timer.getFPS()..", FPS:"..drawCtrl.FPS..", gcinfo: "..gcinfo(),font.Bender_B,-950,510,0,.2,.2)
+    gc.print("TPS: "..love.timer.getFPS()..", FPS: "..drawCtrl.FPS..", gcinfo: "..gcinfo(),font.Bender_B,-950,510,0,.2,.2)
 
     gc.origin()
 

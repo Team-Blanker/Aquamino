@@ -2,7 +2,7 @@ local T={}
 function T.attend(list,atd)
     for i=1,#atd do list[l+i]=atd[i] end
 end
-function T.combine(a,b)
+function T.combine(a,b)--b中所有元素放入a
     if a then
         if b then for k,v in pairs(b) do a[k]=v end end
         return true
