@@ -29,7 +29,8 @@ return {
         engineText="使用LÖVE引擎製作",
         tool="使用工具",
         repo="使用庫",
-        time="你已啓動過%d次 Aquamino，\n縂運行時間為%d秒。"
+        time="你已啓動過%d次 Aquamino，\n縂運行時間為%d秒。",
+        staff="製作人員"
     },
     pause={
         resume="繼續",quit="退出",r="重開"

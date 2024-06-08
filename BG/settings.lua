@@ -1,8 +1,10 @@
 local pic=gc.newCanvas(120,1440)
+gc.setScissor(0,0,120,1440)
 gc.setCanvas(pic)
 gc.setColor(1,1,1)
 gc.rectangle('fill',10,0,100,600) gc.rectangle('fill',10,840,100,600)
 gc.setCanvas()
+gc.setScissor()
 local bg={}
 function bg.init()
     bg.time=0

@@ -5,29 +5,11 @@ local loveLogo=gc.newImage('assets/pic/love-logo.png')
 local w,h=logo:getPixelDimensions()
 local lw,lh=loveLogo:getPixelDimensions()
 local ballR=32
-local devList={
-    devTeam={
-        name="Team Blanker",
-        member={'Aqua6623(Aquamarine6623, Kairan, 海兰)'}
-    },
-    program={'Aqua6623'},
-    art={'Aqua6623','MrZ_26'},
-    UI={'Aqua6623'},
-    music={
-        hurtRecord={
-            'たかゆき','R-side','T-Malu','守己','カモキング','龍飛','Syun Nakano','Naoki Hirai',
-            'つかスタジオ','アキハバラ所司代','georhythm','Teada','Mikiya Komaba','ミレラ','周藤三日月',
-            'DiscreetDragon'
-        }
-    },
-    sfx={'Aqua6623'},
-    --{谁,字多大,……}
-    specialThanks={'MrZ_26',1.75,'XMiao小渺(Chumo2791)',1,'User670',1,'MianSoft',1,'沙盒子',1,'Sunday',1,'Not-A-Normal-Robot',1,'SweetSea-ButImNotSweet',1}
-}
+
 local repo={
     {'json.lua','rxi'},{'profile.lua','itraykov'}
 }
-local tool={'Beepbox','Malody','VS Code','GFIE(Greenfish Icon Editor)'}
+local tool={'Beepbox','GoldWave','Malody','VS Code','GFIE(Greenfish Icon Editor)'}
 
 local about={}
 function about.init()
@@ -78,6 +60,25 @@ function about.init()
             })
         end
     },.2)
+    BUTTON.create('staff',{
+        x=675,y=400,type='rect',w=250,h=100,
+        draw=function(bt,t)
+            local w,h=bt.w,bt.h
+            gc.setColor(.5,.5,.5,.8+t)
+            gc.rectangle('fill',-w/2,-h/2,w,h)
+            gc.setColor(.8,.8,.8)
+            gc.setLineWidth(3)
+            gc.rectangle('line',-w/2,-h/2,w,h)
+            gc.setColor(1,1,1)
+            gc.printf(user.lang.about.staff,font.Bender,0,0,1280,'center',0,.4,.4,640,72)
+        end,
+        event=function()
+            scene.switch({
+                dest='staff',destScene=require('scene/staff'),swapT=.7,outT=.3,
+                anim=function() anim.cover(.3,.4,.3,0,0,0) end
+            })
+        end
+    },.2)
 
     local LP=love.physics
     LP.setMeter(32)
@@ -108,6 +109,11 @@ function about.init()
         shape=LP.newRectangleShape(200,100)
     }
     about.obs1.fixture=LP.newFixture(about.obs1.body,about.obs1.shape,1)
+    about.obs2={
+        body=LP.newBody(about.world,675,400,'static'),
+        shape=LP.newRectangleShape(250,100)
+    }
+    about.obs2.fixture=LP.newFixture(about.obs2.body,about.obs2.shape,1)
 end
 local drag=false
 function about.mouseP(x,y,button,istouch)

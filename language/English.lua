@@ -29,7 +29,8 @@ return {
         engineText="Powered by LÖVE",
         tool="Tools used:",
         repo="Repos used:",
-        time="You've launched Aquamino %d time(s),\nwith a total run time of\n%d second(s)."
+        time="You've launched Aquamino %d time(s),\nwith a total run time of\n%d second(s).",
+        staff="Staff"
     },
     pause={
         resume="Return",quit="Quit",r="Restart"
