@@ -14,8 +14,9 @@
 
     w.highdpi=true
 
+    t.version='11.4'
+
     t.identity="AquaminoPreview"
-    t.modules.touch=false
 
     t.gammacorrect=false
 end
