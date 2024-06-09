@@ -3,7 +3,7 @@ local T,M=mytable,mymath
 local setColor,rect,line,circle,printf,draw=gc.setColor,gc.rectangle,gc.line,gc.circle,gc.printf,gc.draw
 
 local defAnimTMax=.2
-
+local dangerAnimTMax=.2
 local gts
 function simple.init(player)
     gts=user.lang.game.theme.simple
@@ -19,22 +19,25 @@ function simple.init(player)
     player.clearTxt=gc.newText(font.Bender)
     player.spinTxt={txt=gc.newText(font.Bender),x=0}
     player.PCInfo={} player.clearTxtTimer=0 player.clearTxtTMax=0
+    player.dangerAnimTimer=0
 end
 local W,H,timeTxt
 function simple.fieldDraw(player,mino)
+    local darg=player.dangerAnimTimer/dangerAnimTMax
+
     W,H=36*player.w,36*player.h
     setColor(.1,.1,.1,.8)
     rect('fill',-W/2,-H/2,W,H)
     rect('fill',W/2+20,-360,180,100*player.preview)
     rect('fill',-W/2-200,-360,180,100)
-    setColor(1,1,1)
+    setColor(1,1-.8*darg,1-.8*darg)
     rect('fill',W/2+20,-390,180,30)
     rect('fill',-W/2-200,-390,180,30)
     gc.setLineWidth(1)
     rect('line',W/2+20.5,-359.5,179,100*player.preview-1)
     rect('line',-W/2-199.5,-359.5,179,99)
 
-    setColor(1,1,1)
+    setColor(1,1-.8*darg,1-.8*darg)
     gc.setLineWidth(2)
     line(-W/2-1,-H/2,-W/2-1,H/2+1,W/2+1,H/2+1,W/2+1,-H/2)
     line(-W/2-19,-H/2,-W/2-19,H/2+1,W/2+19,H/2+1,W/2+19,-H/2)
@@ -44,7 +47,7 @@ function simple.fieldDraw(player,mino)
     draw(simple.next, W/2+110,-375,0,.2,.2,simple.nextW/2,simple.nextH/2)
 
     gc.setLineWidth(2)
-    setColor(1,1,1,.1)
+    setColor(1,1-.8*darg,1-.8*darg,.1)
     --网格
     for y=-.5*player.h+1,.5*player.h-1 do
         line(-W/2,36*y,W/2,36*y)
@@ -228,12 +231,26 @@ function simple.clearTextDraw(player)
     end
 end
 
+local function checkDanger(player)
+    local c=ceil(player.w/2)
+    for x=c-1,c+2 do
+        for y=#player.field,1,-1 do
+            if player.field[y][x] then
+            if next(player.field[y][x]) and y>=player.h-3 then return true end
+            end
+        end
+    end
+    return false
+end
 function simple.update(player,dt)
     local PCInfo=player.PCInfo
     for i=#PCInfo,1,-1 do PCInfo[i]=PCInfo[i]-dt
         if PCInfo[i]<=0 then rem(PCInfo,i) end
     end
     player.clearTxtTimer=max(player.clearTxtTimer-dt,0)
+
+    if checkDanger(player) then player.dangerAnimTimer=min(dangerAnimTMax,player.dangerAnimTimer+dt)
+    else player.dangerAnimTimer=max(0,player.dangerAnimTimer-dt) end
 
     if player.garbage then
         for i=1,#player.garbage do player.garbage[i].appearT=player.garbage[i].appearT+dt end
