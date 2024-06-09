@@ -95,7 +95,6 @@ function stf.init()
     stf.stftxt2=gc.newText(font.Bender)
     stf.stftxt2:addf(devList.specialThanks[1][1],4000,'center')
     stf.h[2]=stf.stftxt2:getHeight()
-    print(stf.h[2])
 
     t1=''
     local sp=devList.specialThanks
@@ -108,7 +107,6 @@ function stf.init()
     end
     t1=t1..uls.tester
     t1=t1..'\n\nThank you for playing.'
-    print(t1)
 
     stf.stftxt3=gc.newText(font.Bender)
     stf.stftxt3:addf(t1,4000,'center')
