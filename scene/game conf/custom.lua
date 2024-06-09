@@ -135,7 +135,7 @@ function custom.init()
             gc.setColor(r,g,b,2*t)
             gc.rectangle('fill',-w/2,-h/2,h,h)
             gc.setColor(1,1,1)
-            gc.printf(cfc.smooth,font.Bender_B,w/2+20+cfc.smoothOffX,cfc.smoothOffY,1200,'left',0,.3,.3,0,72)
+            gc.printf(cfc.smooth,font.Bender_B,w/2+50+cfc.smoothOffX,0,1200,'left',0,cfc.smoothScale,cfc.smoothScale,0,72)
             gc.setColor(1,1,1,.75)
             gc.printf(cfc.smoothTxt,font.Bender_B,-w/2,h/2+32,1600,'left',0,.25,.25,0,72)
         end,
