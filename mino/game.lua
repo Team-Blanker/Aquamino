@@ -226,12 +226,14 @@ function mino.nextIns(player)
     elseif love.keyboard.isDown(S.keySet.MR) and player.canInitMove then
         player.initOpQueue[#player.initOpQueue+1]='initMR'
     end
-    if love.keyboard.isDown(S.keySet.CW) and player.canInitRotate then
-        player.initOpQueue[#player.initOpQueue+1]='initRotateCW'
-    elseif love.keyboard.isDown(S.keySet.CCW) and player.canInitRotate then
-        player.initOpQueue[#player.initOpQueue+1]='initRotateCCW'
-    elseif love.keyboard.isDown(S.keySet.flip) and player.canInitRotate then
-        player.initOpQueue[#player.initOpQueue+1]='initRotate180'
+    if player.EDelay+player.CDelay~=0 then --对消行延迟与出块延迟均=0的情况特判，不应用提前旋转
+        if love.keyboard.isDown(S.keySet.CW) and player.canInitRotate then
+            player.initOpQueue[#player.initOpQueue+1]='initRotateCW'
+        elseif love.keyboard.isDown(S.keySet.CCW) and player.canInitRotate then
+            player.initOpQueue[#player.initOpQueue+1]='initRotateCCW'
+        elseif love.keyboard.isDown(S.keySet.flip) and player.canInitRotate then
+            player.initOpQueue[#player.initOpQueue+1]='initRotate180'
+        end
     end
     for i=1,#player.initOpQueue do mino.operate[player.initOpQueue[i]](player) end
     player.initOpQueue={}

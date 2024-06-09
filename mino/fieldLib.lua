@@ -14,6 +14,7 @@ block={
 local M=require'framework/mathextend'
 local T=require'framework/tableextend'
 local B=require'mino/blocks'
+local IRS_RS=require('mino/rotateSys/IRS-RS')
 
 local fieldLib={}
 
@@ -113,12 +114,13 @@ function fieldLib.kick(player,mode)
     local cur=player.cur
     --local originPiece,originO=T.copy(cur.piece),cur.O--先存一个，万一你没踢成功呢
     local originO=cur.O
+    local RS=fieldLib.coincide(player) and IRS_RS or player.RS
     cur.O=B.rotate(cur.piece,cur.O,mode)
-    if player.RS.getKickList then
-        local kickOrder=RS[player.RS].getKickList(player,mode)
+    if RS.getKickList then
+        local kickOrder=RS.getKickList(player,mode)
         if kickOrder then return kickOrder end
     else
-        local ukick=player.RS['kickTable'][cur.name][mode][originO+1]
+        local ukick=RS.kickTable[cur.name][mode][originO+1]
         if ukick and player.LDR>0 then
             local x,y
             if cur.piece.sz=='giant' then
