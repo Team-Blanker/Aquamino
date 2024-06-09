@@ -17,8 +17,8 @@ local devList={
     },
     specialThanks={
         {'MrZ_26'},
-        {'XMiao小渺 (Chumo2791)','User670','MianSoft','沙盒子','Sunday'},
-        {'Not-A-Normal-Robot','SweetSea-ButImNotSweet'}
+        {'XMiao小渺 (XM1ao)','User670','MianSoft','沙盒子','Sunday'},
+        {'T427 默默颗','Not-A-Normal-Robot','SweetSea-ButImNotSweet'}
     }
 }
 
@@ -102,7 +102,7 @@ function stf.init()
     for i=2,#sp do
         for j=1,#sp[i] do
         t1=t1..sp[i][j]
-        if i~=#sp[i] then t1=t1..'    ' end
+        if i~=#sp[i][j] then t1=t1..'    ' end
         end
         t1=t1..'\n'
     end
