@@ -661,32 +661,31 @@ function mino.keyP(k)
                     local xmin,xmax,ymin,ymax=B.edge(C.piece)
                     local xlist=B.getX(C.piece)
                     local smoothFall=(mino.smoothAnimAct and OP.FTimer/OP.FDelay or 0)
-                    local animTTL=mino.blockSkin.setDropAnimTTL and mino.blockSkin.setDropAnimTTL(OP,mino) or .5
-                    for j=1,#xlist do
-                        local lmax=ymax
-                        while not T.include(C.piece,{xlist[j],lmax}) do
-                            lmax=lmax-1
-                        end
-                        OP.dropAnim[#OP.dropAnim+1]={
-                            x=C.x+xlist[j],y=C.y-smoothFall+lmax,len=-smoothFall,
-                            TMax=animTTL,TTL=animTTL, w=xmax-xmin+1,h=ymax-ymin+1,
-                            color=OP.color[C.name]
-                        }
-                    end
+
                     his.dropHeight=0
                     if C.piece and #C.piece~=0 then
                         for h=1,C.y do
                             if not coincide(OP,0,-1) then C.spin=false
                                 C.y=C.y-1  his.dropHeight=his.dropHeight+1
-                                for j=#OP.dropAnim,#OP.dropAnim-#xlist+1,-1 do
-                                    OP.dropAnim[j].len=OP.dropAnim[j].len+1
-                                end
                             end
                         end
 
                         local die=mino.checkDie(OP)
                         mino.blockLock(OP,mino)
                         if die then mino.die(OP,true) end
+                    end
+
+                    local animTTL=mino.blockSkin.setDropAnimTTL and mino.blockSkin.setDropAnimTTL(OP,mino) or .5
+                    for j=1,#xlist do
+                        local lmax=ymax
+                        while not T.include(his.piece,{xlist[j],lmax}) do
+                            lmax=lmax-1
+                        end
+                        OP.dropAnim[#OP.dropAnim+1]={
+                            x=his.x+xlist[j],y=his.y+his.dropHeight-smoothFall+lmax,len=-smoothFall+his.dropHeight,
+                            TMax=animTTL,TTL=animTTL, w=xmax-xmin+1,h=ymax-ymin+1,
+                            color=OP.color[his.name]
+                        }
                     end
 
                     if S.winState==0 then
