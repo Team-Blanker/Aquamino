@@ -103,74 +103,6 @@ function mino.Ins20GDrop(player)
     if mino.sfxPlay.touch then mino.sfxPlay.touch(player,true) end
 end
 
-mino.operate={
-    initHold=function(OP)
-        mino.hold(OP) if mino.sfxPlay.hold then mino.sfxPlay.hold(OP) end
-        OP.canHold=false OP.canInitHold=true
-    end,
-    initML=function(OP)
-        local C=OP.cur
-        success=not coincide(OP,-1,0)
-        local landed=coincide(OP,0,-1)
-        if success then
-            C.x=C.x-1 C.moveSuccess=true C.spin=false
-            OP.cur.ghostY=fLib.getGhostY(OP)
-        end
-        OP.moveDir='L'
-        if love.keyboard.isDown(S.keySet.MR) then OP.MTimer=0 end
-        if mino.sfxPlay.move then mino.sfxPlay.move(OP,success,landed) end
-        OP.canInitMove=true
-    end,
-    initMR=function(OP)
-        local C=OP.cur
-        success=not coincide(OP,1,0)
-        local landed=coincide(OP,0,-1)
-        if success then
-            C.x=C.x+1 C.moveSuccess=true C.spin=false
-            OP.cur.ghostY=fLib.getGhostY(OP)
-        end
-        OP.moveDir='R'
-        if love.keyboard.isDown(S.keySet.ML) then OP.MTimer=0 end
-        if mino.sfxPlay.move then mino.sfxPlay.move(OP,success,landed) end
-        OP.canInitMove=true
-    end,
-    initRotateCW=function(OP)
-        local C=OP.cur
-        C.kickOrder=fLib.kick(OP,'R')
-        if C.kickOrder then OP.cur.ghostY=fLib.getGhostY(OP)
-            C.moveSuccess=true
-            if mino.rule.allowSpin[C.name] then C.spin,C.mini=SC[mino.rule.spinType](OP)
-            else C.spin,C.mini=false,false end
-        end
-        OP.canInitRotate=true
-
-        if mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,C.spin) end
-    end,
-    initRotateCCW=function(OP)
-        local C=OP.cur
-        C.kickOrder=fLib.kick(OP,'L')
-        if C.kickOrder then OP.cur.ghostY=fLib.getGhostY(OP)
-            C.moveSuccess=true
-            if mino.rule.allowSpin[C.name] then C.spin,C.mini=SC[mino.rule.spinType](OP)
-            else C.spin,C.mini=false,false end
-        end
-        OP.canInitRotate=true
-
-        if mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,C.spin) end
-    end,
-    initRotate180=function(OP)
-        local C=OP.cur
-        C.kickOrder=fLib.kick(OP,'F')
-        if C.kickOrder then OP.cur.ghostY=fLib.getGhostY(OP)
-            C.moveSuccess=true
-            if mino.rule.allowSpin[C.name] then C.spin,C.mini=SC[mino.rule.spinType](OP)
-            else C.spin,C.mini=false,false end
-        end
-        OP.canInitRotate=true
-
-        if mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,C.spin) end
-    end
-}
 function mino.nextIns(player)
     local field=player.field
     --清除全空的行
@@ -332,6 +264,230 @@ function mino.hold(player)
         end
     end
 end
+
+local success,landed,C
+mino.operate={
+    initHold=function(OP)--提前hold
+        mino.hold(OP) if mino.sfxPlay.hold then mino.sfxPlay.hold(OP) end
+        OP.canHold=false OP.canInitHold=true
+    end,
+    initML=function(OP)--提前左移
+        C=OP.cur
+        success=not coincide(OP,-1,0)
+        landed=coincide(OP,0,-1)
+        if success then
+            C.x=C.x-1 C.moveSuccess=true C.spin=false
+            OP.cur.ghostY=fLib.getGhostY(OP)
+        end
+        OP.moveDir='L'
+        if love.keyboard.isDown(S.keySet.MR) then OP.MTimer=0 end
+        if mino.sfxPlay.move then mino.sfxPlay.move(OP,success,landed) end
+        OP.canInitMove=true
+    end,
+    initMR=function(OP)--提前右移
+        C=OP.cur
+        success=not coincide(OP,1,0)
+        landed=coincide(OP,0,-1)
+        if success then
+            C.x=C.x+1 C.moveSuccess=true C.spin=false
+            OP.cur.ghostY=fLib.getGhostY(OP)
+        end
+        OP.moveDir='R'
+        if love.keyboard.isDown(S.keySet.ML) then OP.MTimer=0 end
+        if mino.sfxPlay.move then mino.sfxPlay.move(OP,success,landed) end
+        OP.canInitMove=true
+    end,
+    initRotateCW=function(OP)--提前顺时针旋转
+        C=OP.cur
+        C.kickOrder=fLib.kick(OP,'R')
+        if C.kickOrder then OP.cur.ghostY=fLib.getGhostY(OP)
+            C.moveSuccess=true
+            if mino.rule.allowSpin[C.name] then C.spin,C.mini=SC[mino.rule.spinType](OP)
+            else C.spin,C.mini=false,false end
+        end
+        OP.canInitRotate=true
+
+        if mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,C.spin) end
+    end,
+    initRotateCCW=function(OP)--提前逆时针旋转
+        C=OP.cur
+        C.kickOrder=fLib.kick(OP,'L')
+        if C.kickOrder then OP.cur.ghostY=fLib.getGhostY(OP)
+            C.moveSuccess=true
+            if mino.rule.allowSpin[C.name] then C.spin,C.mini=SC[mino.rule.spinType](OP)
+            else C.spin,C.mini=false,false end
+        end
+        OP.canInitRotate=true
+
+        if mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,C.spin) end
+    end,
+    initRotate180=function(OP)--提前180°旋转
+        C=OP.cur
+        C.kickOrder=fLib.kick(OP,'F')
+        if C.kickOrder then OP.cur.ghostY=fLib.getGhostY(OP)
+            C.moveSuccess=true
+            if mino.rule.allowSpin[C.name] then C.spin,C.mini=SC[mino.rule.spinType](OP)
+            else C.spin,C.mini=false,false end
+        end
+        OP.canInitRotate=true
+
+        if mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,C.spin) end
+    end,
+
+    --landed=coincide(OP,0,-1)
+    ML=function(OP,playSFX)--左移
+        success=not coincide(OP,-1,0)
+        landed=coincide(OP,0,-1)
+        C=OP.cur
+        if success then mino.setAnimPrePiece(OP) OP.smoothAnim.timer=mino.smoothTime
+            C.x=C.x-1 C.moveSuccess=true C.spin=false
+            if landed and OP.LDR>0 then OP.LTimer=0 OP.LDR=OP.LDR-1 end
+            OP.cur.ghostY=fLib.getGhostY(OP)
+        else  end
+        OP.moveDir='L'
+        if love.keyboard.isDown(S.keySet.MR) then OP.MTimer=0 end
+
+        if playSFX and mino.sfxPlay.move then mino.sfxPlay.move(OP,success,landed) end
+    end,
+    MR=function(OP,playSFX)--右移
+        success=not coincide(OP,1,0)
+        landed=coincide(OP,0,-1)
+        C=OP.cur
+        if success then mino.setAnimPrePiece(OP) OP.smoothAnim.timer=mino.smoothTime
+            C.x=C.x+1 C.moveSuccess=true C.spin=false
+            if landed and OP.LDR>0 then OP.LTimer=0 OP.LDR=OP.LDR-1 end
+            OP.cur.ghostY=fLib.getGhostY(OP)
+        else  end
+        OP.moveDir='R'
+        if love.keyboard.isDown(S.keySet.ML) then OP.MTimer=0 end
+
+        if playSFX and mino.sfxPlay.move then mino.sfxPlay.move(OP,success,landed) end
+    end,
+    rotateCW=function(OP)--顺时针旋转
+        landed=coincide(OP,0,-1)
+        mino.setAnimPrePiece(OP)
+        C=OP.cur
+        C.kickOrder=fLib.kick(OP,'R')
+        if C.kickOrder then OP.smoothAnim.timer=mino.smoothTime
+            OP.cur.ghostY=fLib.getGhostY(OP)
+            C.moveSuccess=true
+            if landed and OP.LDR>0 then OP.LTimer=0 OP.LDR=OP.LDR-1
+            else if C.kickOrder~=1 then OP.LDR=OP.LDR-1 end
+            end
+            if mino.rule.allowSpin[C.name] then C.spin,C.mini=SC[mino.rule.spinType](OP)
+            else C.spin,C.mini=false,false end
+        end
+
+        if mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,C.spin) end
+    end,
+
+    rotateCCW=function(OP)--顺时针旋转
+        landed=coincide(OP,0,-1)
+        mino.setAnimPrePiece(OP)
+        C=OP.cur
+        C.kickOrder=fLib.kick(OP,'L')
+        if C.kickOrder then OP.smoothAnim.timer=mino.smoothTime
+            OP.cur.ghostY=fLib.getGhostY(OP)
+            C.moveSuccess=true
+            if landed and OP.LDR>0 then OP.LTimer=0 OP.LDR=OP.LDR-1
+            else if C.kickOrder~=1 then OP.LDR=OP.LDR-1 end
+            end
+            if mino.rule.allowSpin[C.name] then C.spin,C.mini=SC[mino.rule.spinType](OP)
+            else C.spin,C.mini=false,false end
+        end
+
+        if mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,C.spin) end
+    end,
+    rotate180=function(OP)--180°旋转
+        landed=coincide(OP,0,-1)
+        mino.setAnimPrePiece(OP)
+        C=OP.cur
+        C.kickOrder=fLib.kick(OP,'F')
+        if C.kickOrder then OP.smoothAnim.timer=mino.smoothTime
+            OP.cur.ghostY=fLib.getGhostY(OP)
+            C.moveSuccess=true
+            if landed and OP.LDR>0 then OP.LTimer=0 OP.LDR=OP.LDR-1
+            else if C.kickOrder~=1 then OP.LDR=OP.LDR-1 end
+            end
+            if mino.rule.allowSpin[C.name] then C.spin,C.mini=SC[mino.rule.spinType](OP)
+            else C.spin,C.mini=false,false end
+        end
+
+        if mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,C.spin) end
+    end,
+
+    HD=function(OP)--硬降
+        C=OP.cur
+
+        local his=OP.history
+
+        local xmin,xmax,ymin,ymax=B.edge(C.piece)
+        local xlist=B.getX(C.piece)
+        local smoothFall=(mino.smoothAnimAct and OP.FTimer/OP.FDelay or 0)
+
+        his.dropHeight=0
+        if C.piece and #C.piece~=0 then
+            for h=1,C.y do
+                if not coincide(OP,0,-1) then C.spin=false
+                    C.y=C.y-1  his.dropHeight=his.dropHeight+1
+                end
+            end
+
+            local die=mino.checkDie(OP)
+            mino.blockLock(OP,mino)
+            if die then mino.die(OP,true) end
+        end
+
+        local animTTL=mino.blockSkin.setDropAnimTTL and mino.blockSkin.setDropAnimTTL(OP,mino) or .5
+        for j=1,#xlist do
+            local lmax=ymax
+            while not T.include(his.piece,{xlist[j],lmax}) do
+                lmax=lmax-1
+            end
+            OP.dropAnim[#OP.dropAnim+1]={
+                x=his.x+xlist[j],y=his.y+his.dropHeight-smoothFall+lmax,len=-smoothFall+his.dropHeight,
+                TMax=animTTL,TTL=animTTL, w=xmax-xmin+1,h=ymax-ymin+1,
+                color=OP.color[his.name]
+            }
+        end
+
+        if S.winState==0 then
+            if (#OP.loosen==0 or OP.loosen.fallTPL==0) then
+                if OP.EDelay==0 and OP.CDelay==0 then mino.nextIns(OP)
+                    else mino.addEvent(OP,OP.EDelay,'nextIns')
+                end
+            end
+        end
+    end,
+    SD=function(OP,playSFX)--软降
+        C=OP.cur
+        if S.ctrl.SD_ASD==0 and S.ctrl.SD_ASP==0 then
+            while not coincide(OP,0,-1) do local h=0
+                mino.setAnimPrePiece(OP) OP.smoothAnim.timer=mino.smoothTime
+                C.y=C.y-1 h=h+1 C.spin=false
+                if mino.sfxPlay.SD then mino.sfxPlay.SD(OP) end
+            end
+        elseif not coincide(OP,0,-1) then
+            mino.setAnimPrePiece(OP) OP.smoothAnim.timer=mino.smoothTime
+            C.y=C.y-1 C.spin=false
+            if playSFX and mino.sfxPlay.SD then mino.sfxPlay.SD(OP) end
+        end
+        mino.sfxPlay.touch(OP,coincide(OP,0,-1))
+    end,
+    SD1H=function(OP,playSFX)--软降一格
+        C=OP.cur
+        if not coincide(OP,0,-1) then
+            mino.setAnimPrePiece(OP) OP.smoothAnim.timer=mino.smoothTime
+            C.y=C.y-1 C.spin=false
+            if playSFX and mino.sfxPlay.SD then mino.sfxPlay.SD(OP) end
+        end
+        mino.sfxPlay.touch(OP,coincide(OP,0,-1))
+    end,
+    hold=function(OP)--暂存
+        mino.hold(OP) mino.sfxPlay.hold(OP)
+        OP.canHold=false
+    end
+}
 
 function mino.loosenDrop(player)
     local his,delay=player.history,mino.rule.loosen.fallTPL
@@ -589,130 +745,17 @@ function mino.keyP(k)
                     OP.initOpQueue[#OP.initOpQueue+1]='initRotate180'
                     OP.canInitRotate=false
                 end
+
             else
-                local landed=coincide(OP,0,-1)
-                if T.include(S.keySet.ML,k) then
-                    success=not coincide(OP,-1,0)
-                    if success then mino.setAnimPrePiece(OP) A.timer=mino.smoothTime
-                        C.x=C.x-1 C.moveSuccess=true C.spin=false
-                        if landed and OP.LDR>0 then OP.LTimer=0 OP.LDR=OP.LDR-1 end
-                        OP.cur.ghostY=fLib.getGhostY(OP)
-                    else  end
-                    OP.moveDir='L'
-                    if love.keyboard.isDown(S.keySet.MR) then OP.MTimer=0 end
 
-                    if mino.sfxPlay.move then mino.sfxPlay.move(OP,success,landed) end
-
-                elseif T.include(S.keySet.MR,k) then
-                    success=not coincide(OP,1,0)
-                    if success then mino.setAnimPrePiece(OP) A.timer=mino.smoothTime
-                        C.x=C.x+1 C.moveSuccess=true C.spin=false
-                        if landed and OP.LDR>0 then OP.LTimer=0 OP.LDR=OP.LDR-1 end
-                        OP.cur.ghostY=fLib.getGhostY(OP)
-                    else  end
-                    OP.moveDir='R'
-                    if love.keyboard.isDown(S.keySet.ML) then OP.MTimer=0 end
-
-                    if mino.sfxPlay.move then mino.sfxPlay.move(OP,success,landed) end
-
-                elseif T.include(S.keySet.CW,k) then mino.setAnimPrePiece(OP)
-                    C.kickOrder=fLib.kick(OP,'R')
-                    if C.kickOrder then A.timer=mino.smoothTime
-                        OP.cur.ghostY=fLib.getGhostY(OP)
-                        C.moveSuccess=true
-                        if landed and OP.LDR>0 then OP.LTimer=0 OP.LDR=OP.LDR-1
-                        else if C.kickOrder~=1 then OP.LDR=OP.LDR-1 end
-                        end
-                        if mino.rule.allowSpin[C.name] then C.spin,C.mini=SC[mino.rule.spinType](OP)
-                        else C.spin,C.mini=false,false end
-                    end
-
-                    if mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,C.spin) end
-
-                elseif T.include(S.keySet.CCW,k) then mino.setAnimPrePiece(OP)
-                    C.kickOrder=fLib.kick(OP,'L')
-                    if C.kickOrder then A.timer=mino.smoothTime
-                        OP.cur.ghostY=fLib.getGhostY(OP)
-                        C.moveSuccess=true
-                        if landed and OP.LDR>0 then OP.LTimer=0 OP.LDR=OP.LDR-1
-                        else if C.kickOrder~=1 then OP.LDR=OP.LDR-1 end
-                        end
-                        if mino.rule.allowSpin[C.name] then C.spin,C.mini=SC[mino.rule.spinType](OP)
-                        else C.spin,C.mini=false,false end
-                    end
-
-                    if mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,C.spin) end
-
-                elseif T.include(S.keySet.flip,k) then mino.setAnimPrePiece(OP)
-                    C.kickOrder=fLib.kick(OP,'F')
-                    if C.kickOrder then A.timer=mino.smoothTime
-                        OP.cur.ghostY=fLib.getGhostY(OP)
-                        C.moveSuccess=true
-                        if landed and OP.LDR>0 then OP.LTimer=0 OP.LDR=OP.LDR-1
-                        else if C.kickOrder~=1 then OP.LDR=OP.LDR-1 end
-                        end
-                        if mino.rule.allowSpin[C.name] then C.spin,C.mini=SC[mino.rule.spinType](OP)
-                        else C.spin,C.mini=false,false end
-                    end
-
-                    if mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,C.spin) end
-
-                elseif T.include(S.keySet.HD,k) then --硬降
-                    local xmin,xmax,ymin,ymax=B.edge(C.piece)
-                    local xlist=B.getX(C.piece)
-                    local smoothFall=(mino.smoothAnimAct and OP.FTimer/OP.FDelay or 0)
-
-                    his.dropHeight=0
-                    if C.piece and #C.piece~=0 then
-                        for h=1,C.y do
-                            if not coincide(OP,0,-1) then C.spin=false
-                                C.y=C.y-1  his.dropHeight=his.dropHeight+1
-                            end
-                        end
-
-                        local die=mino.checkDie(OP)
-                        mino.blockLock(OP,mino)
-                        if die then mino.die(OP,true) end
-                    end
-
-                    local animTTL=mino.blockSkin.setDropAnimTTL and mino.blockSkin.setDropAnimTTL(OP,mino) or .5
-                    for j=1,#xlist do
-                        local lmax=ymax
-                        while not T.include(his.piece,{xlist[j],lmax}) do
-                            lmax=lmax-1
-                        end
-                        OP.dropAnim[#OP.dropAnim+1]={
-                            x=his.x+xlist[j],y=his.y+his.dropHeight-smoothFall+lmax,len=-smoothFall+his.dropHeight,
-                            TMax=animTTL,TTL=animTTL, w=xmax-xmin+1,h=ymax-ymin+1,
-                            color=OP.color[his.name]
-                        }
-                    end
-
-                    if S.winState==0 then
-                        if (#OP.loosen==0 or OP.loosen.fallTPL==0) then
-                            if OP.EDelay==0 and OP.CDelay==0 then mino.nextIns(OP)
-                                else mino.addEvent(OP,OP.EDelay,'nextIns')
-                            end
-                        end
-                    end
-
-                elseif T.include(S.keySet.SD,k) then
-                    if S.ctrl.SD_ASD==0 and S.ctrl.SD_ASP==0 then
-                        while not coincide(OP,0,-1) do local h=0
-                            mino.setAnimPrePiece(OP) A.timer=mino.smoothTime
-                            C.y=C.y-1 h=h+1 C.spin=false
-                            if mino.sfxPlay.SD then mino.sfxPlay.SD(OP) end
-                        end
-                    elseif not landed then
-                        mino.setAnimPrePiece(OP) A.timer=mino.smoothTime
-                        C.y=C.y-1 C.spin=false
-                        if mino.sfxPlay.SD then mino.sfxPlay.SD(OP) end
-                    end
-                    mino.sfxPlay.touch(OP,coincide(OP,0,-1))
-
-                elseif T.include(S.keySet.hold,k) and OP.canHold then
-                    mino.hold(OP) mino.sfxPlay.hold(OP)
-                    OP.canHold=false
+                if T.include(S.keySet.ML,k)       then mino.operate.ML(OP,true)
+                elseif T.include(S.keySet.MR,k)   then mino.operate.MR(OP,true)
+                elseif T.include(S.keySet.CW,k)   then mino.operate.rotateCW(OP)
+                elseif T.include(S.keySet.CCW,k)  then mino.operate.rotateCCW(OP)
+                elseif T.include(S.keySet.flip,k) then mino.operate.rotate180(OP)
+                elseif T.include(S.keySet.HD,k)   then mino.operate.HD(OP)
+                elseif T.include(S.keySet.SD,k)   then mino.operate.SD(OP,true)
+                elseif T.include(S.keySet.hold,k) and OP.canHold then mino.operate.hold(OP)
                 end
 
                 --推土机！
@@ -800,11 +843,11 @@ function mino.gameUpdate(dt)
         if love.keyboard.isDown(S.keySet.SD) then
             if OP.event[1] or coincide(OP,0,-1) then OP.DTimer=min(OP.DTimer+dt,cxk.SD_ASD)
             else OP.DTimer=OP.DTimer+dt
+                local m=0
                 while OP.DTimer>=cxk.SD_ASD and not coincide(OP,0,-1) do
-                    mino.setAnimPrePiece(OP) A.timer=mino.smoothTime
-                    C.y=C.y-1 C.spin=false OP.DTimer=OP.DTimer-cxk.SD_ASP
-                    if mino.sfxPlay.SD then mino.sfxPlay.SD(OP) end
-                    mino.sfxPlay.touch(OP,coincide(OP,0,-1))
+                    m=m+1
+                    mino.operate.SD1H(OP,cxk.SD_ASP~=0 or m==1)
+                    OP.DTimer=OP.DTimer-cxk.SD_ASP
                 end
                 mino.setAnimPrePiece(OP)
                 OP.cur.ghostY=fLib.getGhostY(OP)
@@ -829,10 +872,11 @@ function mino.gameUpdate(dt)
                     if love.keyboard.isDown(S.keySet.SD) then
                     if coincide(OP,0,-1) then OP.DTimer=min(OP.DTimer+dt,cxk.SD_ASD)
                     else
+                        local m=0
                         while OP.DTimer>=cxk.SD_ASD and not coincide(OP,0,-1) do
-                            C.y=C.y-1 C.spin=false OP.DTimer=OP.DTimer-cxk.SD_ASP
-                            if mino.sfxPlay.SD then mino.sfxPlay.SD(OP) end
-                            mino.sfxPlay.touch(OP,coincide(OP,0,-1))
+                            m=m+1
+                            mino.operate.SD1H(OP,cxk.SD_ASP~=0 or m==1)
+                            OP.DTimer=OP.DTimer-cxk.SD_ASP
                         end
                     end
                     else OP.DTimer=0 end
@@ -859,10 +903,11 @@ function mino.gameUpdate(dt)
                     if love.keyboard.isDown(S.keySet.SD) then
                     if coincide(OP,0,-1) then OP.DTimer=min(OP.DTimer+dt,cxk.SD_ASD)
                     else
+                        local m=0
                         while OP.DTimer>=cxk.SD_ASD and not coincide(OP,0,-1) do
-                            C.y=C.y-1 C.spin=false OP.DTimer=OP.DTimer-cxk.SD_ASP
-                            if mino.sfxPlay.SD then mino.sfxPlay.SD(OP) end
-                            mino.sfxPlay.touch(OP,coincide(OP,0,-1))
+                            m=m+1
+                            mino.operate.SD1H(OP,cxk.SD_ASP~=0 or m==1)
+                            OP.DTimer=OP.DTimer-cxk.SD_ASP
                         end
                     end
                     else OP.DTimer=0 end
@@ -897,9 +942,8 @@ function mino.gameUpdate(dt)
             if coincide(P[i],0,-1) then P[i].LTimer=P[i].LTimer+dt P[i].FTimer=0 else
                 P[i].FTimer=P[i].FTimer+dt+remainTime remainTime=0
                 while P[i].FTimer>=P[i].FDelay and not coincide(P[i],0,-1) do
-                    C.y=C.y-1 C.spin=false P[i].FTimer=P[i].FTimer-P[i].FDelay
-                    mino.sfxPlay.touch(P[i],coincide(P[i],0,-1))
-                    P[i].cur.ghostY=fLib.getGhostY(P[i])
+                    mino.operate.SD1H(P[i],false)
+                    P[i].FTimer=P[i].FTimer-P[i].FDelay
                 end
             end
             if P[i].LTimer>P[i].LDelay then
