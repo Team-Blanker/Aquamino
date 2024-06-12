@@ -9,6 +9,7 @@ function rain.init()
     rain.density=200
     rain.thunderDensity=0.25
     rain.angle=0
+    rListS,rListM,tList={},{},{}
 end
 function rain.addLightning()
     ins(tList,lightTTL)
