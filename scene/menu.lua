@@ -96,8 +96,8 @@ function menu.init()
         end,
         event=function()
             scene.switch({
-                dest='conf',destScene=require('scene/game conf/conf_main'),swapT=.6,outT=.4,
-                anim=function() anim.confEnter(.4,.2,.4,0,0,0) end
+                dest='conf',destScene=require('scene/game conf/conf_main'),swapT=.3,outT=.2,
+                anim=function() anim.enterUL(.2,.1,.2,0,0,0) end
             })
             function menu.send(destScene)
                 destScene.exitScene='scene/menu'
@@ -135,8 +135,8 @@ function menu.init()
         end,
         event=function()
             scene.switch({
-                dest='about',swapT=.7,outT=.3,
-                anim=function() anim.cover(.3,.4,.3,0,0,0) end
+                dest='about',swapT=.3,outT=.2,
+                anim=function() anim.enterUR(.2,.1,.2,0,0,0) end
             })
         end
     },.2)

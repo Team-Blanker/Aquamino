@@ -55,8 +55,8 @@ function about.init()
         end,
         event=function()
             scene.switch({
-                dest='menu',destScene=require('scene/menu'),swapT=.7,outT=.3,
-                anim=function() anim.cover(.3,.4,.3,0,0,0) end
+                dest='menu',destScene=require('scene/menu'),swapT=.3,outT=.2,
+                anim=function() anim.enterDL(.2,.1,.2,0,0,0) end
             })
         end
     },.2)

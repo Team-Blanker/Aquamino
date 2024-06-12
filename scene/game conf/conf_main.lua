@@ -33,8 +33,8 @@ function config.init()
         end,
         event=function()
             scene.switch({
-                dest='menu',destScene=require(scene.cur.exitScene or 'scene/menu'),swapT=.6,outT=.4,
-                anim=function() anim.confExit(.4,.2,.4,0,0,0) end
+                dest='menu',destScene=require(scene.cur.exitScene or 'scene/menu'),swapT=.3,outT=.2,
+                anim=function() anim.enterDR(.2,.1,.2,0,0,0) end
             })
         end
     },.2)
