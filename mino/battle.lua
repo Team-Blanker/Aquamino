@@ -1,14 +1,16 @@
 local fLib=require'mino/fieldLib'
+local block=require'mino/blocks'
 local battle={}
 function battle.init(player)
-    player.garbage={} player.defAnimList={}
+    player.garbage={} player.atkAnimList={} player.defAnimList={}
     player.lastHole=rand(player.w)
     player.defAmount=0
     player.atkScale=1 player.defScale=1
     player.atkMinusByDef=true
 end
 function battle.sendAtk(player,dest,atk)
-    --[[arg={
+    if not atk then return end
+    --[[atk={
     amount=垃圾行数量
     block=什么颜色的方块，建议使用'g1' 'g2'
     cut=该组垃圾会被切割成几行一组一起进入，允许浮点数
@@ -16,6 +18,8 @@ function battle.sendAtk(player,dest,atk)
     appearT=垃圾进槽时间
     cut=1e99 M_OC=1即标准对战垃圾
     }]]
+    local x,y,ox,oy=block.size(player.history.piece)
+    ins(player.atkAnimList,{x=player.history.x-ox,y=player.history.y-oy,t=0,amount=atk.amount})
     ins(dest.garbage,atk)
 end
 function battle.atkRecv(player,atk)
@@ -23,7 +27,7 @@ function battle.atkRecv(player,atk)
     player.lastHole=rand()<atk.M_OC and rand(player.w) or player.lastHole
     local h
     local l=0
-    print(atk.cut)
+    --print(atk.cut)
     for i=1,atk.amount do
         l=l+1
         local sw=rand()<(l-atk.cut)
@@ -78,7 +82,7 @@ function battle.stdAtkGen(player)
         block='g1',
         cut=(w==4 or his.PC) and 1e99 or s and atk/2+b or 1e99,
         M_OC=(w>=2 and w<=4) and (4-w)*.025 or his.PC and 0 or 1/(b+atk-0.1*(c-3)),
-        appearT=0
+        appearT=0,
     }
 end
 return battle

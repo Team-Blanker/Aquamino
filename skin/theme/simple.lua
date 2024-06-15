@@ -2,6 +2,7 @@ local simple={}
 local T,M=mytable,mymath
 local setColor,rect,line,circle,printf,draw=gc.setColor,gc.rectangle,gc.line,gc.circle,gc.printf,gc.draw
 
+local atkAnimTMax=.5
 local defAnimTMax=.2
 local dangerAnimTMax=.2
 local gts
@@ -83,6 +84,7 @@ end
 function simple.garbageDraw(player,mino)
     local W,H=36*player.w,36*player.h
     local t
+    local aal=player.atkAnimList
     local dal=player.defAnimList
     local tga=0 --总垃圾数
     for i=1,#dal do
@@ -104,6 +106,13 @@ function simple.garbageDraw(player,mino)
         t=dal[i].t/defAnimTMax
         gc.setColor(1,1,1,1-t)
         rect('fill',-W/2-18-8*t,H/2-36*(dal[i].amount+dal[i].pos)-12*t,16+16*t,36*dal[i].amount+24*t)
+    end
+
+    for i=1,#aal do
+        t=aal[i].t/atkAnimTMax
+        local s=min((aal[i].amount-1+6)/24,.625)
+        gc.setColor(1,1,1,1.5-1.5*t)
+        gc.printf(aal[i].amount,font.Bender,-W/2+36*aal[i].x-18,H/2-36*(aal[i].y+(2-t)*t),100,'center',0,s,s,50,72)
     end
 end
 
@@ -261,6 +270,13 @@ function simple.update(player,dt)
         for i=#dal,1,-1 do
             dal[i].t=dal[i].t+dt
             if dal[i].t>=defAnimTMax then rem(dal,i) end
+        end
+    end
+    if player.atkAnimList then
+        local aal=player.atkAnimList
+        for i=#aal,1,-1 do
+            aal[i].t=aal[i].t+dt
+            if aal[i].t>=atkAnimTMax then rem(aal,i) end
         end
     end
 end
