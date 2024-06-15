@@ -32,7 +32,7 @@ block.Soff={--生成方块的旋转中心相对“基准点”的偏移
 }
 
 --Z 酱 锐 评：压得过于离谱，你一个月不看都不敢动的那种
-function block.rotate(b,o,mode)--mode='R'是顺时针 'L'是逆时针 'F'是180
+function block.rotate(b,o,mode)--旋转，mode='R'是顺时针 'L'是逆时针 'F'是180
     for i=1,#b do
         if mode=='F' then b[i][1],b[i][2]=b[i][1]*-1,b[i][2]*-1
         else b[i][1],b[i][2]=b[i][2],b[i][1]
@@ -51,6 +51,13 @@ function block.antiRotate(b,o,mode)--反方向旋转
         end
     end
     o=(o+(mode=='R' and -1 or mode=='L' and 1 or 2))%4 return o
+end
+
+function block.flipH(b) --水平翻转
+    for i=1,#b do b[i][1]=b[i][1]*(-1) end
+end
+function block.flipH(b) --竖直翻转
+    for i=1,#b do b[i][2]=b[i][2]*(-1) end
 end
 
 function block.size(b)--计算方块最小外包框大小以及旋转中心相对这个框的偏移
