@@ -6,7 +6,7 @@ local w,h=logo:getPixelDimensions()
 local devList={
     program={'Aqua6623 (Aquamarine6623, Kairan, 海兰)'},
     UI={'Aqua6623','MrZ_26'},
-    sfx={'Aqua6623'},
+    sfx={'Aqua6623','Farter'},
     music={
         hurtRecord={
             {'たかゆき','R-side','T-Malu','守己','カモキング','龍飛'},
@@ -67,7 +67,7 @@ function stf.init()
     stf.txt1[#stf.txt1+1]=c1
     stf.txt1[#stf.txt1+1]='\n\n'..uls.sfx
     stf.txt1[#stf.txt1+1]=c2
-    stf.txt1[#stf.txt1+1]='\n\n'..devList.sfx[1]
+    stf.txt1[#stf.txt1+1]='\n\n'..devList.sfx[1]..'    '..devList.sfx[2]
     stf.txt1[#stf.txt1+1]=c1
     stf.txt1[#stf.txt1+1]='\n\n'..uls.music
     stf.txt1[#stf.txt1+1]={1,.75,.75}

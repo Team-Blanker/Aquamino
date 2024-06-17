@@ -2,6 +2,7 @@
 local fs=love.filesystem
 fs.createDirectory('conf')
 fs.createDirectory('player')
+fs.newFile('player/best score')
 fs.createDirectory('bot')
 
 do
