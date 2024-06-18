@@ -9,6 +9,26 @@ function GenShin.bag(bag,player)
         table.insert(player.next,table.remove(new,rand(#new)))
     end
 end
+
+local ES={'I','T','J','L'}
+function GenShin.bagES(bag,player)
+    local new=T.copy(bag)
+    if player.seqGen.count==0 then
+        for i=#new,1,-1 do
+            table.insert(new,table.remove(new,rand(i)))
+        end
+        for i=1,#new do
+            if T.include(ES,new[i]) then table.insert(new,1,table.remove(new,i)) break end
+        end
+        for i=1,#new do
+            table.insert(player.next,new[i])
+        end
+    else
+        for i=1,#new do
+            table.insert(player.next,table.remove(new,rand(#new)))
+        end
+    end
+end
 function GenShin.bagp1(bag,player)
     local new=T.copy(bag)
     table.insert(new,bag[rand(#bag)])

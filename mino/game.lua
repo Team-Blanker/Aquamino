@@ -540,6 +540,7 @@ function mino.insertNextQueue(player)
     else
         NG[mino.seqGenType](mino.bag,player,player.seqGen.buffer)
     end
+    player.seqGen.count=player.seqGen.count+1
 end
 --初始化
 local curPlayTxt
@@ -696,7 +697,6 @@ function mino.init()
     },.25)
 end
 
-local success
 function mino.keyP(k)
     --if k=='f1' then mino.profile.switch() end
     if T.include(S.keySet.pause,k) then mino.paused=not mino.paused
@@ -722,7 +722,6 @@ function mino.keyP(k)
     for i=1,#S.opList do
         local OP=P[S.opList[i]]
         C,A=OP.cur,OP.smoothAnim
-        local his=OP.history
         if OP.deadTimer<0 and S.winState==0 then
             if OP.event[1] then--提前操作
                 if T.include(S.keySet.hold,k) and OP.canInitHold then
