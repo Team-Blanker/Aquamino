@@ -1,6 +1,8 @@
 local gc=love.graphics
 local M,T=mymath,mytable
 local B=require'mino/blocks'
+local floor=math.floor
+
 local rule={spinType='default'}
 function rule.init(P,mino)
     scene.BG=require('BG/snow peak') scene.BG.init()
@@ -18,25 +20,29 @@ function rule.init(P,mino)
     rule.allowPush={}
     rule.scoreUp=480
     rule.scoreBase=960
-    for i=1,#P do
-        P[i].stormLv=1
-        P[i].iceScore=0
-        P[i].iceFreezeTime=0
-        P[i].ruleAnim={
-            score={preScore=0,t=0,tMax=.15},
-            ice={},iceTMax=.3, smashParList={},
-            lvupT=3,
-            scoreTxt={},--[1]={x,y,v,g,color,size,TTL,Tmax}
-        }
-        for j=1,P[i].w do
-            P[i].ruleAnim.ice[j]={preH=0,t=0}
-        end
-        P[i].iceColumn={}
-        for j=1,P[i].w do
-            P[i].iceColumn[j]={H=-1,topTimer=0,speed=0,speedmax=0,dvps=0,appearT=0}
-        end
-        rule.rise(P[i],rand(2,P[i].w-1))
+
+    P[1].stormLv=1
+    P[1].iceScore=0
+    P[1].iceFreezeTime=0
+
+    P[1].smashCombo=0
+    P[1].scAnimTimer=0
+
+    P[1].ruleAnim={
+        score={preScore=0,t=0,tMax=.15},
+        ice={},iceTMax=.3, smashParList={},
+        lvupT=3,
+        scoreTxt={},--[1]={x,y,v,g,color,size,TTL,Tmax}
+    }
+    for j=1,P[1].w do
+        P[1].ruleAnim.ice[j]={preH=0,t=0}
     end
+    P[1].iceColumn={}
+    for j=1,P[1].w do
+        P[1].iceColumn[j]={H=-1,topTimer=0,speed=0,speedmax=0,dvps=0,appearT=0}
+    end
+    rule.rise(P[1],rand(2,P[1].w-1))
+
 end
 function rule.addScore(player,score)
     local A=player.ruleAnim.score
@@ -54,9 +60,10 @@ function rule.destroy(player,col,scoring,mtp)
     local A=player.ruleAnim
     local ice,AIce=player.iceColumn[col],A.ice[col]
 
+    local smash=false
     local h1,h2=.2,.4
     if ice and ice.H~=-1 then
-        if scoring then local score=(ice.H<=h1 and 320 or ice.H<=h2 and 240 or 160)*mtp
+        if scoring then local score=floor((ice.H<=h1 and 320 or ice.H<=h2 and 240 or 160)*mtp)
             rule.addScore(player,score)
             if player.stormLv<12 then
                 table.insert(player.ruleAnim.scoreTxt,{
@@ -66,7 +73,7 @@ function rule.destroy(player,col,scoring,mtp)
                 })
             end
         end
-        sfx.play('smash')
+        sfx.play('smash') smash=true
 
         local H=M.lerp(min(ice.H,1),A.ice[col].preH,(A.ice[col].t/A.iceTMax)^2)
         for i=1,floor((1+.4*rand())*H*player.h+.5) do
@@ -87,6 +94,8 @@ function rule.destroy(player,col,scoring,mtp)
     local clear=true
     for i=1,player.w do if player.iceColumn[i].H>=0 then clear=false break end end
     if clear then rule.rise(player,rand(player.w)) end
+
+    return smash
 end
 function rule.decrease(player,col,amount,mtp)
     if not mtp then mtp=1 end
@@ -168,6 +177,10 @@ function  rule.always(player,dt,mino)
         if ice.H>=1.75 then danger=true break end
     end
     if not mino.unableBG then scene.BG.danger=danger end
+
+    if player.smashCombo>2 then
+        player.scAnimTimer=player.scAnimTimer+dt
+    else player.scAnimTimer=0 end
 end
 
 function rule.afterPieceDrop(player,mino)
@@ -186,26 +199,37 @@ function rule.onLineClear(player,mino)
     local his=player.history
     local r=B.getX(his.piece)
     local PIC=player.iceColumn
+
+    local x=B.size(his.piece)
+
+    if his.line>=4 or (his.spin and his.line>0 and not(his.name=='I' and x==4)) then player.smashCombo=player.smashCombo+1
+    else player.smashCombo=0 end
+    local dcmtp=min(1+max(0,(player.smashCombo-1)/16),1.5)
+
+    local iceSmash=false
     for i=1,#r do for j=1,2 do
         if his.combo-j>0 then
             rule.decrease(player,r[i]+j+his.x,(his.combo-1)*.05/j)
             rule.decrease(player,r[i]-j+his.x,(his.combo-1)*.05/j)
         end
     end end
-    if his.line>=4 and his.name=='I' then
+    if his.line>=4 then
         local k=his.piece[1][1]+his.x
-        for i=k-1,k+1 do rule.destroy(player,i,true,i==k and 2.5 or 1.5) end
+        for i=k-1,k+1 do
+            iceSmash=rule.destroy(player,i,true,(i==k and 2.5 or 1.5)*dcmtp) or iceSmash
+        end
         if PIC[k-2] then rule.decrease(player,k-2,min(PIC[k-2].H,1),2) end
         if PIC[k+2] then rule.decrease(player,k+2,min(PIC[k+2].H,1),2) end
 
         player.iceFreezeTime=player.iceFreezeTime+.5
     else
         if his.spin then
-            local x=B.size(his.piece)
             if his.name=='I' and x==4 then--削弱I旋平放消一
                 for i=1,#r do rule.decrease(player,r[i]+his.x,1,.625) end
             else
-                for i=1,#r do rule.destroy(player,r[i]+his.x,true,.8+.2*his.line) end
+                for i=1,#r do
+                    iceSmash=rule.destroy(player,r[i]+his.x,true,(.8+.2*his.line)*dcmtp) or iceSmash
+                end
             end
         else
             for i=1,#r do rule.decrease(player,r[i]+his.x,his.line*.2*(.75+.25*his.combo)) end
@@ -213,6 +237,8 @@ function rule.onLineClear(player,mino)
     end
     if his.PC then player.iceFreezeTime=player.iceFreezeTime+2.5 end
     rule.lvup(player,mino)
+
+    if not iceSmash then player.smashCombo=0 end
 end
 function rule.underFieldDraw(player)
     local A=player.ruleAnim.score
@@ -235,6 +261,10 @@ function rule.underFieldDraw(player)
         gc.printf("Lv."..player.stormLv,font.JB_B,0,-180,1000,'center',0,1/3,1/3,500,84)
         gc.printf(player.stormLv<12 and ("%d/%d"):format(score,tar) or "???/???",
         font.JB,0,180,1000,'center',0,.25,.25,500,84)
+        if player.smashCombo>1 then
+            gc.setColor(1,1,1,.25+.25*max(player.smashCombo-2,1)/8*(1-player.scAnimTimer%.25/.25))
+            gc.printf("x"..player.smashCombo,font.JB,0,0,5000,'center',0,1/3,1/3,2500,84)
+        end
     gc.pop()
 end
 
@@ -294,6 +324,7 @@ function rule.overFieldDraw(player)
     local t=A.lvupT
     gc.setColor(1,1,1,1.8-t/.3)
     gc.printf("LEVEL UP",font.JB_B,0,-1200*(t-.16)*t,5000,'center',0,.8,.8,2500,84)
+
     gc.pop()
 end
 return rule
