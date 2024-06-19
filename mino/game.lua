@@ -594,9 +594,6 @@ function mino.init()
         SD={'down'},HD={'up'},hold={'z'},
         R={'r'},pause={'escape','p'}
     }
-    for k,v in pairs(S.keySet) do
-        v[#v+1]='touch_'..k
-    end
 
     S.ctrl={ASD=.15,ASP=.03,SD_ASD=0,SD_ASP=.05}
     T.combine(S.ctrl,file.read('conf/ctrl'))
