@@ -5,13 +5,12 @@ local video={}
 local BUTTON,SLIDER=scene.button,scene.slider
 function video.read()
     video.info={unableBG=false,vsync=false,fullscr=false,frameLim=120}
-    if fs.getInfo('conf/video') then T.combine(video.info,json.decode(fs.newFile('conf/video'):read())) end
+    local info=file.read('conf/video')
+    T.combine(video.info,info)
     win.setFullscr(video.info.fullscr)
 end
 function video.save()
-    local s=fs.newFile('conf/video')
-    s:open('w')
-    s:write(json.encode(video.info))
+    file.save('conf/video',video.info)
     love.window.setVSync(video.info.vsync and 1 or 0)
     drawCtrl.dtRestrict=1/video.info.frameLim
 end

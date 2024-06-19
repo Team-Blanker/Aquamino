@@ -5,14 +5,13 @@ local cf=user.lang.conf
 local audio={}
 function audio.read()
     audio.info={mus=.5,sfx=.8,distractCut=false}
-    if fs.getInfo('conf/audio') then T.combine(audio.info,json.decode(fs.newFile('conf/audio'):read())) end
+    local info=file.read('conf/audio')
+    if fs.getInfo('conf/audio') then T.combine(audio.info,info) end
     mus.volume,sfx.volume=audio.info.mus,audio.info.sfx
     mus.distractCut=audio.info.distractCut
 end
 function audio.save()
-    local s=fs.newFile('conf/audio')
-    s:open('w')
-    s:write(json.encode(audio.info))
+    file.save('conf/audio',audio.info)
 end
 function audio.init()
     cf=user.lang.conf

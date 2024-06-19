@@ -13,18 +13,18 @@ local bList={'Z','S','J','L','T','O','I'}
 local skinName
 function bc.read()
     bc.color=mytable.copy(defaultColor)
-    if fs.getInfo('conf/mino color') then mytable.combine(bc.color,json.decode(fs.newFile('conf/mino color'):read())) end
+    local c=file.read('conf/mino color')
+    mytable.combine(bc.color,c)
 end
 function bc.save()
-    local s=fs.newFile('conf/mino color')
-    s:open('w')
-    s:write(json.encode(bc.color))
+    file.save('conf/mino color',bc.color)
 end
 function bc.init()
     cfcc=user.lang.conf.custom.colorSet
     bc.read()
     do
-        local pf=fs.getInfo('conf/custom') and json.decode(fs.newFile('conf/custom'):read()) or
+        local pfs=file.read('conf/custom')
+        local pf=fs.getInfo('conf/custom') and next(pfs) or
         {block='pure',theme='simple',sfx='Dr Ocelot',smoothAnimAct=false,fieldScale=1}
         bc.blockSkin=require('skin/block/'..pf.block)
         skinName=pf.block

@@ -11,18 +11,14 @@ sfxList={'plastic','krystal','meme','otto'}
 function custom.read()
     custom.info={block='glossy',theme='simple',sfx='plastic',smoothAnimAct=false,smoothTime=.05,fieldScale=1}
     custom.color={}
-    if fs.getInfo('conf/custom') then
-        T.combine(custom.info,json.decode(fs.newFile('conf/custom'):read()))
-    end
+    local info=file.read('conf/custom')
+    T.combine(custom.info,info)
     if not T.include(blockSkinList,custom.info.block) then custom.info.block='glossy' end
     if not T.include(themeList,custom.info.theme) then custom.info.theme='simple' end
     if not T.include(sfxList,custom.info.sfx) then custom.info.sfx='plastic' end
 end
 function custom.save()
-    local s=fs.newFile('conf/custom')
-    s:open('w')
-    s:write(json.encode(custom.info))
-    s:close()
+    file.save('conf/custom',custom.info)
 end
 function custom.init()
     cfc=user.lang.conf.custom

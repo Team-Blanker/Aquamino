@@ -255,10 +255,7 @@ function menu.draw()
     BUTTON.draw()
 end
 function menu.exit()
-    local s=fs.newFile('player/unlocked')
-    s:open('w')
-    s:write(json.encode(menu.unlocked))
-    s:close()
+    file.save('player/unlocked',menu.unlocked)
 end
 function menu.gameSend(destScene,arg)
     destScene.mode=arg

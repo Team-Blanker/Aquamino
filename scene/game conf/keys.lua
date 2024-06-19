@@ -19,9 +19,9 @@ function key.read()
         SD={'down'},HD={'up'},hold={'z'},
         R={'r'},pause={'escape','p'}
     }
-    if fs.getInfo('conf/keySet') then
-        T.combine(key.keySet,json.decode(fs.newFile('conf/keySet'):read()))
-    end
+    local keySet=file.read('conf/keySet')
+    T.combine(key.keySet,keySet)
+
     for i=1,#key.keyName do
         if not key.keySet[key.keyName[i]] then key.keySet[key.keyName[i]]={} end
     end
@@ -30,9 +30,7 @@ function key.read()
     end
 end
 function key.save()
-    local s=fs.newFile('conf/keySet')
-    s:open('w')
-    s:write(json.encode(key.keySet))
+    file.save('conf/keySet',key.keySet)
 end
 
 function key.init()

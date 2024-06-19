@@ -5,15 +5,11 @@ local BUTTON,SLIDER=scene.button,scene.slider
 local T=mytable
 function hand.read()
     hand.ctrl={ASD=.15,ASP=.03,SD_ASD=0,SD_ASP=.05}
-    if fs.getInfo('conf/ctrl') then
-        T.combine(hand.ctrl,json.decode(fs.newFile('conf/ctrl'):read()))
-    end
-    
+    local info=file.read('conf/ctrl')
+    T.combine(hand.ctrl,info)  
 end
 function hand.save()
-    local s=fs.newFile('conf/ctrl')
-    s:open('w')
-    s:write(json.encode(hand.ctrl))
+    file.save('conf/ctrl',hand.ctrl)
 end
 function hand.init()
     cfh=user.lang.conf.handling

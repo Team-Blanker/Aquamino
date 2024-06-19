@@ -2,18 +2,13 @@ local lang={}
 local BUTTON,SLIDER=scene.button,scene.slider
 local langList={'English','zh-s','zh-t'}
 function lang.read()
-    lang.uage={}
-    if fs.getInfo('conf/lang') then
-        lang.uage=json.decode(fs.newFile('conf/lang'):read())
-    end
+    lang.uage=file.read('conf/lang')
     if not mytable.include(langList,lang.uage[1]) then lang.uage[1]='English' end
     user.langName=lang.uage[1]
     user.lang=require('language/'..user.langName)
 end
 function lang.save()
-    local s=fs.newFile('conf/lang')
-    s:open('w')
-    s:write(json.encode(lang.uage))
+    file.save('conf/lang',lang.uage)
 end
 function lang.init()
     lang.read()

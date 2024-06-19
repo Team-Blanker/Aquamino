@@ -563,8 +563,9 @@ function mino.init()
         mino.seqGenType='bag' mino.seqSync=false
         mino.bag={'Z','S','J','L','T','O','I'}
 
-        local pf=fs.getInfo('conf/custom') and json.decode(fs.newFile('conf/custom'):read()) or
-        {block='pure',theme='simple',sfx='Dr Ocelot',smoothAnimAct=false,smoothTime=.05,fieldScale=1}
+
+        local pf={block='pure',theme='simple',sfx='Dr Ocelot',smoothAnimAct=false,smoothTime=.05,fieldScale=1}
+        T.combine(pf,file.read('conf/custom'))
         mino.fieldScale=pf.fieldScale
         mino.blockSkin=require('skin/block/'..pf.block)
         mino.theme=require('skin/theme/'..pf.theme)
@@ -573,26 +574,33 @@ function mino.init()
         mino.sfxPlay=require('sfx/game/'..pf.sfx)
         mino.sfxPlay.addSFX()
 
-        local vi=json.decode(fs.newFile('conf/video'):read()) or {unableBG=false}
+        local vi={unableBG=false}
+        T.combine(vi,file.read('conf/video'))
         mino.unableBG=vi.unableBG
 
         for i=1,#P do
             P[i].color={Z={.96,.16,.32},S={.48,.96,0},J={0,.64,.96},L={.96,.64,.32},T={.8,.2,.96},O={.96,.96,0},I={.16,.96,.72},
                 g1={.5,.5,.5},g2={.75,.75,.75},
             }
-            if fs.getInfo('conf/mino color') then T.combine(P[i].color,json.decode(fs.newFile('conf/mino color'):read())) end
+            if fs.getInfo('conf/mino color') then T.combine(P[i].color,file.read('conf/mino color')) end
         end
     end
     S.opList={1}
-    S.keySet=fs.getInfo('conf/keySet') and json.decode(fs.newFile('conf/keySet'):read()) or
-    {
+
+    local ks=file.read('conf/keySet')
+    S.keySet=next(ks) and ks or {
         ML={'left'},MR={'right'},
         CW={'x'},CCW={'c'},flip={'d'},
         SD={'down'},HD={'up'},hold={'z'},
         R={'r'},pause={'escape','p'}
     }
-    S.ctrl=fs.getInfo('conf/ctrl') and json.decode(fs.newFile('conf/ctrl'):read()) or
-    {ASD=.15,ASP=.03,SD_ASD=0,SD_ASP=.05}
+    for k,v in pairs(S.keySet) do
+        v[#v+1]='touch_'..k
+    end
+
+    S.ctrl={ASD=.15,ASP=.03,SD_ASD=0,SD_ASP=.05}
+    T.combine(S.ctrl,file.read('conf/ctrl'))
+
     mino.rule={
         timer=0,
         allowPush={},allowSpin={T=true},spinType='default',loosen={fallTPL=0}--TPL=Time Per Line

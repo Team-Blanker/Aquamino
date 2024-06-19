@@ -63,7 +63,9 @@ touch=love.touch
 mymath=require'framework/mathextend' mytable=require'framework/tableextend'
 anim=require'scene/swapAnim'
 COLOR=require'framework/color'
+
 json=require'framework/json'
+file=require'framework/fileextend'
 
 rand=math.random
 sin=math.sin cos=math.cos
@@ -339,15 +341,6 @@ end
 function love.quit()
     if fs.getInfo('player/game stat') then
         win.stat.totalTime=win.stat.totalTime+scene.totalTime
-        local s=fs.newFile('player/game stat')
-        s:open('w')
-        s:write(json.encode(win.stat))
-        s:close()
-    else
-        local s=fs.newFile('player/game stat')
-        win.stat.launch=1
-        s:open('w')
-        s:write(json.encode(win.stat))
-        s:close()
     end
+    file.save('player/game stat',win.stat)
 end

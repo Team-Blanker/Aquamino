@@ -2,7 +2,6 @@
 local fs=love.filesystem
 fs.createDirectory('conf')
 fs.createDirectory('player')
-fs.newFile('player/best score')
 fs.createDirectory('bot')
 
 do
@@ -22,18 +21,16 @@ end
 
 do
     if fs.getInfo('player/game stat') then
-        local s=fs.newFile('player/game stat')
-        local k=json.decode(s:read())
+        local k=file.read('player/game stat')
         mytable.combine(win.stat,k)
         win.stat.launch=win.stat.launch+1
-        s:open('w')
-        s:write(json.encode(win.stat))
-        s:close()
+        file.save('player/game stat',win.stat)
     else
-        local s=fs.newFile('player/game stat')
         win.stat.launch=1
-        s:open('w')
-        s:write(json.encode(win.stat))
-        s:close()
+        file.save('player/game stat',win.stat)
     end
+end
+do
+    local s=file.read('player/best score')
+    file.save('player/best score',s)
 end
