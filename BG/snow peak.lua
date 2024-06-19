@@ -26,21 +26,21 @@ end
 function bg.dangerUpdate(dt)
     bg.dangerT=bg.danger and min(2,bg.dangerT+dt) or max(0,bg.dangerT-2*dt)
     if bg.danger then
-        if dt*20>rand() then
+        if dt*32>rand() then
         table.insert(bg.snowParList,{
             x=3000*rand()-180-2040,y=-600,
             a=2*math.pi*rand(),as=.1*math.pi*(rand()-.5),
             sz=1,type=3,TTL=4
         })
         end
-        if dt*15>rand() then
+        if dt*24>rand() then
         table.insert(bg.snowParList,{
             x=3000*rand()-180-2040,y=-600,
             a=2*math.pi*rand(),as=.1*math.pi*(rand()-.5),
             sz=1.5,type=3,TTL=4
         })
         end
-        if dt*10>rand() then
+        if dt*16>rand() then
         table.insert(bg.snowParList,{
             x=3000*rand()-180-2040,y=-600,
             a=2*math.pi*rand(),as=.1*math.pi*(rand()-.5),
