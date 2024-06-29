@@ -1,13 +1,23 @@
-local fLib=require('mino/fieldLib')
-local bot_cc=require('mino/bot/cc')
 local btest={}
+local bot_cc=require('mino/bot/cc')
+local battle=require'mino/battle'
+
+local rb
 function btest.init(P,mino)
-    mino.resetStopMusic=false
+    rb=user.lang.rule.backfire
+
+    scene.BG=require('BG/Energy Beat') scene.BG.init()
+    mino.musInfo="T-Malu - Energy Beat"
+    mus.add('music/Hurt Record/Energy Beat','whole','ogg',80.556,128*60/126)
+    mus.start()
+
+    battle.init(P[1]) P[1].atkMinusByDef=false
     mino.seqGenType='bagp1FromBag'
-    mino.rule.allowSpin={T=true}
-    --mino.waitTime=.5
-    mino.musInfo="R-side - Nine Five"
-    P[1].FDelay=1e99
+    P[1].LDelay=1e99
+    P[1].recvLine=0
+    P[1].atk=0
+    P[1].line=0
+
     mino.stacker.opList={}
     --[[fLib.insertField(P[1],{
         {'L',' ',' ','Z','Z',' ','S',' ',' ',' '},
@@ -21,7 +31,11 @@ function btest.init(P,mino)
     B2B=P[1].history.B2B>0,
     combo=P[1].history.combo,
     })
-    btest.expect={} btest.opTimer=0
+    btest.expect={}
+    btest.opTimer=0
+end
+function btest.BGUpdate()
+    scene.BG.setTime(mus.whole:tell())
 end
 function btest.update(player,dt,mino)
     btest.opTimer=btest.opTimer+dt
@@ -31,9 +45,25 @@ function btest.update(player,dt,mino)
         if op then
         btest.expect=op.expect
         bot_cc.operate(player,op,false,mino)
-        btest.opTimer=btest.opTimer-.25
+        btest.opTimer=btest.opTimer-1
         end
     end
+end
+function btest.postCheckClear(player,mino)
+    if player.history.line==0 then
+        for i=1,#player.garbage do
+        battle.atkRecv(player,player.garbage[i])
+        player.recvLine=player.recvLine+player.garbage[i].amount
+        end
+        player.garbage={}
+    else battle.defense(player,battle.stdAtkCalculate(player),mino)
+    end
+end
+function btest.onLineClear(player,mino)
+    local his=player.history
+    player.line=player.line+his.line
+    player.atk=player.atk+battle.stdAtkCalculate(player)
+    battle.sendAtk(player,player,battle.stdAtkGen(player))
 end
 function btest.afterPieceDrop(player)
     btest.botThread.sendChannel:push({op='send',
@@ -41,11 +71,22 @@ function btest.afterPieceDrop(player)
     B2B=player.history.B2B>0,
     combo=player.history.combo,
     })
+    if player.recvLine>=80 then mino.win(player) end
 end
 function btest.onNextGen(player,nextStart)
     print('adding next queue')
     bot_cc.sendNext(btest.botThread,player,nextStart)
     print('next queue added')
+end
+local efftxt
+function btest.underFieldDraw(player)
+    local x=-18*player.w-110
+    gc.setColor(1,1,1)
+    gc.printf(""..max(80-player.recvLine,0),font.JB,x,-48,6000,'center',0,.625,.625,3000,96)
+    gc.printf(rb.remain,font.JB_B,x,0,6000,'center',0,.2,.2,3000,96)
+    efftxt=player.line==0 and "-" or string.format("%.2f",player.atk/player.line)
+    gc.printf(efftxt,font.JB,x,56,6000,'center',0,.4,.4,3000,96)
+    gc.printf(rb.eff,font.JB_B,x,96,6000,'center',0,.2,.2,3000,96)
 end
 function btest.overFieldDraw(player)
     gc.setColor(1,1,1)

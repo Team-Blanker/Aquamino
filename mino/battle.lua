@@ -37,6 +37,13 @@ function battle.atkRecv(player,atk)
         fLib.garbage(player,atk.block,1,h)
     end
 end
+function battle.getGarbageAmount(player)
+    local n=0
+    for i=1,#player.garbage do
+        n=n+player.garbage[i].amount
+    end
+    return n
+end
 function battle.defense(player,amount,mino)
     local n=amount*player.defScale
     local remList={}
@@ -64,8 +71,8 @@ function battle.stdAtkCalculate(player)
     l,s,m,w,b,c=his.line,his.spin,his.mini,his.wide,his.B2B,his.combo
 
     local bl=(s and not m) and 2*l-1 or l>=4 and 1.5*l-1.5 or l-.5
-    local ba=b>0 and (3+b)/4 or 0
-    local ca=(w>=2 and w<=4) and min(c-1,.5) or max(min((c-(l==4 and 1 or 2))/2,3.5),0)
+    local ba=b>0 and min((3+b)/4,7) or 0
+    local ca=(w>=2 and w<=4) and min(c-1,.5) or max(min((c-(l>=4 and 1 or 2))/2,3.5),0)
     if his.PC then return 4+l else
     return l==0 and 0 or floor(bl+ba+ca)
     end

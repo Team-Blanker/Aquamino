@@ -84,7 +84,6 @@ end
 function simple.garbageDraw(player,mino)
     local W,H=36*player.w,36*player.h
     local t
-    local aal=player.atkAnimList
     local dal=player.defAnimList
     local tga=0 --总垃圾数
     for i=1,#dal do
@@ -108,12 +107,17 @@ function simple.garbageDraw(player,mino)
         rect('fill',-W/2-18-8*t,H/2-36*(dal[i].amount+dal[i].pos)-12*t,16+16*t,36*dal[i].amount+24*t)
     end
 
+end
+function simple.overFieldDraw(player)
+    local aal=player.atkAnimList
+    if aal then
     for i=1,#aal do
         t=aal[i].t/atkAnimTMax
         local bv=min(max(aal[i].B2B,0)*.2,1)
         local s=min((aal[i].amount-1+6)/24,.625)
         gc.setColor(1,1-.2*bv,1-bv,1.5-1.5*t)
-        gc.printf(aal[i].amount,font.Bender,-W/2+36*aal[i].x-18,H/2-36*(aal[i].y+(2-t)*t),100,'center',0,s,s,50,72)
+        gc.printf(aal[i].amount,font.Bender,-W/2+36*aal[i].x-18,H/2-36*(aal[i].y+(2-t)*t),200,'center',0,s,s,100,72)
+    end
     end
 end
 

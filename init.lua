@@ -4,6 +4,7 @@ fs.createDirectory('conf')
 fs.createDirectory('player')
 fs.createDirectory('bot')
 
+require'mino/bot/cc'
 do
     local audio=require'scene/game conf/audio'
     audio.read() audio.save()

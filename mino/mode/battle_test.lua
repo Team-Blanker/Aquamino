@@ -1,6 +1,6 @@
 local rule={}
 local battle=require'mino/battle'
-local bot_zzz=require('mino/bot/zzztoj')
+local bot_cc=require('mino/bot/cc')
 function rule.init(P,mino)
     mino.musInfo="georhythm - nega to posi"
     scene.BG=require('BG/nega to posi') scene.BG.init()
@@ -10,32 +10,35 @@ function rule.init(P,mino)
     mino.seqGenType='bagp1FromBag' mino.seqSync=true
     P[1].atk=0
     P[1].line=0
+    P[1].LDelay=1e99
     P[1].posx=-450 P[2]=mytable.copy(P[1]) P[2].posx=450
     P[1].target=2 P[2].target=1
     mino.fieldScale=min(mino.fieldScale,1)
     battle.init(P[1]) battle.init(P[2])
 
-    mino.stacker.opList={1,2}
-    bot_zzz.init() bot_zzz.start(1)
+    rule.botThread=bot_cc.newThread(1,P,2)
+    bot_cc.startThread(rule.botThread)
+    rule.botThread.sendChannel:push({op='send',
+    boolField=bot_cc.renderField(P[1]),
+    B2B=P[1].history.B2B>0,
+    combo=P[1].history.combo,
+    })
+    rule.expect={}
     rule.opTimer=0
 end
 local eq,hold
---[[function rule.gameUpdate(P,dt,mino)
+function rule.gameUpdate(P,dt,mino)
     rule.opTimer=rule.opTimer+dt
-    if rule.opTimer>.25 then
-        bot_zzz.think(P[2])
-        rule.opTimer=rule.opTimer-.25
-    end
-    eq,hold=bot_zzz.getExecution()
-
-    if hold then bot_zzz.execute(P[2],'v',mino) end
-    if eq then print(hold) print(eq)
-        while eq~='' do
-            eq=bot_zzz.execute(P[2],eq,mino)
+    if rule.opTimer>1 then
+        rule.botThread.sendChannel:push({op='require'})
+        local op=rule.botThread.recvChannel:demand()
+        if op then
+        rule.expect=op.expect
+        bot_cc.operate(P[2],op,false,mino)
+        rule.opTimer=rule.opTimer-.5
         end
-        bot_zzz.execute(P[2],'V',mino)
     end
-end]]
+end
 function rule.postCheckClear(player,mino)
     if player.history.line==0 then
         for i=1,#player.garbage do
@@ -51,6 +54,21 @@ function rule.onLineClear(player,mino)
     player.atk=player.atk+battle.stdAtkCalculate(player)
     battle.sendAtk(player,mino.player[player.target],battle.stdAtkGen(player))
 end
+function rule.afterPieceDrop(player,mino)
+    if player==mino.player[2] then
+    rule.botThread.sendChannel:push({op='send',
+    boolField=bot_cc.renderField(player),
+    B2B=player.history.B2B>0,
+    combo=player.history.combo,
+    garbage=battle.getGarbageAmount(player)
+    })
+    end
+end
+function rule.onNextGen(player,nextStart,mino)
+    if player==mino.player[2] then
+    bot_cc.sendNext(rule.botThread,player,nextStart)
+    end
+end
 local efftxt
 function rule.underFieldDraw(player)
     local x=-18*player.w-110
@@ -59,6 +77,19 @@ function rule.underFieldDraw(player)
 
     efftxt=player.line==0 and "-" or string.format("%.2f",player.atk/player.line)
     gc.printf(efftxt,font.JB,x,56,6000,'center',0,.4,.4,3000,96)
-
+end
+function rule.overFieldDraw(player,mino)
+    if player==mino.player[2] then
+    gc.setColor(1,1,1)
+    if rule.expect then
+        for i=1,#rule.expect,2 do
+            gc.setLineWidth(3)
+            gc.rectangle('line',36*(rule.expect[i]-player.w/2-1)+3,-36*(rule.expect[i+1]-player.h/2)+3,30,30)
+        end
+    end
+    end
+end
+function rule.exit()
+    bot_cc.destroyThread(rule.botThread)
 end
 return rule

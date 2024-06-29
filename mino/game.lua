@@ -150,24 +150,31 @@ function mino.nextIns(player)
     player.MTimer,player.DTimer=min(player.MTimer,S.ctrl.ASD),min(player.DTimer,S.ctrl.SD_ASD)
     player.LDR=player.LDRInit player.LTimer=0
 
-    if love.keyboard.isDown(S.keySet.hold) and player.canInitHold then
-        player.initOpQueue[#player.initOpQueue+1]='initHold'
+    local k=false
+    for i=1,#mino.stacker.opList do
+        if mino.player[mino.stacker.opList[i]]==player then k=true break end
     end
-    if love.keyboard.isDown(S.keySet.ML) and player.canInitMove then
-        player.initOpQueue[#player.initOpQueue+1]='initML'
-    elseif love.keyboard.isDown(S.keySet.MR) and player.canInitMove then
-        player.initOpQueue[#player.initOpQueue+1]='initMR'
-    end
-    if player.EDelay+player.CDelay~=0 then --对消行延迟与出块延迟均=0的情况特判，不应用提前旋转
-        if love.keyboard.isDown(S.keySet.CW) and player.canInitRotate then
-            player.initOpQueue[#player.initOpQueue+1]='initRotateCW'
-        elseif love.keyboard.isDown(S.keySet.CCW) and player.canInitRotate then
-            player.initOpQueue[#player.initOpQueue+1]='initRotateCCW'
-        elseif love.keyboard.isDown(S.keySet.flip) and player.canInitRotate then
-            player.initOpQueue[#player.initOpQueue+1]='initRotate180'
+
+    if k then
+        if love.keyboard.isDown(S.keySet.hold) and player.canInitHold then
+            player.initOpQueue[#player.initOpQueue+1]='initHold'
         end
+        if love.keyboard.isDown(S.keySet.ML) and player.canInitMove then
+            player.initOpQueue[#player.initOpQueue+1]='initML'
+        elseif love.keyboard.isDown(S.keySet.MR) and player.canInitMove then
+            player.initOpQueue[#player.initOpQueue+1]='initMR'
+        end
+        if player.EDelay+player.CDelay~=0 then --对消行延迟与出块延迟均=0的情况特判，不应用提前旋转
+            if love.keyboard.isDown(S.keySet.CW) and player.canInitRotate then
+                player.initOpQueue[#player.initOpQueue+1]='initRotateCW'
+            elseif love.keyboard.isDown(S.keySet.CCW) and player.canInitRotate then
+                player.initOpQueue[#player.initOpQueue+1]='initRotateCCW'
+            elseif love.keyboard.isDown(S.keySet.flip) and player.canInitRotate then
+                player.initOpQueue[#player.initOpQueue+1]='initRotate180'
+            end
+        end
+        for i=1,#player.initOpQueue do mino.operate[player.initOpQueue[i]](player) end
     end
-    for i=1,#player.initOpQueue do mino.operate[player.initOpQueue[i]](player) end
     player.initOpQueue={}
 
     if player.FDelay==0 then
@@ -363,7 +370,7 @@ mino.operate={
 
         if playSFX and mino.sfxPlay.move then mino.sfxPlay.move(OP,success,landed) end
     end,
-    rotateCW=function(OP)--顺时针旋转
+    rotateCW=function(OP,playSFX)--顺时针旋转
         landed=coincide(OP,0,-1)
         mino.setAnimPrePiece(OP)
         C=OP.cur
@@ -378,10 +385,10 @@ mino.operate={
             else C.spin,C.mini=false,false end
         end
 
-        if mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,C.spin) end
+        if playSFX and mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,C.spin) end
     end,
 
-    rotateCCW=function(OP)--顺时针旋转
+    rotateCCW=function(OP,playSFX)--顺时针旋转
         landed=coincide(OP,0,-1)
         mino.setAnimPrePiece(OP)
         C=OP.cur
@@ -396,9 +403,9 @@ mino.operate={
             else C.spin,C.mini=false,false end
         end
 
-        if mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,C.spin) end
+        if playSFX and mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,C.spin) end
     end,
-    rotate180=function(OP)--180°旋转
+    rotate180=function(OP,playSFX)--180°旋转
         landed=coincide(OP,0,-1)
         mino.setAnimPrePiece(OP)
         C=OP.cur
@@ -413,10 +420,10 @@ mino.operate={
             else C.spin,C.mini=false,false end
         end
 
-        if mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,C.spin) end
+        if playSFX and mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,C.spin) end
     end,
 
-    HD=function(OP)--硬降
+    HD=function(OP,isPlayer)--硬降
         C=OP.cur
 
         local his=OP.history
@@ -435,7 +442,7 @@ mino.operate={
 
             local die=mino.checkDie(OP)
             mino.blockLock(OP,mino)
-            if die then mino.die(OP,true) end
+            if die then mino.die(OP,isPlayer) end
         end
 
         local animTTL=mino.blockSkin.setDropAnimTTL and mino.blockSkin.setDropAnimTTL(OP,mino) or .5
@@ -474,6 +481,15 @@ mino.operate={
         end
         mino.sfxPlay.touch(OP,coincide(OP,0,-1))
     end,
+    SD_drop=function(OP,playSFX)--软降到底
+        C=OP.cur
+        while not coincide(OP,0,-1) do local h=0
+            mino.setAnimPrePiece(OP) OP.smoothAnim.timer=mino.smoothTime
+            C.y=C.y-1 h=h+1 C.spin=false
+            if mino.sfxPlay.SD then mino.sfxPlay.SD(OP) end
+        end
+        mino.sfxPlay.touch(OP,coincide(OP,0,-1))
+    end,
     SD1H=function(OP,playSFX)--软降一格
         C=OP.cur
         if not coincide(OP,0,-1) then
@@ -483,8 +499,8 @@ mino.operate={
         end
         mino.sfxPlay.touch(OP,coincide(OP,0,-1))
     end,
-    hold=function(OP)--暂存
-        mino.hold(OP) mino.sfxPlay.hold(OP)
+    hold=function(OP,playSFX)--暂存
+        mino.hold(OP) if playSFX and mino.sfxPlay.hold then mino.sfxPlay.hold(OP) end
         OP.canHold=false
     end
 }
@@ -529,16 +545,23 @@ function mino.setAnimDrawPiece(player)
     end
 end
 function mino.insertNextQueue(player)
+    local n--这个值表示新的next从第几个预览块开始
+    local rong=mino.rule.onNextGen
     if mino.seqSync then
+        
         mino.publicPlayer.next={}
         NG[mino.seqGenType](mino.bag,mino.publicPlayer,mino.publicPlayer.seqGen.buffer)
         for k,v in pairs(mino.player) do
+            n=#v.next+1
             for i=1,#mino.publicPlayer.next do
                 table.insert(v.next,mino.publicPlayer.next[i])
             end
+            if rong then rong(v,n,mino) end
         end
     else
+        n=#player.next+1
         NG[mino.seqGenType](mino.bag,player,player.seqGen.buffer)
+        if rong then rong(player,n,mino) end
     end
     player.seqGen.count=player.seqGen.count+1
 end
@@ -754,12 +777,12 @@ function mino.keyP(k)
 
                 if T.include(S.keySet.ML,k)       then mino.operate.ML(OP,true)
                 elseif T.include(S.keySet.MR,k)   then mino.operate.MR(OP,true)
-                elseif T.include(S.keySet.CW,k)   then mino.operate.rotateCW(OP)
-                elseif T.include(S.keySet.CCW,k)  then mino.operate.rotateCCW(OP)
-                elseif T.include(S.keySet.flip,k) then mino.operate.rotate180(OP)
-                elseif T.include(S.keySet.HD,k)   then mino.operate.HD(OP)
+                elseif T.include(S.keySet.CW,k)   then mino.operate.rotateCW(OP,true)
+                elseif T.include(S.keySet.CCW,k)  then mino.operate.rotateCCW(OP,true)
+                elseif T.include(S.keySet.flip,k) then mino.operate.rotate180(OP,true)
+                elseif T.include(S.keySet.HD,k)   then mino.operate.HD(OP,true)
                 elseif T.include(S.keySet.SD,k)   then mino.operate.SD(OP,true)
-                elseif T.include(S.keySet.hold,k) and OP.canHold then mino.operate.hold(OP)
+                elseif T.include(S.keySet.hold,k) and OP.canHold then mino.operate.hold(OP,true)
                 end
 
                 --推土机！
@@ -1129,6 +1152,7 @@ function mino.draw()
     end
 end
 function mino.exit()
+    if mino.rule.exit then mino.rule.exit() end
     mino.musInfo=""
     mino.exitScene=nil
     scene.sendArg=nil
