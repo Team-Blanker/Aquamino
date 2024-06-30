@@ -10,19 +10,23 @@ local mus={
     paused=false,stopped=false,
     distractCut=false,
     add=function(path,mode,form,loopStart,loopLen)
+        local isSameMusic=(mus.path==path and mus.type==mode)
         mus.stop()
         assert(mode=='parts' or mode=='whole',"music type must be 'parts' or 'whole'")
         mus.path=path mus.type=mode
         if mode=='parts' then
+            if not isSameMusic then
             if fs.getInfo(path..'/intro.'..form) then mus.intro=love.audio.newSource(path..'/intro.'..form,'stream') end
-            if fs.getInfo(path..'/loop.'..form) then mus.loop=love.audio.newSource(path..'/loop.'..form,'stream')
-                mus.loop:seek(0)
-            end
+            if fs.getInfo(path..'/loop.'..form) then mus.loop=love.audio.newSource(path..'/loop.'..form,'stream') end
             if fs.getInfo(path..'/ITrans.'..form) then mus.ITrans=love.audio.newSource(path..'/ITrans.'..form,'stream') end
-        elseif fs.getInfo(path..'/whole.'..form) then mus.whole=love.audio.newSource(path..'/whole.'..form,'stream')
+            end
+            if mus.intro then mus.intro:seek(0) end
+            if mus.loop then mus.loop:seek(0) end
+            if mus.ITrans then mus.ITrans:seek(0) end
+        elseif not isSameMusic and fs.getInfo(path..'/whole.'..form) then mus.whole=love.audio.newSource(path..'/whole.'..form,'stream')
             mus.loopStart=loopStart mus.loopLen=loopLen
-            mus.whole:seek(0)--新的音乐文件，第一次seek会卡
         end
+        if mus.whole then mus.whole:seek(0) end--新的音乐文件，第一次seek会卡
         mus.tag={} mus.loopTime=0
     end,
     setTag=function(arg)
