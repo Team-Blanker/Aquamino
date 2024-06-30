@@ -32,8 +32,7 @@ function config.init()
             gc.draw(win.UI.back,0,0,0,1.25,1.25,60,35)
         end,
         event=function()
-            print(scene.cur.exitScene)
-            if scene.cur.exitScene~='scene/menu' then
+            if scene.cur.exitScene and scene.cur.exitScene~='scene/menu' then
             scene.switch({
                 dest=scene.cur.exitScene,destScene=require(scene.cur.exitScene),swapT=.6,outT=.2,
                 anim=function() anim.cover(.2,.4,.2,0,0,0) end
