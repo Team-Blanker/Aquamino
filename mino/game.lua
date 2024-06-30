@@ -1010,8 +1010,10 @@ function mino.gameUpdate(dt)
     if mino.rule.gameUpdate and S.winState==0 then mino.rule.gameUpdate(P,dt,mino) end
 end
 function mino.BGUpdate(dt)
-    if mino.rule.BGUpdate then mino.rule.BGUpdate(S,dt)
-    elseif not mino.unableBG and scene.BG.update then scene.BG.update(dt) end
+    if not mino.unableBG then
+        if mino.rule.BGUpdate then mino.rule.BGUpdate(S,dt)
+        elseif scene.BG.update then scene.BG.update(dt) end
+    end
 end
 
 function mino.update(dt)
