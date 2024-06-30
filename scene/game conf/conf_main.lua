@@ -32,10 +32,18 @@ function config.init()
             gc.draw(win.UI.back,0,0,0,1.25,1.25,60,35)
         end,
         event=function()
+            print(scene.cur.exitScene)
+            if scene.cur.exitScene~='scene/menu' then
             scene.switch({
-                dest='menu',destScene=require(scene.cur.exitScene or 'scene/menu'),swapT=.3,outT=.2,
-                anim=function() anim.enterDR(.2,.1,.2,0,0,0) end
+                dest=scene.cur.exitScene,destScene=require(scene.cur.exitScene),swapT=.6,outT=.2,
+                anim=function() anim.cover(.2,.4,.2,0,0,0) end
             })
+            else
+            scene.switch({
+                dest='menu',destScene=require'scene/menu',swapT=.3,outT=.2,
+                anim=function() anim.enterDR(.2,.1,.2) end
+            })
+            end
         end
     },.2)
     scene.button.create('test',{
@@ -52,8 +60,8 @@ function config.init()
         event=function()
             scene.switch({
                 dest='game',destScene=require'mino/game',
-                swapT=.7,outT=.3,
-                anim=function() anim.cover(.3,.4,.3,0,0,0) end
+                swapT=.6,outT=.2,
+                anim=function() anim.cover(.2,.4,.2,0,0,0) end
             })
         end
     },.2)

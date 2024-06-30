@@ -696,7 +696,7 @@ function mino.init()
             if mino.paused then
             scene.dest='solo' scene.destScene=require'mino/game'
             scene.swapT=.7 scene.outT=.3
-            scene.anim=function() anim.cover(.3,.4,.3,0,0,0) end
+            scene.anim=function() anim.cover(.2,.4,.2,0,0,0) end
             if scene.cur.resetStopMusic then mus.stop() end
             scene.sendArg=mino.exitScene
             end
@@ -718,8 +718,8 @@ function mino.init()
         event=function()
             if mino.paused then
             scene.dest=mino.exitScene or 'menu'
-            scene.swapT=.7 scene.outT=.3
-            scene.anim=function() anim.cover(.3,.4,.3,0,0,0) end
+            scene.swapT=.6 scene.outT=.2
+            scene.anim=function() anim.cover(.2,.4,.2,0,0,0) end
             end
         end
     },.25)
@@ -731,10 +731,10 @@ function mino.keyP(k)
         if mino.rule.pause then mino.rule.pause(S,mino.paused) end
         if S.event[2]=='pause' then rem(S.event,1) rem(S.event,1) end
     elseif T.include(S.keySet.R,k) then
+        local p=mino.paused
         scene.dest='game' scene.destScene=require('mino/game')
-        scene.swapT=(mino.paused and 1.5 or 0) scene.outT=.5
-        scene.anim=mino.paused and function() anim.cover(.5,1,.5,0,0,0) end
-            or function() anim.cover(0,0,.5,0,0,0) end
+        scene.swapT=(p and .6 or 0) scene.outT=.2
+        scene.anim=function() anim.cover(p and .2 or 0,p and .4 or 0,.2,0,0,0) end
         if mino.resetStopMusic then mus.stop() end
         scene.sendArg=mino.exitScene
     end

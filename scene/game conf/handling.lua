@@ -49,8 +49,8 @@ function hand.init()
         event=function()
             scene.switch({
                 dest='game',destScene=require'mino/game',
-                swapT=.7,outT=.3,
-                anim=function() anim.cover(.3,.4,.3,0,0,0) end
+                swapT=.6,outT=.2,
+                anim=function() anim.cover(.2,.4,.2,0,0,0) end
             })
             scene.sendArg='game conf/handling'
         end

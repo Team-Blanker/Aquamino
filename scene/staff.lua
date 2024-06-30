@@ -129,8 +129,8 @@ function stf.init()
         end,
         event=function()
             scene.switch({
-                dest='about',destScene=require('scene/about'),swapT=.7,outT=.3,
-                anim=function() anim.cover(.3,.4,.3,0,0,0) end
+                dest='about',destScene=require('scene/about'),swapT=.6,outT=.2,
+                anim=function() anim.cover(.2,.4,.2,0,0,0) end
             })
         end
     },.2)

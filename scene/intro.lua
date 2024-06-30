@@ -48,8 +48,8 @@ function intro.keyP(k)
     elseif not mytable.include(banned,k) then
         if win.stat.launch==1 and introCount==1 then
             scene.switch({
-            dest='game conf',destScene=require('scene/game conf/conf_main'),swapT=.7,outT=.3,
-            anim=function() anim.cover(.3,.4,.3,0,0,0) end
+            dest='game conf',destScene=require('scene/game conf/conf_main'),swapT=.6,outT=.2,
+            anim=function() anim.cover(.2,.4,.2,0,0,0) end
             })
             function scene.cur.send()
                 scene.cur.exitScene='scene/intro'
@@ -58,8 +58,8 @@ function intro.keyP(k)
             if cnum==tchar:len()+1 then
                 cnum=1
                 scene.switch({
-                    dest='territory',destScene=require('territory/territory'),swapT=.7,outT=.3,
-                    anim=function() anim.cover(.3,.4,.3,0,0,0) end
+                    dest='territory',destScene=require('territory/territory'),swapT=.6,outT=.2,
+                    anim=function() anim.cover(.2,.4,.2,0,0,0) end
                 })
             end
         else cnum=1

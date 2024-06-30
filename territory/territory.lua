@@ -231,8 +231,8 @@ function war.keyP(k)
     if k=='space' or k=='return' then war.sim=not war.sim
     elseif k=='escape' then
         scene.switch({
-            dest='intro',destScene=require('scene/intro'),swapT=.7,outT=.3,
-            anim=function() anim.cover(.3,.4,.3,0,0,0) end
+            dest='intro',destScene=require('scene/intro'),swapT=.6,outT=.2,
+            anim=function() anim.cover(.2,.4,.2,0,0,0) end
         })
     end
 end

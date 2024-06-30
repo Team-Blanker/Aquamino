@@ -117,8 +117,8 @@ function menu.init()
         end,
         event=function()
             scene.switch({
-                dest='intro',swapT=.7,outT=.3,
-                anim=function() anim.cover(.3,.4,.3,0,0,0) end
+                dest='intro',swapT=.6,outT=.2,
+                anim=function() anim.cover(.2,.4,.2,0,0,0) end
             })
         end
     },.2)
@@ -156,16 +156,16 @@ end
 function menu.keyP(k)
     if k=='escape' then
         scene.switch({
-            dest='intro',swapT=.7,outT=.3,
-            anim=function() anim.cover(.3,.4,.3,0,0,0) end
+            dest='intro',swapT=.6,outT=.2,
+            anim=function() anim.cover(.2,.4,.2,0,0,0) end
         })
     elseif k=='r' then
         menu.rCount=menu.rCount+1
         if menu.rCount>=16 then
             scene.switch({
                 dest='game',destScene=require'mino/game',
-                swapT=.7,outT=.3,
-                anim=function() anim.cover(.3,.4,.3,0,0,0) end
+                swapT=.6,outT=.2,
+                anim=function() anim.cover(.2,.4,.2,0,0,0) end
             })
             scene.sendArg='idea_test'
             menu.send=menu.gameSend
@@ -189,8 +189,8 @@ function menu.mouseR(x,y,button,istouch)
                 menu.lvl=2
                 scene.switch({
                     dest='game',destScene=require'mino/game',
-                    swapT=.7,outT=.3,
-                    anim=function() anim.cover(.3,.4,.3,0,0,0) end
+                    swapT=.6,outT=.2,
+                    anim=function() anim.cover(.2,.4,.2,0,0,0) end
                 })
                 scene.sendArg=k
                 menu.send=menu.gameSend

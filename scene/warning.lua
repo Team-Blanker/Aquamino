@@ -5,8 +5,8 @@ function warn.init()
 end
 function warn.switch()
     scene.switch({
-        dest='intro',swapT=.7,outT=.3,
-        anim=function() anim.cover(.3,.4,.3,0,0,0) end
+        dest='intro',swapT=.6,outT=.2,
+        anim=function() anim.cover(.2,.4,.2,0,0,0) end
     })
 end
 function warn.keyP(k)
