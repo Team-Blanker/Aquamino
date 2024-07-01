@@ -139,11 +139,11 @@ end
 local mp=false local opy,mpy=0,0
 function stf.mouseP(x,y,button,istouch)
     mp=true opy,mpy=stf.posy,y
-    BUTTON.press(x,y,button,istouch)
+    BUTTON.press(x,y)
 end
 function stf.mouseR(x,y,button,istouch)
     mp=false stf.posy=max(min(opy-y+mpy,posyMax),0)
-    BUTTON.release(x,y,button,istouch)
+    BUTTON.release(x,y)
 end
 
 function stf.wheelMove(dx,dy)

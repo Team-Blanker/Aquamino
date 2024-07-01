@@ -2,7 +2,7 @@ local m=user.lang.menu
 local BUTTON=scene.button
 
 local menu={modeKey=1}
-local flashT,enterT,clickT=0,0,0
+local sAnimTMax=.15
 
 local setIcon1,setIcon2=gc.newCanvas(120,120),gc.newCanvas(120,120)
 local aboutIcon=gc.newCanvas(120,120)
@@ -49,6 +49,8 @@ menu.icon={
 for k,v in pairs(menu.modeList) do
     menu.icon[k]=gc.newImage('pic/mode icon/'..k..'.png')
 end
+
+local playButtonPolygon={-225,0,-175,50,175,50,225,0,175,-50,-175,-50}
 function menu.init()
     for k,v in pairs(menu.modeList) do
         v.hoverT=0
@@ -77,10 +79,22 @@ function menu.init()
         menu.modeTxt[k].h=menu.modeTxt[k].txt:getHeight()
     end
 
-    menu.lvl=1
+    menu.describeTxt={}
+    for k,v in pairs(user.lang.modeDescription) do
+        menu.describeTxt[k]={}
+        menu.describeTxt[k].txt=gc.newText(font.Bender)
+        menu.describeTxt[k].txt:addf(v,2048,'center',0,0,0,1,1,1024,0)
+
+        menu.describeTxt[k].w=menu.describeTxt[k].txt:getWidth()
+        menu.describeTxt[k].h=menu.describeTxt[k].txt:getHeight()
+    end
+
+    menu.lvl=1 menu.sAnimTimer=0
+    menu.pAnim=false menu.pAnimTimer=0
     menu.rCount=0
     menu.selectedMode=''
 
+    BUTTON.setLayer(1)
     BUTTON.create('setting',{
         x=-960,y=-540,type='diamond',r=225,
         draw=function(bt,t)
@@ -152,48 +166,93 @@ function menu.init()
         event=function()
         end
     },.2)
-end
-function menu.keyP(k)
-    if k=='escape' then
-        scene.switch({
-            dest='intro',swapT=.6,outT=.2,
-            anim=function() anim.cover(.2,.4,.2,0,0,0) end
-        })
-    elseif k=='r' then
-        menu.rCount=menu.rCount+1
-        if menu.rCount>=16 then
+    BUTTON.setLayer(2)
+    BUTTON.create('back',{
+        x=-960,y=540,type='diamond',r=225,
+        draw=function(bt,t)
+            local a=menu.sAnimTimer/sAnimTMax
+            gc.setColor(.5,.5,.5,(.3+t)*a)
+            gc.circle('fill',0,0,bt.r,4)
+            gc.setColor(.8,.8,.8,a)
+            gc.setLineWidth(5)
+            gc.circle('line',0,0,bt.r,4)
+            gc.setColor(1,1,1,a)
+            gc.draw(win.UI.back,0,0,0,1,1,-5,95)
+        end,
+        event=function()
+            menu.lvl=1
+        end
+    },.2)
+    BUTTON.create('play',{
+        x=0,y=390,type='rect',w=450,h=100,
+        draw=function(bt,t)
+            local a=menu.sAnimTimer/sAnimTMax*2-1
+            if menu.pAnim then
+                local s=menu.pAnimTimer>.2 and 1 or menu.pAnimTimer%.1<.05 and 1 or 0
+                gc.setColor(.75,.75,.75,.6+.15*s)
+            else gc.setColor(.75,.75,.75,(.15+t/2)*a)
+            end
+            gc.polygon('fill',playButtonPolygon)
+            gc.setColor(1,1,1,a)
+            gc.setLineWidth(5)
+            gc.polygon('line',playButtonPolygon)
+            gc.setColor(1,1,1,a)
+            gc.setLineWidth(5)
+            gc.circle('line',-5,0,40,3)
+        end,
+        event=function()
+            menu.pAnim=true
             scene.switch({
                 dest='game',destScene=require'mino/game',
-                swapT=.6,outT=.2,
+                swapT=1,outT=.2,
                 anim=function() anim.cover(.2,.4,.2,0,0,0) end
             })
-            scene.sendArg='idea_test'
+            scene.sendArg=menu.selectedMode
             menu.send=menu.gameSend
         end
-    end
+    },.2)
 end
-function menu.mouseP(x,y,button,istouch)
-    if not BUTTON.press(x,y) then
-        for k,v in pairs(menu.modeList) do
-            if abs(x-v.x)+abs(y-v.y)<150 then
-                menu.selectedMode=k
-                print(menu.selectedMode)
-            end
-        end
-    end
-end
-function menu.mouseR(x,y,button,istouch)
-    if not BUTTON.release(x,y) then
-        for k,v in pairs(menu.modeList) do
-            if abs(x-v.x)+abs(y-v.y)<150 and k==menu.selectedMode then
-                menu.lvl=2
+function menu.keyP(k)
+    if menu.lvl==1 then
+        if k=='escape' then
+            scene.switch({
+                dest='intro',swapT=.6,outT=.2,
+                anim=function() anim.cover(.2,.4,.2,0,0,0) end
+            })
+        elseif k=='r' then
+            menu.rCount=menu.rCount+1
+            if menu.rCount>=16 then
                 scene.switch({
                     dest='game',destScene=require'mino/game',
                     swapT=.6,outT=.2,
                     anim=function() anim.cover(.2,.4,.2,0,0,0) end
                 })
-                scene.sendArg=k
+                scene.sendArg='idea_test'
                 menu.send=menu.gameSend
+            end
+        end
+    elseif menu.lvl==2 then
+        if k=='escape' then menu.lvl=1 end
+    end
+end
+function menu.mouseP(x,y,button,istouch)
+    if not BUTTON.press(x,y,menu.lvl) then
+        if menu.lvl==1 then
+            for k,v in pairs(menu.modeList) do
+                if abs(x-v.x)+abs(y-v.y)<150 then
+                    menu.selectedMode=k
+                    print(menu.selectedMode)
+                end
+            end
+        elseif menu.lvl==2 then
+        end
+    end
+end
+function menu.mouseR(x,y,button,istouch)
+    if not BUTTON.release(x,y,menu.lvl) then
+        for k,v in pairs(menu.modeList) do
+            if abs(x-v.x)+abs(y-v.y)<150 and k==menu.selectedMode then
+                menu.lvl=2
             end
         end
     end
@@ -203,17 +262,19 @@ function menu.update(dt)
     local msx,msy=adaptAllWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5)
     local n=false
     for k,v in pairs(menu.modeList) do
-        if abs(msx-v.x)+abs(msy-v.y)<150 then n=true
+        if menu.lvl==1 and abs(msx-v.x)+abs(msy-v.y)<150 then n=true
             v.hoverT=min(v.hoverT+dt,.15)
             if k~=hv then
-            scene.BG.setPolyColor(v.borderColor[1],v.borderColor[2],v.borderColor[3])
-            hv=k
-        end
+                scene.BG.setPolyColor(v.borderColor[1],v.borderColor[2],v.borderColor[3])
+                hv=k
+            end
         else v.hoverT=max(v.hoverT-dt,0) end
     end
     if (not n) and hv~='' then scene.BG.setPolyColor(1,1,1) hv='' end
-    BUTTON.update(dt,msx,msy)
-    flashT=max(flashT-dt,0) clickT=max(clickT-dt,0)
+
+    if menu.pAnim then menu.pAnimTimer=menu.pAnimTimer+dt end
+    menu.sAnimTimer=menu.lvl==2 and min(menu.sAnimTimer+dt,sAnimTMax) or max(menu.sAnimTimer-dt,0)
+    BUTTON.update(dt,msx,msy,menu.lvl)
 end
 
 local cv=gc.newCanvas(300,300)
@@ -252,7 +313,24 @@ function menu.draw()
         gc.setColor(1,1,1,v.hoverT/.15)
         gc.draw(mt[k].txt,v.x,v.y-45-v.hoverT/.15*15,0,.4,.4,mt[k].w/2,mt[k].h)
     end
-    BUTTON.draw()
+    BUTTON.draw(1)
+
+    if menu.selectedMode~='' then
+    c=menu.modeList[menu.selectedMode].borderColor
+    local a=menu.sAnimTimer/sAnimTMax
+    gc.setColor(.05,.05,.05,a*.75)
+    gc.rectangle('fill',-960,-540,1920,1080)
+    gc.setColor(c[1],c[2],c[3],a)
+    gc.setLineWidth(40)
+    local p=menu.lvl==2 and (a-2)*-a or a
+    gc.circle('line',0,0,540+360*p,4)
+    gc.setColor(1,1,1,a*2-1)
+    local t,det=mt[menu.selectedMode],menu.describeTxt[menu.selectedMode]
+    gc.draw(t.txt,0,-390,0,.75,.75,t.w/2,t.h)
+    if det then gc.draw(det.txt,0,-360,0,.4,.4,0,0) end
+    end
+
+    BUTTON.draw(2)
 end
 function menu.exit()
     file.save('player/unlocked',menu.unlocked)
@@ -260,6 +338,5 @@ end
 function menu.gameSend(destScene,arg)
     destScene.mode=arg
     destScene.exitScene='menu'
-    print('success')
 end
 return menu

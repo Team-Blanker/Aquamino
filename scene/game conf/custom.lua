@@ -250,10 +250,10 @@ function custom.init()
     },.2)
 end
 function custom.mouseP(x,y,button,istouch)
-    if not BUTTON.press(x,y,button,istouch) and SLIDER.mouseP(x,y,button,istouch) then end
+    if not BUTTON.press(x,y) and SLIDER.mouseP(x,y,button,istouch) then end
 end
 function custom.mouseR(x,y,button,istouch)
-    BUTTON.release(x,y,button,istouch) SLIDER.mouseR(x,y,button,istouch)
+    BUTTON.release(x,y) SLIDER.mouseR(x,y,button,istouch)
 end
 function custom.update(dt)
     BUTTON.update(dt,adaptAllWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5))

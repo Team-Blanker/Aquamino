@@ -120,11 +120,11 @@ function about.mouseP(x,y,button,istouch)
     if (x-about.loveBall.body:getX())^2+(y-about.loveBall.body:getY())^2<ballR^2 then
         drag=true
         about.loveBall.body:setAwake(true)
-    else BUTTON.press(x,y,button,istouch) end
+    else BUTTON.press(x,y) end
 end
 function about.mouseR(x,y,button,istouch)
     drag=false
-    BUTTON.release(x,y,button,istouch)
+    BUTTON.release(x,y)
 end
 
 function about.update(dt)

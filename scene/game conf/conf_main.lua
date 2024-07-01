@@ -20,7 +20,8 @@ function config.init()
     ct.test={}
     ct.test.txt=gc.newText(font.Bender,cf.test)
     ct.test.w,ct.test.h=ct.test.txt:getWidth(),ct.test.txt:getHeight()
-    scene.button.create('quit',{
+
+    BUTTON.create('quit',{
         x=-675,y=225*3^.5,type='circle',r=150,
         draw=function(bt,t)
             gc.setColor(.5,.5,.5,.3+t)
@@ -45,7 +46,7 @@ function config.init()
             end
         end
     },.2)
-    scene.button.create('test',{
+    BUTTON.create('test',{
         x=675,y=225*3^.5,type='circle',r=150,
         draw=function(bt,t)
             gc.setColor(.5,.5,.5,.3+t)
@@ -65,7 +66,7 @@ function config.init()
         end
     },.2)
 
-    scene.button.create('keys',{
+    BUTTON.create('keys',{
         x=250,y=250*3^.5,type='circle',r=250,
         draw=function(bt,t)
             gc.setColor(.25,.5,.4375,.3+t)
@@ -83,7 +84,7 @@ function config.init()
             })
         end
     },.2)
-    scene.button.create('ctrl',{
+    BUTTON.create('ctrl',{
         x=500,y=0,type='circle',r=250,
         draw=function(bt,t)
             gc.setColor(.125,.25,.5,.3+t)
@@ -101,7 +102,7 @@ function config.init()
             })
         end
     },.2)
-    scene.button.create('language',{
+    BUTTON.create('language',{
         x=250,y=-250*3^.5,type='circle',r=250,
         draw=function(bt,t)
             gc.setColor(.5,.125,.375,.3+t)
@@ -121,7 +122,7 @@ function config.init()
         end
     },.2)
 
-    scene.button.create('audio',{
+    BUTTON.create('audio',{
         x=-250,y=-250*3^.5,type='circle',r=250,
         draw=function(bt,t)
             gc.setColor(.5,.125,.125,.3+t)
@@ -139,7 +140,7 @@ function config.init()
             })
         end
     },.2)
-    scene.button.create('video',{
+    BUTTON.create('video',{
         x=-500,y=0,type='circle',r=250,
         draw=function(bt,t)
             gc.setColor(.5,.375,.125,.3+t)
@@ -157,7 +158,7 @@ function config.init()
             })
         end
     },.2)
-    scene.button.create('custom',{
+    BUTTON.create('custom',{
         x=-250,y=250*3^.5,type='circle',r=250,
         draw=function(bt,t)
             gc.setColor(.15,.5,.125,.3+t)
@@ -177,10 +178,10 @@ function config.init()
     },.2)
 end
 function config.mouseP(x,y,button,istouch)
-    if not BUTTON.press(x,y,button,istouch) then end
+    if not BUTTON.press(x,y) then end
 end
 function config.mouseR(x,y,button,istouch)
-    if not BUTTON.release(x,y,button,istouch) then end
+    if not BUTTON.release(x,y) then end
 end
 --function AnV.mouseR(x,y,button,istouch)
 --end

@@ -100,8 +100,5 @@ function intro.draw()
 
     gc.setColor(1,1,1,.25)
     gc.printf("Version : "..win.stat.version,font.Bender,950,540,1600,'right',0,.3,.3,1600,160)
-
-    BUTTON.draw()
 end
---function intro.send() scene.cur.modename[1]="40行" end
 return intro

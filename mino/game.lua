@@ -848,10 +848,10 @@ function mino.keyR(k)
 end
 
 function mino.mouseP(x,y,button,istouch)
-    BUTTON.press(x,y,button,istouch)
+    BUTTON.press(x,y)
 end
 function mino.mouseR(x,y,button,istouch)
-    BUTTON.release(x,y,button,istouch)
+    BUTTON.release(x,y)
 end
 
 local cxk,remainTime

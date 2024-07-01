@@ -181,10 +181,10 @@ function video.detectKeyP(k)
     if k=='f11' then video.info.fullscr=win.fullscr end
 end
 function video.mouseP(x,y,button,istouch)
-    if not BUTTON.press(x,y,button,istouch) and SLIDER.mouseP(x,y,button,istouch) then end
+    if not BUTTON.press(x,y) and SLIDER.mouseP(x,y,button,istouch) then end
 end
 function video.mouseR(x,y,button,istouch)
-    BUTTON.release(x,y,button,istouch)
+    BUTTON.release(x,y)
     SLIDER.mouseR(x,y,button,istouch)
 end
 function video.update(dt)

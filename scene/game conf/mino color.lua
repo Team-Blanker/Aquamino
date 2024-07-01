@@ -203,11 +203,11 @@ function bc.init()
     })
 end
 function bc.mouseP(x,y,button,istouch)
-    if not BUTTON.press(x,y,button,istouch) and SLIDER.mouseP(x,y,button,istouch) then
+    if not BUTTON.press(x,y) and SLIDER.mouseP(x,y,button,istouch) then
     end
 end
 function bc.mouseR(x,y,button,istouch)
-    BUTTON.release(x,y,button,istouch)
+    BUTTON.release(x,y)
     SLIDER.mouseR(x,y,button,istouch)
 end
 function bc.update(dt)
