@@ -29,7 +29,7 @@ function krystal.addSFX()
 end
 function krystal.move(player,success,landed)
     if success then
-        if landed and sfx.pack.landedMove then sfx.play('landedMove') else sfx.play('move') end
+        if landed and sfx.key.landedMove then sfx.play('landedMove') else sfx.play('move') end
     else sfx.play('moveFail') end
 end
 function krystal.rotate(player,success,spin)

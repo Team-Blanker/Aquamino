@@ -189,7 +189,7 @@ function menu.init()
             local a=menu.sAnimTimer/sAnimTMax*2-1
             if menu.pAnim then
                 local s=menu.pAnimTimer>.2 and 1 or menu.pAnimTimer%.1<.05 and 1 or 0
-                gc.setColor(.75,.75,.75,.6+.15*s)
+                gc.setColor(.75,.75,.75,.5+.1*s)
             else gc.setColor(.75,.75,.75,(.15+t/2)*a)
             end
             gc.polygon('fill',playButtonPolygon)
@@ -197,8 +197,7 @@ function menu.init()
             gc.setLineWidth(5)
             gc.polygon('line',playButtonPolygon)
             gc.setColor(1,1,1,a)
-            gc.setLineWidth(5)
-            gc.circle('line',-5,0,40,3)
+            gc.circle('fill',-5,0,40,3)
         end,
         event=function()
             menu.pAnim=true

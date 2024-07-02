@@ -2,7 +2,8 @@ local BUTTON=scene.button
 
 local logo=gc.newImage('assets/pic/title.png')
 local w,h=logo:getPixelDimensions()
-
+local kairan=gc.newImage('assets/pic/kairan.png')
+local kw,kh=kairan:getPixelDimensions()
 local devList={
     program={'Aqua6623 (Aquamarine6623, Kairan, 海兰)'},
     UI={'Aqua6623','MrZ_26'},
@@ -54,6 +55,7 @@ function stf.init()
 
     uls=user.lang.staff
     stf.posy=0
+    stf.hidey=0 stf.hideAnimy=0 stf.showKairan=false
     stf.txt1={c1,uls.program,c2,'\n\n'..devList.program[1],c1,'\n\n'..uls.UI,c2}
 
 
@@ -137,12 +139,17 @@ function stf.init()
 end
 
 local mp=false local opy,mpy=0,0
+local hp=false local ohy,mhy=0,0
 function stf.mouseP(x,y,button,istouch)
     mp=true opy,mpy=stf.posy,y
+    if stf.posy==posyMax then
+        hp=true ohy,mhy=0,y
+    end
     BUTTON.press(x,y)
 end
 function stf.mouseR(x,y,button,istouch)
     mp=false stf.posy=max(min(opy-y+mpy,posyMax),0)
+    hp=false ohy,mhy=0,0
     BUTTON.release(x,y)
 end
 
@@ -150,9 +157,21 @@ function stf.wheelMove(dx,dy)
     stf.posy=max(min(stf.posy-dy*90,posyMax),0)
 end
 
+local function setAnimy(hidey)
+    local hy=hidey/1000
+    return ((2-hy)*hy-.75)*1000
+end
 function stf.update(dt)
     local mx,my=adaptAllWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5)
-    if love.mouse.isDown(1) then stf.posy=max(min(opy-my+mpy,posyMax),0) end
+    if love.mouse.isDown(1,2) then
+        stf.posy=max(min(opy-my+mpy,posyMax),0)
+        if hp and not stf.showKairan then stf.hidey=max(min(ohy-my+mhy,1000),0) stf.hideAnimy=setAnimy(stf.hidey)
+        if stf.hidey>=1000 then stf.showKairan=true end
+        end
+    end
+    if stf.showKairan then stf.hideAnimy=min(stf.hideAnimy+8000*dt,1000)
+    else stf.hidey=max(stf.hidey-4000*dt,0) stf.hideAnimy=max(stf.hideAnimy-4000*dt,0) end
+
     BUTTON.update(dt,mx,my)
 
     if kb.isDown('up') then stf.posy=max(stf.posy-720*dt,0) end
@@ -166,6 +185,9 @@ function stf.draw()
     gc.draw(stf.stftxt1,0,400,0,stf.s[1],stf.s[1],2000)
     gc.draw(stf.stftxt2,0,400+getH(1),0,stf.s[2],stf.s[2],2000)
     gc.draw(stf.stftxt3,0,400+getH(2),0,stf.s[3],stf.s[3],2000)
+
+    local p=stf.hideAnimy/1000
+    gc.draw(kairan,360,posyMax+540-kh/2*p,0,.5,.5,kw/2,0)
     gc.translate(0,stf.posy)
     BUTTON.draw()
 end
