@@ -19,7 +19,7 @@ arg={
 function slider.draw()
     for k,v in pairs(slider.list) do gc.push()
         gc.translate(v.x,v.y)
-        v.sliderDraw(v.gear,v) v.buttonDraw(v.gear==0 and v.pos or v.pos/(v.gear-1),v)
+        v.sliderDraw(v.gear,v.sz,v) v.buttonDraw(v.gear==0 and v.pos or v.pos/(v.gear-1),v.sz)
     gc.pop() end
 end
 function slider.check(slid,x,y)

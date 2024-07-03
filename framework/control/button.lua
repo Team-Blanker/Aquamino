@@ -87,4 +87,14 @@ function BUTTON.release(x,y,l)
         end
     end
 end
+
+--默认绘制参数
+local arg=0
+local function checkerStencil()
+    gc.arc('fill','closed',0,0)
+end
+function BUTTON.checker(bt,ct,arg)
+    
+end
+
 return BUTTON
