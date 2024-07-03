@@ -10,7 +10,6 @@ local sfx={
 function sfx.add(arg)
     for k,v in pairs(arg) do
         sfx.key[k]=v
-        print(sfx.pack[v],v)
         if not sfx.pack[v] and love.filesystem.getInfo(v) then sfx.pack[v]=love.audio.newSource(v,'static') end
         sfx.buffer[v]={}
     end
