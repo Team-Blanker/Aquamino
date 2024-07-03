@@ -12,7 +12,12 @@ function rule.init(P,mino)
 end
 function rule.onLineClear(player,mino)
     player.line=player.line+player.history.line
-    if player.line>=40 then mino.win(player) end
+    if player.line>=40 then
+        mino.win(player)
+        local pb=file.read('player/best score')
+        pb['40 lines']={time=player.gameTimer}
+        file.save('player/best score',pb)
+    end
     if not mino.unableBG then scene.BG.newProgress(min(player.line/40,1)) end
 end
 function rule.underFieldDraw(player)

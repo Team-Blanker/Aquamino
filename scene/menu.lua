@@ -94,6 +94,8 @@ function menu.init()
     menu.rCount=0
     menu.selectedMode=''
 
+    menu.pb=file.read('player/best score')
+
     BUTTON.setLayer(1)
     BUTTON.create('setting',{
         x=-960,y=-540,type='diamond',r=225,
@@ -324,9 +326,11 @@ function menu.draw()
     local p=menu.lvl==2 and (a-2)*-a or a
     gc.circle('line',0,0,540+360*p,4)
     gc.setColor(1,1,1,a*2-1)
-    local t,det=mt[menu.selectedMode],menu.describeTxt[menu.selectedMode]
+    local t,det,bst=mt[menu.selectedMode],menu.describeTxt[menu.selectedMode],menu.pb[menu.selectedMode]
     gc.draw(t.txt,0,-390,0,.75,.75,t.w/2,t.h)
     if det then gc.draw(det.txt,0,-360,0,.4,.4,0,0) end
+    if bst then
+    else gc.printf(user.lang.menu.noBestScore,font.Bender,0,180,2000,'center',0,.5,.5,1000,72) end
     end
 
     BUTTON.draw(2)
