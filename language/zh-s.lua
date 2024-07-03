@@ -21,23 +21,24 @@ return {
         idea_test="idea_test"
     },
     modeDescription={
-        ['40 lines']="以最快速度消除40行！",
-        marathon={{1,1,1},"消除150行，但方块下落速度会越来越快——\n",{1,1,0},"参数限制：ASD=150ms ASP=30ms 软降ASP=30ms，随等级提升缩短"},
-        ['ice storm']="用花式消除抵御上升的冰柱！",
-        thunder="请尽全力应对雷电的破坏。",
-        smooth={{1,1,1},"真的有这么丝滑吗？\n",{1,1,0},"降落延迟为0，锁定延迟增加至3秒"},
-        levitate="这里的方块轻飘飘，似乎不受重力影响。",
-        master={{1,1,1},"在最高下落速度下极限堆叠！\n",{1,.5,0},"降落延迟为0，锁定延迟随等级提升缩短\n",{1,1,0},"参数限制：ASD=150ms ASP=30ms"},
-        multitasking={{1,1,1},"嗯，嘛。啊？\n",{1,1,0},"参数限制：ASD=150ms ASP=30ms 软降ASP=30ms，随等级提升缩短"},
+        ['40 lines']="以最快速度消除40行",
+        marathon={{1,1,1},"消除150行，但方块下落速度会越来越快\n",{1,1,0},"参数限制：ASD=150ms ASP=30ms 软降ASP=30ms，随等级提升缩短"},
+        ['ice storm']="利用All-spin机制抵御上升的冰柱",
+        thunder="应对雷电的破坏",
+        smooth={{1,1,1}," 真的有这么丝滑吗？\n",{1,1,0},"降落延迟为0，锁定延迟增加至3秒"},
+        levitate={{1,1,0},"消行后场地内砖格不掉落"},
+        master={{1,1,1}," 在最高下落速度下极限堆叠！\n",{1,.5,0},"降落延迟为0，锁定延迟随等级提升缩短\n",{1,1,0},"参数限制：ASD=150ms ASP=30ms"},
+        multitasking={{1,1,1}," 嗯，嘛。啊？\n",{1,1,0},"参数限制：ASD=150ms ASP=30ms 软降ASP=30ms，随等级提升缩短"},
         sandbox="",
-        ['dig 40']="静心思考，高效挖掘。",
+        ['dig 40']="静心思考，高效挖掘",
         laser="“有一束激光在你的场地上”",
-        backfire="吃下自己打出的攻击！",
+        backfire="吃下自己打出的攻击",
     },
     intro={
         start="按任意键开始",
     },
     menu={
+        noBestScore="暂无成绩"
     },
     about={
         engineText="使用LÖVE引擎制作",
@@ -76,7 +77,7 @@ return {
             frameLim="最高绘制帧率:",frameTxt="推荐将该值调整为与显示器帧率相等。"
         },
         custom={
-            texture="方块材质",color="颜色设置",
+            texture="方块材质",color="方块配色...",
             smooth="平滑运动",smoothTxt="注意，移动和旋转没有中间态，只要终点没有障碍，操作就必定可以成功。",
             smoothScale=.35,smoothOffX=0,smoothTime="动画时长:",
             theme="主题",

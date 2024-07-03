@@ -23,9 +23,8 @@ function bc.init()
     cfcc=user.lang.conf.custom.colorSet
     bc.read()
     do
-        local pfs=file.read('conf/custom')
-        local pf=fs.getInfo('conf/custom') and next(pfs) or
-        {block='pure',theme='simple',sfx='Dr Ocelot',smoothAnimAct=false,fieldScale=1}
+        local pf={block='pure',theme='simple',sfx='Dr Ocelot',smoothAnimAct=false,fieldScale=1}
+        mytable.combine(pf,file.read('conf/custom'))
         bc.blockSkin=require('skin/block/'..pf.block)
         skinName=pf.block
     end
@@ -135,20 +134,18 @@ function bc.init()
     SLIDER.create('colorR',{
         x=-480,y=250,type='hori',sz={400,32},button={32,32},
         gear=0,pos=bc.color[bList[bc.blockIndex]][1],
-        sliderDraw=function()
+        sliderDraw=function(g,sz)
             if not canAdjustColor[skinName] then return end
-            gc.setColor(1,0,0,.5*bc.color[bList[bc.blockIndex]][1])
-            gc.rectangle('fill',-216,-16,432,32)
-            gc.setColor(1,.5,.5)
-            gc.setLineWidth(6)
-            gc.rectangle('line',-219,-19,438,38)
+            local v=bc.color[bList[bc.blockIndex]][1]
+            gc.setColor(.5+.5*v,.5-.5*v,.5-.5*v,.5)
+            gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
             gc.setColor(1,.5,.5)
             gc.printf(string.format("R:%.2f",bc.color[bList[bc.blockIndex]][1]),font.JB,-219,-48,1000,'left',0,.3125,.3125,0,84)
         end,
-        buttonDraw=function(pos)
+        buttonDraw=function(pos,sz)
             if not canAdjustColor[skinName] then return end
             gc.setColor(1,1,1)
-            gc.rectangle('fill',400*(pos-.5)-16,-18,32,36)
+            gc.circle('fill',sz[1]*(pos-.5),0,20,4)
         end,
         always=function(pos)
             if not canAdjustColor[skinName] then return end
@@ -158,20 +155,18 @@ function bc.init()
     SLIDER.create('colorG',{
         x=0,y=250,type='hori',sz={400,32},button={32,32},
         gear=0,pos=bc.color[bList[bc.blockIndex]][2],
-        sliderDraw=function()
+        sliderDraw=function(g,sz)
             if not canAdjustColor[skinName] then return end
-            gc.setColor(0,1,0,.5*bc.color[bList[bc.blockIndex]][2])
-            gc.rectangle('fill',-216,-16,432,32)
-            gc.setColor(.5,1,.5)
-            gc.setLineWidth(6)
-            gc.rectangle('line',-219,-19,438,38)
+            local v=bc.color[bList[bc.blockIndex]][2]
+            gc.setColor(.5-.5*v,.5+.5*v,.5-.5*v,.5)
+            gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
             gc.setColor(.5,1,.5)
             gc.printf(string.format("G:%.2f",bc.color[bList[bc.blockIndex]][2]),font.JB,-219,-48,1000,'left',0,.3125,.3125,0,84)
         end,
-        buttonDraw=function(pos)
+        buttonDraw=function(pos,sz)
             if not canAdjustColor[skinName] then return end
             gc.setColor(1,1,1)
-            gc.rectangle('fill',400*(pos-.5)-16,-18,32,36)
+            gc.circle('fill',sz[1]*(pos-.5),0,20,4)
         end,
         always=function(pos)
             if not canAdjustColor[skinName] then return end
@@ -181,20 +176,18 @@ function bc.init()
     SLIDER.create('colorB',{
         x=480,y=250,type='hori',sz={400,32},button={32,32},
         gear=0,pos=bc.color[bList[bc.blockIndex]][3],
-        sliderDraw=function()
+        sliderDraw=function(g,sz)
             if not canAdjustColor[skinName] then return end
-            gc.setColor(0,0,1,.5*bc.color[bList[bc.blockIndex]][3])
-            gc.rectangle('fill',-216,-16,432,32)
-            gc.setColor(.5,.5,1)
-            gc.setLineWidth(6)
-            gc.rectangle('line',-219,-19,438,38)
+            local v=bc.color[bList[bc.blockIndex]][3]
+            gc.setColor(.5-.5*v,.5-.5*v,.5+.5*v,.5)
+            gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
             gc.setColor(.5,.5,1)
             gc.printf(string.format("B:%.2f",bc.color[bList[bc.blockIndex]][3]),font.JB,-219,-48,1000,'left',0,.3125,.3125,0,84)
         end,
-        buttonDraw=function(pos)
+        buttonDraw=function(pos,sz)
             if not canAdjustColor[skinName] then return end
             gc.setColor(1,1,1)
-            gc.rectangle('fill',400*(pos-.5)-16,-18,32,36)
+            gc.circle('fill',sz[1]*(pos-.5),0,20,4)
         end,
         always=function(pos)
             if not canAdjustColor[skinName] then return end

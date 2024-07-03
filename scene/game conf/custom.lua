@@ -69,17 +69,17 @@ function custom.init()
     },.2)
 
     BUTTON.create('blockChoose',{
-        x=0,y=-200,type='rect',w=400,h=100,
+        x=0,y=-200,type='rect',w=450,h=100,
         draw=function(bt,t)
             local o,l=custom.bOrder,#blockSkinList
             local w,h=bt.w,bt.h
             gc.setColor(.5,1,.875)
             gc.printf(cfc.texture,font.Bender_B,0,-100,1280,'center',0,.5,.5,640,72)
             gc.setLineWidth(3)
-            gc.rectangle('line',-bt.w/2,-bt.h/2,bt.w,bt.h)
+            gc.polygon('line',-w/2,0,-(w-h)/2,h/2,(w-h)/2,h/2,w/2,0,(w-h)/2,-h/2,-(w-h)/2,-h/2)
             gc.setLineWidth(8)
-            if o>1 then gc.line(-(w-h)/2,h/2-8,-w/2+8,0,-(w-h)/2,-h/2+8) end
-            if o<l then gc.line( (w-h)/2,h/2-8, w/2-8,0, (w-h)/2,-h/2+8) end
+            if o>1 then gc.line(-(w-h)/2,h/2-16,-w/2+16,0,-(w-h)/2,-h/2+16) end
+            if o<l then gc.line( (w-h)/2,h/2-16, w/2-16,0, (w-h)/2,-h/2+16) end
             gc.setColor(1,1,1)
             gc.printf(blockSkinList[custom.bOrder],font.Bender,0,0,1280,'center',0,.4,.4,640,72)
         end,
@@ -92,7 +92,7 @@ function custom.init()
         end
     },.2)
     BUTTON.create('colorAdjust',{
-        x=600,y=-200,type='rect',w=400,h=100,
+        x=600,y=-200,type='rect',w=400,h=80,
         draw=function(bt,t)
             local w,h=bt.w,bt.h
             gc.setColor(.5,.5,.5,.8+t)
@@ -101,7 +101,7 @@ function custom.init()
             gc.setLineWidth(3)
             gc.rectangle('line',-w/2,-h/2,w,h)
             gc.setColor(1,1,1)
-            gc.printf(cfc.color,font.Bender_B,0,0,1280,'center',0,.5,.5,640,72)
+            gc.printf(cfc.color,font.Bender_B,0,0,1280,'center',0,.4,.4,640,72)
         end,
         event=function()
             scene.switch({
@@ -111,7 +111,7 @@ function custom.init()
         end
     },.2)
     BUTTON.create('smoothAnim',{
-        x=-750,y=-200,type='rect',w=100,h=100,
+        x=-760,y=-200,type='rect',w=80,h=80,
         draw=function(bt,t,ct)
             local animArg=custom.info.smoothAnimAct and min(ct/.2,1) or max(1-ct/.2,0)
             local w,h=bt.w,bt.h
@@ -119,21 +119,21 @@ function custom.init()
             local g=1
             local b=M.lerp(1,.875,animArg)
             gc.setColor(.5,1,.875,.4)
-            gc.rectangle('fill',w/2,-h/2,300*animArg,h)
+            gc.rectangle('fill',w/2,-h/2,320*animArg,h)
             gc.setColor(1,1,1,.4)
-            gc.rectangle('fill',w/2+300*animArg,-h/2,300*(1-animArg),h)
+            gc.rectangle('fill',w/2+320*animArg,-h/2,320*(1-animArg),h)
             gc.setColor(r,g,b)
-            gc.setLineWidth(10)
-            gc.rectangle('line',-w/2+5,-h/2+5,h-10,h-10)
+            gc.setLineWidth(8)
+            gc.rectangle('line',-w/2+4,-h/2+4,h-8,h-8)
             if custom.info.smoothAnimAct then
-                gc.circle('line',0,0,(w/2-5)*1.4142,4)
+                gc.circle('line',0,0,(w/2-4)*1.4142,4)
             end
             gc.setColor(r,g,b,2*t)
             gc.rectangle('fill',-w/2,-h/2,h,h)
             gc.setColor(1,1,1)
-            gc.printf(cfc.smooth,font.Bender_B,w/2+50+cfc.smoothOffX,0,1200,'left',0,cfc.smoothScale,cfc.smoothScale,0,72)
+            gc.printf(cfc.smooth,font.Bender_B,w/2+40+cfc.smoothOffX,0,1200,'left',0,cfc.smoothScale,cfc.smoothScale,0,72)
             gc.setColor(1,1,1,.75)
-            gc.printf(cfc.smoothTxt,font.Bender_B,-w/2,h/2+32,1600,'left',0,.25,.25,0,72)
+            gc.printf(cfc.smoothTxt,font.Bender_B,-w/2,h/2+42,1600,'left',0,.25,.25,0,72)
         end,
         event=function()
             custom.info.smoothAnimAct=not custom.info.smoothAnimAct
@@ -142,22 +142,19 @@ function custom.init()
     SLIDER.create('smoothAnimTime',{
         x=-600,y=-320,type='hori',sz={400,32},button={32,32},
         gear=0,pos=(custom.info.smoothTime-1/30)*15,
-        sliderDraw=function(g,s)
+        sliderDraw=function(g,sz)
             if custom.info.smoothAnimAct then
             gc.setColor(.24,.48,.42,.8)
-            gc.rectangle('fill',-s.sz[1]/2-16,-16,s.sz[1]+32,32)
-            gc.setColor(.44,.88,.77)
-            gc.setLineWidth(6)
-            gc.rectangle('line',-s.sz[1]/2-19,-19,s.sz[1]+38,38)
+            gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
             gc.setColor(1,1,1)
             gc.printf(string.format(cfc.smoothTime.."%.0fms",custom.info.smoothTime*1000),
-                font.JB,-s.sz[1]/2-19,-48,114514,'left',0,.3125,.3125,0,84)
+                font.JB,-sz[1]/2-16,-48,114514,'left',0,.3125,.3125,0,84)
             end
         end,
-        buttonDraw=function(pos,s)
+        buttonDraw=function(pos,sz)
             if custom.info.smoothAnimAct then
-            gc.setColor(1,1,1)
-            gc.rectangle('fill',s.sz[1]*(pos-.5)-16,-18,32,36)
+                gc.setColor(1,1,1)
+                gc.circle('fill',sz[1]*(pos-.5),0,20,4)
             end
         end,
         always=function(pos,s)
@@ -169,17 +166,17 @@ function custom.init()
     })
 
     BUTTON.create('themeChoose',{
-        x=0,y=150,type='rect',w=400,h=100,
+        x=0,y=150,type='rect',w=450,h=100,
         draw=function(bt,t)
             local o,l=custom.tOrder,#themeList
             local w,h=bt.w,bt.h
             gc.setColor(1,.5,.5)
             gc.printf(cfc.theme,font.Bender_B,0,-100,1280,'center',0,.5,.5,640,72)
             gc.setLineWidth(3)
-            gc.rectangle('line',-bt.w/2,-bt.h/2,bt.w,bt.h)
+            gc.polygon('line',-w/2,0,-(w-h)/2,h/2,(w-h)/2,h/2,w/2,0,(w-h)/2,-h/2,-(w-h)/2,-h/2)
             gc.setLineWidth(8)
-            if o>1 then gc.line(-(w-h)/2,h/2-8,-w/2+8,0,-(w-h)/2,-h/2+8) end
-            if o<l then gc.line( (w-h)/2,h/2-8, w/2-8,0, (w-h)/2,-h/2+8) end
+            if o>1 then gc.line(-(w-h)/2,h/2-16,-w/2+16,0,-(w-h)/2,-h/2+16) end
+            if o<l then gc.line( (w-h)/2,h/2-16, w/2-16,0, (w-h)/2,-h/2+16) end
             gc.setColor(1,1,1)
             gc.printf(themeList[custom.tOrder],font.Bender,0,0,1280,'center',0,.4,.4,640,72)
         end,
@@ -192,17 +189,17 @@ function custom.init()
         end
     },.2)
     BUTTON.create('sfxChoose',{
-        x=600,y=150,type='rect',w=400,h=100,
+        x=600,y=150,type='rect',w=450,h=100,
         draw=function(bt,t)
             local o,l=custom.sOrder,#sfxList
             local w,h=bt.w,bt.h
             gc.setColor(1,.5,1)
             gc.printf(cfc.sfx,font.Bender_B,0,-100,1280,'center',0,.5,.5,640,72)
             gc.setLineWidth(3)
-            gc.rectangle('line',-bt.w/2,-bt.h/2,bt.w,bt.h)
+            gc.polygon('line',-w/2,0,-(w-h)/2,h/2,(w-h)/2,h/2,w/2,0,(w-h)/2,-h/2,-(w-h)/2,-h/2)
             gc.setLineWidth(8)
-            if o>1 then gc.line(-(w-h)/2,h/2-8,-w/2+8,0,-(w-h)/2,-h/2+8) end
-            if o<l then gc.line( (w-h)/2,h/2-8, w/2-8,0, (w-h)/2,-h/2+8) end
+            if o>1 then gc.line(-(w-h)/2,h/2-16,-w/2+16,0,-(w-h)/2,-h/2+16) end
+            if o<l then gc.line( (w-h)/2,h/2-16, w/2-16,0, (w-h)/2,-h/2+16) end
             gc.setColor(1,1,1)
             gc.printf(sfxList[custom.sOrder],font.Bender,0,0,1280,'center',0,.4,.4,640,72)
             if cfc.sfxWarning[sfxList[o]] then gc.setColor(1,0,0,.75)
@@ -218,7 +215,7 @@ function custom.init()
         end
     },.2)
     BUTTON.create('scaleAdjust',{
-        x=-600,y=150,type='rect',w=400,h=100,
+        x=-600,y=150,type='rect',w=450,h=100,
         draw=function(bt,t,ct,pos)
             local sz=custom.info.fieldScale
             local w,h=bt.w,bt.h
@@ -227,14 +224,15 @@ function custom.init()
 
             gc.setColor(.5,1,1)
             gc.setLineWidth(4)
-            gc.circle('line',-(w-h)/2,0,h/2)
-            gc.circle('line', (w-h)/2,0,h/2)
-            gc.setLineWidth(12)
+            gc.polygon('line',-w/2,0,-(w-h)/2,h/2,(w-h)/2,h/2,w/2,0,(w-h)/2,-h/2,-(w-h)/2,-h/2)
+            gc.line(-(w-h)/2, h/2,-w/2+h,0,-(w-h)/2,-h/2)
+            gc.line( (w-h)/2, h/2, w/2-h,0, (w-h)/2,-h/2)
+            gc.setLineWidth(8)
             gc.setColor(1,1,1)
-            if sz>0.76 then gc.line(-(w-h)/2-h/2*.625,0,-(w-h)/2+h/2*.625,0) end
+            if sz>0.76 then gc.line(-(w-h)/2-h/2*.5,0,-(w-h)/2+h/2*.5,0) end
             if sz<1.24 then
-                gc.line( (w-h)/2-h/2*.625,0, (w-h)/2+h/2*.625,0)
-                gc.line( (w-h)/2,h/2*.625,(w-h)/2,-h/2*.625)
+                gc.line( (w-h)/2-h/2*.5,0, (w-h)/2+h/2*.5,0)
+                gc.line( (w-h)/2,h/2*.5,(w-h)/2,-h/2*.5)
             end
             gc.setColor(1,1,1)
             gc.printf(("%.2f"):format(sz),font.Bender,0,0,1280,'center',0,.5,.5,640,72)

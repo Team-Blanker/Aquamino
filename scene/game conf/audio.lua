@@ -13,6 +13,9 @@ end
 function audio.save()
     file.save('conf/audio',audio.info)
 end
+local function getdB(v)
+    return v==0 and -1e999 or math.log(v,10)*10
+end
 function audio.init()
     cf=user.lang.conf
     audio.read()
@@ -75,20 +78,16 @@ function audio.init()
     SLIDER.create('mus_volume',{
         x=-480,y=-250,type='hori',sz={800,32},button={32,32},
         gear=0,pos=mus.volume,
-        sliderDraw=function()
+        sliderDraw=function(g,sz)
             gc.setColor(.5,.5,.5,.8)
-            gc.rectangle('fill',-416,-16,832,32)
-            gc.setColor(.8,.8,.8)
-            gc.setLineWidth(6)
-            gc.rectangle('line',-419,-19,838,38)
+            gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
             gc.setColor(1,1,1)
-            gc.printf(string.format(cf.audio.mus.."%.0f%% = %.2fdB",
-                    audio.info.mus*100,audio.info.mus==0 and -1e999 or math.log(audio.info.mus,10)*10
-                ),font.JB,-419,-48,114514,'left',0,.3125,.3125,0,84)
+            gc.printf(string.format(cf.audio.mus.."%.0f%% = %.2fdB",audio.info.mus*100,getdB(audio.info.mus)),
+                font.JB,-416,-48,114514,'left',0,.3125,.3125,0,84)
         end,
-        buttonDraw=function(pos)
+        buttonDraw=function(pos,sz)
             gc.setColor(1,1,1)
-            gc.rectangle('fill',800*(pos-.5)-16,-18,32,36)
+            gc.circle('fill',sz[1]*(pos-.5),0,20,4)
         end,
         always=function(pos)
             audio.info.mus=pos
@@ -98,20 +97,16 @@ function audio.init()
     SLIDER.create('sfx_volume',{
         x=-480,y=-125,type='hori',sz={800,32},button={32,32},
         gear=0,pos=sfx.volume,
-        sliderDraw=function()
+        sliderDraw=function(g,sz)
             gc.setColor(.5,.5,.5,.8)
-            gc.rectangle('fill',-416,-16,832,32)
-            gc.setColor(.8,.8,.8)
-            gc.setLineWidth(6)
-            gc.rectangle('line',-419,-19,838,38)
+            gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
             gc.setColor(1,1,1)
-            gc.printf(string.format(cf.audio.sfx.."%.0f%% = %.2fdB",
-                    audio.info.sfx*100,audio.info.sfx==0 and -1e999 or math.log(audio.info.sfx,10)*10
-                ),font.JB,-419,-48,114514,'left',0,.3125,.3125,0,84)
+            gc.printf(string.format(cf.audio.sfx.."%.0f%% = %.2fdB",audio.info.sfx*100,getdB(audio.info.sfx)),
+                font.JB,-416,-48,114514,'left',0,.3125,.3125,0,84)
         end,
-        buttonDraw=function(pos)
+        buttonDraw=function(pos,sz)
             gc.setColor(1,1,1)
-            gc.rectangle('fill',800*(pos-.5)-16,-18,32,36)
+            gc.circle('fill',sz[1]*(pos-.5),0,20,4)
         end,
         always=function(pos)
             audio.info.sfx,sfx.volume=pos,pos

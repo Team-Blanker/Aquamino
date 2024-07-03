@@ -47,7 +47,7 @@ function video.init()
     })
 
     BUTTON.create('unableBG',{
-        x=-750,y=-240,type='rect',w=100,h=100,
+        x=-750,y=-240,type='rect',w=80,h=80,
         draw=function(bt,t,ct)
             local animArg=video.info.unableBG and min(ct/.2,1) or max(1-ct/.2,0)
             local w,h=bt.w,bt.h
@@ -59,22 +59,22 @@ function video.init()
             gc.setColor(1,1,1,.4)
             gc.rectangle('fill',w/2+360*animArg,-h/2,360*(1-animArg),h)
             gc.setColor(r,g,b)
-            gc.setLineWidth(10)
-            gc.rectangle('line',-w/2+5,-h/2+5,h-10,h-10)
+            gc.setLineWidth(8)
+            gc.rectangle('line',-w/2+4,-h/2+4,h-8,h-8)
             if video.info.unableBG then
-                gc.circle('line',0,0,(w/2-5)*1.4142,4)
+                gc.circle('line',0,0,(w/2-4)*1.4142,4)
             end
             gc.setColor(r,g,b,2*t)
             gc.rectangle('fill',-w/2,-h/2,h,h)
             gc.setColor(1,1,1)
-            gc.printf(cf.video.unableBG,font.Bender_B,w/2+50,0,1200,'left',0,.35,.35,0,72)
+            gc.printf(cf.video.unableBG,font.Bender_B,w/2+40,0,1200,'left',0,.35,.35,0,72)
         end,
         event=function()
             video.info.unableBG=not video.info.unableBG
         end
     },.2)
     BUTTON.create('vsync',{
-        x=390,y=-240,type='rect',w=100,h=100,
+        x=390,y=-240,type='rect',w=80,h=80,
         draw=function(bt,t,ct)
             local animArg=video.info.vsync and min(ct/.2,1) or max(1-ct/.2,0)
             local w,h=bt.w,bt.h
@@ -86,15 +86,15 @@ function video.init()
             gc.setColor(1,1,1,.4)
             gc.rectangle('fill',w/2+360*animArg,-h/2,360*(1-animArg),h)
             gc.setColor(r,g,b)
-            gc.setLineWidth(10)
-            gc.rectangle('line',-w/2+5,-h/2+5,h-10,h-10)
+            gc.setLineWidth(8)
+            gc.rectangle('line',-w/2+4,-h/2+4,h-8,h-8)
             if video.info.vsync then
-                gc.circle('line',0,0,(w/2-5)*1.4142,4)
+                gc.circle('line',0,0,(w/2-4)*1.4142,4)
             end
             gc.setColor(r,g,b,2*t)
             gc.rectangle('fill',-w/2,-h/2,h,h)
             gc.setColor(1,1,1)
-            gc.printf(cf.video.vsync,font.Bender_B,w/2+50,0,1200,'left',0,.35,.35,0,72)
+            gc.printf(cf.video.vsync,font.Bender_B,w/2+40,0,1200,'left',0,.35,.35,0,72)
         end,
         event=function()
             video.info.vsync=not video.info.vsync
@@ -120,7 +120,7 @@ function video.init()
         end
     },.25)
     BUTTON.create('fullscr',{
-        x=-180,y=-240,type='rect',w=100,h=100,
+        x=-180,y=-240,type='rect',w=80,h=80,
         draw=function(bt,t,ct)
             local animArg=video.info.fullscr and min(ct/.2,1) or max(1-ct/.2,0)
             local w,h=bt.w,bt.h
@@ -132,15 +132,15 @@ function video.init()
             gc.setColor(1,1,1,.4)
             gc.rectangle('fill',w/2+360*animArg,-h/2,360*(1-animArg),h)
             gc.setColor(r,g,b)
-            gc.setLineWidth(10)
-            gc.rectangle('line',-w/2+5,-h/2+5,h-10,h-10)
+            gc.setLineWidth(8)
+            gc.rectangle('line',-w/2+4,-h/2+4,h-8,h-8)
             if video.info.fullscr then
-                gc.circle('line',0,0,(w/2-5)*1.4142,4)
+                gc.circle('line',0,0,(w/2-4)*1.4142,4)
             end
             gc.setColor(r,g,b,2*t)
             gc.rectangle('fill',-w/2,-h/2,h,h)
             gc.setColor(1,1,1)
-            gc.printf(cf.video.fullScr,font.Bender_B,w/2+50,0,1200,'left',0,.35,.35,0,72)
+            gc.printf(cf.video.fullScr,font.Bender_B,w/2+40,0,1200,'left',0,.35,.35,0,72)
             gc.setColor(1,1,1,.75)
             gc.printf(cf.video.fullScrTxt,font.Bender_B,-w/2,h/2+64,1840,'left',0,.25,.25,0,152)
         end,
@@ -152,21 +152,18 @@ function video.init()
     SLIDER.create('frameLim',{
         x=-400,y=0,type='hori',sz={800,32},button={32,32},
         gear=0,pos=(video.info.frameLim-60)/240,
-        sliderDraw=function()
+        sliderDraw=function(g,sz)
             gc.setColor(.5,.5,.5,.8)
-            gc.rectangle('fill',-416,-16,832,32)
-            gc.setColor(.8,.8,.8)
-            gc.setLineWidth(6)
-            gc.rectangle('line',-419,-19,838,38)
+            gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
             gc.setColor(1,1,1)
             gc.printf(string.format(cf.video.frameLim.."%d",video.info.frameLim),
                 font.JB,-419,-48,114514,'left',0,.3125,.3125,0,84)
-                gc.setColor(1,1,1,.75)
+            gc.setColor(1,1,1,.75)
             gc.printf(cf.video.frameTxt,font.Bender_B,-419,48,114514,'left',0,.25,.25,0,72)
         end,
-        buttonDraw=function(pos)
+        buttonDraw=function(pos,sz)
             gc.setColor(1,1,1)
-            gc.rectangle('fill',800*(pos-.5)-16,-18,32,36)
+            gc.circle('fill',sz[1]*(pos-.5),0,20,4)
         end,
         always=function(pos)
             video.info.frameLim=math.floor(60.5+pos*240)

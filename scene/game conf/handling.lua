@@ -59,19 +59,16 @@ function hand.init()
     SLIDER.create('ASD',{
         x=-380,y=-250,type='hori',sz={1000,32},button={32,32},
         gear=0,pos=hand.ctrl.ASD/.2,
-        sliderDraw=function()
+        sliderDraw=function(g,sz)
             gc.setColor(.5,.5,.5,.8)
-            gc.rectangle('fill',-516,-16,1032,32)
-            gc.setColor(.8,.8,.8)
-            gc.setLineWidth(6)
-            gc.rectangle('line',-519,-19,1038,38)
+            gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
             gc.setColor(1,1,1)
             gc.printf(string.format(cfh.ASD.."%.0fms = %.2fF(60 FPS)",hand.ctrl.ASD*1000,hand.ctrl.ASD*60),
-                font.JB,-519,-48,114514,'left',0,.3125,.3125,0,84)
+                font.JB,-516,-48,114514,'left',0,.3125,.3125,0,84)
         end,
-        buttonDraw=function(pos)
+        buttonDraw=function(pos,sz)
             gc.setColor(1,1,1)
-            gc.rectangle('fill',1000*(pos-.5)-16,-18,32,36)
+            gc.circle('fill',sz[1]*(pos-.5),0,20,4)
         end,
         always=function(pos)
             hand.ctrl.ASD=.2*pos
@@ -80,19 +77,16 @@ function hand.init()
     SLIDER.create('ARR',{
         x=-380,y=-125,type='hori',sz={1000,32},button={32,32},
         gear=0,pos=hand.ctrl.ASP/.1,
-        sliderDraw=function()
+        sliderDraw=function(g,sz)
             gc.setColor(.5,.5,.5,.8)
-            gc.rectangle('fill',-516,-16,1032,32)
-            gc.setColor(.8,.8,.8)
-            gc.setLineWidth(6)
-            gc.rectangle('line',-519,-19,1038,38)
+            gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
             gc.setColor(1,1,1)
             gc.printf(string.format(cfh.ASP.."%.0fms = %.2fF(60 FPS)",hand.ctrl.ASP*1000,hand.ctrl.ASP*60),
-                font.JB,-519,-48,114514,'left',0,.3125,.3125,0,84)
+                font.JB,-516,-48,114514,'left',0,.3125,.3125,0,84)
         end,
-        buttonDraw=function(pos)
+        buttonDraw=function(pos,sz)
             gc.setColor(1,1,1)
-            gc.rectangle('fill',1000*(pos-.5)-16,-18,32,36)
+            gc.circle('fill',sz[1]*(pos-.5),0,20,4)
         end,
         always=function(pos)
             hand.ctrl.ASP=.1*pos
@@ -101,19 +95,16 @@ function hand.init()
     SLIDER.create('SD_ASD',{
         x=-380,y=0,type='hori',sz={1000,32},button={32,32},
         gear=0,pos=hand.ctrl.SD_ASD/.2,
-        sliderDraw=function()
+        sliderDraw=function(g,sz)
             gc.setColor(.5,.5,.5,.8)
-            gc.rectangle('fill',-516,-16,1032,32)
-            gc.setColor(.8,.8,.8)
-            gc.setLineWidth(6)
-            gc.rectangle('line',-519,-19,1038,38)
+            gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
             gc.setColor(1,1,1)
             gc.printf(string.format(cfh.SD_ASD.."%.0fms = %.2fF(60 FPS)",hand.ctrl.SD_ASD*1000,hand.ctrl.SD_ASD*60),
-                font.JB,-519,-48,114514,'left',0,.3125,.3125,0,84)
+                font.JB,-516,-48,114514,'left',0,.3125,.3125,0,84)
         end,
-        buttonDraw=function(pos)
+        buttonDraw=function(pos,sz)
             gc.setColor(1,1,1)
-            gc.rectangle('fill',1000*(pos-.5)-16,-18,32,36)
+            gc.circle('fill',sz[1]*(pos-.5),0,20,4)
         end,
         always=function(pos)
             hand.ctrl.SD_ASD=.2*pos
@@ -122,19 +113,16 @@ function hand.init()
     SLIDER.create('SD_ARR',{
         x=-380,y=125,type='hori',sz={1000,32},button={32,32},
         gear=0,pos=hand.ctrl.SD_ASP/.1,
-        sliderDraw=function()
+        sliderDraw=function(g,sz)
             gc.setColor(.5,.5,.5,.8)
-            gc.rectangle('fill',-516,-16,1032,32)
-            gc.setColor(.8,.8,.8)
-            gc.setLineWidth(6)
-            gc.rectangle('line',-519,-19,1038,38)
+            gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
             gc.setColor(1,1,1)
             gc.printf(string.format(cfh.SD_ASP.."%.0fms = %.2fF(60 FPS)",hand.ctrl.SD_ASP*1000,hand.ctrl.SD_ASP*60),
-                font.JB,-519,-48,114514,'left',0,.3125,.3125,0,84)
+            font.JB,-516,-48,114514,'left',0,.3125,.3125,0,84)
         end,
-        buttonDraw=function(pos)
+        buttonDraw=function(pos,sz)
             gc.setColor(1,1,1)
-            gc.rectangle('fill',1000*(pos-.5)-16,-18,32,36)
+            gc.circle('fill',sz[1]*(pos-.5),0,20,4)
         end,
         always=function(pos)
             hand.ctrl.SD_ASP=.1*pos

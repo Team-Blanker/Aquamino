@@ -38,6 +38,7 @@ return {
         start="Press any key to start",
     },
     menu={
+        noBestScore="No score"
     },
     about={
         engineText="Powered by LÖVE",
@@ -77,7 +78,7 @@ return {
             frameLim="Max draw FPS:",frameTxt="A value equal to your monitor's FPS is recommended."
         },
         custom={
-            texture="Block texture",color="Color adjust",
+            texture="Block texture",color="Color adjust...",
             smooth="Smooth move",smoothTxt="Note that there is no intemediate state in any move or rotations.",
             smoothScale=.3,smoothOffX=-15,smoothTime="Time:",
             theme="Theme",
