@@ -44,7 +44,7 @@ return {
         engineText="Powered by LÖVE",
         tool="Tools used:",
         repo="Repos used:",
-        time="You've launched Aquamino %d time(s),\nwith a total run time of\n%d second(s).",
+        time="Times launched: %d\nTotal time played: %ds",
         staff="Staff"
     },
     staff={

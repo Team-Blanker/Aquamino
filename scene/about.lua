@@ -127,6 +127,7 @@ function about.mouseR(x,y,button,istouch)
     BUTTON.release(x,y)
 end
 
+local timeTxt=gc.newText(font.Bender)
 function about.update(dt)
     about.world:update(dt)
     local mx,my=adaptAllWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5)
@@ -141,8 +142,13 @@ function about.draw()
     gc.draw(about.eTxt,425,-400+800/w*h/4,0,1/3,1/3,0,128)
     gc.draw(about.rTxt,-810,-270,0,1/3,1/3,0,0)
     gc.draw(about.tTxt,-270,-270,0,1/3,1/3,0,0)
-    gc.printf(user.lang.about.time:format(win.stat.launch,win.stat.totalTime+scene.totalTime),
-        font.Bender,-810,0,1500,'left',0,1/3,1/3)
+
+    timeTxt:clear()
+    timeTxt:addf(user.lang.about.time:format(win.stat.launch,win.stat.totalTime+scene.totalTime),
+        10000,'center',0,0,0,1,1,5000)
+    gc.draw(timeTxt,0,400,0,1/3,1/3,0,timeTxt:getHeight()/2)
+    --gc.printf(user.lang.about.time:format(win.stat.launch,win.stat.totalTime+scene.totalTime),
+        --font.Bender,-700,400,10000,'center',0,1/3,1/3,5000,144)
     BUTTON.draw()
     gc.draw(loveLogo,about.loveBall.body:getX(),about.loveBall.body:getY(),about.loveBall.body:getAngle(),ballR*2/lw,ballR*2/lh,lw/2,lh/2)
 end
