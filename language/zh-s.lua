@@ -78,10 +78,10 @@ return {
         },
         custom={
             texture="方块材质",color="方块配色...",
-            smooth="平滑运动",smoothTxt="注意，移动和旋转没有中间态，只要终点没有障碍，操作就必定可以成功。",
+            smooth="平滑运动",
             smoothScale=.35,smoothOffX=0,smoothTime="动画时长:",
-            theme="主题",
-            scale="场地缩放",scaleTxt="数值为1时，对于1920*1080的窗口，单格方块大小为36*36。",
+            theme="场地风格",
+            scale="场地缩放",scaleTxt="单格方块大小：",
             sfx="音效包",sfxWarning={
                 otto="该音效包包含音量过大内容，谨慎选择。"
             },

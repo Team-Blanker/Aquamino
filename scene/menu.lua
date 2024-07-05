@@ -259,8 +259,9 @@ function menu.mouseR(x,y,button,istouch)
     end
 end
 local hv=''
+local msx,msy=0,0
 function menu.update(dt)
-    local msx,msy=adaptAllWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5)
+    msx,msy=adaptAllWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5)
     local n=false
     for k,v in pairs(menu.modeList) do
         if menu.lvl==1 and abs(msx-v.x)+abs(msy-v.y)<150 then n=true
@@ -287,21 +288,18 @@ gc.setCanvas()
 local mt
 local ts=.4
 local w,h,c
+local lerp=mymath.lerp
 function menu.draw()
     mt=menu.modeTxt
     for k,v in pairs(menu.modeList) do
-        --local s=(abs(v.x)+abs(v.y)-150*(16*(scene.time-.125)))/150/2
-        --if s<=0 then
         c=v.borderColor
+
         gc.setColor(c[1],c[2],c[3],.25+v.hoverT)
         gc.draw(cv,v.x,v.y,0,1,1,150,150)
         gc.setColor(c)
         gc.draw(menu.icon.border,v.x,v.y,0,1,1,150,150)
-        --gc.setColor(1,1,1,1+s*.5)
-        --gc.draw(menu.icon.border,v.x,v.y,0,1,1,150,150)
         gc.setColor(1,1,1)
         gc.draw(menu.icon[k],v.x,v.y,0,1,1,150,150)
-        --end
     end
     for k,v in pairs(menu.modeList) do
         w,h=mt[k].w*ts,mt[k].h*ts

@@ -71,7 +71,7 @@ return {
 
         audio={mus="Music Volume:",sfx="SFX Volume:",distract="Mute when unfocus",DOX=-22},
         video={
-            unableBG="Disable BGs",unableTxt="Turn on when ingame BGs discomfort you.",
+            unableBG="Disable BGs",
             fullScr="Fullscreen",fullScrTxt="Press F11 to switch window mode immediately.",
             vsync="Vertical Sync",
             vsyncTxt="The drawing code and computing code of this program are separated in form. How many times The drawing code executed in 1 second is FPS, so as TPS.\nIf the maximum FPS is lower than or equal to the vertical sync limit FPS, the TPS is not limited.\nThis program mainly considers PC performance, and this option is turned off by default.\nLow-performance devices can turn on this option to optimize the execution of the computing code.",
@@ -79,10 +79,10 @@ return {
         },
         custom={
             texture="Block texture",color="Color adjust...",
-            smooth="Smooth move",smoothTxt="Note that there is no intemediate state in any move or rotations.",
+            smooth="Smooth move",
             smoothScale=.3,smoothOffX=-15,smoothTime="Time:",
             theme="Theme",
-            scale="Field scale",scaleTxt="1 means a single cell is 36px*36px in a 1920*1080 window.",
+            scale="Field scale",scaleTxt="Cell size:",
             sfx="SFX pack",sfxWarning={
                 otto="LOUD SOUND WARNING. TAKE AT YOUR OWN RISK."
             },

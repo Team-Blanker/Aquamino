@@ -6,9 +6,13 @@ local layer=0
 function BUTTON.create(name,arg,aboveTLimit)
     if name and arg then
     if not BUTTON.list[layer] then BUTTON.list[layer]={} end
-    BUTTON.list[layer][name]=arg BUTTON.list[layer][name].aboveT=0
+    BUTTON.list[layer][name]=arg
+    BUTTON.list[layer][name].hover=false
+    BUTTON.list[layer][name].aboveT=0
     BUTTON.list[layer][name].clickT=1e99--距离上一次点击的时间
     BUTTON.list[layer][name].aboveTLimit=aboveTLimit and aboveTLimit or 1
+    BUTTON.list[layer][name].clickPos={0,0}
+    BUTTON.list[layer][name].hoverPos={0,0}
     else BUTTON.list={} layer=0 end
     BUTTON.active=nil
 end
@@ -46,9 +50,15 @@ function BUTTON.update(dt,x,y,l)
     l=l or 0
     for li,ly in pairs(BUTTON.list) do
         for k,v in pairs(ly) do
-        if l==li and BUTTON.check(v,x,y) then v.aboveT=min(v.aboveT+dt,v.aboveTLimit)
+        if l==li and BUTTON.check(v,x,y) then
+            v.aboveT=min(v.aboveT+dt,v.aboveTLimit)
+            v.hoverPos[1],v.hoverPos[2]=x-v.x,y-v.y
+            v.hover=true
             if v.update then v.update(dt,v) end
-        else v.aboveT=max(v.aboveT-dt,0) end
+        else
+            v.aboveT=max(v.aboveT-dt,0)
+            v.hover=false
+        end
         v.clickT=v.clickT+dt
         if v.always then v.always(dt,v) end
         end
@@ -83,7 +93,10 @@ function BUTTON.release(x,y,l)
     l=l or 0
     if BUTTON.list[l] then
         for k,v in pairs(BUTTON.list[l]) do
-        if BUTTON.check(v,x,y) and BUTTON.active==k then v.event(x-v.x,y-v.y,v) v.clickT=0 end
+        if BUTTON.check(v,x,y) and BUTTON.active==k then
+            v.event(x-v.x,y-v.y,v) v.clickT=0
+            v.clickPos[1],v.clickPos[2]=x-v.x,y-v.y
+        end
         end
     end
 end
