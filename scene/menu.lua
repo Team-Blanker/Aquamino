@@ -222,7 +222,7 @@ function menu.keyP(k)
             })
         elseif k=='r' then
             menu.rCount=menu.rCount+1
-            if menu.rCount>=16 then
+            if menu.rCount>=8 then
                 scene.switch({
                     dest='game',destScene=require'mino/game',
                     swapT=.6,outT=.2,
@@ -261,7 +261,7 @@ end
 local hv=''
 local msx,msy=0,0
 function menu.update(dt)
-    msx,msy=adaptAllWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5)
+    msx,msy=adaptWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5)
     local n=false
     for k,v in pairs(menu.modeList) do
         if menu.lvl==1 and abs(msx-v.x)+abs(msy-v.y)<150 then n=true

@@ -1020,7 +1020,7 @@ function mino.update(dt)
     if not (love.window.hasFocus() or mino.paused) then mino.paused=true
         if mino.rule.pause then mino.rule.pause(S,mino.paused) end
     end
-    if mino.paused then BUTTON.update(dt,adaptAllWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5))
+    if mino.paused then BUTTON.update(dt,adaptWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5))
         mino.pauseTimer=mino.pauseTimer+dt mino.pauseAnimTimer=min(mino.pauseAnimTimer+dt,.25)
     else mino.pauseAnimTimer=max(mino.pauseAnimTimer-dt,0)
         mino.waitTime=mino.waitTime-dt

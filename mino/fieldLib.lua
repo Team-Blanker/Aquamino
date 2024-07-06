@@ -69,6 +69,11 @@ function fieldLib.newPlayer(arg)
     stdPlayer.RS=require('mino/rotateSys/'..stdPlayer.RS_name)
     return stdPlayer
 end
+
+function fieldLib.setRS(player,RS)
+    player.RS_name=RS
+    player.RS=require('mino/rotateSys/'..RS)
+end
 --场地
 function fieldLib.addLine(player)--加一行
     local line={}
@@ -99,12 +104,12 @@ end
 
 --方块旋转&spin判定
 
-local gOffd={--大方块附加的踢墙偏移
+local gOffd={--大方块附加的踢墙偏移（向下）
     R={{ 0, 0},{ 0,-1},{ 0, 1},{-1, 0},{-1,-1},{-1, 1}},
     L={{ 0, 0},{ 0,-1},{ 0, 1},{ 1, 0},{ 1,-1},{ 1, 1}},
     F={{ 0, 0},{-1, 0},{ 1, 0},{ 0,-1},{-1,-1},{ 1,-1}}
 }
-local gOffu={--大方块附加的踢墙偏移
+local gOffu={--大方块附加的踢墙偏移（向上）
     R={{ 1, 0},{1, -1},{ 1, 1}},
     L={{-1, 0},{-1,-1},{-1, 1}},
     F={{ 0, 1},{-1, 1},{ 1, 1}}
@@ -116,11 +121,11 @@ function fieldLib.kick(player,mode)
     local originO=cur.O
     local RS=fieldLib.coincide(player) and IRS_RS or player.RS
     cur.O=B.rotate(cur.piece,cur.O,mode)
-    if RS.getKickList then
-        local kickOrder=RS.getKickList(player,mode)
+    if RS.kick then
+        local kickOrder=RS.kick(player,mode)
         if kickOrder then return kickOrder end
     else
-        local ukick=RS.kickTable[cur.name][mode][originO+1]
+        local ukick=RS.getKickTable and RS.getKickTable(player,cur.name,originO+1,mode,fieldLib) or RS.kickTable[cur.name][mode][originO+1]
         if ukick and player.LDR>0 then
             local x,y
             if cur.piece.sz=='giant' then
@@ -139,7 +144,7 @@ function fieldLib.kick(player,mode)
             else
                 for i=1,#ukick do
                     x,y=ukick[i][1],ukick[i][2]
-                    if not fieldLib.coincide(player,x,y) then cur.x,cur.y=cur.x+x,cur.y+y
+                    if not fieldLib.coincide(player,x,y) then cur.x,cur.y=cur.x+x,cur.y+y print(i)
                     return i end
                 end
             end

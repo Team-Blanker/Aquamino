@@ -130,7 +130,7 @@ end
 local timeTxt=gc.newText(font.Bender)
 function about.update(dt)
     about.world:update(dt)
-    local mx,my=adaptAllWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5)
+    local mx,my=adaptWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5)
     BUTTON.update(dt,mx,my)
     if ms.isDown(1) and drag then
         about.loveBall.body:applyForce(400*(mx-about.loveBall.body:getX()),400*(my-about.loveBall.body:getY()))

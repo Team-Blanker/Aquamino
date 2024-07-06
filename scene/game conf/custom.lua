@@ -296,9 +296,9 @@ function custom.mouseR(x,y,button,istouch)
     BUTTON.release(x,y) SLIDER.mouseR(x,y,button,istouch)
 end
 function custom.update(dt)
-    BUTTON.update(dt,adaptAllWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5))
+    BUTTON.update(dt,adaptWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5))
     if SLIDER.acting then SLIDER.always(SLIDER.list[SLIDER.acting],
-        adaptAllWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5))
+        adaptWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5))
     end
 end
 function custom.draw()

@@ -186,7 +186,7 @@ end
 --function AnV.mouseR(x,y,button,istouch)
 --end
 function config.update(dt)
-    BUTTON.update(dt,adaptAllWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5))
+    BUTTON.update(dt,adaptWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5))
 end
 function config.draw()
     gc.setColor(1,1,1)

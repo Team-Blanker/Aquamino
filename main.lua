@@ -103,7 +103,7 @@ love.window.setMode(love.window.getMode()) --看似废话，但是如果去掉�
 function love.resize(w,h)
     win.H=h
     win.W=w
-    adaptAllWindow=love.math.newTransform(
+    adaptWindow=love.math.newTransform(
         win.W/2,win.H/2,0,
         win.H/win.W<9/16 and win.H/1080 or win.W/1920,win.H/win.W<9/16 and win.H/1080 or win.W/1920
     )
@@ -137,7 +137,7 @@ win={
             win.W,win.H=win.W_win,win.H_win
             win.x,win.y=win.x_win,win.y_win
         end
-        adaptAllWindow=love.math.newTransform(
+        adaptWindow=love.math.newTransform(
             win.W/2,win.H/2,0,
             win.H/win.W<9/16 and win.H/1080 or win.W/1920,win.H/win.W<9/16 and win.H/1080 or win.W/1920
         )
@@ -190,7 +190,7 @@ scene={
 win.x,win.y=love.window.getPosition()
 win.x_win,win.y_win=love.window.getPosition()
 win.scale=win.H/win.W<9/16 and win.H/1080 or win.W/1920
-adaptAllWindow=love.math.newTransform(
+adaptWindow=love.math.newTransform(
     win.W/2,win.H/2,0,
     win.H/win.W<9/16 and win.H/1080 or win.W/1920,win.H/win.W<9/16 and win.H/1080 or win.W/1920
 )
@@ -224,11 +224,11 @@ function love.keyreleased(k)
     end
 end
 function love.mousepressed(x,y,button,istouch)
-    local rx,ry=adaptAllWindow:inverseTransformPoint(x+.5,y+.5)
+    local rx,ry=adaptWindow:inverseTransformPoint(x+.5,y+.5)
     if scene.cur.mouseP and canop then scene.cur.mouseP(rx,ry,button,istouch) end
 end
 function love.mousereleased(x,y,button,istouch)
-    local rx,ry=adaptAllWindow:inverseTransformPoint(x+.5,y+.5)
+    local rx,ry=adaptWindow:inverseTransformPoint(x+.5,y+.5)
     if scene.cur.mouseR and canop then scene.cur.mouseR(rx,ry,button,istouch) end
 end
 function love.wheelmoved(dx,dy)--滚轮上滚是1，下滚是-1
@@ -301,7 +301,7 @@ function love.draw()
 
     --[[画面显示：找到最大的16:9的矩形，居中，以该矩形的中心为原点，向右为x轴正方向，向下为y轴正方向，
     矩形长边为1920单位，短边为1080单位，以此为基准进行绘制]]
-    gc.applyTransform(adaptAllWindow)
+    gc.applyTransform(adaptWindow)
     local rx,ry=gc.inverseTransformPoint(ms.getX()+.5,ms.getY()+.5)
     gc.setColor(1,1,1)--若未说明，图像绘制统一为白色，下同
     if scene.BG.draw then scene.BG.draw() end

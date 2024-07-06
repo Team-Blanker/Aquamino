@@ -74,7 +74,7 @@ function intro.mouseP(x,y,button,istouch)
     intro.keyP('mouse')
 end
 function intro.update(dt)
-    BUTTON.update(dt,adaptAllWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5))
+    BUTTON.update(dt,adaptWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5))
 end
 
 local logo=gc.newImage('assets/pic/title.png')

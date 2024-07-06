@@ -87,7 +87,7 @@ function key.mouseR(x,y,button,istouch)
     BUTTON.release(x,y)
 end
 function key.update(dt)
-    BUTTON.update(dt,adaptAllWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5))
+    BUTTON.update(dt,adaptWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5))
 end
 function key.draw()
     gc.setColor(1,1,1,.5)

@@ -162,7 +162,7 @@ local function setAnimy(hidey)
     return ((2-hy)*hy-.75)*1000
 end
 function stf.update(dt)
-    local mx,my=adaptAllWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5)
+    local mx,my=adaptWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5)
     if love.mouse.isDown(1,2) then
         stf.posy=max(min(opy-my+mpy,posyMax),0)
         if hp and not stf.showKairan then stf.hidey=max(min(ohy-my+mhy,1000),0) stf.hideAnimy=setAnimy(stf.hidey)
