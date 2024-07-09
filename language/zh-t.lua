@@ -70,7 +70,7 @@ return {
         main={title="設定 - 首頁",audio="音頻設定",video="畫面設定",custom="主题設定",ctrl="控制設定",keys="鍵位設定"},
         audio={mus="音樂音量:",sfx="音效音量:",distract="失去焦點自動靜音",DOX=0},
         video={
-            unableBG="禁用遊戲背景",unableTxt="若遊戲背景導致你身體不適，請開啟此選項。",
+            unableBG="禁用遊戲背景",
             fullScr="全螢幕",fullScrTxt="按F11可一鍵切換視窗狀態。",
             vsync="垂直同步",
             vsyncTxt="本程式繪製代碼與運算代碼形式上分離，稱繪製幀率為FPS，運算幀率為TPS。\n若設定的最高FPS小於等於垂直同步限制的FPS，則TPS不受限。\n本程式主要考慮PC端運行情況，該選項預設為關閉。\n低性能設備可開啟此選項優化運算代碼運行。",
@@ -78,6 +78,7 @@ return {
         },
         custom={
             texture="方塊材質",color="方塊配色...",
+            RS="旋轉系統",
             smooth="平滑運動",
             smoothScale=.35,smoothOffX=0,smoothTime="動畫時長:",
             theme="場地風格",

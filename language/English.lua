@@ -79,6 +79,7 @@ return {
         },
         custom={
             texture="Block texture",color="Color adjust...",
+            RS="Rotate system",
             smooth="Smooth move",
             smoothScale=.3,smoothOffX=-15,smoothTime="Time:",
             theme="Theme",

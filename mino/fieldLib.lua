@@ -115,17 +115,21 @@ local gOffu={--大方块附加的踢墙偏移（向上）
     F={{ 0, 1},{-1, 1},{ 1, 1}}
 }
 
+local data={}
 function fieldLib.kick(player,mode)
     local cur=player.cur
     --local originPiece,originO=T.copy(cur.piece),cur.O--先存一个，万一你没踢成功呢
     local originO=cur.O
     local RS=fieldLib.coincide(player) and IRS_RS or player.RS
+
+    if RS.getData then RS.getData(data,player,fieldLib) end
+
     cur.O=B.rotate(cur.piece,cur.O,mode)
     if RS.kick then
         local kickOrder=RS.kick(player,mode)
         if kickOrder then return kickOrder end
     else
-        local ukick=RS.getKickTable and RS.getKickTable(player,cur.name,originO+1,mode,fieldLib) or RS.kickTable[cur.name][mode][originO+1]
+        local ukick=RS.getKickTable and RS.getKickTable(data,cur.name,originO+1,mode) or RS.kickTable[cur.name][mode][originO+1]
         if ukick and player.LDR>0 then
             local x,y
             if cur.piece.sz=='giant' then
@@ -144,7 +148,7 @@ function fieldLib.kick(player,mode)
             else
                 for i=1,#ukick do
                     x,y=ukick[i][1],ukick[i][2]
-                    if not fieldLib.coincide(player,x,y) then cur.x,cur.y=cur.x+x,cur.y+y print(i)
+                    if not fieldLib.coincide(player,x,y) then cur.x,cur.y=cur.x+x,cur.y+y
                     return i end
                 end
             end
@@ -154,6 +158,8 @@ function fieldLib.kick(player,mode)
     end
     --cur.piece,cur.O=T.copy(originPiece),originO
     cur.O=B.antiRotate(cur.piece,cur.O,mode)
+
+    for k,v in pairs(data) do v=nil end
 end
 
 function fieldLib.isImmobile(player)

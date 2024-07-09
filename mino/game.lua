@@ -597,6 +597,8 @@ function mino.init()
         mino.sfxPlay=require('sfx/game/'..pf.sfx)
         mino.sfxPlay.addSFX()
 
+        fLib.setRS(P[1],pf.RS)
+
         local vi={unableBG=false}
         T.combine(vi,file.read('conf/video'))
         mino.unableBG=vi.unableBG

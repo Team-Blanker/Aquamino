@@ -5,17 +5,15 @@ local custom={}
 local block=require'mino/blocks'
 local BUTTON,SLIDER=scene.button,scene.slider
 
-blockSkinList={'glossy','glass','pure','carbon fibre','wheelchair'}
-themeList={'simple'}
-sfxList={'plastic','krystal','meme','otto'}
+local blockSkinList={'glossy','glass','pure','carbon fibre','wheelchair'}
+local themeList={'simple'}
+local sfxList={'plastic','krystal','meme','otto'}
+local RSList={'SRS','AqRS'}
 function custom.read()
-    custom.info={block='glossy',theme='simple',sfx='plastic',smoothAnimAct=false,smoothTime=.05,fieldScale=1}
+    custom.info={block='glossy',theme='simple',sfx='plastic',RS='SRS',smoothAnimAct=false,smoothTime=.05,fieldScale=1}
     custom.color={}
     local info=file.read('conf/custom')
     T.combine(custom.info,info)
-    if not T.include(blockSkinList,custom.info.block) then custom.info.block='glossy' end
-    if not T.include(themeList,custom.info.theme) then custom.info.theme='simple' end
-    if not T.include(sfxList,custom.info.sfx) then custom.info.sfx='plastic' end
 end
 function custom.save()
     file.save('conf/custom',custom.info)
@@ -25,6 +23,7 @@ function custom.init()
     custom.read()
 
     custom.bOrder=T.include(blockSkinList,custom.info.block) or 1
+    custom.RSOrder=T.include(RSList,custom.info.RS) or 1
     custom.tOrder=T.include(themeList,custom.info.theme) or 1
     custom.sOrder=T.include(sfxList,custom.info.sfx) or 1
 
@@ -103,6 +102,40 @@ function custom.init()
             bt.success=success
         end
     },.2)
+
+    BUTTON.create('RSChoose',{
+        x=-600,y=200,type='rect',w=450,h=80,success=false,
+        draw=function(bt,t,ct,cp)
+            local o,l=custom.RSOrder,#RSList
+            local w,h=bt.w,bt.h
+            if bt.success then local a=1-6*ct
+                gc.setColor(1,1,1,a)
+                gc.setLineWidth(3)
+                local off=h/2*(1-a)
+                if cp[1]<0 then gc.line(-(w-h)/2-off,h/2,-w/2-off,0,-(w-h)/2-off,-h/2)
+                else gc.line((w-h)/2+off,h/2,w/2+off,0,(w-h)/2+off,-h/2)
+                end
+            end
+            gc.setColor(1,.75,.5)
+            gc.printf(cfc.RS,font.Bender_B,0,-h/2-48,1280,'center',0,.45,.45,640,72)
+            gc.setLineWidth(3)
+            gc.polygon('line',-w/2,0,-(w-h)/2,h/2,(w-h)/2,h/2,w/2,0,(w-h)/2,-h/2,-(w-h)/2,-h/2)
+            if o>1 then gc.line(-(w-h)/2,h/2-16,-w/2+16,0,-(w-h)/2,-h/2+16) end
+            if o<l then gc.line( (w-h)/2,h/2-16, w/2-16,0, (w-h)/2,-h/2+16) end
+            gc.setColor(1,1,1)
+            gc.printf(RSList[custom.RSOrder],font.Bender,0,0,1280,'center',0,.4,.4,640,72)
+        end,
+        event=function(x,y,bt)
+            local success=false
+            if x<0 then
+                if custom.RSOrder>1 then custom.RSOrder=custom.RSOrder-1 success=true end
+            elseif custom.RSOrder<#RSList then custom.RSOrder=custom.RSOrder+1 success=true
+            end
+            custom.info.RS=RSList[custom.RSOrder]
+            bt.success=success
+        end
+    },.2)
+
     BUTTON.create('colorAdjust',{
         x=600,y=-280,type='rect',w=400,h=80,
         draw=function(bt,t)
@@ -176,7 +209,7 @@ function custom.init()
     })
 
     BUTTON.create('themeChoose',{
-        x=0,y=80,type='rect',w=450,h=80,success=false,
+        x=0,y=320,type='rect',w=450,h=80,success=false,
         draw=function(bt,t,ct,cp)
             local o,l=custom.tOrder,#themeList
             local w,h=bt.w,bt.h
@@ -220,7 +253,7 @@ function custom.init()
                 else gc.line((w-h)/2+off,h/2,w/2+off,0,(w-h)/2+off,-h/2)
                 end
             end
-            gc.setColor(1,.5,1)
+            gc.setColor(1,.25,.75)
             gc.printf(cfc.sfx,font.Bender_B,0,-h/2-48,1280,'center',0,.45,.45,640,72)
             gc.setLineWidth(3)
             gc.polygon('line',-w/2,0,-(w-h)/2,h/2,(w-h)/2,h/2,w/2,0,(w-h)/2,-h/2,-(w-h)/2,-h/2)
@@ -247,10 +280,9 @@ function custom.init()
         draw=function(bt,t,ct,cp)
             local sz=custom.info.fieldScale
             local w,h=bt.w,bt.h
-            gc.setColor(.5,1,1)
+            gc.setColor(.3,.65,1)
             gc.printf(cfc.scale,font.Bender_B,0,-h/2-48,1280,'center',0,.45,.45,640,72)
 
-            gc.setColor(.5,1,1)
             gc.setLineWidth(3)
             gc.polygon('line',-w/2,0,-(w-h)/2,h/2,(w-h)/2,h/2,w/2,0,(w-h)/2,-h/2,-(w-h)/2,-h/2)
             gc.line(-(w-h)/2, h/2,-w/2+h,0,-(w-h)/2,-h/2)
