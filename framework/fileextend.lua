@@ -5,7 +5,7 @@ function f.read(path)
     local s=fs.newFile(path)
     s:open('r')
     local success,result=pcall(json.decode,s:read())
-    print(result)
+    print('read success',result)
     s:close()
     if success then return result end
     print("Warning: file [ "..path.." ] is not decoded correctly, or it's empty.")
