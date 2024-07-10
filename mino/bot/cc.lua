@@ -77,16 +77,19 @@ local ccWrap={}
 
 --设置，权重
 function ccWrap.newBot(option,weight)--生成一个新bot
-    --local cco=ffi.new('CCOptions',option or defaultOption)
-    --local ccw=ffi.new('CCWeights',weight)
-
     local cco=ffi.new('CCOptions',{})
     CC.cc_default_options(cco)
+    if option then for k,v in pairs(option) do
+        cco[k]=v
+    end end
     cco.min_nodes=256
     cco.max_nodes=32768
     cco.speculate=false
     local ccw=ffi.new('CCWeights',{})
     CC.cc_default_weights(ccw)
+    if weight then for k,v in pairs(weight) do
+        ccw[k]=v
+    end end
     ccw.use_bag=false
 
     return {bot=CC.cc_launch_async(cco,ccw,NULL,NULL,0),move=ffi.new('CCMove',{})}
@@ -149,8 +152,8 @@ function ccWrap.newThread(channelIndex,P,index)
     thread.recvChannel:clear()
     thread.thread=th.newThread([[
         local cc=require('mino/bot/cc')
-        local channelIndex=...
-        local bot=cc.newBot() cc.requestMove(bot)
+        local channelIndex,option,weight=...
+        local bot=cc.newBot(option,weight) cc.requestMove(bot)
         local th=love.thread
         local s,r,nr=th.getChannel("cc_send"..channelIndex),th.getChannel("cc_recv"..channelIndex),th.getChannel("cc_nextRecv"..channelIndex)
         local sCount,rCount=0,0
@@ -183,8 +186,8 @@ function ccWrap.newThread(channelIndex,P,index)
     ]])
     return thread
 end
-function ccWrap.startThread(thread)
-    thread.thread:start(thread.channelIndex)
+function ccWrap.startThread(thread,option,weight)
+    thread.thread:start(thread.channelIndex,option,weight)
 end
 function ccWrap.destroyThread(thread)
     thread.sendChannel:push({op='destroy'})

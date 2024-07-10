@@ -1,6 +1,4 @@
 local rule={}
-local battle=require'mino/battle'
-local bot_zzz=require('mino/bot/zzztoj')
 local lp=love.physics
 local pt=0
 function rule.init(P,mino)
@@ -21,8 +19,6 @@ function rule.init(P,mino)
     mino.fieldScale=2/3
 
     mino.stacker.opList={1,2}
-    bot_zzz.init() bot_zzz.start(1)
-    rule.opTimer=0
 
     --使用物理引擎生成世界和各种物件
     --生成用代码固定、密度极低的砖块，保证普通物体能够触发碰撞判定且正常穿过

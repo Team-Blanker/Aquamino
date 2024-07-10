@@ -1,5 +1,6 @@
 local rule={}
 local battle=require'mino/battle'
+local fLib=require'mino/fieldLib'
 local bot_cc=require('mino/bot/cc')
 function rule.init(P,mino)
     mino.musInfo="georhythm - nega to posi"
@@ -14,10 +15,10 @@ function rule.init(P,mino)
     P[1].posx=-400 P[2]=mytable.copy(P[1]) P[2].posx=400
     P[1].target=2 P[2].target=1
     mino.fieldScale=min(mino.fieldScale,1)
-    battle.init(P[1]) battle.init(P[2])
+    battle.init(P[1]) battle.init(P[2]) fLib.setRS(P[2],'SRS')
 
     rule.botThread=bot_cc.newThread(1,P,2)
-    bot_cc.startThread(rule.botThread)
+    bot_cc.startThread(rule.botThread,nil,{clear1=-9999,clear2=9999,clear3=9999})
     rule.botThread.sendChannel:push({op='send',
     boolField=bot_cc.renderField(P[1]),
     B2B=P[1].history.B2B>0,
