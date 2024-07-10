@@ -20,11 +20,11 @@ gc.setCanvas(pCanvas)
 gc.setCanvas()
 local function nsDraw(alpha)
     gc.setColor(1,1,1,alpha)
-    gc.draw(nCanvas,-450,0,0,3-alpha,3-alpha,50,50)
+    gc.draw(nCanvas,-400,0,0,3-alpha,3-alpha,50,50)
 end
 local function psDraw(alpha)
     gc.setColor(1,1,1,alpha)
-    gc.draw(pCanvas, 450,0,0,3-alpha,3-alpha,50,50)
+    gc.draw(pCanvas, 400,0,0,3-alpha,3-alpha,50,50)
 end
 local function blink(a)
     gc.setColor(1,1,1,.2*a)
@@ -51,13 +51,13 @@ function bg.draw()
         local a=max(1.25-(beat-8))/1.25
         gc.setLineWidth(24)
         gc.setColor(1,1,1,a)
-        gc.circle('line',-450,0,240+100*(1-a))
-        gc.circle('line', 450,0,240+100*(1-a))
+        gc.circle('line',-400,0,240+100*(1-a))
+        gc.circle('line', 400,0,240+100*(1-a))
 
         if beat>=24 and beat<40 then
             gc.setColor(1,1,1)
             gc.setColor(1,1,1,1-beat%1)
-            gc.circle('fill',-270+180*floor(beat%4),0,40,4)
+            gc.circle('fill',-240+160*floor(beat%4),0,32,4)
         end
 
         if beat>=40 then--负环
@@ -65,7 +65,7 @@ function bg.draw()
                 if (beat-i/8)%4<1 then
                     gc.setColor(M.lerp(rn,1,1-i/8),M.lerp(gn,1,1-i/8),M.lerp(bn,1,1-i/8),.5)
                     gc.setLineWidth(20)
-                    gc.circle('line',-450,0,240+25*i)
+                    gc.circle('line',-400,0,240+25*i)
                 end
             end
         end
@@ -74,7 +74,7 @@ function bg.draw()
                 if (beat+2-i/8)%4<1 then
                     gc.setColor(M.lerp(rp,1,1-i/8),M.lerp(gp,1,1-i/8),M.lerp(bp,1,1-i/8),.5)
                     gc.setLineWidth(20)
-                    gc.circle('line', 450,0,240+25*i)
+                    gc.circle('line', 400,0,240+25*i)
                 end
             end
         end
