@@ -21,6 +21,23 @@ local txtColor={
     {1,0,0},{1,1,0},{0,1,.5},{.34,.12,1}
 }
 local war={}
+
+local contactList={}
+local function preSolve(fa,fb,coll)
+    if war.onCollide[fa] or war.onCollide[fb] then table.insert(contactList,coll) end
+end
+
+local function bulletCollide(this,other)
+    if other:isDestroyed() or war.type[other]=='edge' then return end
+        if war.type[other]=='cannon' then
+            other:getBody():destroy()
+            print(war.team[war.teamBelong[other]])
+        return end
+        other:setCategory(this:getCategory())
+        other:setMask(this:getMask())
+        this:getBody():destroy()
+end
+
 local function newBall(m,n,t)
     war.ctrl.ball[t][#war.ctrl.ball[t]+1]={
         body=LP.newBody(war.world,m,n-10*16,'dynamic'),
@@ -46,6 +63,20 @@ function war.alivePlayer()
     end
     return a
 end
+
+function war.shoot(x,y,vx,vy,team)
+    war.bullet[#war.bullet+1]={
+        body=LP.newBody(war.world,x,y,'dynamic'),
+        shape=LP.newCircleShape(4),
+    }
+    local b=war.bullet[#war.bullet]
+    b.body:setLinearVelocity(vx,vy)
+    b.fixture=LP.newFixture(b.body,b.shape,1)
+    b.fixture:setCategory(team)
+    b.fixture:setMask(team)
+    b.fixture:setFriction(0) b.fixture:setRestitution(1)
+    war.onCollide[b.fixture]=bulletCollide
+end
 function war.init()
     supplyRemain=15
     supplyT,supplyTLimit=60,60
@@ -61,8 +92,11 @@ function war.init()
     war.sim=false
     war.angle=1--炮台角度参数
     war.time=0 war.updateTimer=0
+
     war.world=LP.newWorld(0,0) war.world:setSleepingAllowed(false)
+    war.world:setCallbacks(nil,nil,preSolve,nil)
     LP.setMeter(16)
+
     war.field={}--领土场地
     war.edge={}--场地边界
     war.ctrl={edge={},obs={},cmd={},ball={}}--控制区 边界、障碍、指令、小球
@@ -70,29 +104,6 @@ function war.init()
     war.bullet={}--炮弹
     war.onCollide={}--储存碰撞函数
     war.type={}--物体种类
-
-    function war.shoot(x,y,vx,vy,team)
-        war.bullet[#war.bullet+1]={
-            body=LP.newBody(war.world,x,y,'dynamic'),
-            shape=LP.newCircleShape(4),
-        }
-        local b=war.bullet[#war.bullet]
-        b.body:setLinearVelocity(vx,vy)
-        b.fixture=LP.newFixture(b.body,b.shape,1)
-        b.fixture:setCategory(team)
-        b.fixture:setMask(team)
-        b.fixture:setFriction(0) b.fixture:setRestitution(1)
-        war.onCollide[b.fixture]=function(this,other)
-            if other:isDestroyed() or war.type[other]=='edge' then return end
-            if war.type[other]=='cannon' then
-                other:getBody():destroy()
-                print(war.team[war.teamBelong[other]])
-            return end
-            other:setCategory(this:getCategory())
-            other:setMask(this:getMask())
-            this:getBody():destroy()
-        end
-    end
 
     for i=1,4 do--创建边界
         if i<=2 then
@@ -242,13 +253,36 @@ function war.update(dt)
         while war.updateTimer>=1/256 do war.gameUpdate(1/256) war.updateTimer=war.updateTimer-1/256 end
     end
 end
+local vx,vy
 function war.gameUpdate(dt)
-    local cList=war.world:getContacts()
+    war.world:update(dt,1,1) war.time=war.time+dt
+    war.angle=abs((war.time-war.time%(1/64))%2-1)
+
+    for i=1,4 do
+    local a,b=(i-1)%2*2-1,i>2 and 1 or -1
+    if war.team.bulletR[i]>0 and war.team.alive[i] and war.alivePlayer()>1 then war.team.rCool[i]=war.team.rCool[i]-dt
+        if war.team.rCool[i]<0 then
+            war.team.rCool[i]=war.team.rCool[i]+war.team.rCoolT
+            war.team.bulletR[i]=war.team.bulletR[i]-1
+            local r=((i==1 and 0 or i==2 and .5 or i==3 and 1.5 or i==4 and 1)+war.angle*.5)*math.pi
+            war.shoot(a*11*32+30*cos(r),b*11*32+30*sin(r),256*cos(r),256*sin(r),i)
+        end
+    end
+    end
+
+    --[[local cList=war.world:getContacts()
     for i=1,#cList do
         if not cList[i]:isDestroyed() and cList[i]:isTouching() then fa,fb=cList[i]:getFixtures()
             if war.onCollide[fa] then war.onCollide[fa](fa,fb) end
             if war.onCollide[fb] then war.onCollide[fb](fb,fa) end
         end
+    end]]
+    for i=#contactList,1,-1 do
+        if not contactList[i]:isDestroyed() and contactList[i]:isTouching() then fa,fb=contactList[i]:getFixtures()
+        if war.onCollide[fa] then war.onCollide[fa](fa,fb) end
+        if war.onCollide[fb] then war.onCollide[fb](fb,fa) end
+        end
+        table.remove(contactList,i)
     end
     for i=#war.bullet,1,-1 do--移除已销毁炮弹
         if war.bullet[i].body:isDestroyed() then table.remove(war.bullet,i) end
@@ -266,22 +300,6 @@ function war.gameUpdate(dt)
         end
         supplyT=supplyT+supplyTLimit
         supplyRemain=supplyRemain-1
-    end
-
-
-    war.world:update(dt,1,1) war.time=war.time+dt
-    war.angle=abs((war.time-war.time%(1/64))%2-1)
-
-    for i=1,4 do
-    local a,b=(i-1)%2*2-1,i>2 and 1 or -1
-    if war.team.bulletR[i]>0 and war.team.alive[i] then war.team.rCool[i]=war.team.rCool[i]-dt
-        if war.team.rCool[i]<0 then
-            war.team.rCool[i]=war.team.rCool[i]+war.team.rCoolT
-            war.team.bulletR[i]=war.team.bulletR[i]-1
-            local r=((i==1 and 0 or i==2 and .5 or i==3 and 1.5 or i==4 and 1)+war.angle*.5)*math.pi
-            war.shoot(a*11*32+30*cos(r),b*11*32+30*sin(r),256*cos(r),256*sin(r),i)
-        end
-    end
     end
 end
 
