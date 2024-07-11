@@ -548,7 +548,6 @@ function mino.insertNextQueue(player)
     local n--这个值表示新的next从第几个预览块开始
     local rong=mino.rule.onNextGen
     if mino.seqSync then
-        
         mino.publicPlayer.next={}
         NG[mino.seqGenType](mino.bag,mino.publicPlayer,mino.publicPlayer.seqGen.buffer)
         for k,v in pairs(mino.player) do

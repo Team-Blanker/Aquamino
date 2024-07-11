@@ -1,4 +1,8 @@
 local rule={}
+local contactList={}
+local function preSolve(fa,fb,coll)
+    if rule.onCollide[fa] or rule.onCollide[fb] then table.insert(contactList,coll) end
+end
 local lp=love.physics
 local pt=0
 function rule.init(P,mino)
@@ -23,6 +27,9 @@ function rule.init(P,mino)
     --使用物理引擎生成世界和各种物件
     --生成用代码固定、密度极低的砖块，保证普通物体能够触发碰撞判定且正常穿过
     rule.world=lp.newWorld(0,20,false)
+    rule.world:setSleepingAllowed(false)
+    rule.world:setCallbacks(nil,nil,preSolve,nil)
+
     rule.onCollide={}
     rule.entityType={}
     local e
@@ -33,7 +40,7 @@ function rule.init(P,mino)
             rule.blockL[i+1][j+1]={}
             e=rule.blockL[i+1][j+1]
             e.body=lp.newBody(rule.world,-360+10+20*j,-300+10+20*i,'dynamic')
-            e.shape=lp.newRectangleShape(12,12)--鉴于getContactList会大量占用内存，砖块看上去比实际上的小
+            e.shape=lp.newRectangleShape(18,18)
             e.fixture=love.physics.newFixture(e.body,e.shape,1e-7)
             rule.entityType[e.fixture]='block'
         end
@@ -64,14 +71,12 @@ function rule.gameUpdate(P,dt,mino)
     pt=pt+dt
     if pt>=1/64 then
         pt=pt-1/64
-        local cList=rule.world:getContacts()
-        for i=1,#cList do
-            if not cList[i]:isDestroyed() and cList[i]:isTouching() then fa,fb=cList[i]:getFixtures()
-                if rule.entityType[fa]=='block' then rule.blockCollide(fa,fb)
-                elseif rule.onCollide[fa] then rule.onCollide[fa](fa,fb) end
-                if rule.entityType[fb]=='block' then rule.blockCollide(fb,fa)
-                elseif rule.onCollide[fb] then rule.onCollide[fb](fb,fa) end
+        for i=#contactList,1,-1 do
+            if not contactList[i]:isDestroyed() and contactList[i]:isTouching() then fa,fb=contactList[i]:getFixtures()
+            if war.onCollide[fa] then war.onCollide[fa](fa,fb) end
+            if war.onCollide[fb] then war.onCollide[fb](fb,fa) end
             end
+            table.remove(contactList,i)
         end
 
         rule.world:update(1/64,16,6)--由于物件太多，故使用低帧率高精度方法

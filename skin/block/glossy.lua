@@ -1,22 +1,43 @@
 local skin={}
 local COLOR=require('framework/color')
 local M=mymath
-local setColor,draw,setShader,rect=gc.setColor,gc.draw,gc.setShader,gc.rectangle
-
+local setColor,draw,setShader=gc.setColor,gc.draw,gc.setShader
+local arc,circle,rect=gc.arc,gc.circle,gc.rectangle
 function skin.setDropAnimTTL(player)
     return .25
 end
 skin.pic=gc.newImage('skin/block/glossy/glossy.png')
---skin.pic:setFilter('nearest')
 local sd=fs.newFile('shader/grayscale stain.glsl'):read()
 skin.sd=gc.newShader(sd)
+
+local bb=gc.newCanvas(42,42)
+gc.setCanvas(bb)
+setColor(1,1,1)
+rect('fill',3,0,36,42)
+rect('fill',0,3,42,36)
+gc.setCanvas()
 function skin.init(player)
     player.laTimer=0
     player.laTMax=.1
+
+    player.skinSpinTimer=0
+    player.spinAct=false
+    player.spinOp=''
+end
+function skin.keyP(player,k)
+    if (k=='CW' or k=='CCW' or k=='flip') and player.cur.kickOrder then
+    player.spinAct=player.cur.spin
+    if player.cur.spin then player.skinSpinTimer=0 end
+    player.spinOp=k
+    end
 end
 function skin.update(player,dt)
     player.laTimer=player.laTimer+dt
+
+    if player.spinAct then player.skinSpinTimer=player.skinSpinTimer+dt
+    else player.skinSpinTimer=0 end
 end
+
 function skin.afterPieceDrop(player)
     if player.history.line==0 then player.laTimer=0 end
 end
@@ -71,11 +92,22 @@ function skin.overFieldDraw(player)
         end
     end
 end
+local t
+local tau=2*math.pi
 function skin.curDraw(player,piece,x,y,color)
     for i=1,#piece do
         setColor(1,1,1,1-player.LTimer/player.LDelay)
-        rect('fill',36*(x+piece[i][1])-18,-36*(y+piece[i][2])-21,36,42)
-        rect('fill',36*(x+piece[i][1])-21,-36*(y+piece[i][2])-18,42,36)
+        if player.spinAct then
+            t=min(player.skinSpinTimer*5,.25)
+            if player.spinOp=='CW' or player.spinOp=='flip' then
+                draw(bb,36*(x+piece[i][1]),-36*(y+piece[i][2]),tau*t,1,1,21,21)
+            end
+            if player.spinOp=='CCW' or player.spinOp=='flip' then
+                draw(bb,36*(x+piece[i][1]),-36*(y+piece[i][2]),-tau*t,1,1,21,21)
+            end
+        else
+            draw(bb,36*(x+piece[i][1]),-36*(y+piece[i][2]),0,1,1,21,21)
+        end
     end
     setShader(skin.sd)
     for i=1,#piece do
@@ -83,6 +115,8 @@ function skin.curDraw(player,piece,x,y,color)
         draw(skin.pic,36*(x+piece[i][1]),-36*(y+piece[i][2]),0,1,1,18,18)
     end
     setShader()
+    for i=1,#piece do
+    end
 end
 function skin.AscHoldDraw(player,piece,x,y,color)
 end

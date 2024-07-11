@@ -118,7 +118,7 @@ AqRS.kickTable={
 }
 --AqRS.kickTable.S=getSymTable(AqRS.kickTable.Z)
 AqRS.kickTable.J=getSymTable(AqRS.kickTable.L)
-AqRS.kickTable.S=AqRS.kickTable.L AqRS.kickTable.Z=AqRS.kickTable.J
+AqRS.kickTable.Z=AqRS.kickTable.L AqRS.kickTable.S=AqRS.kickTable.J
 
 function AqRS.getData(data,player,fLib)
     data.u=fLib.coincide(player, 0, 1)

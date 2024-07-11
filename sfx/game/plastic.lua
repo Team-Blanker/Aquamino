@@ -32,8 +32,8 @@ function plastic.move(player,success,landed)
 end
 function plastic.rotate(player,success,spin)
     if success then
-        if spin then sfx.play('spin')
-        else sfx.play('rotate') end
+        if spin then sfx.play('spin') end
+        sfx.play('rotate')
     else sfx.play('rotateFail') end
 end
 function plastic.hold()

@@ -187,7 +187,7 @@ function stf.draw()
     gc.draw(stf.stftxt3,0,400+getH(2),0,stf.s[3],stf.s[3],2000)
 
     local p=stf.hideAnimy/1000
-    gc.draw(kairan,360,posyMax+540-kh/2*p,0,.5,.5,kw/2,0)
+    gc.draw(kairan,900-kw/4,posyMax+540-kh/2*p,0,.5,.5,kw/2,0)
     gc.translate(0,stf.posy)
     BUTTON.draw()
 end
