@@ -1,28 +1,33 @@
 return {
-    order={
-    ['40 lines']={'time'},--未通关不记录成绩
-    marathon={'level','line','time'},
-    ['ice storm']={'level','time'},
-    thunder={'score','time'},
-    smooth={'time'},--未通关不记录成绩
-    levitate={'time'},--未通关不记录成绩
-    master={'level','line','time'},
-    multitasking={'level','line','time'},
-    ['dig 40']={'time'},--未通关不记录成绩
-    laser={'score','time'},
-    backfire={'time','eff'},
-    },
-    format={
-    ['40 lines']='%.3fs',
-    marathon='Level %d  %d lines  %.3fs',
-    ['ice storm']='Level %d  %.3fs',
-    thunder='%dp  %.3fs',
-    smooth='%.3fs',
-    levitate='%.3fs',
-    master='Level %d  %d lines  %.3fs',
-    multitasking='Level %d  %d lines  %.3fs',
-    ['dig 40']='%.3fs',
-    laser='%dp  %.3fs',
+    ['40 lines']=function(t)
+        return string.format('%.3fs',t.time)
+    end,
+    marathon=function(t)
+        return string.format('Lv.%d  %d lines  %d\'%.3f"',t.level,t.line,t.time/60,t.time%60)
+    end,
+    ['ice storm']=function(t)
+        return string.format('Lv.%d  %d/%d  %d\'%.3f"',t.level,t.score,t.lvlscore,t.time/60,t.time%60)
+    end,
+    thunder=function(t)
+        return string.format('%dp  %d\'%.3f"',t.score,t.time/60,t.time%60)
+    end,
+    smooth=function(t)
+        return string.format('%.3fs',t.time)
+    end,
+    levitate=function(t)
+        return string.format('%.3fs',t.time)
+    end,
+    master=function(t)
+        return string.format('Lv.%d  %d lines  %d\'%.3f"',t.level,t.line,t.time/60,t.time%60)
+    end,
+    multitasking=function(t)
+        return string.format('Lv.%d  %d lines  %d\'%.3f"',t.level,t.line,t.time/60,t.time%60)
+    end,
+    ['dig 40']=function(t)
+        return string.format('%d pieces  %.3fs',t.piece,t.time)
+    end,
+    laser=function(t)
+        return string.format('%dp  %d\'%.3f"',t.score,t.time/60,t.time%60)
+    end,
     backfire='%.3fs  x%.2f',
-    }
 }

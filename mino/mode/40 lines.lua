@@ -12,11 +12,12 @@ function rule.init(P,mino)
 end
 function rule.onLineClear(player,mino)
     player.line=player.line+player.history.line
-    if player.line>=40 then
-        mino.win(player)
+    if player.line>=40 then mino.win(player)
         local pb=file.read('player/best score')
-        pb['40 lines']={time=player.gameTimer}
+        if not pb['40 lines'] or player.gameTimer<pb['40 lines'].time then
+        pb['40 lines']={time=player.gameTimer,date=os.date("%Y/%m/%d  %H:%M:%S")}
         file.save('player/best score',pb)
+        end
     end
     if not mino.unableBG then scene.BG.newProgress(min(player.line/40,1)) end
 end

@@ -4,6 +4,8 @@ local BUTTON=scene.button
 local menu={modeKey=1}
 local sAnimTMax=.15
 
+local bso=require'mino/bestScoreOrder'
+
 local setIcon1,setIcon2=gc.newCanvas(120,120),gc.newCanvas(120,120)
 local aboutIcon=gc.newCanvas(120,120)
 gc.translate(60,60)
@@ -33,9 +35,10 @@ menu.modeList={
     ['40 lines']={x=-300,y=0,borderColor={0,1,.75}},
     marathon={x=-150,y=150,borderColor={0,1,.75}},
     ['dig 40']={x=-150,y=-150,borderColor={0,1,.75}},
+    backfire={x=300,y=0,borderColor={0,1,.75}},
+    battle={x=150,y=-150,borderColor={0,1,.75}},
     ['ice storm']={x=450,y=150,borderColor={0,1,1}},
-    backfire={x=150,y=-150,borderColor={0,1,.75}},
-    sandbox={x=300,y=0,borderColor={.6,.6,.6}},
+    sandbox={x=150,y=150,borderColor={.6,.6,.6}},
     thunder={x=-300,y=-300,borderColor={0,1,1}},
     smooth={x=-450,y=150,borderColor={0,1,1}},
     levitate={x=-450,y=-150,borderColor={0,1,1}},
@@ -43,6 +46,7 @@ menu.modeList={
     multitasking={x=0,y=300,borderColor={1,.25,.25}},
     laser={x=450,y=-150,borderColor={0,1,1}},
 }
+menu.notRecordScore={sandbox=true,battle=true}
 menu.icon={
     border=gc.newImage('pic/mode icon/border.png')
 }
@@ -94,7 +98,11 @@ function menu.init()
     menu.rCount=0
     menu.selectedMode=''
 
+    menu.pbString={}
     menu.pb=file.read('player/best score')
+    for k,v in pairs(menu.pb) do
+        menu.pbString[k]=bso[k](v)
+    end
 
     BUTTON.setLayer(1)
     BUTTON.create('setting',{
@@ -327,8 +335,13 @@ function menu.draw()
     local t,det,bst=mt[menu.selectedMode],menu.describeTxt[menu.selectedMode],menu.pb[menu.selectedMode]
     gc.draw(t.txt,0,-390,0,.75,.75,t.w/2,t.h)
     if det then gc.draw(det.txt,0,-360,0,.4,.4,0,0) end
-    if bst then
-    else gc.printf(user.lang.menu.noBestScore,font.Bender,0,180,2000,'center',0,.5,.5,1000,72) end
+    if not menu.notRecordScore[menu.selectedMode] then
+        if bst then
+            gc.printf(user.lang.menu.bestScore,font.Bender,0,150,2000,'center',0,.5,.5,1000,72)
+            gc.printf(menu.pbString[menu.selectedMode],font.Bender,0,210,3000,'center',0,1/3,1/3,1500,72)
+            gc.printf(menu.pb[menu.selectedMode].date or '',font.Bender,0,270,2000,'center',0,.25,.25,1000,72)
+        else gc.printf(user.lang.menu.noBestScore,font.Bender,0,180,2000,'center',0,.5,.5,1000,72) end
+        end
     end
 
     BUTTON.draw(2)

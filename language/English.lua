@@ -17,6 +17,7 @@ return {
         ['dig 40']="Cheese",
         laser="Laser",
         backfire="Boomerang",
+        battle="Battle",
         conf_test="conf_test",
         idea_test="idea_test"
     },
@@ -25,20 +26,22 @@ return {
         marathon={{1,1,1},"Clear 150 lines with increasing speed.\n",{1,1,0},"Handling Restriction: ASD=150ms ASP=30ms SD ASP=30ms, shortens with level increase"},
         ['ice storm']="Use All-spin mechanics to stop rising icicles!",
         thunder="Please do your best to avoid destruction from lightning.",
-        smooth={{1,1,1},"Is it really that smooth?\n",{1,1,0},"Fall delay is 0，Lock delay is increased to 3s"},
-        levitate="Blocks here are light as a feather and seem cannot be affected by clearing.",
+        smooth={{1,1,1},"Is it really that smooth?\n",{1,1,0},"Fall delay is 0, Lock delay is increased to 3s"},
+        levitate={{1,1,0},"Blocks don't fall after clearing"},
         master={{1,1,1},"Survive in the cruelest speed!\n",{1,.5,0},"Fall delay is 0, lock delay shortens with level increase\n",{1,1,0},"Handling Restriction: ASD=150ms ASP=30ms SD ASP=30ms"},
         multitasking={{1,1,1},"Umm, uh. What??\n",{1,1,0},"Handling Restriction: ASD=150ms ASP=30ms SD ASP=30ms, shortens with level increase"},
-        sandbox="",
+        sandbox={{1,1,0},"This mode does not record any score"},
         ['dig 40']="Think calmly, dig efficiently.",
         laser="\"There's a laser on your lawn~\"",
         backfire="Receive the attack sent by yourself!",
+        battle={{1,1,1},"Let's battle!\n",{1,1,0},"This mode does not record any score"}
     },
     intro={
         start="Press any key to start",
     },
     menu={
-        noBestScore="No score"
+        bestScore="Best score",
+        noBestScore="No score",
     },
     about={
         engineText="Powered by LÖVE",

@@ -11,24 +11,14 @@ function rule.init(P,mino)
     P[1].line=0 P[1].LDRInit=20 P[1].fallAfterClear=false
 end
 function rule.onLineClear(player,mino)
-    --[[local lh={}
-    --排序
-    for k,v in pairs(player.history.clearLine) do
-        local o=#lh+1
-        for i=1,#lh do
-            if k<lh[i] then o=i break end
-        end
-        ins(lh,o,k)
-    end
-    --插入空行
-    for i=1,#lh do
-        local line={}
-        for j=1,player.w do line[j]={} end
-        ins(player.field,lh[i],line)
-    end]]
-
     player.line=player.line+player.history.line
-    if player.line>=40 then mino.win(player) end
+    if player.line>=40 then mino.win(player)
+        local pb=file.read('player/best score')
+        if not pb.levitate or player.gameTimer<pb.levitate.time then
+        pb.levitate={time=player.gameTimer,date=os.date("%Y/%m/%d  %H:%M:%S")}
+        file.save('player/best score',pb)
+        end
+    end
     if not mino.unableBG then scene.BG.newProgress(min(player.line/40,1)) end
 end
 function rule.underFieldDraw(player)

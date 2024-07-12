@@ -27,7 +27,7 @@ local mino={
         timer=0,
         allowPush={},allowSpin={T=true},spinType='default',loosen={fallTPL=0}--TPL=Time Per Line
     },
-    started=false, paused=false,pauseTimer=0,
+    started=false,paused=false,pauseTimer=0,
     stacker={
         keySet={},ctrl={},opList={1},event={},
         dieAnim=function() end,
@@ -79,11 +79,13 @@ function mino.win(player)
     local w=S.winState
     S.winState=1 player.winTimer=0 if mino.sfxPlay.win then mino.sfxPlay.win() end
     if w~=1 then mino.addStackerEvent(1.5,'pause') end
+    if mino.rule.scoreSave then mino.rule.scoreSave(mino.player,mino) end
 end
 function mino.lose(player)
     local w=S.winState
     S.winState=-1 player.loseTimer=0 if mino.sfxPlay.lose then mino.sfxPlay.lose() end
     if w~=-1 then mino.addStackerEvent(1.5,'pause') end
+    if mino.rule.scoreSave then mino.rule.scoreSave(mino.player,mino) end
 end
 function mino.die(player,isStacker)
     player.deadTimer=0 if mino.sfxPlay.die then mino.sfxPlay.die() end

@@ -17,6 +17,7 @@ return {
         ['dig 40']="挖掘 40 行",
         laser="激光",
         backfire="回旋镖",
+        battle="对战",
         conf_test="设置 - 测试界面",
         idea_test="idea_test"
     },
@@ -29,15 +30,17 @@ return {
         levitate={{1,1,0},"消行后场地内砖格不掉落"},
         master={{1,1,1}," 在最高下落速度下极限堆叠！\n",{1,.5,0},"降落延迟为0，锁定延迟随等级提升缩短\n",{1,1,0},"参数限制：ASD=150ms ASP=30ms"},
         multitasking={{1,1,1}," 嗯，嘛。啊？\n",{1,1,0},"参数限制：ASD=150ms ASP=30ms 软降ASP=30ms，随等级提升缩短"},
-        sandbox="",
+        sandbox={{1,1,0},"该模式不记录成绩"},
         ['dig 40']="静心思考，高效挖掘",
         laser="“有一束激光在你的场地上”",
         backfire="吃下自己打出的攻击",
+        battle={{1,1,1}," 战斗，爽！\n",{1,1,0},"该模式不记录成绩"},
     },
     intro={
         start="按任意键开始",
     },
     menu={
+        bestScore="最佳成绩",
         noBestScore="暂无成绩"
     },
     about={

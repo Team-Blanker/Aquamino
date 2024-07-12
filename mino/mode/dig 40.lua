@@ -36,7 +36,13 @@ function rule.onLineClear(player,mino)
             end
         end
     end
-    if player.remainLine<=0 then mino.win(player) end
+    if player.remainLine<=0 then mino.win(player)
+        local pb=file.read('player/best score')
+        if not pb['dig 40'] or player.pieceCount<pb['dig 40'].piece then
+        pb['dig 40']={time=player.gameTimer,piece=player.pieceCount,date=os.date("%Y/%m/%d  %H:%M:%S")}
+        file.save('player/best score',pb)
+        end
+    end
 end
 function rule.afterPieceDrop(player)
     player.pieceCount=player.pieceCount+1
