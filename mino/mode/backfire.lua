@@ -36,7 +36,13 @@ function bf.onLineClear(player,mino)
     battle.sendAtk(player,player,battle.stdAtkGen(player))
 end
 function bf.afterPieceDrop(player,mino)
-    if player.recvLine>=80 then mino.win(player) end
+    if player.recvLine>=80 then mino.win(player)
+        local pb=file.read('player/best score')
+        if not pb.backfire or player.gameTimer<pb.backfire.time then
+        pb.backfire={time=player.gameTimer,eff=player.atk/player.line,date=os.date("%Y/%m/%d  %H:%M:%S")}
+        file.save('player/best score',pb)
+        end
+    end
 end
 local efftxt
 function bf.underFieldDraw(player)

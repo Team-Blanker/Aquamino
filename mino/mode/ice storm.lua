@@ -119,9 +119,12 @@ function rule.decrease(player,col,amount,mtp)
         ice.topTimer=0
     end
 end
+local function getsl(player)
+    return player.stormLv<12 and rule.scoreUp*(player.stormLv-1)+rule.scoreBase or 8400
+end
 function rule.lvup(player,mino)
     local A=player.ruleAnim
-    if player.iceScore>=(player.stormLv<12 and rule.scoreUp*(player.stormLv-1)+rule.scoreBase or 8400) then
+    if player.iceScore>=getsl(player) then
         for i=1,player.w do rule.destroy(player,i) end
         if 12==player.stormLv then mino.win(player) return end
         rule.rise(player,rand(2,player.w-1))
@@ -195,6 +198,9 @@ function rule.afterPieceDrop(player,mino)
         if ice.topTimer>=3 then mino.die(player,true) break end
     end
 end
+local function getmtp(v)
+    return min(1+max(0,(v-1)/16),1.5)
+end
 function rule.onLineClear(player,mino)
     local his=player.history
     local r=B.getX(his.piece)
@@ -202,11 +208,7 @@ function rule.onLineClear(player,mino)
 
     local x=B.size(his.piece)
 
-    if his.line>=4 or (his.spin and his.line>0 and not(his.name=='I' and x==4)) then player.smashCombo=player.smashCombo+1
-    else player.smashCombo=0 end
-    local dcmtp=min(1+max(0,(player.smashCombo-1)/16),1.5)
-
-    local iceSmash=false
+    local iceSmash=0
     for i=1,#r do for j=1,2 do
         if his.combo-j>0 then
             rule.decrease(player,r[i]+j+his.x,(his.combo-1)*.05/j)
@@ -216,7 +218,7 @@ function rule.onLineClear(player,mino)
     if his.line>=4 then
         local k=his.piece[1][1]+his.x
         for i=k-1,k+1 do
-            iceSmash=rule.destroy(player,i,true,(i==k and 2.5 or 1.5)*dcmtp) or iceSmash
+            iceSmash=rule.destroy(player,i,true,(i==k and 2.5 or 1.5)*getmtp(player.smashCombo+iceSmash)) and iceSmash+1 or iceSmash
         end
         if PIC[k-2] then rule.decrease(player,k-2,min(PIC[k-2].H,1),2) end
         if PIC[k+2] then rule.decrease(player,k+2,min(PIC[k+2].H,1),2) end
@@ -228,7 +230,7 @@ function rule.onLineClear(player,mino)
                 for i=1,#r do rule.decrease(player,r[i]+his.x,1,.625) end
             else
                 for i=1,#r do
-                    iceSmash=rule.destroy(player,r[i]+his.x,true,(.8+.2*his.line)*dcmtp) or iceSmash
+                    iceSmash=rule.destroy(player,r[i]+his.x,true,(.8+.2*his.line)*getmtp(player.smashCombo+iceSmash)) and iceSmash+1 or iceSmash
                 end
             end
         else
@@ -238,7 +240,8 @@ function rule.onLineClear(player,mino)
     if his.PC then player.iceFreezeTime=player.iceFreezeTime+2.5 end
     rule.lvup(player,mino)
 
-    if not iceSmash then player.smashCombo=0 end
+    if iceSmash~=0 then player.smashCombo=player.smashCombo+iceSmash
+    else player.smashCombo=max(player.smashCombo-2,0) end
 end
 function rule.underFieldDraw(player)
     local A=player.ruleAnim.score
@@ -326,5 +329,17 @@ function rule.overFieldDraw(player)
     gc.printf("LEVEL UP",font.JB_B,0,-1200*(t-.16)*t,5000,'center',0,.8,.8,2500,84)
 
     gc.pop()
+end
+function rule.scoreSave(P,mino)
+    local pb=file.read('player/best score')
+    local isHighScore=pb['ice storm'] and (P[1].stormLv>pb['ice storm'].level or (P[1].stormLv==pb['ice storm'].level and P[1].iceScore>pb['ice storm'].score))
+    local ispb=pb['ice storm'] and (mino.stacker.winState>0 and P[1].gameTimer<pb['ice storm'].time or isHighScore)
+    if not pb['ice storm'] or ispb then
+    pb['ice storm']={
+        level=P[1].stormLv,score=P[1].iceScore,lvlscore=getsl(P[1]),
+        time=P[1].gameTimer,date=os.date("%Y/%m/%d  %H:%M:%S")
+    }
+    file.save('player/best score',pb)
+    end
 end
 return rule

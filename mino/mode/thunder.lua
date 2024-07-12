@@ -218,4 +218,13 @@ function thunder.overFieldDraw(player)
         gc.printf("+"..txt[i].score,font.JB_B,txt[i].x,txt[i].y,5000,'center',0,txt[i].size/128,txt[i].size/128,2500,84)
     end
 end
+
+function thunder.scoreSave(P,mino)
+    local pb=file.read('player/best score')
+    local ispb=pb.thunder and (P[1].point>=1000 and P[1].gameTimer<pb.thunder.time or P[1].point>pb.thunder.point)
+    if not pb.thunder or ispb then
+    pb.thunder={point=P[1].point,time=P[1].gameTimer,date=os.date("%Y/%m/%d  %H:%M:%S")}
+    file.save('player/best score',pb)
+    end
+end
 return thunder

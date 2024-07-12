@@ -6,27 +6,27 @@ local progressAct={
     --{几分以前使用事件，事件间间隔几拍，下一波激光的位置}
     --随机边列
     {30,16,function(player)
-        return {{'s','destroy',player.laserList[1][3]==1 and player.w or 1}}
+        return {{'s','destroy',player.laserList[1][3]==1 and player.w or 1},beat=16}
     end},
     --随机全部
     {60,16,function(player)
         local a=rand(player.w-1)
-        return {{'s','destroy',player.laserList[1][3]==a and a+1 or a}}
+        return {{'s','destroy',player.laserList[1][3]==a and a+1 or a},beat=16}
     end},
     --随机中间
     {90,16,function(player)
         local a=player.laserList[1][3]>3 and player.laserList[1][3]<player.w-3 and rand(4,player.w-4) or rand(4,player.w-5)
-        return {{'s','destroy',player.laserList[1][3]==a and a+1 or a}}
+        return {{'s','destroy',player.laserList[1][3]==a and a+1 or a},beat=16}
     end},
     --随机反转
     {120,8,function(player)
         local a=rand(player.w-1)
-        return {{'s','reverse',player.laserList[1][3]==a and a+1 or a}}
+        return {{'s','reverse',player.laserList[1][3]==a and a+1 or a},beat=8}
     end},
     --随机两条相邻反转
     {140,8,function(player)
         local a=rand(player.w-1)
-        return {{'s','reverse',a},{'s','reverse',a+1}}
+        return {{'s','reverse',a},{'s','reverse',a+1},beat=8}
     end},
     --TEC的squeeze
     {180,4,function(player)
@@ -34,38 +34,43 @@ local progressAct={
         for i=1,4 do
             list[i]={'s','mayhem',i-min(max(abs(floor(player.beat%48/4)-6)-1,0),4)<=0 and i or player.w-4+i}
         end
+        list.beat=4
         return list
     end},
     --场地最上方出现一条横向毁灭
     {210,8,function(player)
-        return {{'h','destroy',#player.field}}
+        return {{'h','destroy',#player.field},beat=8}
     end},
     --两条随机毁灭
     {220,8,function(player)
-        return {{'s','destroy',rand(player.w)},{'s','destroy',rand(player.w)}}
+        return {{'s','destroy',rand(player.w)},{'s','destroy',rand(player.w)},beat=8}
     end},
     --“走马灯”
     {240,4,function (player)
         local list={}
         for i=1,3 do list[i]={'s','mayhem',(i+floor(player.beat%(player.w*4)/4))%player.w+1} end
+        list.beat=4
         return list
     end},
     --反向走马灯
     {270,4,function (player)
         local list={}
         for i=1,3 do list[i]={'s','mayhem',(i-floor(player.beat%(player.w*4)/4))%player.w+1} end
+        list.beat=4
         return list
     end},
     --限高
     {290,4,function (player)
         local list={}
         for i=2,4 do list[#list+1] ={'h','reverse',#player.field+i} end
+        list.beat=4
         return list
     end},
     --全反转
     {1e99,2,function (player)
         local list={}
         for i=1,player.w do list[i]={'s','reverse',i} end
+        list.beat=2
         return list
     end},
 }
@@ -198,7 +203,7 @@ function laser.update(player,dt,mino)
         player.beat=player.beat+1 player.eventBeat=player.eventBeat+1
         for i=1,5 do mb[i]=rand(0,1) end
 
-        if player.eventBeat>=progressAct[player.laserLv][2] then
+        if player.eventBeat>=(player.laserList and player.laserList.beat or progressAct[player.laserLv][2]) then
             player.laserList=player.nextLaserList
             player.nextLaserList=progressAct[player.laserLv][3](player)
             player.eventBeat=player.eventBeat%progressAct[player.laserLv][2]
@@ -248,7 +253,7 @@ function laser.underFieldDraw(player)
 end
 function laser.underStackDraw(player)
     setColor(1,1,1,.05)
-    local p=player.eventBeat/(progressAct[player.laserLv][2]-1)
+    local p=player.eventBeat/((player.laserList and player.laserList.beat or progressAct[player.laserLv][2])-1)
     rect('fill',-18*player.w,(18-36*p)*player.h,36*player.w,36*p*player.h)
 end
 
@@ -379,6 +384,15 @@ function laser.overFieldDraw(player,mino)
         local clr=txt[i].color
         gc.setColor(clr[1],clr[2],clr[3],clr[4]*txt[i].TTL/txt[i].tMax)
         gc.printf(txt[i].score,font.JB_B,txt[i].x,txt[i].y,5000,'center',0,txt[i].size/128,txt[i].size/128,2500,84)
+    end
+end
+
+function laser.scoreSave(P,mino)
+    local pb=file.read('player/best score')
+    local ispb=pb.laser and (P[1].point==pb.laser.point and P[1].gameTimer<pb.laser.time or P[1].point>pb.laser.point)
+    if not pb.laser or ispb then
+    pb.laser={point=P[1].point,time=P[1].gameTimer,date=os.date("%Y/%m/%d  %H:%M:%S")}
+    file.save('player/best score',pb)
     end
 end
 return laser
