@@ -228,17 +228,6 @@ function menu.keyP(k)
                 dest='intro',swapT=.6,outT=.2,
                 anim=function() anim.cover(.2,.4,.2,0,0,0) end
             })
-        elseif k=='r' then
-            menu.rCount=menu.rCount+1
-            if menu.rCount>=8 then
-                scene.switch({
-                    dest='game',destScene=require'mino/game',
-                    swapT=.6,outT=.2,
-                    anim=function() anim.cover(.2,.4,.2,0,0,0) end
-                })
-                scene.sendArg='idea_test'
-                menu.send=menu.gameSend
-            end
         end
     elseif menu.lvl==2 then
         if k=='escape' then menu.lvl=1 end
@@ -251,6 +240,18 @@ function menu.mouseP(x,y,button,istouch)
                 if abs(x-v.x)+abs(y-v.y)<150 then
                     menu.selectedMode=k
                     print(menu.selectedMode)
+                end
+            end
+            if abs(x)+abs(y)<150 then
+                menu.rCount=menu.rCount+1
+                if menu.rCount>=8 then
+                    scene.switch({
+                        dest='game',destScene=require'mino/game',
+                        swapT=.6,outT=.2,
+                        anim=function() anim.cover(.2,.4,.2,0,0,0) end
+                    })
+                    scene.sendArg='idea_test'
+                    menu.send=menu.gameSend
                 end
             end
         elseif menu.lvl==2 then
