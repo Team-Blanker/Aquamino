@@ -20,7 +20,7 @@ local fieldLib={}
 
 function fieldLib.newPlayer(arg)
     local stdPlayer={
-        started=false,gameTimer=0,deadTimer=-1,loseTimer=-1,winTimer=-1,
+        started=false,alive=true,gameTimer=0,deadTimer=-1,loseTimer=-1,winTimer=-1,
 
         event={0,'start',0,'nextIns'},
         initOpQueue={},--I_S操作序列

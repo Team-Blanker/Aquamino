@@ -185,7 +185,7 @@ scene={
 }
 
 --scene.cur=require('territory/territory')
-scene.cur=require('mino/game') scene.cur.mode='battle_test'
+--scene.cur=require('mino/game') scene.cur.mode='battle_test'
 --scene.cur=require('mino/game') scene.cur.mode='core destruction'
 
 win.x,win.y=love.window.getPosition()

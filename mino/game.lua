@@ -88,7 +88,8 @@ function mino.lose(player)
     if mino.rule.scoreSave then mino.rule.scoreSave(mino.player,mino) end
 end
 function mino.die(player,isStacker)
-    player.deadTimer=0 if mino.sfxPlay.die then mino.sfxPlay.die() end
+    player.deadTimer=0 player.alive=false
+    if mino.sfxPlay.die then mino.sfxPlay.die() end
     if isStacker then
         if mino.rule.onDie then mino.rule.onDie(player,mino)
         else mino.lose(player) end
@@ -120,12 +121,14 @@ function mino.nextIns(player)
         end
     end
 
+    if player.alive then
+
     if player.next[player.preview+1] then
-        local wtf=player.preview+1
-        player.NP[wtf]=T.copy(B[player.next[wtf]])
-        player.NO[wtf]=mino.orient[player.next[wtf]]
-        for k=1,player.NO[wtf] do
-            player.NP[wtf]=B.rotate(player.NP[wtf],0,'R')
+        local n=player.preview+1
+        player.NP[n]=T.copy(B[player.next[n]])
+        player.NO[n]=mino.orient[player.next[n]]
+        for k=1,player.NO[n] do
+            player.NP[n]=B.rotate(player.NP[n],0,'R')
         end
     end
 
@@ -186,6 +189,8 @@ function mino.nextIns(player)
 
     if mino.rule.onPieceEntry then mino.rule.onPieceEntry(player) end
     if C.piece then player.cur.ghostY=fLib.getGhostY(player) end
+
+    end
 end
 function mino.checkClear(player,comboBreak,delayBreak)
     local his=player.history
@@ -425,7 +430,7 @@ mino.operate={
         if playSFX and mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,C.spin) end
     end,
 
-    HD=function(OP,isPlayer)--硬降
+    HD=function(OP,isStacker)--硬降
         C=OP.cur
 
         local his=OP.history
@@ -444,7 +449,7 @@ mino.operate={
 
             local die=mino.checkDie(OP)
             mino.blockLock(OP,mino)
-            if die then mino.die(OP,isPlayer) end
+            if die then mino.die(OP,isStacker) end
         end
 
         local animTTL=mino.blockSkin.setDropAnimTTL and mino.blockSkin.setDropAnimTTL(OP,mino) or .5
