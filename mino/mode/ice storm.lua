@@ -199,7 +199,7 @@ function rule.afterPieceDrop(player,mino)
     end
 end
 local function getmtp(v)
-    return min(1+max(0,(v-1)/16),1.5)
+    return min(1+max(0,(v-1)/16),2)
 end
 function rule.onLineClear(player,mino)
     local his=player.history
@@ -266,7 +266,7 @@ function rule.underFieldDraw(player)
         font.JB,0,180,1000,'center',0,.25,.25,500,84)
         if player.smashCombo>1 then
             gc.setColor(1,1,1,.25+.25*max(player.smashCombo-2,1)/8*(1-player.scAnimTimer%.25/.25))
-            gc.printf("x"..player.smashCombo,font.JB,0,0,5000,'center',0,1/3,1/3,2500,84)
+            gc.printf(player.smashCombo>16 and "MAX" or "x"..player.smashCombo,font.JB,0,0,5000,'center',0,1/3,1/3,2500,84)
         end
     gc.pop()
 end
