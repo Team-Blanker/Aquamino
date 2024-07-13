@@ -1,15 +1,19 @@
 local skin={}
 skin.sticker=gc.newImage('skin/block/carbon fibre/sticker1.png')
-skin.sticker:setFilter('nearest')
-skin.shadow=gc.newImage('skin/block/carbon fibre/ghost.png')
+--skin.sticker:setFilter('nearest')
 
 local ins,rem=table.insert,table.remove
-local rect,setColor=gc.rectangle,gc.setColor
+local rect,draw,setColor=gc.rectangle,gc.draw,gc.setColor
 
 local stickerTTL=.5
 local fadeTime=.2
 
+local bCanvas=gc.newCanvas(36,36)
+gc.setCanvas(bCanvas)
+rect('fill',0,0,36,36,4)
+gc.setCanvas()
 function skin.init(player)
+    player.stickerBatch=gc.newSpriteBatch(skin.sticker,512,'static')
     player.stickerList={}
 end
 function skin.onLineClear(player)
@@ -39,14 +43,18 @@ function skin.update(player,dt)
 end
 function skin.fieldDraw(player,mino)
     local h=0 local n=player.event[1] and player.event[1]/player.history.CDelay
+
+    player.stickerBatch:clear()
     for y=1,#player.field do
         if player.field[y][1] then h=h+1
         for x=1,player.w do
             local F=player.field
             if F[y][x] and next(F[y][x]) then
                 setColor(player.color[F[y][x].name])
-                rect('fill',-18+36*x,-18-36*h,36,36,4)
-                if not F[y][x].loosen then setColor(1,1,1) gc.draw(skin.sticker,36*x,-36*h,0,1,1,18,18) end
+                --rect('fill',-18+36*x,-18-36*h,36,36,4)
+                draw(bCanvas,36*x,-36*h,0,1,1,18,18)
+                --if not F[y][x].loosen then setColor(1,1,1) gc.draw(skin.sticker,36*x,-36*h,0,1,1,18,18) end
+                if not F[y][x].loosen then player.stickerBatch:add(36*x,-36*h,0,1,1,18,18) end
             end
         end
         else h=h+n gc.push()
@@ -56,6 +64,8 @@ function skin.fieldDraw(player,mino)
             if not player.fallAfterClear then h=h+1-n end
         gc.pop() end
     end
+    setColor(1,1,1)
+    draw(player.stickerBatch,0,0)
 end
 function skin.curDraw(player,piece,x,y,clr)
     for i=1,#piece do
