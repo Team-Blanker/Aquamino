@@ -42,6 +42,9 @@ return {
     menu={
         bestScore="Best score",
         noBestScore="No score",
+        arg={
+            battle={bot_PPS="Bot PPS"}
+        }
     },
     about={
         engineText="Powered by LÖVE",

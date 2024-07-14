@@ -6,7 +6,7 @@ function rule.init(P,mino)
     mus.add('music/Hurt Record/Shape of Tomorrow','whole','ogg',12.375,48.75)
     mus.start()
 
-    --mino.seqGenType='pairs'
+    mino.seqGenType='pairs'
 
     mino.rule.allowPush={Z=true,S=true,J=true,L=true,T=true,O=true,I=true,}
     mino.rule.loosen.fallTPL=.1

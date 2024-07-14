@@ -1,5 +1,6 @@
 local m=user.lang.menu
 local BUTTON=scene.button
+local SLIDER=scene.slider
 
 local menu={modeKey=1}
 local sAnimTMax=.15
@@ -49,6 +50,9 @@ menu.modeList={
 menu.notRecordScore={sandbox=true,battle=true}
 menu.icon={
     border=gc.newImage('pic/mode icon/border.png')
+}
+menu.option={
+    battle={bot_DropDelay=1}
 }
 for k,v in pairs(menu.modeList) do
     menu.icon[k]=gc.newImage('pic/mode icon/'..k..'.png')
@@ -216,10 +220,13 @@ function menu.init()
                 swapT=1,outT=.2,
                 anim=function() anim.cover(.2,.4,.2,0,0,0) end
             })
-            scene.sendArg=menu.selectedMode
+            scene.sendArg={mode=menu.selectedMode,arg=menu.option[menu.selectedMode]}
             menu.send=menu.gameSend
         end
     },.2)
+
+    local lst=require'scene/menu/modeOption'
+    lst.slider(menu)
 end
 function menu.keyP(k)
     if menu.lvl==1 then
@@ -234,7 +241,7 @@ function menu.keyP(k)
     end
 end
 function menu.mouseP(x,y,button,istouch)
-    if not BUTTON.press(x,y,menu.lvl) then
+    if not (BUTTON.press(x,y,menu.lvl) or SLIDER.mouseP(x,y,button,istouch)) then
         if menu.lvl==1 then
             for k,v in pairs(menu.modeList) do
                 if abs(x-v.x)+abs(y-v.y)<150 then
@@ -250,7 +257,7 @@ function menu.mouseP(x,y,button,istouch)
                         swapT=.6,outT=.2,
                         anim=function() anim.cover(.2,.4,.2,0,0,0) end
                     })
-                    scene.sendArg='idea_test'
+                    scene.sendArg={mode='idea_test'}
                     menu.send=menu.gameSend
                 end
             end
@@ -259,7 +266,7 @@ function menu.mouseP(x,y,button,istouch)
     end
 end
 function menu.mouseR(x,y,button,istouch)
-    if not BUTTON.release(x,y,menu.lvl) then
+    if not (BUTTON.release(x,y,menu.lvl) or SLIDER.mouseR(x,y,button,istouch)) then
         for k,v in pairs(menu.modeList) do
             if abs(x-v.x)+abs(y-v.y)<150 and k==menu.selectedMode then
                 menu.lvl=2
@@ -271,6 +278,7 @@ local hv=''
 local msx,msy=0,0
 function menu.update(dt)
     msx,msy=adaptWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5)
+    if SLIDER.acting then SLIDER.always(SLIDER.list[SLIDER.acting],msx,msy) end
     local n=false
     for k,v in pairs(menu.modeList) do
         if menu.lvl==1 and abs(msx-v.x)+abs(msy-v.y)<150 then n=true
@@ -346,12 +354,13 @@ function menu.draw()
     end
 
     BUTTON.draw(2)
+    SLIDER.draw()
 end
 function menu.exit()
     file.save('player/unlocked',menu.unlocked)
 end
 function menu.gameSend(destScene,arg)
-    destScene.mode=arg
+    destScene.modeInfo=arg
     destScene.exitScene='menu'
 end
 return menu

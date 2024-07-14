@@ -1,4 +1,5 @@
 local sb={}
+local fLib=require'mino/fieldLib'
 function sb.init(P,mino)
     scene.BG=require('BG/stars')
 

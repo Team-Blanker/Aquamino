@@ -118,7 +118,7 @@ function audio.init()
     })
 end
 function audio.mouseP(x,y,button,istouch)
-    if not BUTTON.press(x,y) and SLIDER.mouseP(x,y,button,istouch) then end
+    if not (BUTTON.press(x,y) or SLIDER.mouseP(x,y,button,istouch)) then end
 end
 function audio.mouseR(x,y,button,istouch)
     BUTTON.release(x,y)

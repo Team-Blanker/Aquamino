@@ -2,17 +2,18 @@ local rule={}
 local battle=require'mino/battle'
 local fLib=require'mino/fieldLib'
 local bot_cc=require('mino/bot/cc')
-function rule.init(P,mino)
-    mino.musInfo="georhythm - nega to posi"
-    scene.BG=require('BG/nega to posi') scene.BG.init()
-    mus.add('music/Hurt Record/nega to posi','whole','ogg',61.847,224*60/130)
+function rule.init(P,mino,modeInfo)
+    mino.musInfo="カモキング - バックウォーター(Backwater)"
+    scene.BG=require('BG/galaxy') scene.BG.init()
+    mus.add('music/Hurt Record/Backwater','whole','ogg',2,114)
     mus.start()
 
     mino.seqGenType='bagp1FromBag' mino.seqSync=true
     P[1].atk=0
     P[1].line=0
-    P[1].LDelay=1e99
     P[1].posx=-400 P[2]=mytable.copy(P[1]) P[2].posx=400
+    P[2].LDelay=1e99
+    P[2].FDelay=1e99
     P[1].target=2 P[2].target=1
     mino.fieldScale=min(mino.fieldScale,1)
     battle.init(P[1]) battle.init(P[2]) fLib.setRS(P[2],'SRS')
@@ -25,9 +26,11 @@ function rule.init(P,mino)
     combo=P[1].history.combo,
     })
     rule.expect={}
+
+    rule.opDelay=modeInfo.arg.bot_DropDelay
     rule.opTimer=0
 end
-local eq,hold
+
 function rule.gameUpdate(P,dt,mino)
     rule.opTimer=rule.opTimer+dt
     if rule.opTimer>1 then
@@ -36,7 +39,7 @@ function rule.gameUpdate(P,dt,mino)
         if op then
         rule.expect=op.expect
         bot_cc.operate(P[2],op,false,mino)
-        rule.opTimer=rule.opTimer-.8
+        rule.opTimer=rule.opTimer-rule.opDelay
         end
     end
     if P[2].deadTimer>=0 then mino.win(P[1]) end

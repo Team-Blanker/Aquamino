@@ -1,6 +1,7 @@
 --来自Techmino，有些许改动
 --Space with stars
 local gc=love.graphics
+local circle=gc.circle
 local setColor,hsv=gc.setColor,COLOR.hsv
 local galaxy={}
 local tau=2*math.pi
@@ -33,7 +34,7 @@ function galaxy.draw()
         else
             setColor(hsv(.572*6,d/70+.1,(22-d)/12,.4))
         end
-        gc.circle('fill',8*d*cos(r),24*d*sin(r),5)
+        circle('fill',8*d*cos(r),24*d*sin(r),6,4)
     end
     gc.pop()
 end

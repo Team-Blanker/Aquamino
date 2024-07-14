@@ -571,6 +571,9 @@ function mino.insertNextQueue(player)
     end
     player.seqGen.count=player.seqGen.count+1
 end
+
+
+
 --初始化
 local curPlayTxt
 function mino.init()
@@ -633,8 +636,9 @@ function mino.init()
         timer=0,
         allowPush={},allowSpin={T=true},spinType='default',loosen={fallTPL=0}--TPL=Time Per Line
     }
+    mino.mode=mino.modeInfo.mode
     if mino.mode and fs.getInfo('mino/mode/'..mino.mode..'.lua') then T.combine(mino.rule,require('mino/mode/'..mino.mode)) end
-    if mino.rule.init then mino.rule.init(P,mino) end
+    if mino.rule.init then mino.rule.init(P,mino,mino.modeInfo) end
 
     --如果设定了多个玩家块序一致，设置一个“公共玩家”，其并不位于player内
     if mino.seqSync then mino.publicPlayer=fLib.newPlayer() end

@@ -27,14 +27,19 @@ function slider.check(slid,x,y)
         return ax>-(slid.sz[1]+slid.button[1])/2 and ax<(slid.sz[1]+slid.button[1])/2
            and ay>-(slid.sz[2]+slid.button[2])/2 and ay<(slid.sz[2]+slid.button[2])/2
 end
+local act
 function slider.mouseP(x,y,button,istouch)
-    for k,v in pairs(slider.list) do if slider.check(v,x,y) then
+    for k,v in pairs(slider.list) do
+        if not v.act then act=true
+        else act=v.act() end
+        if act and slider.check(v,x,y) then
         local pos=M.clamp(v.type=='hori' and (x-v.x)/v.sz[1]+.5 or (y-v.y)/v.sz[2]+.5,0,1)
         if v.gear==0 then v.pos=pos else
             v.pos=floor((v.gear-1)*pos+.5)
         end
         slider.acting=k
-        if v.click then v.click(pos) end break
+        if v.click then v.click(pos) end
+        return k
     end end
 end
 function slider.mouseR(x,y,button,istouch)

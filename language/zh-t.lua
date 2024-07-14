@@ -40,7 +40,10 @@ return {
     },
     menu={
         bestScore="最佳成績",
-        noBestScore="暫無成績"
+        noBestScore="暫無成績",
+        arg={
+            battle={bot_PPS="機器人PPS"}
+        }
     },
     about={
         engineText="使用LÖVE引擎製作",
