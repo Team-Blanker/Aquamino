@@ -196,7 +196,7 @@ end
 function config.send(destScene,arg)
     if scene.dest=='game' then
     destScene.exitScene='game conf/conf_main'
-    destScene.mode='conf_test'
+    destScene.modeInfo={mode='conf_test'}
     destScene.resetStopMusic=false
     end
 end

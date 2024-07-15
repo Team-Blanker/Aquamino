@@ -102,7 +102,8 @@ return {
         keys={
             keyName={'左移','右移','顺转','逆转','翻转','软降','硬降','暂存','重开','暂停'},
             kScale=.5,
-            info="点击添加键位绑定（最多3个）\nBackspace清空选定键位\n按下已绑定键位以删除该绑定"
+            info="点击添加键位绑定（最多3个）\nBackspace清空选定键位\n按下已绑定键位以删除该绑定",
+            virtualKey="触控设置..."
         },
         handling={
             ASD="自动移动延迟(ASD,旧称DAS):",ASP="自动移动周期(ASP,旧称ARR):",

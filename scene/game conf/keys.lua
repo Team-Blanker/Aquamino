@@ -59,6 +59,45 @@ function key.init()
             })
         end
     })
+    scene.button.create('test',{
+        x=700,y=400,type='rect',w=200,h=100,
+        draw=function(bt,t)
+            local w,h=bt.w,bt.h
+            gc.setColor(.5,.5,.5,.8+t)
+            gc.rectangle('fill',-w/2,-h/2,w,h)
+            gc.setColor(.8,.8,.8)
+            gc.setLineWidth(3)
+            gc.rectangle('line',-w/2,-h/2,w,h)
+            gc.setColor(1,1,1)
+            gc.printf(user.lang.conf.test,font.Bender,0,0,1280,'center',0,.5,.5,640,72)
+        end,
+        event=function()
+            scene.switch({
+                dest='game',destScene=require'mino/game',
+                swapT=.6,outT=.2,
+                anim=function() anim.cover(.2,.4,.2,0,0,0) end
+            })
+        end
+    },.2)
+    BUTTON.create('colorAdjust',{
+        x=600,y=-420,type='rect',w=400,h=80,
+        draw=function(bt,t)
+            local w,h=bt.w,bt.h
+            gc.setColor(.5,.5,.5,.8+t)
+            gc.rectangle('fill',-w/2,-h/2,w,h)
+            gc.setColor(.8,.8,.8)
+            gc.setLineWidth(3)
+            gc.rectangle('line',-w/2,-h/2,w,h)
+            gc.setColor(1,1,1)
+            gc.printf(cfk.virtualKey,font.Bender_B,0,0,1280,'center',0,.4,.4,640,72)
+        end,
+        event=function()
+            scene.switch({
+                dest='conf',destScene=require('scene/game conf/mino color'),swapT=.15,outT=.1,
+                anim=function() anim.confSelect(.1,.05,.1,0,0,0) end
+            })
+        end
+    },.2)
 end
 function key.keyP(k)
     if key.order then
@@ -99,7 +138,7 @@ function key.draw()
     if key.order then gc.rectangle('fill',key.order>6 and 200 or -600,(key.order-1)%6*100-300,600,100) end
     gc.setColor(1,1,1)
     gc.printf(user.lang.conf.main.keys,font.Bender,0,-430,1280,'center',0,1,1,640,72)
-    gc.printf(cfk.info,font.JB,800,400,8000,'right',0,.3,.3,8000,192)
+    gc.printf(cfk.info,font.JB,0,400,8000,'center',0,.3,.3,4000,192)
     for i=0,5 do
         if cfk.keyName[i+1] then gc.printf(cfk.keyName[i+1],font.Bender_B,-700,-250+100*i,2000,'center',0,cfk.kScale,cfk.kScale,1000,72) end
         if cfk.keyName[i+7] then gc.printf(cfk.keyName[i+7],font.Bender_B, 100,-250+100*i,2000,'center',0,cfk.kScale,cfk.kScale,1000,72) end
@@ -116,7 +155,15 @@ function key.draw()
     for i=0,6 do gc.line(-800,-300+100*i,800,-300+100*i) end
     BUTTON.draw()
 end
+
 function key.exit()
     key.save()
+end
+function key.send(destScene,arg)
+    if scene.dest=='game' then
+    destScene.exitScene='game conf/custom'
+    destScene.modeInfo={mode='conf_test'}
+    destScene.resetStopMusic=false
+    end
 end
 return key

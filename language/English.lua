@@ -104,7 +104,8 @@ return {
         keys={
             keyName={"Move Left","Move Right","Rotate CW","Rotate CCW","Rotate 180",'Soft drop','Hard Drop','Hold piece','Restart','Pause'},
             kScale=.26,
-            info="Click a key set to bind your keys.\nHit backspace to erase selected key set.\nHit a bound key to remove this bind."
+            info="Click a key set to bind your keys.\nHit backspace to erase selected key set.\nHit a bound key to remove this bind.",
+            virtualKey="Touch settings..."
         },
         handling={
             ASD="Auto Shift Delay(ASD):",ASP="Auto Shift Preiod(ASP):",

@@ -150,7 +150,7 @@ end
 function hand.send(destScene,arg)
     if scene.dest=='game' then
     destScene.exitScene='game conf/handling'
-    destScene.mode='conf_test'
+    destScene.modeInfo={mode='conf_test'}
     destScene.resetStopMusic=false
     end
 end

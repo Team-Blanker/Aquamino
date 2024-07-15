@@ -17,6 +17,7 @@ return {
         ['dig 40']="挖掘 40 行",
         laser="激光",
         backfire="回旋鏢",
+        battle="對戰",
         conf_test="設定 - 測試介面",
         idea_test="idea_test"
     },
@@ -101,7 +102,8 @@ return {
         keys={
             keyName={'左移','右移','順轉','逆轉','翻轉','軟降','硬降','暫存','重開','暫停'} ,
             kScale=.5,
-            info="點選新增鍵位綁定（最多3個）\nBackspace清空選定鍵位\n按下已綁定鍵位以刪除該綁定"
+            info="點選新增鍵位綁定（最多3個）\nBackspace清空選定鍵位\n按下已綁定鍵位以刪除該綁定",
+            virtualKey="觸控設定..."
         },
         handling={
             ASD="自動移動延遲(ASD,舊稱DAS):",ASP="自動移動週期(ASP,舊稱ARR):",

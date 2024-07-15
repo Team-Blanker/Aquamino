@@ -39,7 +39,7 @@ menu.modeList={
     backfire={x=300,y=0,borderColor={0,1,.75}},
     battle={x=150,y=-150,borderColor={0,1,.75}},
     ['ice storm']={x=450,y=150,borderColor={0,1,1}},
-    sandbox={x=150,y=150,borderColor={.6,.6,.6}},
+    sandbox={x=300,y=300,borderColor={.6,.6,.6}},
     thunder={x=-300,y=-300,borderColor={0,1,1}},
     smooth={x=-450,y=150,borderColor={0,1,1}},
     levitate={x=-450,y=-150,borderColor={0,1,1}},
