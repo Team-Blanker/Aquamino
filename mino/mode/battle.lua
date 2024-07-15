@@ -5,7 +5,7 @@ local bot_cc=require('mino/bot/cc')
 function rule.init(P,mino,modeInfo)
     mino.musInfo="カモキング - バックウォーター(Backwater)"
     scene.BG=require('BG/galaxy') scene.BG.init()
-    mus.add('music/Hurt Record/Backwater','whole','ogg',2,114)
+    mus.add('music/Hurt Record/Backwater','whole','ogg',2,112)
     mus.start()
 
     mino.seqGenType='bagp1FromBag' mino.seqSync=true
