@@ -286,16 +286,27 @@ function simple.update(player,dt)
     end
 end
 
-function simple.loseAnim(player)
+function simple.loseAnim(player,stacker)
     setColor(1,1,1,player.deadTimer*4)
     draw(simple.loseTxt,-simple.ltW/2,-simple.ltH/2)
+
+    setColor(1,1,1)
+    if stacker.newRecord then
+        draw(simple.winTxt,0,-200,0,1,1,simple.wtW/2,simple.wtH/2)
+    end
 end
-function simple.winAnim(player)
+function simple.winAnim(player,stacker)
     setColor(1,1,1,1-player.winTimer*4)
     draw(simple.winTxt,0,0,0,1+player.winTimer*4,1+player.winTimer*4,simple.wtW/2,simple.wtH/2)
-    --printf(gts.win,font.Bender_B,0,0,400,'center',0,1+player.winTimer*4,1+player.winTimer*4,200,72)
     setColor(1,1,1)
     draw(simple.winTxt,0,0,0,1,1,simple.wtW/2,simple.wtH/2)
-    --printf(gts.win,font.Bender_B,0,0,400,'center',0,1,1,200,72)
+
+    if stacker.newRecord then
+        draw(simple.winTxt,0,-200,0,1,1,simple.wtW/2,simple.wtH/2)
+    end
+end
+
+function simple.getResultShowDelay(stacker)
+    return stacker.newRecord and 2.5 or 1.5
 end
 return simple

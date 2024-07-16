@@ -43,7 +43,14 @@ return {
         bestScore="最佳成績",
         noBestScore="暫無成績",
         arg={
-            battle={bot_PPS="機器人PPS"}
+            battle={
+                bot_PPS="機器人PPS:",
+                player={
+                    pos="玩家位置:",
+                    left="左侧",
+                    right="右侧"
+                }
+            }
         }
     },
     about={

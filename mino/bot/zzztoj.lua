@@ -1,4 +1,5 @@
 --Use ZZZTOJ wrapper from 26F Studio
+--已丢弃，仅供参考
 
 local B,SC=require('mino/blocks'),require('mino/spinCheck')
 local M,T=mymath,mytable

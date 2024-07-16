@@ -43,7 +43,14 @@ return {
         bestScore="Best score",
         noBestScore="No score",
         arg={
-            battle={bot_PPS="Bot PPS"}
+            battle={
+                bot_PPS="Bot PPS:",
+                player={
+                    pos="Player's place:",
+                    left="left",
+                    right="right"
+                }
+            }
         }
     },
     about={

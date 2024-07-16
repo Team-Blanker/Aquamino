@@ -225,15 +225,31 @@ function love.keyreleased(k)
     end
 end
 function love.mousepressed(x,y,button,istouch)
+    if istouch then return end
     local rx,ry=adaptWindow:inverseTransformPoint(x+.5,y+.5)
-    if scene.cur.mouseP and canop then scene.cur.mouseP(rx,ry,button,istouch) end
+    if scene.cur.mouseP and canop then scene.cur.mouseP(rx,ry,button) end
 end
 function love.mousereleased(x,y,button,istouch)
+    if istouch then return end
     local rx,ry=adaptWindow:inverseTransformPoint(x+.5,y+.5)
-    if scene.cur.mouseR and canop then scene.cur.mouseR(rx,ry,button,istouch) end
+    if scene.cur.mouseR and canop then scene.cur.mouseR(rx,ry,button) end
 end
 function love.wheelmoved(dx,dy)--滚轮上滚是1，下滚是-1
     if scene.cur.wheelMove and canop then scene.cur.wheelMove(dx,dy) end
+end
+function love.touchpressed(id,x,y)
+    local rx,ry=adaptWindow:inverseTransformPoint(x+.5,y+.5)
+    if canop then
+    if scene.cur.touchP then scene.cur.touchP(id,rx,ry)
+    elseif scene.cur.mouseP then scene.cur.mouseP(rx,ry,1) end
+    end
+end
+function love.touchpressed(id,x,y)
+    local rx,ry=adaptWindow:inverseTransformPoint(x+.5,y+.5)
+    if canop then
+    if scene.cur.touchR then scene.cur.touchR(id,rx,ry)
+    elseif scene.cur.mouseR then scene.cur.mouseR(rx,ry,1) end
+    end
 end
 
 function mainUpdate(dt)

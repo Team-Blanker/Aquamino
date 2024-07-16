@@ -52,7 +52,7 @@ menu.icon={
     border=gc.newImage('pic/mode icon/border.png')
 }
 menu.option={
-    battle={bot_DropDelay=1}
+    battle={bot_DropDelay=1,playerPos='left'},
 }
 for k,v in pairs(menu.modeList) do
     menu.icon[k]=gc.newImage('pic/mode icon/'..k..'.png')
