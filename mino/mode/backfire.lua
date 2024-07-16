@@ -1,8 +1,8 @@
-local bf={}
+local rule={}
 local battle=require'mino/battle'
 
 local rb
-function bf.init(P,mino)
+function rule.init(P,mino)
     rb=user.lang.rule.backfire
 
     scene.BG=require('BG/Energy Beat') scene.BG.init()
@@ -16,10 +16,10 @@ function bf.init(P,mino)
     P[1].atk=0
     P[1].line=0
 end
-function bf.BGUpdate()
+function rule.BGUpdate()
     scene.BG.setTime(mus.whole:tell())
 end
-function bf.postCheckClear(player,mino)
+function rule.postCheckClear(player,mino)
     if player.history.line==0 then
         for i=1,#player.garbage do
         battle.atkRecv(player,player.garbage[i])
@@ -29,23 +29,17 @@ function bf.postCheckClear(player,mino)
     else battle.defense(player,battle.stdAtkCalculate(player),mino)
     end
 end
-function bf.onLineClear(player,mino)
+function rule.onLineClear(player,mino)
     local his=player.history
     player.line=player.line+his.line
     player.atk=player.atk+battle.stdAtkCalculate(player)
     battle.sendAtk(player,player,battle.stdAtkGen(player))
 end
-function bf.afterPieceDrop(player,mino)
-    if player.recvLine>=80 then mino.win(player)
-        local pb=file.read('player/best score')
-        if not pb.backfire or player.gameTimer<pb.backfire.time then
-        pb.backfire={time=player.gameTimer,eff=player.atk/player.line,date=os.date("%Y/%m/%d  %H:%M:%S")}
-        file.save('player/best score',pb)
-        end
-    end
+function rule.afterPieceDrop(player,mino)
+    if player.recvLine>=80 then mino.win(player) end
 end
 local efftxt
-function bf.underFieldDraw(player)
+function rule.underFieldDraw(player)
     local x=-18*player.w-110
     gc.setColor(1,1,1)
     gc.printf(""..max(80-player.recvLine,0),font.JB,x,-48,6000,'center',0,.625,.625,3000,96)
@@ -54,4 +48,15 @@ function bf.underFieldDraw(player)
     gc.printf(efftxt,font.JB,x,56,6000,'center',0,.4,.4,3000,96)
     gc.printf(rb.eff,font.JB_B,x,96,6000,'center',0,.2,.2,3000,96)
 end
-return bf
+
+function rule.scoreSave(P,mino)
+    if mino.stacker.winState~=1 then return false end
+    local pb=file.read('player/best score')
+    local ispb=pb.backfire and P[1].gameTimer<pb.backfire.time or false
+    if not pb.backfire or P[1].gameTimer<pb.backfire.time then
+        pb.backfire={time=P[1].gameTimer,eff=P[1].atk/P[1].line,date=os.date("%Y/%m/%d  %H:%M:%S")}
+        file.save('player/best score',pb)
+    end
+    return ispb
+end
+return rule

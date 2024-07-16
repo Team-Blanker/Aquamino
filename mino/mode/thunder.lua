@@ -1,5 +1,5 @@
 local fLib=require'mino/fieldLib'
-local thunder={}
+local rule={}
 local tAnimTTL=.25 --local wind=-2*rand(2)-3
 local event={
     {step={r=2,e=0,x=0},freq={r=1,e=0,x=0}},
@@ -13,7 +13,7 @@ local event={
     {step={r=2,e=0,x=1},freq={r=.25,e=0,x=.4}},
     {step={r=0,e=0,x=2},freq={r=0,e=0,x=1}},
 }
-function thunder.init(P,mino)
+function rule.init(P,mino)
     mino.rule.allowPush={}
     mino.rule.allowSpin={}
     scene.BG=require('BG/rain') scene.BG.init()
@@ -36,7 +36,7 @@ function thunder.init(P,mino)
         v.top=false
     end
 end
-function thunder.addLightning(player,x,y,sz,extp)
+function rule.addLightning(player,x,y,sz,extp)
     local lx,ly=36*(x-.5-player.w/2),-36*(y-.5-player.h/2)
     local px,py=lx,ly
     local pos={lx,ly}
@@ -49,27 +49,27 @@ function thunder.addLightning(player,x,y,sz,extp)
         x=px,y=py,sz=sz,extp=extp,lnPos=pos,TTL=tAnimTTL
     }
 end
-function thunder.remove(player,x,y)
+function rule.remove(player,x,y)
     if fLib.isBlock(player,x,y) then player.field[y][x]={} end
-    thunder.addLightning(player,x,y,1,'r')
+    rule.addLightning(player,x,y,1,'r')
 end
-function thunder.explode(player,x,y,sz)--菱形爆炸
+function rule.explode(player,x,y,sz)--菱形爆炸
     for i=1-sz,sz-1 do
         for j=1-sz+abs(i),sz-1-abs(i) do
             if fLib.isBlock(player,x+i,y+j) then player.field[y+j][x+i]={} end
         end
     end
-    thunder.addLightning(player,x,y,sz,'e')
+    rule.addLightning(player,x,y,sz,'e')
 end
-function thunder.explodeX(player,x,y,sz)--X形爆炸
+function rule.explodeX(player,x,y,sz)--X形爆炸
     if sz<0 then return end
     for i=1-sz,sz-1 do
         if fLib.isBlock(player,x+i,y+i) then player.field[y+i][x+i]={} end
         if fLib.isBlock(player,x+i,y-i) then player.field[y-i][x+i]={} end
     end
-    thunder.addLightning(player,x,y,sz,'x')
+    rule.addLightning(player,x,y,sz,'x')
 end
-function thunder.find(player)
+function rule.find(player)
     local tc={}
     for i=1,player.w do tc[i]=i end
     local s=false
@@ -83,14 +83,14 @@ function thunder.find(player)
     end
     return rand(player.w),1 --啥都没找到，随便返回一个值
 end
-function thunder.onPieceDrop(player,mino)
+function rule.onPieceDrop(player,mino)
     if event[player.stormLv].step.r>0 then player.step.r=player.step.r+1
         if player.step.r>=event[player.stormLv].step.r then
             local f=event[player.stormLv].freq.r
             while f>0 do
                 if rand()<f then
-                local ex,ey=thunder.find(player)
-                    thunder.remove(player,ex,ey,1)
+                local ex,ey=rule.find(player)
+                    rule.remove(player,ex,ey,1)
                     player.explodePos={x=ex,y=ey}
                     sfx.play('thunder',.8,.95+.1*rand())
                     --sfx.play('thunder',1,.5)
@@ -105,8 +105,8 @@ function thunder.onPieceDrop(player,mino)
             local f=event[player.stormLv].freq.e
             while f>0 do
                 if rand()<f then
-                local ex,ey=thunder.find(player)
-                    thunder.explode(player,ex,ey,2)
+                local ex,ey=rule.find(player)
+                    rule.explode(player,ex,ey,2)
                     player.explodePos={x=ex,y=ey}
                     sfx.play('thunder',.8,.95+.1*rand())
                     --sfx.play('thunder',1,.5)
@@ -121,8 +121,8 @@ function thunder.onPieceDrop(player,mino)
             local f=event[player.stormLv].freq.x
             while f>0 do
                 if rand()<f then
-                local ex,ey=thunder.find(player)
-                    thunder.explodeX(player,ex,ey,2)
+                local ex,ey=rule.find(player)
+                    rule.explodeX(player,ex,ey,2)
                     player.explodePos={x=ex,y=ey}
                     sfx.play('thunder',.45+.1*rand(),.95+.1*rand())
                     --sfx.play('thunder',1,.5)
@@ -137,7 +137,7 @@ function thunder.onPieceDrop(player,mino)
         player.point=player.point+1
     elseif player.history.line>0 and player.point%100==99 then sfx.play('top') end
 end
-function thunder.onLineClear(player,mino)
+function rule.onLineClear(player,mino)
     local his=player.history
     local point=2^player.history.line-1+player.history.combo-1
     player.point=player.point+point
@@ -159,11 +159,11 @@ function thunder.onLineClear(player,mino)
         player.step.r,player.step.e,player.step.x=n,n,n
     end
 end
-function thunder.afterPieceDrop(player)
+function rule.afterPieceDrop(player)
     if player.point%100==99 and not player.top then sfx.play('top') player.top=true end
 end
 local tList
-function thunder.always(player,dt)
+function rule.always(player,dt)
     tList=player.thunderList
     for i=#tList,1,-1 do
         tList[i].TTL=tList[i].TTL-dt
@@ -178,7 +178,7 @@ function thunder.always(player,dt)
         end
     end
 end
-function thunder.underFieldDraw(player)
+function rule.underFieldDraw(player)
     if player.point%100==99 then gc.setColor(1,.75,.5) else gc.setColor(1,1,1) end
     gc.printf(""..player.point,font.JB_B,-player.w*18-110,-36,2048,'center',0,.5,.5,1024,84)
     gc.printf(""..player.stormLv*100,font.JB_B,-player.w*18-110,36,2048,'center',0,.5,.5,1024,84)
@@ -187,7 +187,7 @@ function thunder.underFieldDraw(player)
     gc.line(-player.w*18-170,0,-player.w*18-50,0)
 end
 local alpha,szarg
-function thunder.overFieldDraw(player)
+function rule.overFieldDraw(player)
     tList=player.thunderList
     for i=1,#tList do
         alpha=tList[i].TTL/tAnimTTL
@@ -219,12 +219,13 @@ function thunder.overFieldDraw(player)
     end
 end
 
-function thunder.scoreSave(P,mino)
+function rule.scoreSave(P,mino)
     local pb=file.read('player/best score')
     local ispb=pb.thunder and (P[1].point>=1000 and P[1].gameTimer<pb.thunder.time or P[1].point>pb.thunder.point)
     if not pb.thunder or ispb then
     pb.thunder={point=P[1].point,time=P[1].gameTimer,date=os.date("%Y/%m/%d  %H:%M:%S")}
     file.save('player/best score',pb)
     end
+    return ispb
 end
-return thunder
+return rule

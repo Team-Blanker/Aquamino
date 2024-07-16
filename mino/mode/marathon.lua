@@ -1,5 +1,5 @@
-local marathon={}
-function marathon.init(P,mino)
+local rule={}
+function rule.init(P,mino)
 
     mino.rule.allowPush={}
     mino.rule.allowSpin={T=true}
@@ -7,7 +7,7 @@ function marathon.init(P,mino)
     scene.BG.speed=125/120 scene.BG.delay=.241
     scene.BG.baseColor={.4,.4,.4}
     local r,g,b=COLOR.hsv(rand()*6,.8,.8)
-    marathon.finalColor={r,g,b}
+    rule.finalColor={r,g,b}
     mino.musInfo="つかスタジオ - リズムよく心地よく汗を流す時のテーマ"
     mus.add('music/Hurt Record/sweat','whole','ogg',20.879,336*60/125)
     mus.start()
@@ -27,7 +27,7 @@ function marathon.init(P,mino)
         v.totalLine=0
     end
 end
-function marathon.onLineClear(player,mino)
+function rule.onLineClear(player,mino)
     local his=player.history
     player.totalLine=player.totalLine+his.line
     while player.totalLine>=player.speedLv*10 do
@@ -36,10 +36,10 @@ function marathon.onLineClear(player,mino)
         player.FDelay=2^(-(player.speedLv-1)/14*8)
         mino.stacker.ctrl.SD_AMP=2^(-(player.speedLv-1)/14*8)*.03
         sfx.play('lvup')
-        if not mino.unableBG then scene.BG.baseColor=mymath.lerp({.4,.4,.4},marathon.finalColor,(player.speedLv-1)/14) end
+        if not mino.unableBG then scene.BG.baseColor=mymath.lerp({.4,.4,.4},rule.finalColor,(player.speedLv-1)/14) end
     end
 end
-function marathon.underFieldDraw(player)
+function rule.underFieldDraw(player)
     gc.setColor(1,1,1)
     gc.printf(""..player.totalLine,font.JB_B,-player.w*18-110,-36,2048,'center',0,.5,.5,1024,84)
     gc.printf(""..player.speedLv*10,font.JB_B,-player.w*18-110,36,2048,'center',0,.5,.5,1024,84)
@@ -48,12 +48,13 @@ function marathon.underFieldDraw(player)
     gc.line(-player.w*18-170,0,-player.w*18-50,0)
 end
 
-function marathon.scoreSave(P,mino)
+function rule.scoreSave(P,mino)
     local pb=file.read('player/best score')
     local ispb=pb.marathon and (P[1].totalLine>=150 and P[1].gameTimer<pb.marathon.time or P[1].totalLine>pb.marathon.line)
     if not pb.marathon or ispb then
     pb.marathon={level=P[1].speedLv,line=P[1].totalLine,time=P[1].gameTimer,date=os.date("%Y/%m/%d  %H:%M:%S")}
     file.save('player/best score',pb)
     end
+    return ispb
 end
-return marathon
+return rule

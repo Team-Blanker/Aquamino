@@ -1,5 +1,5 @@
-local ZNHJ={}
-function ZNHJ.init(P,mino)
+local rule={}
+function rule.init(P,mino)
     scene.BG=require'BG/settings'
     mino.resetStopMusic=false
     mino.rule.allowSpin={T=true}
@@ -12,4 +12,4 @@ function ZNHJ.init(P,mino)
         mino.musInfo="R-side - Nine Five"
     end
 end
-return ZNHJ
+return rule

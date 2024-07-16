@@ -59,5 +59,6 @@ function rule.scoreSave(P,mino)
     pb.multitasking={level=lv,line=line,time=P[1].gameTimer,date=os.date("%Y/%m/%d  %H:%M:%S")}
     file.save('player/best score',pb)
     end
+    return ispb
 end
 return rule

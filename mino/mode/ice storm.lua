@@ -341,5 +341,6 @@ function rule.scoreSave(P,mino)
     }
     file.save('player/best score',pb)
     end
+    return ispb
 end
 return rule

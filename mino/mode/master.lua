@@ -78,5 +78,6 @@ function master.scoreSave(P,mino)
     pb.master={level=P[1].speedLv,line=P[1].totalLine,time=P[1].gameTimer,date=os.date("%Y/%m/%d  %H:%M:%S")}
     file.save('player/best score',pb)
     end
+    return ispb
 end
 return master

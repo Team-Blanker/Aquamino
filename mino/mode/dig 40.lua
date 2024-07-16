@@ -36,15 +36,9 @@ function rule.onLineClear(player,mino)
             end
         end
     end
-    if player.remainLine<=0 then mino.win(player)
-        local pb=file.read('player/best score')
-        if not pb['dig 40'] or player.pieceCount<pb['dig 40'].piece then
-        pb['dig 40']={time=player.gameTimer,piece=player.pieceCount,date=os.date("%Y/%m/%d  %H:%M:%S")}
-        file.save('player/best score',pb)
-        end
-    end
+    if player.remainLine<=0 then mino.win(player) end
 end
-function rule.afterPieceDrop(player)
+function rule.onPieceDrop(player)
     player.pieceCount=player.pieceCount+1
 end
 function rule.underFieldDraw(player)
@@ -54,5 +48,16 @@ function rule.underFieldDraw(player)
     gc.printf(rd.remain,font.JB_B,x,0,6000,'center',0,.2,.2,3000,96)
     gc.printf(""..player.pieceCount,font.JB,x,56,6000,'center',0,.4,.4,3000,96)
     gc.printf(rd.piece,font.JB_B,x,96,6000,'center',0,.2,.2,3000,96)
+end
+
+function rule.scoreSave(P,mino)
+    if mino.stacker.winState~=1 then return false end
+    local pb=file.read('player/best score')
+    local ispb=pb['dig 40'] and P[1].pieceCount<pb['dig 40'].piece or false
+    if not pb['dig 40'] or P[1].pieceCount<pb['dig 40'].piece then
+        pb['dig 40']={time=P[1].gameTimer,piece=P[1].pieceCount,date=os.date("%Y/%m/%d  %H:%M:%S")}
+        file.save('player/best score',pb)
+    end
+    return ispb
 end
 return rule

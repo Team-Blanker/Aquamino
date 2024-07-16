@@ -12,13 +12,7 @@ function rule.init(P,mino)
 end
 function rule.onLineClear(player,mino)
     player.line=player.line+player.history.line
-    if player.line>=40 then mino.win(player)
-        local pb=file.read('player/best score')
-        if not pb['40 lines'] or player.gameTimer<pb['40 lines'].time then
-        pb['40 lines']={time=player.gameTimer,date=os.date("%Y/%m/%d  %H:%M:%S")}
-        file.save('player/best score',pb)
-        end
-    end
+    if player.line>=40 then mino.win(player) end
     if not mino.unableBG then scene.BG.newProgress(min(player.line/40,1)) end
 end
 function rule.underFieldDraw(player)
@@ -36,5 +30,16 @@ function rule.overFieldDraw(player)
         gc.circle('fill',lx,y,9,4)
         gc.circle('fill',rx,y,9,4)
     end
+end
+
+function rule.scoreSave(P,mino)
+    if mino.stacker.winState~=1 then return false end
+    local pb=file.read('player/best score')
+    local ispb=pb['40 lines'] and P[1].gameTimer<pb['40 lines'].time or false
+    if not pb['40 lines'] or P[1].gameTimer<pb['40 lines'].time then
+        pb['40 lines']={time=P[1].gameTimer,date=os.date("%Y/%m/%d  %H:%M:%S")}
+        file.save('player/best score',pb)
+    end
+    return ispb
 end
 return rule

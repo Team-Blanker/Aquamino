@@ -1,6 +1,6 @@
 local fLib=require('mino/fieldLib')
 
-local laser={}
+local rule={}
 local setColor,rect,draw,clear=gc.setColor,gc.rectangle,gc.draw,gc.clear
 local progressAct={
     --{几分以前使用事件，事件间间隔几拍，下一波激光的位置}
@@ -74,7 +74,7 @@ local progressAct={
         return list
     end},
 }
-function laser.init(P,mino)
+function rule.init(P,mino)
     scene.BG=require('BG/Symphonic Laser') scene.BG.init()
 
     mino.musInfo="Syun Nakano - Symphonic Laser"
@@ -142,7 +142,7 @@ local laserAct={
 
 local animTMax=.1
 
-function laser.onPieceDrop(player,mino)
+function rule.onPieceDrop(player,mino)
     local his=player.history
     local piece=his.piece
     local laserTouch=false
@@ -164,7 +164,7 @@ function laser.onPieceDrop(player,mino)
 
     player.garbageTimer=player.garbageTMax
 end
-function laser.onLineClear(player,mino)
+function rule.onLineClear(player,mino)
     local l,c=player.history.line,player.history.combo
     local point=min(floor((c-1)/2),3)+ceil(l/8)*l
     player.point=player.point+point
@@ -186,17 +186,17 @@ function laser.onLineClear(player,mino)
     end
 end
 
-function laser.start()
+function rule.start()
     mus.start()
 end
-function laser.pause(stacker,paused)
+function rule.pause(stacker,paused)
     if stacker.started and stacker.winState==0 then
     if paused then mus.pause() else mus.start() end
     end
 end
 local BPM,offset=128,0
 local mb={0,0,0,0,0}
-function laser.update(player,dt,mino)
+function rule.update(player,dt,mino)
     if not player.event[1] then player.garbageTimer=player.garbageTimer-dt end
     local beat=(player.gameTimer+offset)*BPM/60
     if beat-1>=player.beat then
@@ -217,7 +217,7 @@ function laser.update(player,dt,mino)
     end
 end
 
-function laser.always(player,dt)
+function rule.always(player,dt)
     local aList=player.animLaserList
     for i=#aList,1,-1 do
         aList[i][4]=aList[i][4]-dt
@@ -233,14 +233,14 @@ function laser.always(player,dt)
     end
 end
 
-function laser.onDie(player,mino)
+function rule.onDie(player,mino)
     if player.point>=300 then mino.win(player) else mino.lose(player) end
 end
 
-function laser.BGUpdate(stacker,dt)
+function rule.BGUpdate(stacker,dt)
     if stacker.started and not stacker.paused or stacker.winState~=0 then scene.BG.time=mus.whole:tell() end
 end
-function laser.underFieldDraw(player)
+function rule.underFieldDraw(player)
     if player.point>=300 then gc.setColor(1,.95,.05) else gc.setColor(1,1,1) end
     gc.printf(""..player.point,font.JB_B,-player.w*18-110,-36,2048,'center',0,.5,.5,1024,84)
     gc.printf(300,font.JB_B,-player.w*18-110,36,2048,'center',0,.5,.5,1024,84)
@@ -251,7 +251,7 @@ function laser.underFieldDraw(player)
     gc.setLineWidth(40)
     gc.arc('line','open',0,0,450,-math.pi/2,(min(1-player.garbageTimer/player.garbageTMax,1)-.25)*2*math.pi,72)
 end
-function laser.underStackDraw(player)
+function rule.underStackDraw(player)
     setColor(1,1,1,.05)
     local p=player.eventBeat/((player.laserList and player.laserList.beat or progressAct[player.laserLv][2])-1)
     rect('fill',-18*player.w,(18-36*p)*player.h,36*player.w,36*p*player.h)
@@ -268,7 +268,7 @@ gc.rectangle('line',3,3,30,30)
 gc.setCanvas()
 
 local W,H,parg
-function laser.overFieldDraw(player,mino)
+function rule.overFieldDraw(player,mino)
 
     local list,nList,aList=player.laserList,player.nextLaserList,player.animLaserList
     W,H=36*player.w,36*player.h
@@ -387,12 +387,13 @@ function laser.overFieldDraw(player,mino)
     end
 end
 
-function laser.scoreSave(P,mino)
+function rule.scoreSave(P,mino)
     local pb=file.read('player/best score')
     local ispb=pb.laser and (P[1].point==pb.laser.point and P[1].gameTimer<pb.laser.time or P[1].point>pb.laser.point)
     if not pb.laser or ispb then
     pb.laser={point=P[1].point,time=P[1].gameTimer,date=os.date("%Y/%m/%d  %H:%M:%S")}
     file.save('player/best score',pb)
     end
+    return ispb
 end
-return laser
+return rule
