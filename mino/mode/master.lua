@@ -1,4 +1,4 @@
-local master={}
+local rule={}
 local LDelayList={
     .500,.475,.450,.425,.400,
     .380,.360,.340,.320,.300,
@@ -17,7 +17,7 @@ local ASPList={
     .028,.027,.026,.025,.024,
     .020,.020,.018,.018,.016
 }
-function master.init(P,mino)
+function rule.init(P,mino)
 
     mino.rule.allowPush={}
     mino.rule.allowSpin={T=true}
@@ -41,7 +41,7 @@ function master.init(P,mino)
         v.totalLine=0
     end
 end
-function master.onLineClear(player,mino)
+function rule.onLineClear(player,mino)
     local his=player.history
     player.totalLine=player.totalLine+his.line
     while player.totalLine>=player.speedLv*10 do
@@ -61,7 +61,7 @@ function master.onLineClear(player,mino)
         end
     end
 end
-function master.underFieldDraw(player)
+function rule.underFieldDraw(player)
     gc.setColor(1,1,1)
     gc.printf(""..player.totalLine,font.JB_B,-player.w*18-110,-36,2048,'center',0,.5,.5,1024,84)
     gc.printf(""..player.speedLv*10,font.JB_B,-player.w*18-110,36,2048,'center',0,.5,.5,1024,84)
@@ -71,7 +71,7 @@ function master.underFieldDraw(player)
     gc.line(-player.w*18-170,0,-player.w*18-50,0)
 end
 
-function master.scoreSave(P,mino)
+function rule.scoreSave(P,mino)
     local pb=file.read('player/best score')
     local ispb=pb.master and (P[1].totalLine>=200 and P[1].gameTimer<pb.master.time or P[1].totalLine>pb.master.line)
     if not pb.master or ispb then
@@ -80,4 +80,4 @@ function master.scoreSave(P,mino)
     end
     return ispb
 end
-return master
+return rule
