@@ -31,7 +31,7 @@ return {
         master={{1,1,1},"Survive in the cruelest speed!\n",{1,.5,0},"Fall delay is 0, lock delay shortens with level increase\n",{1,1,0},"Handling Restriction: ASD=150ms ASP=30ms SD ASP=30ms"},
         multitasking={{1,1,1},"Umm, uh. What??\n",{1,1,0},"Handling Restriction: ASD=150ms ASP=30ms SD ASP=30ms, shortens with level increase"},
         sandbox={{1,1,0},"This mode does not record any score"},
-        ['dig 40']="Think calmly, dig efficiently.",
+        ['dig 40']="Think. Dig. Effeciency.",
         laser="\"There's a laser on your lawn~\"",
         backfire="Receive the attack sent by yourself!",
         battle={{1,1,1},"Let's battle!\n",{1,1,0},"This mode does not record any score"}
