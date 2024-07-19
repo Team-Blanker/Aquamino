@@ -75,7 +75,7 @@ return {
         nowPlaying="Now playing: ",
         paused="Paused",result="Game over",
         theme={
-            simple={win="Win!",lose="Lose"}
+            simple={win="Win!",lose="Lose",newRecord="New record!"}
         }
     },
     conf={

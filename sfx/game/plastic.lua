@@ -66,4 +66,7 @@ end
 function plastic.win()
     sfx.play('win')
 end
+function plastic.newRecord()
+    sfx.play('newRecord')
+end
 return plastic

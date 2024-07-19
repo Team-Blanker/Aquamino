@@ -10,6 +10,8 @@ local fs=love.filesystem
 
 local T,M=mytable,mymath
 
+local vKey=require'mino/virtualKey'
+
 local fLib=require'mino/fieldLib'
 local coincide=fLib.coincide
 local B=require'mino/blocks'
@@ -77,15 +79,21 @@ end
 
 function mino.win(player)
     local w=S.winState
+    local delay=mino.theme.getResultShowDelay
     S.winState=1 player.winTimer=0 if mino.sfxPlay.win then mino.sfxPlay.win() end
-    if w~=1 then mino.addStackerEvent(1.5,'pause') end
-    if mino.rule.scoreSave then mino.rule.scoreSave(mino.player,mino) end
+    if mino.rule.scoreSave then
+        S.newRecord=mino.rule.scoreSave(mino.player,mino)
+    end
+    if w~=1 then mino.addStackerEvent(delay and delay(S) or 1.5,'pause') end
 end
 function mino.lose(player)
     local w=S.winState
+    local delay=mino.theme.getResultShowDelay
     S.winState=-1 player.loseTimer=0 if mino.sfxPlay.lose then mino.sfxPlay.lose() end
-    if w~=-1 then mino.addStackerEvent(1.5,'pause') end
-    if mino.rule.scoreSave then mino.rule.scoreSave(mino.player,mino) end
+    if mino.rule.scoreSave then
+        S.newRecord=mino.rule.scoreSave(mino.player,mino)
+    end
+    if w~=-1 then mino.addStackerEvent(delay and delay(S) or 1.5,'pause') end
 end
 function mino.die(player,isStacker)
     player.deadTimer=0 player.alive=false
@@ -588,7 +596,7 @@ function mino.init()
 
     mino.player={}
     P,S=mino.player,mino.stacker
-    S.event={}
+    S.event={} S.newRecord=false S.endTimer=0 S.NRSFXPlayed=false
     P[1]=fLib.newPlayer()
 
     do
@@ -640,7 +648,7 @@ function mino.init()
     if mino.mode and fs.getInfo('mino/mode/'..mino.mode..'.lua') then T.combine(mino.rule,require('mino/mode/'..mino.mode)) end
     if mino.rule.init then mino.rule.init(P,mino,mino.modeInfo) end
 
-    --如果设定了多个玩家块序一致，设置一个“公共玩家”，其并不位于player内
+    --如果设定了多个玩家块序一致，设置一个“公共玩家”，并不位于player内
     if mino.seqSync then mino.publicPlayer=fLib.newPlayer() end
 
     for i=1,#P do
@@ -675,7 +683,7 @@ function mino.init()
         x=-600,y=420,type='rect',w=400,h=100,
         draw=function(bt,t)
             if mino.paused then
-            gc.setColor(.75,.75,.75,.5+min(2*t,.3))
+            gc.setColor(.75,.75,.75,.3+t)
             gc.rectangle('fill',-200,-50,400,100)
             gc.setColor(1,1,1)
             gc.setLineWidth(3)
@@ -690,12 +698,12 @@ function mino.init()
             if mino.rule.pause then mino.rule.pause(mino.stacker,mino.paused) end
             end
         end
-    },.25)
+    },.2)
     BUTTON.create('pause_retry',{
         x=0,y=420,type='rect',w=400,h=100,
         draw=function(bt,t)
             if mino.paused then
-            gc.setColor(.75,.75,.75,.5+min(2*t,.3))
+            gc.setColor(.75,.75,.75,.3+t)
             gc.rectangle('fill',-200,-50,400,100)
             gc.setColor(1,1,1)
             gc.setLineWidth(3)
@@ -713,12 +721,12 @@ function mino.init()
             scene.sendArg=mino.exitScene
             end
         end
-    },.25)
+    },.2)
     BUTTON.create('pause_quit',{
         x=600,y=420,type='rect',w=400,h=100,
         draw=function(bt,t)
             if mino.paused then
-            gc.setColor(.75,.75,.75,.5+min(2*t,.3))
+            gc.setColor(.75,.75,.75,.3+t)
             gc.rectangle('fill',-200,-50,400,100)
             gc.setColor(1,1,1)
             gc.setLineWidth(3)
@@ -734,7 +742,7 @@ function mino.init()
             scene.anim=function() anim.cover(.2,.4,.2,0,0,0) end
             end
         end
-    },.25)
+    },.2)
 end
 
 function mino.keyP(k)
@@ -803,16 +811,19 @@ function mino.keyP(k)
                     if OP.moveDir=='R' and love.keyboard.isDown(S.keySet.MR) and coincide(OP,1,0) then
                         if T.include(S.keySet.CW,k) or T.include(S.keySet.CCW,k) or T.include(S.keySet.flip,k) then reset=false
                         OP.pushAtt=OP.pushAtt+1 lBlock,push=fLib.pushField(OP,'R')
+                        if push then C.x=C.x+1 end
                         end
                     end
                     if OP.moveDir=='L' and love.keyboard.isDown(S.keySet.ML) and coincide(OP,-1,0) then
                         if T.include(S.keySet.CW,k) or T.include(S.keySet.CCW,k) or T.include(S.keySet.flip,k) then reset=false
                         OP.pushAtt=OP.pushAtt+1 lBlock,push=fLib.pushField(OP,'L')
+                        if push then C.x=C.x-1 end
                         end
                     end
                     if love.keyboard.isDown(S.keySet.SD) and coincide(OP,0,-1) then
                         if T.include(S.keySet.CW,k) or T.include(S.keySet.CCW,k) or T.include(S.keySet.flip,k) then reset=false
                         OP.pushAtt=OP.pushAtt+1 lBlock,push=fLib.pushField(OP,'D')
+                        if push then C.y=C.y-1 end
                         end
                     end
                     if reset then OP.pushAtt=0 end
@@ -821,7 +832,10 @@ function mino.keyP(k)
                         if mino.sfxPlay.loose then mino.sfxPlay.loose(OP) end
                         if mino.blockSkin.onLoose then mino.blockSkin.onLoose(OP,lBlock) end
                     end
-                    if push and mino.sfxPlay.push then mino.sfxPlay.push(OP) end
+                    if push then
+                        OP.cur.ghostY=fLib.getGhostY(OP)
+                        if mino.sfxPlay.push then mino.sfxPlay.push(OP) end
+                    end
                 end
 
                 --最高下落速度
@@ -866,11 +880,36 @@ function mino.mouseR(x,y,button,istouch)
     BUTTON.release(x,y)
 end
 
+local k,op
+function mino.touchP(id,x,y)
+    if not mino.paused then
+    k,op=vKey.press(id,x,y)
+    if mino.operate[op] then
+        for i=1,#S.opList do
+            local OP=P[S.opList[i]]
+            mino.operate[op](OP,true) end
+        end
+    end
+    mino.mouseP(x,y)
+end
+function mino.touchP(id,x,y)
+    if not mino.paused then
+    vKey.release(id,x,y)
+    k,op=nil,nil
+    end
+    mino.mouseR(x,y)
+end
+
 local cxk,remainTime
-local L,R
+local L,R,SD
 function mino.gameUpdate(dt)
     cxk=S.ctrl
     remainTime=0
+
+    L=love.keyboard.isDown(S.keySet.ML) or vKey.checkActive('ML')
+    R=love.keyboard.isDown(S.keySet.MR) or vKey.checkActive('MR')
+    SD=love.keyboard.isDown(S.keySet.SD) or vKey.checkActive('SD')
+
     for i=1,#S.opList do
         local OP=P[S.opList[i]]
         C,A=OP.cur,OP.smoothAnim
@@ -879,7 +918,7 @@ function mino.gameUpdate(dt)
         if OP.event[1] then OP.MTimer=min(OP.MTimer+dt,cxk.ASD)
         elseif S.winState==0 and canop then
         --长按移动键
-        if love.keyboard.isDown(S.keySet.SD) then
+        if SD then
             if OP.event[1] or coincide(OP,0,-1) then OP.DTimer=min(OP.DTimer+dt,cxk.SD_ASD)
             else OP.DTimer=OP.DTimer+dt
                 local m=0
@@ -893,7 +932,7 @@ function mino.gameUpdate(dt)
             end
         else OP.DTimer=0 end
 
-        L,R=love.keyboard.isDown(S.keySet.ML),love.keyboard.isDown(S.keySet.MR)
+        --L,R=love.keyboard.isDown(S.keySet.ML),love.keyboard.isDown(S.keySet.MR)
         if L or R then OP.MTimer=OP.MTimer+dt end
         if L then local m=0
             if coincide(OP,-1,0) then OP.MTimer=min(OP.MTimer+dt,cxk.ASD) end
@@ -908,7 +947,7 @@ function mino.gameUpdate(dt)
                 if OP.FDelay==0 then
                     while not coincide(OP,0,-1) do C.y=C.y-1 end
                 else
-                    if love.keyboard.isDown(S.keySet.SD) then
+                    if SD then
                     if coincide(OP,0,-1) then OP.DTimer=min(OP.DTimer+dt,cxk.SD_ASD)
                     else
                         local m=0
@@ -939,7 +978,7 @@ function mino.gameUpdate(dt)
                 if OP.FDelay==0 then
                     while not coincide(OP,0,-1) do C.y=C.y-1 end
                 else
-                    if love.keyboard.isDown(S.keySet.SD) then
+                    if SD then
                     if coincide(OP,0,-1) then OP.DTimer=min(OP.DTimer+dt,cxk.SD_ASD)
                     else
                         local m=0
@@ -1062,6 +1101,13 @@ function mino.update(dt)
                 rem(S.event,1) rem(S.event,1)
             end
         end
+
+        if S.winState~=0 then S.endTimer=S.endTimer+dt
+            if S.newRecord and (not S.NRSFXPlayed) and S.endTimer>=mino.theme.NRSFXDelay and mino.sfxPlay.newRecord then
+                mino.sfxPlay.newRecord()
+                S.NRSFXPlayed=true
+            end
+        end
     end
 end
 
@@ -1146,11 +1192,11 @@ function mino.draw()
             --Ready Set Go
             if mino.theme.readyDraw then mino.theme.readyDraw(mino.waitTime) end
             --诶你怎么死了
-            if P[i].deadTimer>=0 and mino.theme.dieAnim then mino.theme.dieAnim(P[i],mino) end
+            if P[i].deadTimer>=0 and mino.theme.dieAnim then mino.theme.dieAnim(P[i],S,mino) end
             --赢了
-            if P[i].winTimer>=0 and mino.theme.winAnim then mino.theme.winAnim(P[i],mino) end
+            if P[i].winTimer>=0 and mino.theme.winAnim then mino.theme.winAnim(P[i],S,mino) end
             --输了
-            if P[i].loseTimer>=0 and mino.theme.loseAnim then mino.theme.loseAnim(P[i],mino) end
+            if P[i].loseTimer>=0 and mino.theme.loseAnim then mino.theme.loseAnim(P[i],S,mino) end
         gc.pop()
     end
     --暂停

@@ -5,6 +5,7 @@ function otto.addSFX()
         die='sfx/game/otto/die.wav',
         lose='sfx/game/otto/lose.wav',
         win='sfx/game/otto/win.wav',
+        newRecord='sfx/game/otto/newRecord.wav',
         move='sfx/game/otto/move.wav',
         moveFail='sfx/game/otto/move fail.wav',
         landedMove='sfx/game/otto/landed move.wav',
@@ -90,5 +91,8 @@ function otto.die()
 end
 function otto.lose()
     sfx.play('lose')
+end
+function otto.newRecord()
+    sfx.play('newRecord')
 end
 return otto

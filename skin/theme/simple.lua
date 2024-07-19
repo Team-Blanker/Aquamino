@@ -12,15 +12,22 @@ function simple.init(player)
     simple.nextW,simple.nextH=simple.next:getWidth(),simple.next:getHeight()
     simple.holdW,simple.holdH=simple.hold:getWidth(),simple.hold:getHeight()
 
-    simple.winTxt=gc.newText(font.Bender_B,gts.win) simple.loseTxt=gc.newText(font.Bender_B,gts.lose)
+    simple.winTxt=gc.newText(font.Bender_B,gts.win) 
     simple.wtW,simple.wtH=simple.winTxt:getWidth(),simple.winTxt:getHeight()
+
+    simple.loseTxt=gc.newText(font.Bender_B,gts.lose)
     simple.ltW,simple.ltH=simple.loseTxt:getWidth(),simple.loseTxt:getHeight()
+
+    simple.newRecordTxt=gc.newText(font.Bender_B,gts.newRecord)
+    simple.nrtW,simple.nrtH=simple.newRecordTxt:getWidth(),simple.newRecordTxt:getHeight()
 
     player.clearInfo=T.copy(player.history)
     player.clearTxt=gc.newText(font.Bender)
     player.spinTxt={txt=gc.newText(font.Bender),x=0}
     player.PCInfo={} player.clearTxtTimer=0 player.clearTxtTMax=0
     player.dangerAnimTimer=0
+
+    simple.NRSFXDelay=1--破纪录音效多长时间后播放
 end
 local W,H,timeTxt
 function simple.fieldDraw(player,mino)
@@ -286,13 +293,57 @@ function simple.update(player,dt)
     end
 end
 
+local c1=gc.newCanvas(250,1)
+gc.setCanvas(c1)
+for i=1,100 do
+    gc.setColor(1,1,1,(1-i/100)^.5)
+    gc.points(100.5-i,.5,149.5+i,.5)
+end
+setColor(1,1,1)
+rect('fill',100,0,50,1)
+gc.setCanvas()
+
+local NRparAmount=100
+local NRpar={}
+for i=1,NRparAmount do
+    NRpar[i]={x=rand()-.5,y=rand()-.5,alpha=.5+.5*rand()}
+    NRpar[i].fx=NRpar[i].x*600+(rand()-.5)*300
+    NRpar[i].fy=NRpar[i].y*150+(rand()-.5)*75
+end
+
+local tw,th
+local function recordAnim(time)
+    tw,th=simple.nrtW,simple.nrtH
+
+    if time>.8 then
+    local s=time>=1 and 1 or ((time-.8)/.2)^4
+    setColor(.5,1,.875,.6)
+    draw(c1,0,-128,0,(80+tw*.6)/250*s,th*.6,125,.5)
+    setColor(.5,1,.875)
+    draw(c1,0,-128-th*.3-2,0,(80+tw*.6)/250*s,4,125,.5)
+    draw(c1,0,-128+th*.3+2,0,(80+tw*.6)/250*s,4,125,.5)
+
+    setColor(1,1,1)
+    draw(simple.newRecordTxt,0,-128,0,.6*s,.6,tw/2,th/2)
+    end
+
+    if time>=1 then
+    local t=(time-1)/.75
+    local parg=t<1 and t*(2-t) or 1
+    setColor(.5,1,.875)
+    for i=1,NRparAmount do
+        circle('fill',tw*.6*NRpar[i].x+parg*NRpar[i].fx,-128+th*.6*NRpar[i].y+parg*NRpar[i].fy,6*(1-parg),4)
+    end
+    end
+end
+
+gc.setCanvas()
 function simple.loseAnim(player,stacker)
     setColor(1,1,1,player.deadTimer*4)
     draw(simple.loseTxt,-simple.ltW/2,-simple.ltH/2)
 
-    setColor(1,1,1)
     if stacker.newRecord then
-        draw(simple.winTxt,0,-200,0,1,1,simple.wtW/2,simple.wtH/2)
+        recordAnim(player.deadTimer)
     end
 end
 function simple.winAnim(player,stacker)
@@ -302,7 +353,7 @@ function simple.winAnim(player,stacker)
     draw(simple.winTxt,0,0,0,1,1,simple.wtW/2,simple.wtH/2)
 
     if stacker.newRecord then
-        draw(simple.winTxt,0,-200,0,1,1,simple.wtW/2,simple.wtH/2)
+        recordAnim(player.winTimer)
     end
 end
 

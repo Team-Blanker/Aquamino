@@ -75,7 +75,7 @@ return {
         nowPlaying="目前播放 : ",
         paused="暫停",result="遊戲結束",
         theme={
-            simple={win="勝利",lose="失敗"}
+            simple={win="勝利",lose="失敗",newRecord="打破紀錄"}
         }
     },
     conf={
