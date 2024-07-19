@@ -597,6 +597,7 @@ function mino.init()
     mino.player={}
     P,S=mino.player,mino.stacker
     S.event={} S.newRecord=false S.endTimer=0 S.NRSFXPlayed=false
+    S.keyDown={R=false,L=false,SD=false}
     P[1]=fLib.newPlayer()
 
     do
@@ -811,19 +812,19 @@ function mino.keyP(k)
                     if OP.moveDir=='R' and love.keyboard.isDown(S.keySet.MR) and coincide(OP,1,0) then
                         if T.include(S.keySet.CW,k) or T.include(S.keySet.CCW,k) or T.include(S.keySet.flip,k) then reset=false
                         OP.pushAtt=OP.pushAtt+1 lBlock,push=fLib.pushField(OP,'R')
-                        if push then C.x=C.x+1 end
+                        if push then mino.operate.MR(OP,true) end
                         end
                     end
                     if OP.moveDir=='L' and love.keyboard.isDown(S.keySet.ML) and coincide(OP,-1,0) then
                         if T.include(S.keySet.CW,k) or T.include(S.keySet.CCW,k) or T.include(S.keySet.flip,k) then reset=false
                         OP.pushAtt=OP.pushAtt+1 lBlock,push=fLib.pushField(OP,'L')
-                        if push then C.x=C.x-1 end
+                        if push then mino.operate.ML(OP,true) end
                         end
                     end
                     if love.keyboard.isDown(S.keySet.SD) and coincide(OP,0,-1) then
                         if T.include(S.keySet.CW,k) or T.include(S.keySet.CCW,k) or T.include(S.keySet.flip,k) then reset=false
                         OP.pushAtt=OP.pushAtt+1 lBlock,push=fLib.pushField(OP,'D')
-                        if push then C.y=C.y-1 end
+                        if push then mino.operate.SD1H(OP,true) end
                         end
                     end
                     if reset then OP.pushAtt=0 end
@@ -906,9 +907,9 @@ function mino.gameUpdate(dt)
     cxk=S.ctrl
     remainTime=0
 
-    L=love.keyboard.isDown(S.keySet.ML) or vKey.checkActive('ML')
-    R=love.keyboard.isDown(S.keySet.MR) or vKey.checkActive('MR')
-    SD=love.keyboard.isDown(S.keySet.SD) or vKey.checkActive('SD')
+    S.keyDown.L=love.keyboard.isDown(S.keySet.ML) or vKey.checkActive('ML')
+    S.keyDown.R=love.keyboard.isDown(S.keySet.MR) or vKey.checkActive('MR')
+    S.keyDown.SD=love.keyboard.isDown(S.keySet.SD) or vKey.checkActive('SD')
 
     for i=1,#S.opList do
         local OP=P[S.opList[i]]
@@ -918,7 +919,7 @@ function mino.gameUpdate(dt)
         if OP.event[1] then OP.MTimer=min(OP.MTimer+dt,cxk.ASD)
         elseif S.winState==0 and canop then
         --长按移动键
-        if SD then
+        if S.keyDown.SD then
             if OP.event[1] or coincide(OP,0,-1) then OP.DTimer=min(OP.DTimer+dt,cxk.SD_ASD)
             else OP.DTimer=OP.DTimer+dt
                 local m=0
@@ -932,9 +933,8 @@ function mino.gameUpdate(dt)
             end
         else OP.DTimer=0 end
 
-        --L,R=love.keyboard.isDown(S.keySet.ML),love.keyboard.isDown(S.keySet.MR)
-        if L or R then OP.MTimer=OP.MTimer+dt end
-        if L then local m=0
+        if S.keyDown.L or S.keyDown.R then OP.MTimer=OP.MTimer+dt end
+        if S.keyDown.L then local m=0
             if coincide(OP,-1,0) then OP.MTimer=min(OP.MTimer+dt,cxk.ASD) end
 
             while OP.MTimer>=cxk.ASD and OP.moveDir=='L' and not coincide(OP,-1,0) do
@@ -947,7 +947,7 @@ function mino.gameUpdate(dt)
                 if OP.FDelay==0 then
                     while not coincide(OP,0,-1) do C.y=C.y-1 end
                 else
-                    if SD then
+                    if S.keyDown.SD then
                     if coincide(OP,0,-1) then OP.DTimer=min(OP.DTimer+dt,cxk.SD_ASD)
                     else
                         local m=0
@@ -964,7 +964,7 @@ function mino.gameUpdate(dt)
             end
         end
 
-        if R then local m=0
+        if S.keyDown.R then local m=0
             if coincide(OP,1,0) then OP.MTimer=min(OP.MTimer+dt,cxk.ASD) end
 
             while OP.MTimer>=cxk.ASD and OP.moveDir=='R' and not coincide(OP,1,0) do
@@ -993,7 +993,7 @@ function mino.gameUpdate(dt)
                 mino.setAnimPrePiece(OP) A.timer=mino.smoothTime
             end
         end
-        if not(L or R) then OP.MTimer=0 end
+        if not(S.keyDown.L or S.keyDown.R) then OP.MTimer=0 end
         end
     end
 
