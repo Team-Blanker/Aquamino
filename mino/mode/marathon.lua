@@ -50,7 +50,7 @@ end
 
 function rule.scoreSave(P,mino)
     local pb=file.read('player/best score')
-    local ispb=pb.marathon and (P[1].totalLine>=150 and P[1].gameTimer<pb.marathon.time or P[1].totalLine>pb.marathon.line)
+    local ispb=pb.marathon and (P[1].totalLine>=150 and P[1].gameTimer<pb.marathon.time or min(P[1].totalLine,150)>pb.marathon.line)
     if not pb.marathon or ispb then
     pb.marathon={level=P[1].speedLv,line=P[1].totalLine,time=P[1].gameTimer,date=os.date("%Y/%m/%d  %H:%M:%S")}
     file.save('player/best score',pb)
