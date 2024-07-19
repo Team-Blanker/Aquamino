@@ -49,7 +49,6 @@ function lst.slider(menu)
             gc.printf(argTxt.battle.player.pos..argTxt.battle.player[opt.battle.playerPos],
                 font.JB,-266,-48,114514,'left',0,.3125,.3125,0,84)
             end
-            print(sz[1])
         end,
         buttonDraw=function(pos,sz)
             if menu.lvl==2 and menu.selectedMode=='battle' then

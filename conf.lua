@@ -4,8 +4,8 @@
     w.icon='pic/UI/icon.png'
     w.borderless=false
     w.resizable=true
-    w.minwidth=200
-    w.minheight=150
+    w.minwidth=640
+    w.minheight=480
     w.width=1600
     w.height=900
 

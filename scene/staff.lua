@@ -6,7 +6,7 @@ local kairan=gc.newImage('assets/pic/kairan.png')
 local kw,kh=kairan:getPixelDimensions()
 local devList={
     program={'Aqua6623 (Aquamarine6623, Kairan, 海兰)'},
-    UI={'Aqua6623','MrZ_26'},
+    UI={'Aqua6623','Not-A-Normal-Robot'},
     sfx={'Aqua6623','Farter'},
     music={
         hurtRecord={
@@ -19,7 +19,9 @@ local devList={
     specialThanks={
         {'MrZ_26'},
         {'XMiao小渺 (XM1ao)','User670','MianSoft','沙盒子','Sunday'},
-        {'T427 默默颗','Not-A-Normal-Robot','SweetSea-ButImNotSweet'}
+        {'T427 默默颗','風洛靈flore','大叔Rex'},
+        {'Not-A-Normal-Robot','SweetSea-ButImNotSweet'},
+        {'nekonaomii (MelloBoo44)'}
     }
 }
 

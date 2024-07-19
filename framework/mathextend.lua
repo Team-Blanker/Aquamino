@@ -12,7 +12,9 @@ function mymath.lerp(a,b,t)
     else error('WTF') end
 end
 function mymath.clamp(n,low,high)
-    return max(min(n,high or 1),low or 0)
+    high=high or 1
+    low=low or 0
+    return max(min(n,high),low)
 end
 function mymath.vecplus(a,b)--矢量叠加
     local l=math.min(#a,#b) local c={}
