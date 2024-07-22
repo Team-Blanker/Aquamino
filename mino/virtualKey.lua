@@ -55,6 +55,11 @@ function vk.checkActive(name)
     if T.include(vk.act,name) then return true else return false end
 end
 function vk.draw()
+    for k,v in pairs(vk.act) do
+        local ak=vk.key[v]
+        gc.setColor(1,1,1,.25)
+        gc.circle('fill',ak.x,ak.y,ak.r*15/16,4)
+    end
     for k,v in pairs(vk.key) do
         gc.setColor(1,1,1)
         gc.setLineWidth(5*v.r/100)
