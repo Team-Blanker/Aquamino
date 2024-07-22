@@ -118,7 +118,7 @@ return {
             enable="Enable virtual keys",enableTctScale=.2,
             preset="presets...",
             btsz="Size:",
-            attach="Attachment:"
+            attach="Alignment:"
         },
         handling={
             ASD="Auto Shift Delay(ASD):",ASP="Auto Shift Preiod(ASP):",
