@@ -18,14 +18,15 @@ local vk={}
 local T=mytable
 local ins,rem=table.insert,table.remove
 local abs=math.abs
-function vk.init()
+function vk.init(ctrl)
     vk.key={}
     vk.act={}
+    vk.ctrl=ctrl
 end
 --arg={x,y,r,t,op}
 --op=ML/MR/CW/CCW/flip/SD/HD/hold
 function vk.new(name,arg)
-    local k={x=0,y=0,r=100,t=1e99}
+    local k={x=0,y=0,r=100,tolerance=0,t=1e99}
     if arg then
         T.combine(k,arg)
         vk.key[name]=k
@@ -36,7 +37,7 @@ function vk.press(id,x,y)
     local d=1e99
     for k,v in pairs(vk.key) do
         local r=abs(x-v.x)+abs(y-v.y)
-        if r<v.r and r<d then ak=k d=r end
+        if r<v.r+v.tolerance and r<d then ak=k d=r end
     end
     if ak then vk.act[id]=ak vk.key[ak].t=0 end
     return ak

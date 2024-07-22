@@ -57,7 +57,7 @@ return {
         engineText="使用LÖVE引擎製作",
         tool="使用工具",
         repo="使用庫",
-        time="游戲運行次數：%d\n縂運行時間：%d 秒",
+        time="游戲運行次數 : %d\n縂運行時間 : %d 秒",
         staff="製作人員"
     },
     staff={
@@ -116,6 +116,7 @@ return {
             enable="啓用虛擬擊鍵",enableTctScale=.25,
             preset="预設...",
             btsz="大小:",
+            tolerance="容錯:",
             attach="網格對齊:"
         },
         handling={

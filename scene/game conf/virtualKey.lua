@@ -11,68 +11,68 @@ local attachIndex=0
 local defaultPreset={
     --我自己在铁壳的大致配置（类似铁壳默认配置1）
     {
-        ML=   {x= 420,y= 180,r=120},
-        MR=   {x= 780,y= 180,r=120},
-        SD=   {x= 600,y= 360,r=120},
-        HD=   {x= 600,y=   0,r=120},
-        CW=   {x=-420,y= 180,r=120},
-        CCW=  {x=-780,y= 180,r=120},
-        flip= {x=-600,y=   0,r=120},
-        hold= {x=-600,y= 360,r=120},
-        R=    {x=-500,y=-400,r= 90},
-        pause={x= 500,y=-400,r= 90},
+        ML=   {x= 420,y= 180,r=120,tolerance=60},
+        MR=   {x= 780,y= 180,r=120,tolerance=60},
+        SD=   {x= 600,y= 360,r=120,tolerance=60},
+        HD=   {x= 600,y=   0,r=120,tolerance=60},
+        CW=   {x=-420,y= 180,r=120,tolerance=60},
+        CCW=  {x=-780,y= 180,r=120,tolerance=60},
+        flip= {x=-600,y=   0,r=120,tolerance=60},
+        hold= {x=-600,y= 360,r=120,tolerance=60},
+        R=    {x=-500,y=-400,r= 90,tolerance=30},
+        pause={x= 500,y=-400,r= 90,tolerance=30},
     },
     --对称
     {
-        ML=   {x=-780,y= 180,r=120},
-        MR=   {x=-420,y= 180,r=120},
-        SD=   {x=-600,y= 360,r=120},
-        HD=   {x=-600,y=   0,r=120},
-        CW=   {x= 780,y= 180,r=120},
-        CCW=  {x= 420,y= 180,r=120},
-        flip= {x= 600,y=   0,r=120},
-        hold= {x= 600,y= 360,r=120},
-        R=    {x=-500,y=-400,r= 90},
-        pause={x= 500,y=-400,r= 90},
+        ML=   {x=-780,y= 180,r=120,tolerance=60},
+        MR=   {x=-420,y= 180,r=120,tolerance=60},
+        SD=   {x=-600,y= 360,r=120,tolerance=60},
+        HD=   {x=-600,y=   0,r=120,tolerance=60},
+        CW=   {x= 780,y= 180,r=120,tolerance=60},
+        CCW=  {x= 420,y= 180,r=120,tolerance=60},
+        flip= {x= 600,y=   0,r=120,tolerance=60},
+        hold= {x= 600,y= 360,r=120,tolerance=60},
+        R=    {x=-500,y=-400,r= 90,tolerance=30},
+        pause={x= 500,y=-400,r= 90,tolerance=30},
     },
     --铁壳默认配置3
     {
-        ML=   {x=-840,y= 420,r=120},
-        MR=   {x=-600,y= 420,r=120},
-        SD=   {x= 840,y= 180,r=120},
-        HD=   {x= 840,y= 420,r=120},
-        CW=   {x= 600,y= 420,r=120},
-        CCW=  {x= 360,y= 420,r=120},
-        flip= {x= 600,y= 180,r=120},
-        hold= {x= 840,y=- 60,r=120},
-        R=    {x=-500,y=-400,r= 90},
-        pause={x= 500,y=-400,r= 90},
+        ML=   {x=-840,y= 420,r=120,tolerance=60},
+        MR=   {x=-600,y= 420,r=120,tolerance=60},
+        SD=   {x= 840,y= 180,r=120,tolerance=60},
+        HD=   {x= 840,y= 420,r=120,tolerance=60},
+        CW=   {x= 600,y= 420,r=120,tolerance=60},
+        CCW=  {x= 360,y= 420,r=120,tolerance=60},
+        flip= {x= 600,y= 180,r=120,tolerance=60},
+        hold= {x= 840,y=- 60,r=120,tolerance=60},
+        R=    {x=-500,y=-400,r= 90,tolerance=30},
+        pause={x= 500,y=-400,r= 90,tolerance=30},
     },
     --铁壳默认配置4
     {
-        ML=   {x= 360,y= 420,r=120},
-        MR=   {x= 840,y= 420,r=120},
-        SD=   {x= 600,y= 180,r=120},
-        HD=   {x= 600,y= 420,r=120},
-        CW=   {x=-600,y= 420,r=120},
-        CCW=  {x=-840,y= 420,r=120},
-        flip= {x=-600,y= 180,r=120},
-        hold= {x=-360,y= 420,r=120},
-        R=    {x=-500,y=-400,r= 90},
-        pause={x= 500,y=-400,r= 90},
+        ML=   {x= 360,y= 420,r=120,tolerance=60},
+        MR=   {x= 840,y= 420,r=120,tolerance=60},
+        SD=   {x= 600,y= 180,r=120,tolerance=60},
+        HD=   {x= 600,y= 420,r=120,tolerance=60},
+        CW=   {x=-600,y= 420,r=120,tolerance=60},
+        CCW=  {x=-840,y= 420,r=120,tolerance=60},
+        flip= {x=-600,y= 180,r=120,tolerance=60},
+        hold= {x=-360,y= 420,r=120,tolerance=60},
+        R=    {x=-500,y=-400,r= 90,tolerance=30},
+        pause={x= 500,y=-400,r= 90,tolerance=30},
     },
     --maimai
     {
-        ML=   {x= 200,y=-500,r=120},
-        MR=   {x= 500,y=-200,r=120},
-        SD=   {x= 500,y= 200,r=120},
-        HD=   {x= 200,y= 500,r=120},
-        CW=   {x=-200,y= 500,r=120},
-        CCW=  {x=-500,y= 200,r=120},
-        flip= {x=-500,y=-200,r=120},
-        hold= {x=-200,y=-500,r=120},
-        R=    {x=-870,y=-450,r= 90},
-        pause={x= 870,y=-450,r= 90},
+        ML=   {x= 200,y=-500,r=120,tolerance=60},
+        MR=   {x= 500,y=-200,r=120,tolerance=60},
+        SD=   {x= 500,y= 200,r=120,tolerance=60},
+        HD=   {x= 200,y= 500,r=120,tolerance=60},
+        CW=   {x=-200,y= 500,r=120,tolerance=60},
+        CCW=  {x=-500,y= 200,r=120,tolerance=60},
+        flip= {x=-500,y=-200,r=120,tolerance=60},
+        hold= {x=-200,y=-500,r=120,tolerance=60},
+        R=    {x=-870,y=-450,r= 90,tolerance=30},
+        pause={x= 870,y=-450,r= 90,tolerance=30},
     },
 }
 local presetIndex=0
@@ -94,7 +94,8 @@ function VKey.read()
         if not VKey.set[keyName[i]] then VKey.set[keyName[i]]={x=0,y=0,r=120} end
     end
     for k,v in pairs(VKey.set) do
-        if not T.include(keyName,k) then v=nil end
+        if not T.include(keyName,k) then v=nil
+        elseif not v.tolerance then v.tolerance=60 end
     end
 end
 function VKey.save()
@@ -201,6 +202,29 @@ function VKey.init()
             end
         end
     })
+    SLIDER.create('toleranceAdjust',{
+        x=0,y=-90,type='hori',sz={300,24},button={24,24},
+        gear=13,pos=0,
+        sliderDraw=function(g,sz)
+            if VKey.enabled and VKey.choose then
+            gc.setColor(.5,.5,.5,.8)
+            gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
+            gc.setColor(1,1,1)
+            gc.printf(cfv.tolerance..VKey.set[VKey.choose].tolerance, font.JB,-sz[1]/2-12,-36,114514,'left',0,.25,.25,0,84)
+            end
+        end,
+        buttonDraw=function(pos,sz)
+            if VKey.enabled and VKey.choose then
+            gc.setColor(1,1,1)
+            gc.circle('fill',sz[1]*(pos-.5),0,16,4)
+            end
+        end,
+        always=function(pos)
+            if VKey.enabled and VKey.choose then
+            VKey.set[VKey.choose].tolerance=10*pos
+            end
+        end
+    })
     SLIDER.create('attachAdjust',{
         x=-0,y=-270,type='hori',sz={300,24},button={24,24},
         gear=7,pos=attachIndex,
@@ -235,7 +259,10 @@ function VKey.mouseP(x,y,button,istouch)
             if r<v.r and r<d then ak=k d=r end
         end
         VKey.toMove,VKey.choose,VKey.movePosShow=ak,ak or VKey.choose,ak or VKey.movePosShow
-        if VKey.choose then SLIDER.setPos('szAdjust',(VKey.set[VKey.choose].r-60)/10) end
+        if VKey.choose then
+            SLIDER.setPos('szAdjust',(VKey.set[VKey.choose].r-60)/10)
+            SLIDER.setPos('toleranceAdjust',VKey.set[VKey.choose].tolerance/10)
+        end
     end
 end
 function VKey.mouseR(x,y,button,istouch)
@@ -303,6 +330,8 @@ function VKey.draw()
             local v=VKey.set[VKey.choose]
             gc.setColor(1,1,1,scene.time%.2<.1 and .3 or .2)
             gc.circle('fill',v.x,v.y,v.r*15/16,4)
+            gc.setLineWidth(5*v.r/100)
+            gc.circle('line',v.x,v.y,v.r+v.tolerance,4)
         end
         if VKey.movePosShow then
             local v=VKey.set[VKey.movePosShow]

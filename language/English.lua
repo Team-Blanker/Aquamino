@@ -118,6 +118,7 @@ return {
             enable="Enable virtual keys",enableTctScale=.2,
             preset="presets...",
             btsz="Size:",
+            tolerance="Margin:",
             attach="Alignment:"
         },
         handling={

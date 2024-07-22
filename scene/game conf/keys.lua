@@ -162,7 +162,7 @@ function key.exit()
 end
 function key.send(destScene,arg)
     if scene.dest=='game' then
-    destScene.exitScene='game conf/custom'
+    destScene.exitScene='game conf/keys'
     destScene.modeInfo={mode='conf_test'}
     destScene.resetStopMusic=false
     end

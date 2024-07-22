@@ -630,6 +630,9 @@ function mino.init()
     end
     S.opList={1}
 
+    S.ctrl={ASD=.15,ASP=.03,SD_ASD=0,SD_ASP=.05}
+    T.combine(S.ctrl,file.read('conf/ctrl'))
+
     local ks=file.read('conf/keySet')
     S.keySet=next(ks) and ks or {
         ML={'left'},MR={'right'},
@@ -638,7 +641,7 @@ function mino.init()
         R={'r'},pause={'escape','p'}
     }
 
-    vKey.init()
+    vKey.init(S.ctrl)
     S.VKey=file.read('conf/virtualKey')
     if S.VKey.enabled then
         for ki,v in pairs(S.VKey.set) do
@@ -646,9 +649,6 @@ function mino.init()
             vKey.new(ki,v)
         end
     end
-
-    S.ctrl={ASD=.15,ASP=.03,SD_ASD=0,SD_ASP=.05}
-    T.combine(S.ctrl,file.read('conf/ctrl'))
 
     mino.rule={
         timer=0,

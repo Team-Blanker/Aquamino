@@ -50,7 +50,7 @@ function bc.init()
 
     BUTTON.create('resetAllColor',{
         x=0,y=400,type='rect',w=350,h=100,
-        draw=function(bt,t)
+        draw=function(bt,t,ct)
             if not canAdjustColor[skinName] then return end
             local w,h=bt.w,bt.h
             gc.setColor(.5,.5,.5,.3+t)
@@ -60,6 +60,8 @@ function bc.init()
             gc.rectangle('line',-w/2,-h/2,w,h)
             gc.setColor(1,1,1)
             gc.printf(cfcc.rAll,font.Bender,0,0,1280,'center',0,.5,.5,640,72)
+            gc.setColor(1,1,1,1-4*ct)
+            gc.rectangle('line',-w/2-ct*80,-h/2-ct*80,w+ct*160,h+ct*160)
         end,
         event=function()
             if not canAdjustColor[skinName] then return end
@@ -71,16 +73,19 @@ function bc.init()
     },.2)
     BUTTON.create('resetCurColor',{
         x=400,y=400,type='rect',w=350,h=100,
-        draw=function(bt,t)
+        draw=function(bt,t,ct)
             if not canAdjustColor[skinName] then return end
             local w,h=bt.w,bt.h
-            gc.setColor(.5,.5,.5,.3+t)
+            local dc=defaultColor[bList[bc.blockIndex]]
+            gc.setColor(dc[1]/2,dc[2]/2,dc[3]/2,.3+t)
             gc.rectangle('fill',-w/2,-h/2,w,h)
-            gc.setColor(.8,.8,.8)
+            gc.setColor(dc[1],dc[2],dc[3])
             gc.setLineWidth(3)
             gc.rectangle('line',-w/2,-h/2,w,h)
             gc.setColor(1,1,1)
             gc.printf(cfcc.rCur,font.Bender,0,0,1280,'center',0,.5,.5,640,72)
+            gc.setColor(dc[1],dc[2],dc[3],1-4*ct)
+            gc.rectangle('line',-w/2-ct*80,-h/2-ct*80,w+ct*160,h+ct*160)
         end,
         event=function()
             if not canAdjustColor[skinName] then return end
@@ -140,7 +145,7 @@ function bc.init()
             gc.setColor(.5+.5*v,.5-.5*v,.5-.5*v,.5)
             gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
             gc.setColor(1,.5,.5)
-            gc.printf(string.format("R:%.2f",bc.color[bList[bc.blockIndex]][1]),font.JB,-219,-48,1000,'left',0,.3125,.3125,0,84)
+            gc.printf(string.format("R:%.2f(%.2X)",v,v*255+.5),font.JB,-219,-48,1000,'left',0,.3125,.3125,0,84)
         end,
         buttonDraw=function(pos,sz)
             if not canAdjustColor[skinName] then return end
@@ -161,7 +166,7 @@ function bc.init()
             gc.setColor(.5-.5*v,.5+.5*v,.5-.5*v,.5)
             gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
             gc.setColor(.5,1,.5)
-            gc.printf(string.format("G:%.2f",bc.color[bList[bc.blockIndex]][2]),font.JB,-219,-48,1000,'left',0,.3125,.3125,0,84)
+            gc.printf(string.format("G:%.2f(%.2X)",v,v*255+.5),font.JB,-219,-48,1000,'left',0,.3125,.3125,0,84)
         end,
         buttonDraw=function(pos,sz)
             if not canAdjustColor[skinName] then return end
@@ -182,7 +187,7 @@ function bc.init()
             gc.setColor(.5-.5*v,.5-.5*v,.5+.5*v,.5)
             gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
             gc.setColor(.5,.5,1)
-            gc.printf(string.format("B:%.2f",bc.color[bList[bc.blockIndex]][3]),font.JB,-219,-48,1000,'left',0,.3125,.3125,0,84)
+            gc.printf(string.format("B:%.2f(%.2X)",v,v*255+.5),font.JB,-219,-48,1000,'left',0,.3125,.3125,0,84)
         end,
         buttonDraw=function(pos,sz)
             if not canAdjustColor[skinName] then return end
