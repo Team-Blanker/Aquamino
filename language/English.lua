@@ -114,6 +114,12 @@ return {
             info="Click a key set to bind your keys.\nHit backspace to erase selected key set.\nHit a bound key to remove this bind.",
             virtualKey="Touch settings..."
         },
+        virtualKey={
+            enable="Enable virtual keys",enableTctScale=.2,
+            preset="presets...",
+            btsz="Size:",
+            attach="Attachment:"
+        },
         handling={
             ASD="Auto Shift Delay(ASD):",ASP="Auto Shift Preiod(ASP):",
             SD_ASD="Soft drop ASD:",SD_ASP="Soft drop ASP:"

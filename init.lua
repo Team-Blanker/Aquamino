@@ -13,8 +13,12 @@ do
     hand.read() hand.save()
     local key=require'scene/game conf/keys'
     key.read() key.save()
+    local VKey=require'scene/game conf/virtualKey'
+    VKey.read() VKey.save()
     local custom=require'scene/game conf/custom'
     custom.read() custom.save()
+    local clr=require'scene/game conf/mino color'
+    clr.read() clr.save()
     local lang=require'scene/game conf/language'
     lang.read() lang.save()
 end

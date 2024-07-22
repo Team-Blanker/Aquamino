@@ -45,7 +45,7 @@ function about.init()
         x=-700,y=400,type='rect',w=200,h=100,
         draw=function(bt,t)
             local w,h=bt.w,bt.h
-            gc.setColor(.5,.5,.5,.8+t)
+            gc.setColor(.5,.5,.5,.3+t)
             gc.rectangle('fill',-w/2,-h/2,w,h)
             gc.setColor(.8,.8,.8)
             gc.setLineWidth(3)
@@ -64,7 +64,7 @@ function about.init()
         x=675,y=400,type='rect',w=250,h=100,
         draw=function(bt,t)
             local w,h=bt.w,bt.h
-            gc.setColor(.5,.5,.5,.8+t)
+            gc.setColor(.5,.5,.5,.3+t)
             gc.rectangle('fill',-w/2,-h/2,w,h)
             gc.setColor(.8,.8,.8)
             gc.setLineWidth(3)

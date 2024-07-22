@@ -47,12 +47,14 @@ gc.circle('line',32,32,31)
 gc.setCanvas()
 
 local bgShader=gc.newShader[[
-    extern vec4 clru=vec4(.03,.06,.15,1);
-    extern vec4 clrd=vec4(.06,.06,.09,1);
+    extern vec4 clru;
+    extern vec4 clrd;
     vec4 effect( vec4 color, Image texture, vec2 texCoord, vec2 scrCoord ){
         return mix(clru,clrd,scrCoord.y/love_ScreenSize.y+0.);
     }
 ]]
+bgShader:send('clru',{.03,.06,.15,1.})
+bgShader:send('clrd',{.06,.06,.09,1.})
 local s,bl
 function bg.draw()
     gc.setShader(bgShader)

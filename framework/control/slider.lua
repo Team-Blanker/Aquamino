@@ -57,6 +57,6 @@ function slider.always(slid,x,y)
 end
 function slider.setPos(slidName,pos)
     local v=slider.list[slidName]
-    v.pos=v.gear==0 and pos or floor((v.gear-1)*pos+.5)
+    v.pos=pos
 end
 return slider

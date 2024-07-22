@@ -107,10 +107,16 @@ return {
             }
         },
         keys={
-            keyName={'左移','右移','順轉','逆轉','翻轉','軟降','硬降','暫存','重開','暫停'} ,
+            keyName={'左移','右移','順轉','逆轉','180°轉','軟降','硬降','暫存','重開','暫停'} ,
             kScale=.5,
             info="點選新增鍵位綁定（最多3個）\nBackspace清空選定鍵位\n按下已綁定鍵位以刪除該綁定",
             virtualKey="觸控設定..."
+        },
+        virtualKey={
+            enable="啓用虛擬擊鍵",enableTctScale=.25,
+            preset="预設...",
+            btsz="大小:",
+            attach="附著網格:"
         },
         handling={
             ASD="自動移動延遲(ASD,舊稱DAS):",ASP="自動移動週期(ASP,舊稱ARR):",

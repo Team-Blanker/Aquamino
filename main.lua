@@ -244,7 +244,7 @@ function love.touchpressed(id,x,y)
     elseif scene.cur.mouseP then scene.cur.mouseP(rx,ry,1) end
     end
 end
-function love.touchpressed(id,x,y)
+function love.touchreleased(id,x,y)
     local rx,ry=adaptWindow:inverseTransformPoint(x+.5,y+.5)
     if canop then
     if scene.cur.touchR then scene.cur.touchR(id,rx,ry)

@@ -169,20 +169,20 @@ function mino.nextIns(player)
     end
 
     if k then
-        if love.keyboard.isDown(S.keySet.hold) and player.canInitHold then
+        if S.keyDown.hold and player.canInitHold then
             player.initOpQueue[#player.initOpQueue+1]='initHold'
         end
-        if love.keyboard.isDown(S.keySet.ML) and player.canInitMove then
+        if S.keyDown.ML and player.canInitMove then
             player.initOpQueue[#player.initOpQueue+1]='initML'
-        elseif love.keyboard.isDown(S.keySet.MR) and player.canInitMove then
+        elseif S.keyDown.MR and player.canInitMove then
             player.initOpQueue[#player.initOpQueue+1]='initMR'
         end
         if player.EDelay+player.CDelay~=0 then --对消行延迟与出块延迟均=0的情况特判，不应用提前旋转
-            if love.keyboard.isDown(S.keySet.CW) and player.canInitRotate then
+            if S.keyDown.CW and player.canInitRotate then
                 player.initOpQueue[#player.initOpQueue+1]='initRotateCW'
-            elseif love.keyboard.isDown(S.keySet.CCW) and player.canInitRotate then
+            elseif S.keyDown.CCW and player.canInitRotate then
                 player.initOpQueue[#player.initOpQueue+1]='initRotateCCW'
-            elseif love.keyboard.isDown(S.keySet.flip) and player.canInitRotate then
+            elseif S.keyDown.flip and player.canInitRotate then
                 player.initOpQueue[#player.initOpQueue+1]='initRotate180'
             end
         end
@@ -302,7 +302,7 @@ mino.operate={
             OP.cur.ghostY=fLib.getGhostY(OP)
         end
         OP.moveDir='L'
-        if love.keyboard.isDown(S.keySet.MR) then OP.MTimer=0 end
+        if S.keyDown.MR then OP.MTimer=0 end
         if mino.sfxPlay.move then mino.sfxPlay.move(OP,success,landed) end
         OP.canInitMove=true
     end,
@@ -315,7 +315,7 @@ mino.operate={
             OP.cur.ghostY=fLib.getGhostY(OP)
         end
         OP.moveDir='R'
-        if love.keyboard.isDown(S.keySet.ML) then OP.MTimer=0 end
+        if S.keyDown.ML then OP.MTimer=0 end
         if mino.sfxPlay.move then mino.sfxPlay.move(OP,success,landed) end
         OP.canInitMove=true
     end,
@@ -367,7 +367,7 @@ mino.operate={
             OP.cur.ghostY=fLib.getGhostY(OP)
         else  end
         OP.moveDir='L'
-        if love.keyboard.isDown(S.keySet.MR) then OP.MTimer=0 end
+        if S.keyDown.MR then OP.MTimer=0 end
 
         if playSFX and mino.sfxPlay.move then mino.sfxPlay.move(OP,success,landed) end
     end,
@@ -381,7 +381,7 @@ mino.operate={
             OP.cur.ghostY=fLib.getGhostY(OP)
         else  end
         OP.moveDir='R'
-        if love.keyboard.isDown(S.keySet.ML) then OP.MTimer=0 end
+        if S.keyDown.ML then OP.MTimer=0 end
 
         if playSFX and mino.sfxPlay.move then mino.sfxPlay.move(OP,success,landed) end
     end,
@@ -597,7 +597,7 @@ function mino.init()
     mino.player={}
     P,S=mino.player,mino.stacker
     S.event={} S.newRecord=false S.endTimer=0 S.NRSFXPlayed=false
-    S.keyDown={R=false,L=false,SD=false}
+    S.keyDown={ML=false,MR=false,SD=false,CW=false,CCW=false,flip=false}
     P[1]=fLib.newPlayer()
 
     do
@@ -637,6 +637,15 @@ function mino.init()
         SD={'down'},HD={'up'},hold={'z'},
         R={'r'},pause={'escape','p'}
     }
+
+    vKey.init()
+    S.VKey=file.read('conf/virtualKey')
+    if S.VKey.enabled then
+        for ki,v in pairs(S.VKey.set) do
+            print(v)
+            vKey.new(ki,v)
+        end
+    end
 
     S.ctrl={ASD=.15,ASP=.03,SD_ASD=0,SD_ASP=.05}
     T.combine(S.ctrl,file.read('conf/ctrl'))
@@ -746,12 +755,12 @@ function mino.init()
     },.2)
 end
 
-function mino.keyP(k)
+function mino.inputPress(k)
     --if k=='f1' then mino.profile.switch() end
-    if T.include(S.keySet.pause,k) then mino.paused=not mino.paused
+    if k=='pause' then mino.paused=not mino.paused
         if mino.rule.pause then mino.rule.pause(S,mino.paused) end
         if S.event[2]=='pause' then rem(S.event,1) rem(S.event,1) end
-    elseif T.include(S.keySet.R,k) then
+    elseif k=='R' then
         local p=mino.paused
         scene.dest='game' scene.destScene=require('mino/game')
         scene.swapT=(p and .6 or 0) scene.outT=.2
@@ -763,8 +772,8 @@ function mino.keyP(k)
     elseif mino.waitTime>0 then
         for i=1,#S.opList do
             local OP=P[S.opList[i]]--Player Operated by you
-            if T.include(S.keySet.ML,k) then OP.moveDir='L'
-            elseif T.include(S.keySet.MR,k) then OP.moveDir='R'
+            if k=='ML' then OP.moveDir='L'
+            elseif k=='MR' then OP.moveDir='R'
             end
         end
     else
@@ -773,56 +782,57 @@ function mino.keyP(k)
         C,A=OP.cur,OP.smoothAnim
         if OP.deadTimer<0 and S.winState==0 then
             if OP.event[1] then--提前操作
-                if T.include(S.keySet.hold,k) and OP.canInitHold then
+                if k=='hold' and OP.canInitHold then
                     OP.initOpQueue[#OP.initOpQueue+1]='initHold'
                     OP.canInitHold=false
-                elseif T.include(S.keySet.ML,k) and OP.canInitMove then
+                elseif k=='ML' and OP.canInitMove then
                     OP.initOpQueue[#OP.initOpQueue+1]='initML'
                     OP.canInitMove=false
-                elseif T.include(S.keySet.MR,k) and OP.canInitMove then
+                elseif k=='MR' and OP.canInitMove then
                     OP.initOpQueue[#OP.initOpQueue+1]='initMR'
                     OP.canInitMove=false
 
-                elseif T.include(S.keySet.CW,k) and OP.canInitRotate then
+                elseif k=='CW' and OP.canInitRotate then
                     OP.initOpQueue[#OP.initOpQueue+1]='initRotateCW'
                     OP.canInitRotate=false
-                elseif T.include(S.keySet.CCW,k) and OP.canInitRotate then
+                elseif k=='CCW' and OP.canInitRotate then
                     OP.initOpQueue[#OP.initOpQueue+1]='initRotateCCW'
                     OP.canInitRotate=false
-                elseif T.include(S.keySet.flip,k) and OP.canInitRotate then
+                elseif k=='flip' and OP.canInitRotate then
                     OP.initOpQueue[#OP.initOpQueue+1]='initRotate180'
                     OP.canInitRotate=false
                 end
 
             else
 
-                if T.include(S.keySet.ML,k)       then mino.operate.ML(OP,true)
-                elseif T.include(S.keySet.MR,k)   then mino.operate.MR(OP,true)
-                elseif T.include(S.keySet.CW,k)   then mino.operate.rotateCW(OP,true)
-                elseif T.include(S.keySet.CCW,k)  then mino.operate.rotateCCW(OP,true)
-                elseif T.include(S.keySet.flip,k) then mino.operate.rotate180(OP,true)
-                elseif T.include(S.keySet.HD,k)   then mino.operate.HD(OP,true)
-                elseif T.include(S.keySet.SD,k)   then mino.operate.SD(OP,true)
-                elseif T.include(S.keySet.hold,k) and OP.canHold then mino.operate.hold(OP,true)
+                if     k=='ML'   then mino.operate.ML(OP,true)
+                elseif k=='MR'   then mino.operate.MR(OP,true)
+                elseif k=='CW'   then mino.operate.rotateCW(OP,true)
+                elseif k=='CCW'  then mino.operate.rotateCCW(OP,true)
+                elseif k=='flip' then mino.operate.rotate180(OP,true)
+                elseif k=='HD'   then mino.operate.HD(OP,true)
+                elseif k=='SD'   then mino.operate.SD(OP,true)
+                elseif k=='hold' and OP.canHold then mino.operate.hold(OP,true)
                 end
 
                 --推土机！
                 if mino.rule.allowPush[C.name] and C.kickOrder then
+                    local rotate=k=='CW' or k=='CCW' or k=='flip'
                     local reset=true local lBlock,push
-                    if OP.moveDir=='R' and love.keyboard.isDown(S.keySet.MR) and coincide(OP,1,0) then
-                        if T.include(S.keySet.CW,k) or T.include(S.keySet.CCW,k) or T.include(S.keySet.flip,k) then reset=false
+                    if OP.moveDir=='R' and S.keyDown.MR and coincide(OP,1,0) then
+                        if rotate then reset=false
                         OP.pushAtt=OP.pushAtt+1 lBlock,push=fLib.pushField(OP,'R')
                         if push then mino.operate.MR(OP,true) end
                         end
                     end
-                    if OP.moveDir=='L' and love.keyboard.isDown(S.keySet.ML) and coincide(OP,-1,0) then
-                        if T.include(S.keySet.CW,k) or T.include(S.keySet.CCW,k) or T.include(S.keySet.flip,k) then reset=false
+                    if OP.moveDir=='L' and S.keyDown.ML and coincide(OP,-1,0) then
+                        if rotate then reset=false
                         OP.pushAtt=OP.pushAtt+1 lBlock,push=fLib.pushField(OP,'L')
                         if push then mino.operate.ML(OP,true) end
                         end
                     end
-                    if love.keyboard.isDown(S.keySet.SD) and coincide(OP,0,-1) then
-                        if T.include(S.keySet.CW,k) or T.include(S.keySet.CCW,k) or T.include(S.keySet.flip,k) then reset=false
+                    if S.keyDown.SD and coincide(OP,0,-1) then
+                        if rotate then reset=false
                         OP.pushAtt=OP.pushAtt+1 lBlock,push=fLib.pushField(OP,'D')
                         if push then mino.operate.SD1H(OP,true) end
                         end
@@ -840,7 +850,7 @@ function mino.keyP(k)
                 end
 
                 --最高下落速度
-                if not T.include(S.keySet.HD,k) and OP.FDelay==0 then
+                if not k=='HD' and OP.FDelay==0 then
                     local h=0
                     while not coincide(OP,0,-1) do C.y=C.y-1 h=h+1 C.spin=false end
                     if h>0 then mino.sfxPlay.touch(OP,true) end
@@ -849,7 +859,7 @@ function mino.keyP(k)
                 --给皮肤传按键事件
                 local keyAct
                 for key,v in pairs(S.keySet) do
-                    if T.include(v,k) then keyAct=key break end
+                    if k==key then keyAct=key break end
                 end
                 if keyAct then
                     if mino.theme.keyP then mino.theme.keyP(P[i],keyAct,mino) end
@@ -862,14 +872,14 @@ function mino.keyP(k)
     end--if-else
 end
 
-function mino.keyR(k)
+function mino.inputRelease(k)
     local key=S.keySet
     for i=1,#S.opList do
         local OP=P[S.opList[i]]
-        if T.include(key.ML,k) then
-            if love.keyboard.isDown(key.MR) then OP.MTimer=0 OP.moveDir='R' end
-        elseif T.include(key.MR,k) then
-            if love.keyboard.isDown(key.ML) then OP.MTimer=0 OP.moveDir='L' end
+        if k=='ML' then
+            if S.keyDown.MR then OP.MTimer=0 OP.moveDir='R' end
+        elseif k=='MR' then
+            if S.keyDown.ML then OP.MTimer=0 OP.moveDir='L' end
         end
     end
 end
@@ -881,35 +891,33 @@ function mino.mouseR(x,y,button,istouch)
     BUTTON.release(x,y)
 end
 
-local k,op
-function mino.touchP(id,x,y)
-    if not mino.paused then
-    k,op=vKey.press(id,x,y)
-    if mino.operate[op] then
-        for i=1,#S.opList do
-            local OP=P[S.opList[i]]
-            mino.operate[op](OP,true) end
-        end
+function mino.keyP(k)
+    for ki,v in pairs(S.keySet) do
+        if T.include(v,k) then mino.inputPress(ki) end
     end
-    mino.mouseP(x,y)
+end
+function mino.keyR(k)
+    for ki,v in pairs(S.keySet) do
+        if T.include(v,k) then mino.inputRelease(ki) end
+    end
 end
 function mino.touchP(id,x,y)
     if not mino.paused then
-    vKey.release(id,x,y)
-    k,op=nil,nil
+    mino.inputPress(vKey.press(id,x,y))
+    end
+    mino.mouseP(x,y)
+end
+function mino.touchR(id,x,y)
+    if not mino.paused then
+    mino.inputRelease(vKey.release(id,x,y))
     end
     mino.mouseR(x,y)
 end
 
 local cxk,remainTime
-local L,R,SD
 function mino.gameUpdate(dt)
     cxk=S.ctrl
     remainTime=0
-
-    S.keyDown.L=love.keyboard.isDown(S.keySet.ML) or vKey.checkActive('ML')
-    S.keyDown.R=love.keyboard.isDown(S.keySet.MR) or vKey.checkActive('MR')
-    S.keyDown.SD=love.keyboard.isDown(S.keySet.SD) or vKey.checkActive('SD')
 
     for i=1,#S.opList do
         local OP=P[S.opList[i]]
@@ -933,8 +941,8 @@ function mino.gameUpdate(dt)
             end
         else OP.DTimer=0 end
 
-        if S.keyDown.L or S.keyDown.R then OP.MTimer=OP.MTimer+dt end
-        if S.keyDown.L then local m=0
+        if S.keyDown.ML or S.keyDown.MR then OP.MTimer=OP.MTimer+dt end
+        if S.keyDown.ML then local m=0
             if coincide(OP,-1,0) then OP.MTimer=min(OP.MTimer+dt,cxk.ASD) end
 
             while OP.MTimer>=cxk.ASD and OP.moveDir=='L' and not coincide(OP,-1,0) do
@@ -964,7 +972,7 @@ function mino.gameUpdate(dt)
             end
         end
 
-        if S.keyDown.R then local m=0
+        if S.keyDown.MR then local m=0
             if coincide(OP,1,0) then OP.MTimer=min(OP.MTimer+dt,cxk.ASD) end
 
             while OP.MTimer>=cxk.ASD and OP.moveDir=='R' and not coincide(OP,1,0) do
@@ -978,7 +986,7 @@ function mino.gameUpdate(dt)
                 if OP.FDelay==0 then
                     while not coincide(OP,0,-1) do C.y=C.y-1 end
                 else
-                    if SD then
+                    if S.keyDown.SD then
                     if coincide(OP,0,-1) then OP.DTimer=min(OP.DTimer+dt,cxk.SD_ASD)
                     else
                         local m=0
@@ -993,7 +1001,7 @@ function mino.gameUpdate(dt)
                 mino.setAnimPrePiece(OP) A.timer=mino.smoothTime
             end
         end
-        if not(S.keyDown.L or S.keyDown.R) then OP.MTimer=0 end
+        if not(S.keyDown.ML or S.keyDown.MR) then OP.MTimer=0 end
         end
     end
 
@@ -1075,6 +1083,10 @@ function mino.update(dt)
         mino.pauseTimer=mino.pauseTimer+dt mino.pauseAnimTimer=min(mino.pauseAnimTimer+dt,.25)
     else mino.pauseAnimTimer=max(mino.pauseAnimTimer-dt,0)
         mino.waitTime=mino.waitTime-dt
+
+        for ki,v in pairs(S.keyDown) do
+            S.keyDown[ki]=love.keyboard.isDown(S.keySet[ki]) or vKey.checkActive(ki)
+        end
         if mino.waitTime<=0 then mino.gameUpdate(dt)
             if not S.started then
                 S.started=true
@@ -1083,7 +1095,7 @@ function mino.update(dt)
             end
         else
             for i=1,#S.opList do local OP=P[S.opList[i]]
-                if love.keyboard.isDown(S.keySet.ML) or love.keyboard.isDown(S.keySet.MR) then
+                if S.keyDown.ML or S.keyDown.MR then
                     OP.MTimer=min(OP.MTimer+dt,S.ctrl.ASD)
                 else OP.MTimer=0 end
             end
@@ -1109,6 +1121,7 @@ function mino.update(dt)
             end
         end
     end
+    vKey.animUpdate(dt)
 end
 
 function mino.draw()
@@ -1199,6 +1212,9 @@ function mino.draw()
             if P[i].loseTimer>=0 and mino.theme.loseAnim then mino.theme.loseAnim(P[i],S,mino) end
         gc.pop()
     end
+
+    vKey.draw()
+
     --暂停
     gc.setColor(.04,.04,.04,min(mino.pauseAnimTimer*(S.winState==0 and 4 or 2),S.winState==0 and 1 or .5))
     gc.rectangle('fill',-1000,-1000,2000,2000)
