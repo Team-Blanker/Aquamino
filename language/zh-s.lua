@@ -116,7 +116,7 @@ return {
             enable="启用虚拟按键",enableTctScale=.25,
             preset="预设...",
             btsz="大小:",
-            attach="附着网格:"
+            attach="网格对齐:"
         },
         handling={
             ASD="自动移动延迟(ASD,旧称DAS):",ASP="自动移动周期(ASP,旧称ARR):",

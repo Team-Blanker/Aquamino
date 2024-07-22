@@ -116,7 +116,7 @@ return {
             enable="啓用虛擬擊鍵",enableTctScale=.25,
             preset="预設...",
             btsz="大小:",
-            attach="附著網格:"
+            attach="網格對齊:"
         },
         handling={
             ASD="自動移動延遲(ASD,舊稱DAS):",ASP="自動移動週期(ASP,舊稱ARR):",
