@@ -253,7 +253,7 @@ function love.touchreleased(id,x,y)
 end
 
 function mainUpdate(dt)
-    if love.window.hasFocus() then win.distractTime=-1 else
+    if love.window.hasFocus() and not love.window.isMinimized() then win.distractTime=-1 else
         win.distractTime=max(win.distractTime,0)
         win.distractTime=win.distractTime+dt
     end

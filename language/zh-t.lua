@@ -113,7 +113,8 @@ return {
             virtualKey="觸控設定..."
         },
         virtualKey={
-            enable="啓用虛擬擊鍵",enableTctScale=.25,
+            enable="啓用虛擬擊鍵",enableTxtScale=.25,
+            anim="按鈕動畫",animTxtScale=.25,
             preset="预設...",
             btsz="大小:",
             tolerance="容錯:",

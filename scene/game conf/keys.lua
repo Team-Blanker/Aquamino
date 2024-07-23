@@ -80,7 +80,7 @@ function key.init()
             })
         end
     },.2)
-    BUTTON.create('colorAdjust',{
+    BUTTON.create('virtualKey',{
         x=600,y=-420,type='rect',w=400,h=80,
         draw=function(bt,t)
             local w,h=bt.w,bt.h

@@ -86,9 +86,12 @@ local VKey={}
 function VKey.read()
     VKey.set=T.copy(defaultPreset[1])
     local vk=file.read('conf/virtualKey')
-    if not vk.set then vk.set={} end if not vk.enabled then vk.enabled=false end
+    if not vk.set then vk.set={} end
+    if not vk.enabled then vk.enabled=false end
+    if not vk.anim then vk.anim=false end
     T.combine(VKey.set,vk.set)
     VKey.enabled=vk.enabled
+    VKey.anim=vk.anim
 
     for i=1,#keyName do
         if not VKey.set[keyName[i]] then VKey.set[keyName[i]]={x=0,y=0,r=120} end
@@ -99,7 +102,7 @@ function VKey.read()
     end
 end
 function VKey.save()
-    local lst={enabled=VKey.enabled,set=VKey.set}
+    local lst={enabled=VKey.enabled,set=VKey.set,anim=VKey.anim}
     file.save('conf/virtualKey',lst)
 end
 function VKey.init()
@@ -151,10 +154,37 @@ function VKey.init()
             gc.setColor(r,g,b,2*t)
             gc.rectangle('fill',-w/2,-h/2,h,h)
             gc.setColor(1,1,1)
-            gc.printf(cfv.enable,font.Bender_B,w/2+30,0,1200,'left',0,cfv.enableTctScale,cfv.enableTctScale,0,72)
+            gc.printf(cfv.enable,font.Bender_B,w/2+30,0,1200,'left',0,cfv.enableTxtScale,cfv.enableTxtScale,0,72)
         end,
         event=function()
             VKey.enabled=not VKey.enabled
+        end
+    },.2)
+    BUTTON.create('animEnable',{
+        x=-150,y=90,type='rect',w=60,h=60,
+        draw=function(bt,t,ct)
+            local animArg=VKey.anim and min(ct/.2,1) or max(1-ct/.2,0)
+            local w,h=bt.w,bt.h
+            local r=M.lerp(1,.5,animArg)
+            local g=1
+            local b=M.lerp(1,.875,animArg)
+            gc.setColor(.5,1,.875,.4)
+            gc.rectangle('fill',w/2,-h/2,300*animArg,h)
+            gc.setColor(1,1,1,.4)
+            gc.rectangle('fill',w/2+300*animArg,-h/2,300*(1-animArg),h)
+            gc.setColor(r,g,b)
+            gc.setLineWidth(6)
+            gc.rectangle('line',-w/2+4,-h/2+4,h-8,h-8)
+            if VKey.anim then
+                gc.circle('line',0,0,(w/2-4)*1.4142,4)
+            end
+            gc.setColor(r,g,b,2*t)
+            gc.rectangle('fill',-w/2,-h/2,h,h)
+            gc.setColor(1,1,1)
+            gc.printf(cfv.anim,font.Bender_B,w/2+30,0,1200,'left',0,cfv.animTxtScale,cfv.animTxtScale,0,72)
+        end,
+        event=function()
+            VKey.anim=not VKey.anim
         end
     },.2)
     BUTTON.create('preset',{
@@ -168,7 +198,7 @@ function VKey.init()
             gc.setLineWidth(3)
             gc.rectangle('line',-w/2,-h/2,w,h)
             gc.setColor(1,1,1)
-            gc.printf(cfv.preset,font.Bender,0,0,1280,'center',0,.5,.5,640,72)
+            gc.printf(cfv.preset,font.Bender,0,0,1280,'center',0,.4,.4,640,72)
             end
         end,
         event=function()

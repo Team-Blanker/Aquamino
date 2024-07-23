@@ -641,8 +641,8 @@ function mino.init()
         R={'r'},pause={'escape','p'}
     }
 
-    vKey.init(S.ctrl)
     S.VKey=file.read('conf/virtualKey')
+    vKey.init(S.ctrl,S.VKey.anim)
     if S.VKey.enabled then
         for ki,v in pairs(S.VKey.set) do
             print(v)
@@ -1087,6 +1087,7 @@ function mino.update(dt)
         for ki,v in pairs(S.keyDown) do
             S.keyDown[ki]=love.keyboard.isDown(S.keySet[ki]) or vKey.checkActive(ki)
         end
+        vKey.update(dt)
         if mino.waitTime<=0 then mino.gameUpdate(dt)
             if not S.started then
                 S.started=true

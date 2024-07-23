@@ -115,7 +115,8 @@ return {
             virtualKey="Touch settings..."
         },
         virtualKey={
-            enable="Enable virtual keys",enableTctScale=.2,
+            enable="Enable virtual keys",enableTxtScale=.2,
+            anim="Key animations",animTxtScale=.2,
             preset="presets...",
             btsz="Size:",
             tolerance="Margin:",
