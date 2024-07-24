@@ -1,9 +1,9 @@
-extern highp float TRAngle=.5;//全反射角，暂时没用上
+extern highp float TRAngle;//全反射角，暂时没用上
 vec4 effect( vec4 color, Image texture, vec2 texCoord, vec2 scrCoord ){
     vec4 px=texture2D(texture,texCoord);
     //变换成立体坐标系
-    highp float x=texCoord.x*2-1.;
-    highp float z=-(texCoord.y*2-1.);
+    highp float x=texCoord.x*2.-1.;
+    highp float z=-(texCoord.y*2.-1.);
     highp float rsq=x*x+z*z;//半径的平方
     if (x*x+z*z>1.) return vec4(0.,0.,0.,0.);
     //highp float y=-sqrt(1.-rsq);

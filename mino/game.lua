@@ -902,15 +902,11 @@ function mino.keyR(k)
     end
 end
 function mino.touchP(id,x,y)
-    if not mino.paused then
     mino.inputPress(vKey.press(id,x,y))
-    end
     mino.mouseP(x,y)
 end
 function mino.touchR(id,x,y)
-    if not mino.paused then
     mino.inputRelease(vKey.release(id,x,y))
-    end
     mino.mouseR(x,y)
 end
 
