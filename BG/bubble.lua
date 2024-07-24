@@ -10,7 +10,7 @@ end
 
 local  pi,tau=math.pi,2*math.pi
 function bg.newBubble()
-    local nb={x=4000*(rand()-.5),t=0,distance=.5+rand()*1.5,phase=rand()*tau,sz=.5+rand()}
+    local nb={x=4000*(rand()-.5),t=0,distance=.5+rand()*1.5,phase=rand()*tau,sz=.25+.5*rand()}
     if #bbList==0 then ins(bbList,nb)
     else local s=false
         for i=1,#bbList do
@@ -34,17 +34,37 @@ function bg.update(dt)
     end
 end
 
-local bb=gc.newCanvas(64,64)
+local wp=gc.newCanvas(128,128)
+gc.setCanvas(wp)
+
+gc.setColor(1,1,1)
+gc.rectangle('fill',0,0,128,128)
+
+gc.setCanvas()
+
+local bbShader=gc.newShader('BG/res/bubble/bubble.glsl')
+local bb=gc.newCanvas(128,128)
 gc.setCanvas(bb)
-gc.setLineWidth(2)
+--[[gc.setLineWidth(2)
 for i=1,32,2 do
     gc.setColor(1,1,1,.75*i/64)
     gc.circle('line',32,32,i)
 end
 gc.setLineWidth(2)
 gc.setColor(1,1,1)
-gc.circle('line',32,32,31)
+gc.circle('line',32,32,31)]]
+
+gc.setShader(bbShader)
+gc.setColor(1,1,1)
+gc.draw(wp,0,0)
+gc.setShader()
+
+gc.setLineWidth(2)
+--gc.setColor(1,1,1,.7)
+--gc.circle('line',64,64,63)
+
 gc.setCanvas()
+
 
 local bgShader=gc.newShader[[
     extern vec4 clru;
@@ -53,22 +73,22 @@ local bgShader=gc.newShader[[
         return mix(clru,clrd,scrCoord.y/love_ScreenSize.y+0.);
     }
 ]]
-bgShader:send('clru',{.03,.06,.15,1.})
-bgShader:send('clrd',{.06,.06,.09,1.})
+bgShader:send('clru',{.04,.08,.20,1.})
+bgShader:send('clrd',{.08,.08,.12,1.})
 local s,bl
 function bg.draw()
     gc.setShader(bgShader)
     gc.rectangle('fill',-960,-540,1920,1080)
     gc.setShader()
-    gc.setColor(.04,.04,.06,.05+.05*sin(scene.time%5/2.5*math.pi))
+    gc.setColor(.04,.04,.06,.08+.08*sin(scene.time%5/2.5*math.pi))
     gc.rectangle('fill',-960,-540,1920,1080)
-    gc.push('transform')
     for i=1,#bbList do
         bl=bbList[i]
         s=1/bl.distance
         gc.setColor(1,1,1,.16*s)
         gc.draw(bb,(bl.x+12*sin(pi*bl.t))*s,(1200-300*bl.t)*s,0,s*bl.sz,s*bl.sz,32,32)
     end
-    gc.pop()
+    --gc.setColor(1,1,1)
+    --gc.draw(bb,480,0)
 end
 return bg
