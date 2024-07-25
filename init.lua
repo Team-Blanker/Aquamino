@@ -26,6 +26,7 @@ end
 do
     if fs.getInfo('player/game stat') then
         local k=file.read('player/game stat')
+        k.version=nil
         mytable.combine(win.stat,k)
         win.stat.launch=win.stat.launch+1
         file.save('player/game stat',win.stat)

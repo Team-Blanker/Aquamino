@@ -113,7 +113,7 @@ function love.resize(w,h)
 end
 
 win={
-    stat={launch=0,version="preview 0008",totalTime=0},
+    stat={launch=0,version="V0.1 Icosahedron",totalTime=0},
     showInfo=false,
     fullscr=false,
     distractTime=0,
