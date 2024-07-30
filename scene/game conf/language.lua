@@ -11,6 +11,11 @@ function lang.save()
     file.save('conf/lang',lang.uage)
 end
 function lang.init()
+    sfx.add({
+        click='sfx/general/buttonChoose.wav',
+        quit='sfx/general/confSwitch.wav',
+    })
+
     lang.read()
 
     BUTTON.create('quit',{
@@ -26,6 +31,7 @@ function lang.init()
             gc.draw(win.UI.back,0,0,0,1,1,60,35)
         end,
         event=function()
+            sfx.play('quit')
             scene.switch({
                 dest='conf',destScene=require('scene/game conf/conf_main'),swapT=.15,outT=.1,
                 anim=function() anim.confBack(.1,.05,.1,0,0,0) end
@@ -47,6 +53,7 @@ function lang.init()
             gc.rectangle('line',-w/2-ct*80,-h/2-ct*80,w+ct*160,h+ct*160)
         end,
         event=function()
+            sfx.play('click')
             lang.uage[1],user.langName="zh-s","zh-s"
             user.lang=require('language/'..user.langName)
         end
@@ -66,6 +73,7 @@ function lang.init()
             gc.rectangle('line',-w/2-ct*80,-h/2-ct*80,w+ct*160,h+ct*160)
         end,
         event=function()
+            sfx.play('click')
             lang.uage[1],user.langName="zh-t","zh-t"
             user.lang=require('language/'..user.langName)
         end
@@ -85,6 +93,7 @@ function lang.init()
             gc.rectangle('line',-w/2-ct*80,-h/2-ct*80,w+ct*160,h+ct*160)
         end,
         event=function()
+            sfx.play('click')
             lang.uage[1],user.langName="English","English"
             user.lang=require('language/'..user.langName)
         end

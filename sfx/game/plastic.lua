@@ -3,9 +3,10 @@ function plastic.addSFX()
     sfx.add({
         lose='sfx/game/plastic/lose.wav',
         win='sfx/game/plastic/win.wav',
+        newRecord='sfx/game/plastic/newRecord.wav',
+
         move='sfx/game/plastic/move.wav',
         moveFail='sfx/game/plastic/move fail.wav',
-
         HD='sfx/game/plastic/hard drop.wav',
         lock='sfx/game/plastic/lock.wav',
         hold='sfx/game/plastic/hold.wav',

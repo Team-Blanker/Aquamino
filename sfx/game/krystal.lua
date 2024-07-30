@@ -3,6 +3,8 @@ function krystal.addSFX()
     sfx.add({
         lose='sfx/game/krystal/lose.wav',
         win='sfx/game/krystal/win.wav',
+        newRecord='sfx/game/krystal/newRecord.wav',
+
         move='sfx/game/krystal/move.wav',
         moveFail='sfx/game/krystal/move fail.wav',
         landedMove='sfx/game/krystal/landed move.wav',
@@ -65,5 +67,8 @@ function krystal.lose()
 end
 function krystal.win()
     sfx.play('win')
+end
+function krystal.newRecord()
+    sfx.play('newRecord')
 end
 return krystal

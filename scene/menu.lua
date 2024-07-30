@@ -60,6 +60,11 @@ end
 
 local playButtonPolygon={-225,0,-175,50,175,50,225,0,175,-50,-175,-50}
 function menu.init()
+    sfx.add({
+        click='sfx/general/buttonClick.wav',
+        quit='sfx/general/buttonQuit.wav',
+    })
+
     for k,v in pairs(menu.modeList) do
         v.hoverT=0
     end
@@ -127,6 +132,7 @@ function menu.init()
                 dest='conf',destScene=require('scene/game conf/conf_main'),swapT=.3,outT=.2,
                 anim=function() anim.enterUL(.2,.1,.2,0,0,0) end
             })
+            sfx.play('click')
             function menu.send(destScene)
                 destScene.exitScene='scene/menu'
             end
@@ -144,6 +150,7 @@ function menu.init()
             gc.draw(win.UI.back,0,0,0,1,1,-5,95)
         end,
         event=function()
+            sfx.play('quit')
             scene.switch({
                 dest='intro',swapT=.6,outT=.2,
                 anim=function() anim.cover(.2,.4,.2,0,0,0) end
@@ -162,6 +169,7 @@ function menu.init()
             gc.draw(aboutIcon,0,0,0,1,1,120,0)
         end,
         event=function()
+            sfx.play('click')
             scene.switch({
                 dest='about',swapT=.3,outT=.2,
                 anim=function() anim.enterUR(.2,.1,.2,0,0,0) end
@@ -246,6 +254,7 @@ function menu.mouseP(x,y,button,istouch)
             for k,v in pairs(menu.modeList) do
                 if abs(x-v.x)+abs(y-v.y)<150 then
                     menu.selectedMode=k
+                    sfx.play('click',1,1.5)
                     print(menu.selectedMode)
                 end
             end

@@ -27,7 +27,7 @@ function simple.init(player)
     player.PCInfo={} player.clearTxtTimer=0 player.clearTxtTMax=0
     player.dangerAnimTimer=0
 
-    simple.NRSFXDelay=1--破纪录音效多长时间后播放
+    simple.NRSFXDelay=.8--破纪录音效多长时间后播放
 end
 local W,H,timeTxt
 function simple.fieldDraw(player,mino)

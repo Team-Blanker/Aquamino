@@ -1,8 +1,16 @@
 local BUTTON=scene.button
 local config={}
 function config.init()
-        scene.BG=require'BG/settings' if not scene.BG.time then scene.BG.init() end
-        local cf=user.lang.conf
+    sfx.add({
+        confEnter='sfx/general/confSwitch.wav',
+        click='sfx/general/buttonClick.wav',
+        quit='sfx/general/buttonQuit.wav',
+    })
+
+    scene.BG=require'BG/settings'
+    if not scene.BG.time then scene.BG.init() end
+
+    local cf=user.lang.conf
     local cfm=cf.main
     local arcs,arcf=math.pi/2,5*math.pi/2
 
@@ -33,6 +41,7 @@ function config.init()
             gc.draw(win.UI.back,0,0,0,1.25,1.25,60,35)
         end,
         event=function()
+            sfx.play('quit')
             if scene.cur.exitScene and scene.cur.exitScene~='scene/menu' then
             scene.switch({
                 dest=scene.cur.exitScene,destScene=require(scene.cur.exitScene),swapT=.6,outT=.2,
@@ -58,6 +67,7 @@ function config.init()
             gc.draw(ct.test.txt,0,0,0,.75,.75,ct.test.w/2,ct.test.h/2)
         end,
         event=function()
+            sfx.play('click')
             scene.switch({
                 dest='game',destScene=require'mino/game',
                 swapT=.6,outT=.2,
@@ -78,6 +88,7 @@ function config.init()
             gc.printf(cfm.keys,font.Bender,0,0,1280,'center',0,.75,.75,640,72)
         end,
         event=function()
+            sfx.play('confEnter')
             scene.switch({
                 dest='menu',destScene=require('scene/game conf/keys'),swapT=.15,outT=.1,
                 anim=function() anim.confSelect(.1,.05,.1,0,0,0) end
@@ -96,6 +107,7 @@ function config.init()
             gc.printf(cfm.ctrl,font.Bender,0,0,1280,'center',0,.75,.75,640,72)
         end,
         event=function()
+            sfx.play('confEnter')
             scene.switch({
                 dest='menu',destScene=require('scene/game conf/handling'),swapT=.15,outT=.1,
                 anim=function() anim.confSelect(.1,.05,.1,0,0,0) end
@@ -114,6 +126,7 @@ function config.init()
             gc.draw(win.UI.lang,0,0,0,1.5,1.5,50,50)
         end,
         event=function()
+            sfx.play('confEnter')
             scene.switch({
                 dest='language',destScene=require('scene/game conf/language'),
                 swapT=.15,outT=.1,
@@ -134,6 +147,7 @@ function config.init()
             gc.printf(cfm.audio,font.Bender,0,0,1280,'center',0,.75,.75,640,72)
         end,
         event=function()
+            sfx.play('confEnter')
             scene.switch({
                 dest='menu',destScene=require('scene/game conf/audio'),swapT=.15,outT=.1,
                 anim=function() anim.confSelect(.1,.05,.1,0,0,0) end
@@ -152,6 +166,7 @@ function config.init()
             gc.printf(cfm.video,font.Bender,0,0,1280,'center',0,.75,.75,640,72)
         end,
         event=function()
+            sfx.play('confEnter')
             scene.switch({
                 dest='menu',destScene=require('scene/game conf/video'),swapT=.15,outT=.1,
                 anim=function() anim.confSelect(.1,.05,.1,0,0,0) end
@@ -170,6 +185,7 @@ function config.init()
             gc.printf(cfm.custom,font.Bender,0,0,1280,'center',0,.75,.75,640,72)
         end,
         event=function()
+            sfx.play('confEnter')
             scene.switch({
                 dest='menu',destScene=require('scene/game conf/custom'),swapT=.15,outT=.1,
                 anim=function() anim.confSelect(.1,.05,.1,0,0,0) end

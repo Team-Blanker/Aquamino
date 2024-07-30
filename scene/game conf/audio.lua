@@ -17,6 +17,12 @@ local function getdB(v)
     return v==0 and -1e999 or math.log(v,10)*10
 end
 function audio.init()
+    sfx.add({
+        cOn='sfx/general/checkerOn.wav',
+        cOff='sfx/general/checkerOff.wav',
+        quit='sfx/general/confSwitch.wav',
+    })
+
     cf=user.lang.conf
     audio.read()
     mus.volume,sfx.volume=audio.info.mus,audio.info.sfx
@@ -38,6 +44,7 @@ function audio.init()
             gc.draw(win.UI.back,0,0,0,1,1,60,35)
         end,
         event=function()
+            sfx.play('quit')
             scene.switch({
                 dest='conf',destScene=require('scene/game conf/conf_main'),swapT=.15,outT=.1,
                 anim=function() anim.confBack(.1,.05,.1,0,0,0) end
@@ -72,6 +79,7 @@ function audio.init()
         event=function()
             audio.info.distractCut=not audio.info.distractCut
             mus.distractCut=audio.info.distractCut
+            sfx.play(audio.info.distractCut and 'cOn' or 'cOff')
         end
     },.2)
 

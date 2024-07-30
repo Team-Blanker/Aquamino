@@ -6,10 +6,10 @@ local cfv
 local keyName={'ML','MR','CW','CCW','flip','SD','HD','hold','R','pause'}
 
 local attachList={[0]=0,30,40,50,60,90,120}
-local attachIndex=0
+local attachIndex=4
 
 local defaultPreset={
-    --我自己在铁壳的大致配置（类似铁壳默认配置1）
+    --开发者在铁壳的大致配置（类似铁壳默认配置1）
     {
         ML=   {x= 420,y= 180,r=120,tolerance=60},
         MR=   {x= 780,y= 180,r=120,tolerance=60},
@@ -106,6 +106,14 @@ function VKey.save()
     file.save('conf/virtualKey',lst)
 end
 function VKey.init()
+    sfx.add({
+        cOn='sfx/general/checkerOn.wav',
+        cOff='sfx/general/checkerOff.wav',
+        click='sfx/general/buttonClick.wav',
+        quit='sfx/general/confSwitch.wav',
+        preset='sfx/general/buttonChoose.wav',
+    })
+
     presetIndex=0
     VKey.read()
 
@@ -127,6 +135,7 @@ function VKey.init()
             gc.draw(win.UI.back,0,0,0,.8,.8,60,35)
         end,
         event=function()
+            sfx.play('quit')
             scene.switch({
                 dest='conf',destScene=require('scene/game conf/keys'),swapT=.15,outT=.1,
                 anim=function() anim.confBack(.1,.05,.1,0,0,0) end
@@ -158,6 +167,7 @@ function VKey.init()
         end,
         event=function()
             VKey.enabled=not VKey.enabled
+            sfx.play(VKey.enabled and 'cOn' or 'cOff')
         end
     },.2)
     BUTTON.create('animEnable',{
@@ -185,11 +195,12 @@ function VKey.init()
         end,
         event=function()
             VKey.anim=not VKey.anim
+            sfx.play(VKey.anim and 'cOn' or 'cOff')
         end
     },.2)
     BUTTON.create('preset',{
         x=0,y=200,type='rect',w=320,h=80,
-        draw=function(bt,t)
+        draw=function(bt,t,ct)
             if VKey.enabled then
             local w,h=bt.w,bt.h
             gc.setColor(.5,.5,.5,.3+t)
@@ -199,10 +210,13 @@ function VKey.init()
             gc.rectangle('line',-w/2,-h/2,w,h)
             gc.setColor(1,1,1)
             gc.printf(cfv.preset,font.Bender,0,0,1280,'center',0,.4,.4,640,72)
+            gc.setColor(1,1,1,1-4*ct)
+            gc.rectangle('line',-w/2-ct*80,-h/2-ct*80,w+ct*160,h+ct*160)
             end
         end,
         event=function()
             if VKey.enabled then
+            sfx.play('preset')
             presetIndex=presetIndex%#defaultPreset+1
             VKey.set=T.copy(defaultPreset[presetIndex])
             end

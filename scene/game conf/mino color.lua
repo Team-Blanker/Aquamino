@@ -20,6 +20,12 @@ function bc.save()
     file.save('conf/mino color',bc.color)
 end
 function bc.init()
+    sfx.add({
+        swap='sfx/general/optionSwitch.wav',
+        click='sfx/general/buttonChoose.wav',
+        quit='sfx/general/confSwitch.wav',
+    })
+
     cfcc=user.lang.conf.custom.colorSet
     bc.read()
     do
@@ -41,6 +47,7 @@ function bc.init()
             gc.draw(win.UI.back,0,0,0,1,1,60,35)
         end,
         event=function()
+            sfx.play('quit')
             scene.switch({
                 dest='custom',destScene=require('scene/game conf/custom'),swapT=.15,outT=.1,
                 anim=function() anim.confBack(.1,.05,.1,0,0,0) end
@@ -65,6 +72,8 @@ function bc.init()
         end,
         event=function()
             if not canAdjustColor[skinName] then return end
+            sfx.play('click')
+
             bc.color=mytable.copy(defaultColor)
             SLIDER.setPos('colorR',bc.color[bList[bc.blockIndex]][1])
             SLIDER.setPos('colorG',bc.color[bList[bc.blockIndex]][2])
@@ -89,6 +98,8 @@ function bc.init()
         end,
         event=function()
             if not canAdjustColor[skinName] then return end
+            sfx.play('click')
+
             for i=1,3 do
             bc.color[bList[bc.blockIndex]][i]=defaultColor[bList[bc.blockIndex]][i]
             end
@@ -110,6 +121,7 @@ function bc.init()
             end
         end,
         event=function()
+            if bc.blockIndex~=1 then sfx.play('swap') end
             bc.blockIndex=max(1,bc.blockIndex-1)
             if not canAdjustColor[skinName] then return end
             SLIDER.setPos('colorR',bc.color[bList[bc.blockIndex]][1])
@@ -129,6 +141,7 @@ function bc.init()
             end
         end,
         event=function()
+            if bc.blockIndex~=#bList then sfx.play('swap') end
             bc.blockIndex=min(bc.blockIndex+1,#bList)
             if not canAdjustColor[skinName] then return end
             SLIDER.setPos('colorR',bc.color[bList[bc.blockIndex]][1])

@@ -12,6 +12,11 @@ function hand.save()
     file.save('conf/ctrl',hand.ctrl)
 end
 function hand.init()
+    sfx.add({
+        click='sfx/general/buttonClick.wav',
+        quit='sfx/general/confSwitch.wav',
+    })
+
     cfh=user.lang.conf.handling
     hand.read()
 
@@ -28,6 +33,7 @@ function hand.init()
             gc.draw(win.UI.back,0,0,0,1,1,60,35)
         end,
         event=function()
+            sfx.play('quit')
             scene.switch({
                 dest='conf',destScene=require('scene/game conf/conf_main'),swapT=.15,outT=.1,
                 anim=function() anim.confBack(.1,.05,.1,0,0,0) end
@@ -47,6 +53,7 @@ function hand.init()
             gc.printf(user.lang.conf.test,font.Bender,0,0,1280,'center',0,.5,.5,640,72)
         end,
         event=function()
+            sfx.play('click')
             scene.switch({
                 dest='game',destScene=require'mino/game',
                 swapT=.6,outT=.2,

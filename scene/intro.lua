@@ -58,7 +58,7 @@ function intro.keyP(k)
             if cnum==tchar:len()+1 then
                 cnum=1
                 scene.switch({
-                    dest='territory',destScene=require('territory/territory'),swapT=.6,outT=.2,
+                    dest='territory',destScene=require('minigame/territory/territory'),swapT=.6,outT=.2,
                     anim=function() anim.cover(.2,.4,.2,0,0,0) end
                 })
             end

@@ -36,6 +36,14 @@ function key.save()
 end
 
 function key.init()
+    sfx.add({
+        keyAdd='sfx/general/checkerOn.wav',
+        keyRem='sfx/general/checkerOff.wav',
+        click='sfx/general/buttonClick.wav',
+        quit='sfx/general/confSwitch.wav',
+        choose='sfx/general/buttonChoose.wav',
+    })
+
     cfk=user.lang.conf.keys
 
     key.read()
@@ -54,6 +62,7 @@ function key.init()
             gc.draw(win.UI.back,0,0,0,1,1,60,35)
         end,
         event=function()
+            sfx.play('quit')
             scene.switch({
                 dest='conf',destScene=require('scene/game conf/conf_main'),swapT=.15,outT=.1,
                 anim=function() anim.confBack(.1,.05,.1,0,0,0) end
@@ -73,6 +82,7 @@ function key.init()
             gc.printf(user.lang.conf.test,font.Bender,0,0,1280,'center',0,.5,.5,640,72)
         end,
         event=function()
+            sfx.play('click')
             scene.switch({
                 dest='game',destScene=require'mino/game',
                 swapT=.6,outT=.2,
@@ -93,6 +103,7 @@ function key.init()
             gc.printf(cfk.virtualKey,font.Bender_B,0,0,1280,'center',0,.4,.4,640,72)
         end,
         event=function()
+            sfx.play('quit')
             scene.switch({
                 dest='conf',destScene=require('scene/game conf/virtualKey'),swapT=.15,outT=.1,
                 anim=function() anim.confSelect(.1,.05,.1,0,0,0) end
@@ -105,11 +116,11 @@ function key.keyP(k)
         local K=key.keySet[keyName[key.order]]
         if k=='backspace' then key.keySet[keyName[key.order]]={}
         else local n=T.include(K,k)
-            if n then table.remove(K,n) elseif #K<3 then
-                for o,v in pairs(key.keySet) do local conflict=T.include(v,k)
-                    if conflict then table.remove(v,conflict) end
+            if n then table.remove(K,n) sfx.play('keyRem') elseif #K<3 then
+                for o,v in pairs(key.keySet) do local include=T.include(v,k)
+                    if include then table.remove(v,include) end
                 end
-                if not T.include(key.banned,k) then table.insert(K,k) end
+                if not T.include(key.banned,k) then table.insert(K,k) sfx.play('keyAdd') end
             end
         end
     --[[elseif k=='escape' then key.quit() love.event.quit()]] end
@@ -119,7 +130,7 @@ function key.mouseP(x,y,button,istouch)
         if button==1 and (x>-800 and x<800 and y>-300 and y<300) then
             local o=ceil(y/100)+3+(x>0 and 6 or 0)
             key.order=o<=#keyName and o~=key.order and o or nil
-            print(key.order)
+            sfx.play('choose')
         else key.order=nil end
     end
 end

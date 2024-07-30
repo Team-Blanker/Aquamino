@@ -19,6 +19,12 @@ local iq=gc.newImage('pic/UI/sign/info_question.png') --64*64
 local vit,vir=0,0
 local vsf=function() gc.rectangle('fill',vir/2-635,vir+3,645,(video.vth*.25+10)*4*vit) end
 function video.init()
+    sfx.add({
+        cOn='sfx/general/checkerOn.wav',
+        cOff='sfx/general/checkerOff.wav',
+        quit='sfx/general/confSwitch.wav',
+    })
+
     cf=user.lang.conf
     video.info.fullscr=win.fullscr video.save() video.read()
 
@@ -39,6 +45,7 @@ function video.init()
             gc.draw(win.UI.back,0,0,0,1,1,60,35)
         end,
         event=function()
+            sfx.play('quit')
             scene.switch({
                 dest='conf',destScene=require('scene/game conf/conf_main'),swapT=.15,outT=.1,
                 anim=function() anim.confBack(.1,.05,.1,0,0,0) end
@@ -71,6 +78,7 @@ function video.init()
         end,
         event=function()
             video.info.unableBG=not video.info.unableBG
+            sfx.play(video.info.unableBG and 'cOn' or 'cOff')
         end
     },.2)
     BUTTON.create('vsync',{
@@ -99,6 +107,7 @@ function video.init()
         event=function()
             video.info.vsync=not video.info.vsync
             love.window.setVSync(video.info.vsync and 1 or 0)
+            sfx.play(video.info.vsync and 'cOn' or 'cOff')
         end
     },.2)
     BUTTON.create('vsyncInfo',{
@@ -147,6 +156,7 @@ function video.init()
         event=function()
             video.info.fullscr=not video.info.fullscr
             win.setFullscr(video.info.fullscr)
+            sfx.play(video.info.fullscr and 'cOn' or 'cOff')
         end
     },.2)
     SLIDER.create('frameLim',{

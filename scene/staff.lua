@@ -42,6 +42,10 @@ end
 local posyMax=2160
 
 function stf.init()
+    sfx.add({
+        quit='sfx/general/buttonQuit.wav',
+    })
+
     scene.BG=require('BG/menuBG') scene.BG.setPolyColor(1,1,1)
     if scene.BG.init then scene.BG.init() end
     if not mus.checkTag('menu') then
@@ -132,6 +136,7 @@ function stf.init()
             gc.draw(win.UI.back,0,0,0,1,1,60,35)
         end,
         event=function()
+            sfx.play('quit')
             scene.switch({
                 dest='about',destScene=require('scene/about'),swapT=.6,outT=.2,
                 anim=function() anim.cover(.2,.4,.2,0,0,0) end

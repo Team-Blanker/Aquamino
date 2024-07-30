@@ -19,6 +19,14 @@ function custom.save()
     file.save('conf/custom',custom.info)
 end
 function custom.init()
+    sfx.add({
+        cOn='sfx/general/checkerOn.wav',
+        cOff='sfx/general/checkerOff.wav',
+        click='sfx/general/buttonClick.wav',
+        sceneSwitch='sfx/general/confSwitch.wav',
+        optionSwitch='sfx/general/optionSwitch.wav',
+    })
+
     cfc=user.lang.conf.custom
     custom.read()
 
@@ -43,6 +51,7 @@ function custom.init()
             gc.draw(win.UI.back,0,0,0,1,1,60,35)
         end,
         event=function()
+            sfx.play('sceneSwitch')
             scene.switch({
                 dest='conf',destScene=require('scene/game conf/conf_main'),swapT=.15,outT=.1,
                 anim=function() anim.confBack(.1,.05,.1,0,0,0) end
@@ -62,6 +71,7 @@ function custom.init()
             gc.printf(user.lang.conf.test,font.Bender,0,0,1280,'center',0,.5,.5,640,72)
         end,
         event=function()
+            sfx.play('click')
             scene.switch({
                 dest='game',destScene=require'mino/game',
                 swapT=.6,outT=.2,
@@ -100,6 +110,7 @@ function custom.init()
             end
             custom.info.block=blockSkinList[custom.bOrder]
             bt.success=success
+            if success then sfx.play('optionSwitch') end
         end
     },.2)
 
@@ -133,6 +144,7 @@ function custom.init()
             end
             custom.info.RS=RSList[custom.RSOrder]
             bt.success=success
+            if success then sfx.play('optionSwitch') end
         end
     },.2)
 
@@ -149,6 +161,7 @@ function custom.init()
             gc.printf(cfc.color,font.Bender_B,0,0,1280,'center',0,.4,.4,640,72)
         end,
         event=function()
+            sfx.play('sceneSwitch')
             scene.switch({
                 dest='conf',destScene=require('scene/game conf/mino color'),swapT=.15,outT=.1,
                 anim=function() anim.confSelect(.1,.05,.1,0,0,0) end
@@ -180,6 +193,7 @@ function custom.init()
         end,
         event=function()
             custom.info.smoothAnimAct=not custom.info.smoothAnimAct
+            sfx.play(custom.info.smoothAnimAct and 'cOn' or 'cOff')
         end
     },.2)
     SLIDER.create('smoothAnimTime',{
@@ -238,6 +252,7 @@ function custom.init()
             end
             custom.info.theme=themeList[custom.tOrder]
             bt.success=success
+            if success then sfx.play('optionSwitch') end
         end
     },.2)
     BUTTON.create('sfxChoose',{
@@ -273,6 +288,7 @@ function custom.init()
             end
             custom.info.sfx=sfxList[custom.sOrder]
             bt.success=success
+            if success then sfx.play('optionSwitch') end
         end
     },.2)
     BUTTON.create('scaleAdjust',{
@@ -318,6 +334,7 @@ function custom.init()
             elseif x> w/2-h then success=s<1.25 custom.info.fieldScale=min(custom.info.fieldScale+.05,1.25)
             end
             bt.success=success
+            if success then sfx.play('optionSwitch') end
         end
     },.2)
 end

@@ -13,6 +13,11 @@ local tool={'Beepbox','GoldWave','Malody','VS Code','vecta.io','GFIE (Greenfish 
 
 local about={}
 function about.init()
+    sfx.add({
+        click='sfx/general/buttonClick.wav',
+        quit='sfx/general/buttonQuit.wav',
+    })
+
     scene.BG=require('BG/menuBG') scene.BG.setPolyColor(1,1,1)
     if scene.BG.init then scene.BG.init() end
     if not mus.checkTag('menu') then
@@ -54,6 +59,7 @@ function about.init()
             gc.draw(win.UI.back,0,0,0,1,1,60,35)
         end,
         event=function()
+            sfx.play('quit')
             scene.switch({
                 dest='menu',destScene=require('scene/menu'),swapT=.3,outT=.2,
                 anim=function() anim.enterDL(.2,.1,.2,0,0,0) end
@@ -73,6 +79,7 @@ function about.init()
             gc.printf(user.lang.about.staff,font.Bender,0,0,1280,'center',0,.4,.4,640,72)
         end,
         event=function()
+            sfx.play('click')
             scene.switch({
                 dest='staff',destScene=require('scene/staff'),swapT=.6,outT=.2,
                 anim=function() anim.cover(.2,.4,.2,0,0,0) end
