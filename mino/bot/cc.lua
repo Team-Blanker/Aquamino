@@ -164,7 +164,7 @@ function ccWrap.newThread(channelIndex,P,index)
                 for i=1,#next do
                     cc.addNextPiece(bot,next[i])
                 end
-                print('added '..#next..' pieces')
+                --print('added '..#next..' pieces')
             end
             if arg then
                 if arg.op=='send' then
@@ -180,7 +180,7 @@ function ccWrap.newThread(channelIndex,P,index)
                     print('BOT DESTROYED')
                     break
                 end
-                print(s:getCount(),r:getCount(),arg.op)
+                --print(s:getCount(),r:getCount(),arg.op)
             end
         end
     ]])
