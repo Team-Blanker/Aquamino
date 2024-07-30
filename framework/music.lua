@@ -67,14 +67,14 @@ local mus={
         if mus.loop then mus.loop:pause() end
         if mus.whole then mus.whole:pause() end
     end,
-    setPitch=function(bitch)
-        if mus.intro then mus.intro:setPitch(bitch) end
-        if mus.ITrans then mus.ITrans:setPitch(bitch) end
-        if mus.loop then mus.loop:setPitch(bitch) end
-        if mus.whole then mus.whole:setPitch(bitch) end
+    setPitch=function(p)
+        if mus.intro then mus.intro:setPitch(p) end
+        if mus.ITrans then mus.ITrans:setPitch(p) end
+        if mus.loop then mus.loop:setPitch(p) end
+        if mus.whole then mus.whole:setPitch(p) end
     end,
     update=function(dt)
-        if mus.type=='parts' then 
+        if mus.type=='parts' then
             if not mus.intro or not mus.loop then return -1 end
             if not mus.paused and not mus.stopped then
                 if mus.swapDelay==0 then
@@ -94,12 +94,18 @@ local mus={
             mus.loopTime=mus.loopTime+1
         end
     end,
-    setVolume=function(volume)
+    setMainVolume=function(volume)
         mus.volume=volume
         if mus.intro then mus.intro:setVolume(mus.volume) end
         if mus.ITrans then mus.ITrans:setVolume(mus.volume) end
         if mus.loop then mus.loop:setVolume(mus.volume) end
         if mus.whole then mus.whole:setVolume(mus.volume) end
+    end,
+    setVolume=function(volume)
+        if mus.intro then mus.intro:setVolume(mus.volume*volume) end
+        if mus.ITrans then mus.ITrans:setVolume(mus.volume*volume) end
+        if mus.loop then mus.loop:setVolume(mus.volume*volume) end
+        if mus.whole then mus.whole:setVolume(mus.volume*volume) end
     end,
     distract=function(time)
         local vol=mus.volume*max(min(1-time,1),0)
