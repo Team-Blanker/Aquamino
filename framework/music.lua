@@ -1,5 +1,5 @@
 local mus={
-    volume=0.8,
+    volume=0.8,sceneVolume=1,
     type='parts',
     path='',
     tag={},
@@ -40,6 +40,7 @@ local mus={
         return false
     end,
     start=function()
+        mus.sceneVolume=1
         if mus.type=='parts' then
             if mus.intro then mus.intro:setVolume(mus.volume) end
             if mus.ITrans then mus.ITrans:setVolume(mus.volume) end
@@ -47,7 +48,7 @@ local mus={
             mus.introEnd=false
             if mus.intro then mus.intro:play() print("Music started")
             elseif mus.loop then mus.loop:play() print("Music started") else print("Music not exist") end
-        elseif mus.type=='whole' then 
+        elseif mus.type=='whole' then
             if mus.whole then mus.whole:setVolume(mus.volume) mus.whole:play() print("Music started")
             else print("Music not exist") end
         end
@@ -94,21 +95,24 @@ local mus={
             mus.loopTime=mus.loopTime+1
         end
     end,
-    setMainVolume=function(volume)
-        mus.volume=volume
-        if mus.intro then mus.intro:setVolume(mus.volume) end
-        if mus.ITrans then mus.ITrans:setVolume(mus.volume) end
-        if mus.loop then mus.loop:setVolume(mus.volume) end
-        if mus.whole then mus.whole:setVolume(mus.volume) end
+    setMasterVolume=function(volume)
+        mus.volume=min(max(volume,0),1)
+        local v=mus.volume*mus.sceneVolume
+        if mus.intro then mus.intro:setVolume(v) end
+        if mus.ITrans then mus.ITrans:setVolume(v) end
+        if mus.loop then mus.loop:setVolume(v) end
+        if mus.whole then mus.whole:setVolume(v) end
     end,
     setVolume=function(volume)
-        if mus.intro then mus.intro:setVolume(mus.volume*volume) end
-        if mus.ITrans then mus.ITrans:setVolume(mus.volume*volume) end
-        if mus.loop then mus.loop:setVolume(mus.volume*volume) end
-        if mus.whole then mus.whole:setVolume(mus.volume*volume) end
+        mus.sceneVolume=min(max(volume,0),1)
+        local v=mus.volume*mus.sceneVolume
+        if mus.intro then mus.intro:setVolume(v) end
+        if mus.ITrans then mus.ITrans:setVolume(v) end
+        if mus.loop then mus.loop:setVolume(v) end
+        if mus.whole then mus.whole:setVolume(v) end
     end,
     distract=function(time)
-        local vol=mus.volume*max(min(1-time,1),0)
+        local vol=mus.volume*mus.sceneVolume*max(min(1-time,1),0)
         if mus.intro then mus.intro:setVolume(vol) end
         if mus.ITrans then mus.ITrans:setVolume(vol) end
         if mus.loop then mus.loop:setVolume(vol) end
