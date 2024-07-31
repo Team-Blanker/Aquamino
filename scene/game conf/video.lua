@@ -4,7 +4,8 @@ local cf=user.lang.conf
 local video={}
 local BUTTON,SLIDER=scene.button,scene.slider
 function video.read()
-    video.info={unableBG=false,vsync=false,fullscr=false,frameLim=120}
+    local isMobile=win.OS=='Android' or win.OS=='iOS'
+    video.info={unableBG=false,vsync=false,fullscr=false,frameLim=isMobile and 60 or 120}
     local info=file.read('conf/video')
     T.combine(video.info,info)
     win.setFullscr(video.info.fullscr)
@@ -116,8 +117,7 @@ function video.init()
             gc.setColor(1,1,1)
             gc.draw(iq,0,0,0,.5,.5,32,32)
             gc.setColor(0,0,0,.5)
-            gc.rectangle('fill',bt.r/2-635,bt.r+3,645,(video.vth*.25+10)*4*t)
-
+            vsf()
             vit=t vir=bt.r
             gc.stencil(vsf,'replace',1)
             gc.setStencilTest('equal',1)
