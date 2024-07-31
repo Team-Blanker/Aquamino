@@ -95,8 +95,8 @@ return {
             RS="Rotate system",
             smooth="Smooth move",
             smoothScale=.3,smoothOffX=-15,smoothTime="Time:",
-            theme="Theme",
-            scale="Field scale",scaleTxt="Cell size:",
+            theme="Board theme",
+            scale="Board scale",scaleTxt="Cell size:",
             sfx="SFX pack",sfxWarning={
                 otto="LOUD SOUND WARNING. TAKE AT YOUR OWN RISK."
             },
