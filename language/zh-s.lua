@@ -94,8 +94,8 @@ return {
             RS="旋转系统",
             smooth="平滑运动",
             smoothScale=.35,smoothOffX=0,smoothTime="动画时长:",
-            theme="场地风格",
-            scale="场地缩放",scaleTxt="单格方块大小：",
+            theme="版面风格",
+            scale="版面缩放",scaleTxt="单格方块大小：",
             sfx="音效包",sfxWarning={
                 otto="该音效包包含音量过大内容，谨慎选择。"
             },
