@@ -63,6 +63,7 @@ function menu.init()
     sfx.add({
         click='sfx/general/buttonClick.wav',
         quit='sfx/general/buttonQuit.wav',
+        gameEnter='sfx/general/gameEnter.wav',
     })
 
     for k,v in pairs(menu.modeList) do
@@ -223,10 +224,12 @@ function menu.init()
         end,
         event=function()
             menu.pAnim=true
+            sfx.play('click',1,2^.66)
+            sfx.play('gameEnter')
             scene.switch({
                 dest='game',destScene=require'mino/game',
-                swapT=1,outT=.2,
-                anim=function() anim.cover(.2,.4,.2,0,0,0) end
+                swapT=1.6,outT=.2,
+                anim=function() anim.enterGame(.4,1.2,.2) end
             })
             scene.sendArg={mode=menu.selectedMode,arg=menu.option[menu.selectedMode]}
             menu.send=menu.gameSend
@@ -254,7 +257,7 @@ function menu.mouseP(x,y,button,istouch)
             for k,v in pairs(menu.modeList) do
                 if abs(x-v.x)+abs(y-v.y)<150 then
                     menu.selectedMode=k
-                    sfx.play('click',1,1.5)
+                    sfx.play('click',1,2^.33)
                     print(menu.selectedMode)
                 end
             end
@@ -285,6 +288,9 @@ function menu.mouseR(x,y,button,istouch)
 end
 local hv=''
 local msx,msy=0,0
+function menu.swapUpdate(dest,swapT)
+    if dest=='game' then mus.setVolume((swapT-1.2)/.4) end
+end
 function menu.update(dt)
     msx,msy=adaptWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5)
     if SLIDER.acting then SLIDER.always(SLIDER.list[SLIDER.acting],msx,msy) end
@@ -346,9 +352,11 @@ function menu.draw()
     gc.setColor(.05,.05,.05,a*.75)
     gc.rectangle('fill',-960,-540,1920,1080)
     gc.setColor(c[1],c[2],c[3],a)
+
     gc.setLineWidth(40)
     local p=menu.lvl==2 and (a-2)*-a or a
     gc.circle('line',0,0,540+360*p,4)
+
     gc.setColor(1,1,1,a*2-1)
     local t,det,bst=mt[menu.selectedMode],menu.describeTxt[menu.selectedMode],menu.pb[menu.selectedMode]
     gc.draw(t.txt,0,-390,0,.75,.75,t.w/2,t.h)

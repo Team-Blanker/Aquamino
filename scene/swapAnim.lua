@@ -1,9 +1,13 @@
 local anim={}--animation的缩写
 
+local goTxt
 function anim.init()--第一帧不能用来画图，会出问题
+    goTxt={txt=gc.newText(font.Bender_B)}
+    goTxt.txt:add("LET'S GO")
+    goTxt.w,goTxt.h=goTxt.txt:getDimensions()
 end
 function anim.cover(inT,keepT,outT,r,g,b)
-    if scene.swapT>keepT then 
+    if scene.swapT>keepT then
         gc.setColor(r,g,b,1-((scene.swapT-keepT)/inT))
     elseif scene.swapT>0 then
         gc.setColor(r,g,b)
@@ -16,14 +20,14 @@ end
 function anim.enterMenu(inT,keepT,outT)
     gc.setColor(.05,.05,.05)
     if scene.swapT>0 then
-        local rect_w=1-((scene.swapT-keepT)/inT)^3
         if scene.swapT>keepT then
-            gc.rectangle('fill',-960,-540,960*rect_w,1080)
-            gc.rectangle('fill',960-960*rect_w,-540,960*rect_w,1080)
+            local sz=1-((scene.swapT-keepT)/inT)^3
+            gc.rectangle('fill',-960,-540,960*sz,1080)
+            gc.rectangle('fill',960-960*sz,-540,960*sz,1080)
             gc.setColor(1,1,1)
             gc.setLineWidth(15)
-            gc.arc('line','open',-960+960*rect_w,0,150,math.pi/2,3*math.pi/2,2)
-            gc.arc('line','open', 960-960*rect_w,0,150,-math.pi/2, math.pi/2,2)
+            gc.arc('line','open',-960+960*sz,0,150,math.pi/2,3*math.pi/2,2)
+            gc.arc('line','open', 960-960*sz,0,150,-math.pi/2, math.pi/2,2)
         else
             local angle=mymath.clamp((scene.swapT/keepT-1/2)*2,0,1)^2*math.pi/2
             gc.rectangle('fill',-960,-540,1920,1080)
@@ -38,6 +42,35 @@ function anim.enterMenu(inT,keepT,outT)
         gc.setColor(1,1,1)
         gc.setLineWidth(1920-sz<=150 and 15 or 5+10*(1920-sz-150)/(1920-150))
         gc.arc('line','open',0,0,max(150,1920-sz),-math.pi/2,3*math.pi/2,4)
+    end
+end
+
+local rn=0
+local x,y=0,0
+function anim.enterGame(inT,keepT,outT)
+    gc.setColor(.05,.05,.05)
+    if scene.swapT>0 then
+        if scene.swapT>keepT then
+            local t=(scene.swapT-keepT)/inT
+            local sz=(1-t)^3
+            gc.rectangle('fill',-960,-540,960*sz,1080)
+            gc.rectangle('fill',960-960*sz,-540,960*sz,1080)
+            gc.setColor(1,1,1,(1-t)*1.5-.5)
+            gc.draw(goTxt.txt,0,0,0,4-3*sz,4-3*sz,goTxt.w/2,goTxt.h/2)
+        else
+            local t=max(scene.swapT/keepT*3-2,0)
+            if floor(t*20)~=rn then x,y=64*t*(rand()-.5),64*t*(rand()-.5) rn=floor(t*20) end
+            gc.rectangle('fill',-960,-540,1920,1080)
+            gc.setColor(1,1,1)
+            gc.draw(goTxt.txt,x,y,0,1,1,goTxt.w/2,goTxt.h/2)
+        end
+    else
+        local t=scene.outT/outT
+        local r=1920*t
+        gc.circle('fill',-960,960,r,4) gc.circle('fill',960,-960,r,4)
+        gc.circle('fill',960,960,r,4) gc.circle('fill',-960,-960,r,4)
+        gc.setColor(1,1,1,2*t-1)
+        gc.draw(goTxt.txt,0,0,0,4-3*t,4-3*t,goTxt.w/2,goTxt.h/2)
     end
 end
 
