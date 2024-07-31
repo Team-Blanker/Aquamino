@@ -17,6 +17,7 @@
     t.version='11.4'
 
     t.identity="Aquamino"
+    t.externalstorage=true
 
     t.gammacorrect=false
 end
