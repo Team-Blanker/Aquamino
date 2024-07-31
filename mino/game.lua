@@ -585,6 +585,10 @@ end
 --初始化
 local curPlayTxt
 function mino.init()
+    sfx.add({
+        pauseButtonClick='sfx/general/buttonClick.wav',
+        pauseButtonQuit='sfx/general/buttonQuit.wav',
+    })
     mino.profile=require'profile'
 
     mino.endPaused=false
@@ -704,6 +708,7 @@ function mino.init()
         end,
         event=function()
             if mino.paused then
+            sfx.play('pauseButtonClick')
             scene.cur.paused=false
             if mino.rule.pause then mino.rule.pause(mino.stacker,mino.paused) end
             end
@@ -724,6 +729,7 @@ function mino.init()
         end,
         event=function()
             if mino.paused then
+            sfx.play('pauseButtonClick')
             scene.dest='solo' scene.destScene=require'mino/game'
             scene.swapT=.7 scene.outT=.3
             scene.anim=function() anim.cover(.2,.4,.2,0,0,0) end
@@ -747,6 +753,7 @@ function mino.init()
         end,
         event=function()
             if mino.paused then
+            sfx.play('pauseButtonQuit')
             scene.dest=mino.exitScene or 'menu'
             scene.swapT=.6 scene.outT=.2
             scene.anim=function() anim.cover(.2,.4,.2,0,0,0) end

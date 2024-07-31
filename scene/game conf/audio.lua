@@ -99,7 +99,7 @@ function audio.init()
         end,
         always=function(pos)
             audio.info.mus=pos
-            mus.setVolume(pos)
+            mus.setMasterVolume(pos)
         end
     })
     SLIDER.create('sfx_volume',{

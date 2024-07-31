@@ -203,7 +203,8 @@ voice={
     timer=0
 }
 
---[[]]require'init'--[[]]
+require'init'--初始化各种游戏数据
+
 scene.cur.init()
 if scene.BG.init then scene.BG.init() end
 
@@ -259,7 +260,9 @@ function mainUpdate(dt)
     end
 
     if scene.dest or scene.destScene then canop=false
-        if scene.swapT>0 then scene.swapT=scene.swapT-dt
+        if scene.swapT>0 then
+            scene.swapT=scene.swapT-dt
+            if scene.cur.swapUpdate then scene.cur.swapUpdate(scene.dest,scene.swapT) end
         else scene.outT=scene.outT+scene.swapT scene.swapT=0
             local sendArg,recvArg=scene.sendArg,scene.recvArg
             local tosend=scene.cur.send
@@ -310,7 +313,7 @@ function love.update(dt)
     end
     if scene.enterNewScene then scene.enterNewScene=false else mainUpdate(dtRemain) end
     mus.update(dt)
-    mus.distract(mus.distractCut and win.distractTime>0 and 1 or 0)
+    mus.distract(mus.distractCut and win.distractTime/.75 or 0)
 end
 function love.draw()
     local dpiS=love.window.getDPIScale()

@@ -7,7 +7,7 @@ local kw,kh=kairan:getPixelDimensions()
 local devList={
     program={'Aqua6623 (Aquamarine6623, Kairan, 海兰)'},
     UI={'Aqua6623','Not-A-Normal-Robot'},
-    sfx={'Aqua6623','Farter'},
+    sfx={'Aqua6623','MrZ_26','Farter'},
     music={
         hurtRecord={
             {'たかゆき','R-side','T-Malu','守己','カモキング','龍飛'},
@@ -75,7 +75,13 @@ function stf.init()
     stf.txt1[#stf.txt1+1]=c1
     stf.txt1[#stf.txt1+1]='\n\n'..uls.sfx
     stf.txt1[#stf.txt1+1]=c2
-    stf.txt1[#stf.txt1+1]='\n\n'..devList.sfx[1]..'    '..devList.sfx[2]
+    t1='\n\n'
+    for i=1,#devList.sfx do
+        t1=t1..devList.sfx[i]
+        if i~=#devList.sfx then t1=t1..'    ' end
+    end
+    stf.txt1[#stf.txt1+1]=t1
+
     stf.txt1[#stf.txt1+1]=c1
     stf.txt1[#stf.txt1+1]='\n\n'..uls.music
     stf.txt1[#stf.txt1+1]={1,.75,.75}
