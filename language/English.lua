@@ -32,7 +32,7 @@ return {
         multitasking={{1,1,1},"*Galaxy Brain Meme*\n",{1,1,0},"Handling Restriction: ASD=150ms ASP=30ms SD ASP=30ms\nGravity increases with level"},
         sandbox={{1,1,0},"This mode does not record any score"},
         ['dig 40']="Think. Dig. Effeciency.",
-        laser={{1,1,1},"U  N  DER  G  R  OUN\nU  N  DER  G  R  OUND\n",{1,1,0},"This is a rhythmical mode. Turning on music is strongly recommended."},
+        laser={{1,1,1},"U  N  D-E-R  G  R  O-U-N\nU  N  D-E-R  G  R  O-U-N-D\n",{1,1,0},"This is a rhythmical mode. Turning on music is strongly recommended."},
         backfire="Receive the attack sent by yourself!",
         battle={{1,1,1},"Let's battle!\n",{1,1,0},"This mode does not record any score"}
     },
