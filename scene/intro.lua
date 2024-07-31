@@ -99,6 +99,6 @@ function intro.draw()
     gc.printf(intro.tip[intro.tipOrder],font.Bender,0,450,114514,'center',0,user.lang.tipScale,user.lang.tipScale,57257,84)
 
     gc.setColor(1,1,1,.25)
-    gc.printf("Version : "..win.stat.version,font.Bender,950,540,1600,'right',0,.3,.3,1600,160)
+    gc.printf(win.stat.version,font.Bender,950,540,10000,'right',0,.3,.3,10000,160)
 end
 return intro
