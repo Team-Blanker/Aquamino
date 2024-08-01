@@ -17,11 +17,13 @@ do
 end
 
 local introCount=0
+local birthday
+
 function intro.init()
     introCount=introCount+1
     local it=user.lang.intro
 
-    local birthday=win.date.month==8 and win.date.day==14--Aquamino的生日！也是海兰的生日！
+    birthday=win.date.month==8 and win.date.day==14--Aquamino的生日！也是海兰的生日！
     if birthday then
     scene.BG=require('BG/celebration') scene.BG.init()
     else
@@ -30,7 +32,7 @@ function intro.init()
 
     if not mus.checkTag('menu') then
         if birthday then
-            mus.add('music/Hurt Record/Winter Story','whole','ogg',7.579,96)
+        mus.add('music/Hurt Record/Winter Story','whole','ogg',8.579,96)
         mus.start()
         else
         mus.add('music/Hurt Record/Nine Five','parts','ogg')
@@ -93,12 +95,14 @@ function intro.draw()
     gc.setColor(1,1,1)
     gc.draw(logo,0,-200+12*sin(scene.time/5%2*math.pi),0,1600/w,1600/w,w/2,h/2)
 
-    gc.setColor(1,1,1)
+    local r,g,b=1,1,1
+    if birthday then r,g,b=COLOR.hsv(scene.time,.2,1) end
+    gc.setColor(r,g,b)
     gc.printf(user.lang.intro.start,font.Bender,0,300,4000,'center',0,.625,.625,2000,84)
 
     gc.printf(intro.tip[intro.tipOrder],font.Bender,0,450,114514,'center',0,user.lang.tipScale,user.lang.tipScale,57257,84)
 
-    gc.setColor(1,1,1,.25)
+    gc.setColor(r,g,b,.3)
     gc.printf(win.stat.version,font.Bender,950,540,10000,'right',0,.3,.3,10000,160)
 end
 return intro
