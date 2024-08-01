@@ -12,6 +12,7 @@ function rule.init(P,mino)
     --mino.player[1].w=4
     --mino.player[1].h=4
     mino.rule.allowSpin={Z=true,S=true,J=true,L=true,T=true,O=true,I=true,}
+    mino.rule.enableMiniSpin=false
     sfx.add({
         smash='sfx/rule/ice storm/smash.wav',
         lvup='sfx/rule/ice storm/level up.wav'

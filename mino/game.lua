@@ -27,7 +27,8 @@ local mino={
     sfxPlay=nil,
     rule={
         timer=0,
-        allowPush={},allowSpin={T=true},spinType='default',loosen={fallTPL=0}--TPL=Time Per Line
+        allowPush={},allowSpin={T=true},spinType='default',enableMiniSpin=true,
+        loosen={fallTPL=0}--TPL=Time Per Line
     },
     started=false,paused=false,pauseTimer=0,
     stacker={
@@ -325,6 +326,7 @@ mino.operate={
         if C.kickOrder then OP.cur.ghostY=fLib.getGhostY(OP)
             C.moveSuccess=true
             if mino.rule.allowSpin[C.name] then C.spin,C.mini=SC[mino.rule.spinType](OP)
+                if not mino.rule.enableMiniSpin then C.mini=false end
             else C.spin,C.mini=false,false end
         end
         OP.canInitRotate=true
@@ -337,6 +339,7 @@ mino.operate={
         if C.kickOrder then OP.cur.ghostY=fLib.getGhostY(OP)
             C.moveSuccess=true
             if mino.rule.allowSpin[C.name] then C.spin,C.mini=SC[mino.rule.spinType](OP)
+                if not mino.rule.enableMiniSpin then C.mini=false end
             else C.spin,C.mini=false,false end
         end
         OP.canInitRotate=true
@@ -349,6 +352,7 @@ mino.operate={
         if C.kickOrder then OP.cur.ghostY=fLib.getGhostY(OP)
             C.moveSuccess=true
             if mino.rule.allowSpin[C.name] then C.spin,C.mini=SC[mino.rule.spinType](OP)
+                if not mino.rule.enableMiniSpin then C.mini=false end
             else C.spin,C.mini=false,false end
         end
         OP.canInitRotate=true
@@ -397,6 +401,7 @@ mino.operate={
             else if C.kickOrder~=1 then OP.LDR=OP.LDR-1 end
             end
             if mino.rule.allowSpin[C.name] then C.spin,C.mini=SC[mino.rule.spinType](OP)
+                if not mino.rule.enableMiniSpin then C.mini=false end
             else C.spin,C.mini=false,false end
         end
 
@@ -415,6 +420,7 @@ mino.operate={
             else if C.kickOrder~=1 then OP.LDR=OP.LDR-1 end
             end
             if mino.rule.allowSpin[C.name] then C.spin,C.mini=SC[mino.rule.spinType](OP)
+                if not mino.rule.enableMiniSpin then C.mini=false end
             else C.spin,C.mini=false,false end
         end
 
@@ -432,6 +438,7 @@ mino.operate={
             else if C.kickOrder~=1 then OP.LDR=OP.LDR-1 end
             end
             if mino.rule.allowSpin[C.name] then C.spin,C.mini=SC[mino.rule.spinType](OP)
+                if not mino.rule.enableMiniSpin then C.mini=false end
             else C.spin,C.mini=false,false end
         end
 
@@ -656,7 +663,8 @@ function mino.init()
 
     mino.rule={
         timer=0,
-        allowPush={},allowSpin={T=true},spinType='default',loosen={fallTPL=0}--TPL=Time Per Line
+        allowPush={},allowSpin={T=true},spinType='default',enableMiniSpin=true,
+        loosen={fallTPL=0}--TPL=Time Per Line
     }
     mino.mode=mino.modeInfo.mode
     if mino.mode and fs.getInfo('mino/mode/'..mino.mode..'.lua') then T.combine(mino.rule,require('mino/mode/'..mino.mode)) end
@@ -821,6 +829,7 @@ function mino.inputPress(k)
                 elseif k=='SD'   then mino.operate.SD(OP,true)
                 elseif k=='hold' and OP.canHold then mino.operate.hold(OP,true)
                 end
+                print(mino.rule.enableMiniSpin)
 
                 --推土机！
                 if mino.rule.allowPush[C.name] and C.kickOrder then
