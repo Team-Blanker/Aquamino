@@ -829,7 +829,6 @@ function mino.inputPress(k)
                 elseif k=='SD'   then mino.operate.SD(OP,true)
                 elseif k=='hold' and OP.canHold then mino.operate.hold(OP,true)
                 end
-                print(mino.rule.enableMiniSpin)
 
                 --推土机！
                 if mino.rule.allowPush[C.name] and C.kickOrder then
