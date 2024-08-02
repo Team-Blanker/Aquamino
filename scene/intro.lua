@@ -6,7 +6,6 @@ local banned={'f1','f2','f3','f4','f5','f6','f7','f8','f9','f10','f11','f12', 'f
 'printscreen'
 }
 local intro={}
-local unlocked={true,true,false,false}
 local fl=gc.newCanvas(5,5)
 do
     gc.setColor(1,1,1)
