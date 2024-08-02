@@ -18,12 +18,14 @@ end
 
 local introCount=0
 local birthday
-
+local mzk,gg
 function intro.init()
     introCount=introCount+1
-    local it=user.lang.intro
 
     birthday=win.date.month==8 and win.date.day==14--Aquamino的生日！也是海兰的生日！
+    mzk=win.date.month==3 and win.date.day==22--水月生日
+    gg=win.date.month==1 and win.date.day==10--澄闪生日
+
     if birthday then
     scene.BG=require('BG/celebration') scene.BG.init()
     else
@@ -80,20 +82,18 @@ function intro.update(dt)
 end
 
 local logo=gc.newImage('assets/pic/title.png')
-local hat=gc.newImage('assets/pic/mizuki hat.png')
+local logo_mzk=gc.newImage('assets/pic/title_Mizuki.png')
+local logo_gg=gc.newImage('assets/pic/title_Goldenglow.png')
 
-local v
+local lw,lh=logo:getPixelDimensions()
+
 function intro.draw()
-    if win.date.month==3 and win.date.day==22 then--水月的生日
-        gc.setColor(0,.03,.12)
-        gc.rectangle('fill',-1000,-600,2000,1200)
-        gc.setColor(1,1,1,.4)
-        gc.draw(hat,0,0,0,1.25,1.25,500,500)
-    end
+    if mzk then gc.clear(0,.03,.15)
+    elseif gg then gc.clear(.15,.12,.135)
+    else gc.clear(.08,.08,.08) end
 
-    local w,h=logo:getPixelDimensions()
     gc.setColor(1,1,1)
-    gc.draw(logo,0,-200+12*sin(scene.time/5%2*math.pi),0,1600/w,1600/w,w/2,h/2)
+    gc.draw(mzk and logo_mzk or gg and logo_gg or logo,0,-200+12*sin(scene.time/5%2*math.pi),0,1600/lw,1600/lw,lw/2,lh/2)
 
     local r,g,b=1,1,1
     if birthday then r,g,b=COLOR.hsv(scene.time,.2,1) end
@@ -103,6 +103,6 @@ function intro.draw()
     gc.printf(intro.tip[intro.tipOrder],font.Bender,0,450,114514,'center',0,user.lang.tipScale,user.lang.tipScale,57257,84)
 
     gc.setColor(r,g,b,.3)
-    gc.printf(win.stat.version,font.Bender,950,540,10000,'right',0,.3,.3,10000,160)
+    gc.printf(win.versionTxt,font.Bender,950,540,10000,'right',0,.3,.3,10000,160)
 end
 return intro
