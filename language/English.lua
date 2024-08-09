@@ -156,7 +156,9 @@ return {
         "\"Ice Storm\" mode is from the mode with same name in Bejeweled 3",
         "You can do a T-spin Aquad in Aquamino!",
         "...weak table...",
-        "a and b or c and d or e and f or g"
+        "a and b or c and d or e and f or g",
+
+        "Every single pentominoes can periodically tile the plane."
     },tipScale=.3,
     territory={info="Space,Enter=pause/run\nesc=exit"}
 }

@@ -159,7 +159,9 @@ return {
         "腦袋空空…",
         "少打方塊多讀書",
         "遠離現充。",
-        "a and b or c and d or e and f or g"
+        "a and b or c and d or e and f or g",
+
+        "任意五連塊均可以周期性密鋪整個平面"
     },tipScale=.4,
     territory={info="空格/Enter 切換暫停/運轉狀態\nesc 退出"}
 }

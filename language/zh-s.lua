@@ -162,7 +162,9 @@ return {
         "脑袋空空……",
         "少打方块多读书",
         "远离现充。",
-        "a and b or c and d or e and f or g"
+        "a and b or c and d or e and f or g",
+
+        "任意五连块均可以周期性密铺整个平面。"
     },tipScale=.4,
     territory={info="空格/Enter 切换暂停/运行状态\nesc 退出"}
 }
