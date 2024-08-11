@@ -24,18 +24,19 @@ return {
     },
     modeDescription={
         ['40 lines']="Clear 40 lines as fast as you can!",
-        marathon={{1,1,1},"Clear 150 lines with increasing speed.\n",{1,1,0},"Handling Restriction: ASD=150ms ASP=30ms SD ASP=30ms\nGravity increases with level"},
+        marathon={{1,1,1},"Clear 150 lines with increasing speed.\n",{1,1,0},"Handling Restriction:\nASD=150ms ASP=30ms SD ASP=30ms\nGravity increases with level"},
         ['ice storm']="Use All-spin mechanics to stop rising icicles!",
-        thunder="Please do your best to avoid destruction from lightning.",
+        thunder="Please do your best to avoid\ndestruction from lightning.",
         smooth={{1,1,1},"Is it really that smooth?\n",{1,1,0},"Fall delay is 0, Lock delay is increased to 3s"},
         levitate={{1,1,0},"Blocks don't fall after clearing"},
-        master={{1,1,1},"Survive in the cruelest speed!\n",{1,.5,0},"Fall delay is 0, lock delay shortens with level increase\n",{1,1,0},"Handling Restriction: ASD=150ms ASP=30ms"},
-        multitasking={{1,1,1},"*Galaxy Brain Meme*\n",{1,1,0},"Handling Restriction: ASD=150ms ASP=30ms SD ASP=30ms\nGravity increases with level"},
+        master={{1,1,1},"Survive in the cruelest speed!\n",{1,.5,0},"Fall delay is 0, lock delay shortens with\nlevel increases\n",{1,1,0},"Handling Restriction: ASD=150ms ASP=30ms"},
+        multitasking={{1,1,1},"*Galaxy Brain Meme*\n",{1,1,0},"Handling Restriction:\nASD=150ms ASP=30ms SD ASP=30ms\nGravity increases with level"},
         sandbox={{1,1,0},"This mode does not record any score"},
         ['dig 40']="Think. Dig. Effeciency.",
-        laser={{1,1,1},"U  N  D-E-R  G  R  O-U-N\nU  N  D-E-R  G  R  O-U-N-D\n",{1,1,0},"This is a rhythmical mode. Turning on music is strongly recommended."},
+        laser={{1,1,1},"U  N  D-E-R  G  R  O-U-N\nU  N  D-E-R  G  R  O-U-N-D\n",{1,1,0},"This is a rhythmical mode.\nTurning on music is strongly recommended."},
         backfire="Receive the attack sent by yourself!",
-        battle={{1,1,1},"Let's battle!\n",{1,1,0},"This mode does not record any score"}
+        battle={{1,1,1},"Let's battle!\n",{1,1,0},"This mode does not record any score"},
+        ['core destruction']={{1,1,0},"This mode does not record any score\n",{1,.2,.2},"Starting/restarting this mode may cause\nthe game to freeze for unknown reasons"}
     },
     intro={
         start="Press any key to start",

@@ -100,7 +100,7 @@ function menu.init()
     for k,v in pairs(user.lang.modeDescription) do
         menu.describeTxt[k]={}
         menu.describeTxt[k].txt=gc.newText(font.Bender)
-        menu.describeTxt[k].txt:addf(v,2048,'center',0,0,0,1,1,1024,0)
+        menu.describeTxt[k].txt:addf(v,4096,'center',0,0,0,1,1,2048,0)
 
         menu.describeTxt[k].w=menu.describeTxt[k].txt:getWidth()
         menu.describeTxt[k].h=menu.describeTxt[k].txt:getHeight()
