@@ -17,31 +17,42 @@ function anim.cover(inT,keepT,outT,r,g,b)
     gc.rectangle('fill',-960,-540,1920,1080)
 end
 
+local s2=2^.5
 function anim.enterMenu(inT,keepT,outT)
     gc.setColor(.05,.05,.05)
     if scene.swapT>0 then
         if scene.swapT>keepT then
-            local sz=1-((scene.swapT-keepT)/inT)^3
-            gc.rectangle('fill',-960,-540,960*sz,1080)
-            gc.rectangle('fill',960-960*sz,-540,960*sz,1080)
+            local sz=(1-((scene.swapT-keepT)/inT)^3)*1920
+            local hsz=1920-sz
+            gc.circle('fill',-960,960,sz,4) gc.circle('fill',960,-960,sz,4)
+            gc.circle('fill',960,960,sz,4) gc.circle('fill',-960,-960,sz,4)
             gc.setColor(1,1,1)
-            gc.setLineWidth(15)
-            gc.arc('line','open',-960+960*sz,0,150,math.pi/2,3*math.pi/2,2)
-            gc.arc('line','open', 960-960*sz,0,150,-math.pi/2, math.pi/2,2)
+            if hsz<=150 then
+            gc.setLineWidth((10+(150-hsz)/150*70)*s2)
+            gc.arc('line','open',0,0,80+hsz/150*70,-math.pi/2,3*math.pi/2,4)
+            else
+            gc.setLineWidth((5+5*(1920-sz-150)/(1920-150))*s2)
+            gc.arc('line','open',0,0,max(150,1920-sz),-math.pi/2,3*math.pi/2,4)
+            end
         else
-            local angle=mymath.clamp((scene.swapT/keepT-1/2)*2,0,1)^2*math.pi/2
+            local s=mymath.clamp((scene.swapT/keepT-1/2)*2,0,1)^3
             gc.rectangle('fill',-960,-540,1920,1080)
             gc.setColor(1,1,1)
-            gc.setLineWidth(15)
-            gc.arc('line','closed',0,0,150,-math.pi/2+angle,math.pi+angle,3)
+            gc.arc('fill','closed',0,0,160,-math.pi/2,math.pi,3)
         end
     else
         local sz=1920*(-(1-scene.outT/outT)^3+1)
+        local hsz=1920-sz
         gc.circle('fill',-960,960,sz,4) gc.circle('fill',960,-960,sz,4)
         gc.circle('fill',960,960,sz,4) gc.circle('fill',-960,-960,sz,4)
         gc.setColor(1,1,1)
-        gc.setLineWidth(1920-sz<=150 and 15 or 5+10*(1920-sz-150)/(1920-150))
+        if hsz<=150 then
+        gc.setLineWidth((10+(150-hsz)/150*70)*s2)
+        gc.arc('line','open',0,0,80+hsz/150*70,-math.pi/2,3*math.pi/2,4)
+        else
+        gc.setLineWidth((5+5*(1920-sz-150)/(1920-150))*s2)
         gc.arc('line','open',0,0,max(150,1920-sz),-math.pi/2,3*math.pi/2,4)
+        end
     end
 end
 

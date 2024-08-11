@@ -206,6 +206,7 @@ function menu.init()
             gc.draw(win.UI.back,0,0,0,1,1,-5,95)
         end,
         event=function()
+            sfx.play('quit',1,2^(1/3))
             menu.lvl=1
         end
     },.2)
@@ -227,7 +228,7 @@ function menu.init()
         end,
         event=function()
             menu.pAnim=true
-            sfx.play('click',1,2^.66)
+            sfx.play('click',1,2^(2/3))
             sfx.play('gameEnter')
             scene.switch({
                 dest='game',destScene=require'mino/game',
@@ -260,7 +261,7 @@ function menu.mouseP(x,y,button,istouch)
             for k,v in pairs(menu.modeList) do
                 if abs(x-v.x)+abs(y-v.y)<150 then
                     menu.selectedMode=k
-                    sfx.play('click',1,2^.33)
+                    sfx.play('click',1,2^(1/3))
                     print(menu.selectedMode)
                 end
             end
