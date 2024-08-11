@@ -28,9 +28,9 @@ function rule.init(P,mino,modeInfo)
     HColor={1,1,1}
     rule.gameTimer=0
 
-    mino.musInfo="georhythm - nega to posi"
+    mino.musInfo="龍飛 - AUTOMATA"
     scene.BG=require('BG/blank')
-    mus.add('music/Hurt Record/nega to posi','whole','ogg',61.847,224*60/130)
+    mus.add('music/Hurt Record/AUTOMATA','whole','ogg',4/7,260*60/140)
     mus.start()
 
     mino.seqSync=true
@@ -356,10 +356,6 @@ function rule.onLineClear(player,mino)
     end
 end
 function rule.afterPieceDrop(player,mino)
-    local his=player.history
-    --[[if his.spin and his.line==0 then for i=1,#his.piece do
-        rule.decrease(player,his.piece[i][1]+his.x,.3,1.5)
-    end end]]
     for k,v in pairs(rule.brickBar[player.side]) do
         while v.bar>=1 do v.bar=v.bar-.5 v.lvl=min(v.lvl+1,6) end
     end
