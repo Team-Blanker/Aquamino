@@ -18,6 +18,7 @@ return {
         laser="激光",
         backfire="回旋镖",
         battle="对战",
+        ['core destruction']="核心毁灭",
         conf_test="设置 - 测试界面",
         idea_test="idea_test"
     },
@@ -44,6 +45,14 @@ return {
         noBestScore="暂无成绩",
         arg={
             battle={
+                bot_PPS="机器人PPS:",
+                player={
+                    pos="玩家位置:",
+                    left="左侧",
+                    right="右侧"
+                }
+            },
+            ['core destruction']={
                 bot_PPS="机器人PPS:",
                 player={
                     pos="玩家位置:",

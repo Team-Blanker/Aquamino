@@ -25,6 +25,7 @@ function fieldLib.newPlayer(arg)
         event={0,'start',0,'nextIns'},
         initOpQueue={},--I_S操作序列
         posx=0,posy=0,r=0,scale=1,
+        posOffset={},
         field={},w=10,h=20,loosen={},
         moveDir='',pushAtt=0,
         color={

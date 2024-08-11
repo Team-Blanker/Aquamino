@@ -81,8 +81,8 @@ function rule.init(P,mino)
     mus.add('music/Hurt Record/Symphonic Laser','whole','ogg',45,200*60/128)
     --mus.start()
     sfx.add({
-        destroy='sfx/rule/laser/destroy.wav',mayhem='sfx/rule/laser/mayhem.wav',reverse='sfx/rule/laser/reverse.wav',
-        forceGarbage='sfx/rule/laser/garbage.wav',
+        destroy='sfx/mode/laser/destroy.wav',mayhem='sfx/mode/laser/mayhem.wav',reverse='sfx/mode/laser/reverse.wav',
+        forceGarbage='sfx/mode/laser/garbage.wav',
     })
 
     mino.rule.allowPush={}

@@ -14,8 +14,8 @@ function rule.init(P,mino)
     mino.rule.allowSpin={Z=true,S=true,J=true,L=true,T=true,O=true,I=true,}
     mino.rule.enableMiniSpin=false
     sfx.add({
-        smash='sfx/rule/ice storm/smash.wav',
-        lvup='sfx/rule/ice storm/level up.wav'
+        smash='sfx/mode/ice storm/smash.wav',
+        lvup='sfx/mode/ice storm/level up.wav'
     })
     mino.seqGenType='bagp1FromBag'
     rule.allowPush={}

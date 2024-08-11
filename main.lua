@@ -186,7 +186,7 @@ scene={
     slider=require'framework/control/slider'
 }
 
---scene.cur=require('territory/territory')
+--scene.cur=require('minigame/territory/territory')
 --scene.cur=require('mino/game') scene.cur.mode='battle_test'
 --scene.cur=require('mino/game') scene.cur.mode='core destruction'
 

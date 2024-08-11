@@ -1,6 +1,6 @@
 local polar={}
 function polar.init()
-    polar.img=gc.newImage('assets/pic/otto.jpg')
+    polar.img=gc.newImage('pic/assets/otto.jpg')
     local sha=fs.newFile('shader/polar.glsl'):read()
     polar.shader=gc.newShader(sha)
     scene.watermark=false

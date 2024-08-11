@@ -27,7 +27,7 @@ function rule.init(P,mino)
     mus.add('music/Hurt Record/TENSION','whole','ogg',1.761,160*60/84)
     mus.start()
     sfx.add({
-        lvup='sfx/rule/general/level up.wav'
+        lvup='sfx/mode/general/level up.wav'
     })
     mino.stacker.ctrl={
        ASD=.15,ASP=.03,SD_ASD=0,SD_ASP=0

@@ -23,9 +23,9 @@ function rule.init(P,mino)
     mus.add('music/Hurt Record/Thunderbolt','whole','ogg',15.857,240*6/14)
     mus.start()
     sfx.add({
-        lvup='sfx/rule/general/level up.wav',
-        top='sfx/rule/thunder/top.wav',
-        thunder='sfx/rule/thunder/thunder1.wav'
+        lvup='sfx/mode/general/level up.wav',
+        top='sfx/mode/thunder/top.wav',
+        thunder='sfx/mode/thunder/thunder1.wav'
     })
     for k,v in pairs(P) do
         v.stormLv=1

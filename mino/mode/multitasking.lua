@@ -1,7 +1,7 @@
 local rule={}
 function rule.init(P,mino)
     sfx.add({
-        lvup='sfx/rule/general/level up.wav'
+        lvup='sfx/mode/general/level up.wav'
     })
     mino.musInfo="georhythm - nega to posi"
     scene.BG=require('BG/nega to posi') scene.BG.init()

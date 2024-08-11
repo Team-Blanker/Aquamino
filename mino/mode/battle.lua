@@ -1,7 +1,7 @@
 local rule={}
 local battle=require'mino/battle'
 local fLib=require'mino/fieldLib'
-local bot_cc=require('mino/bot/cc')
+local bot_cc=require'mino/bot/cc'
 function rule.init(P,mino,modeInfo)
     mino.musInfo="カモキング - burning heart"
     scene.BG=require('BG/galaxy') scene.BG.init()
@@ -24,9 +24,9 @@ function rule.init(P,mino,modeInfo)
     rule.botThread=bot_cc.newThread(1,P,2)
     bot_cc.startThread(rule.botThread,nil)
     rule.botThread.sendChannel:push({op='send',
-    boolField=bot_cc.renderField(P[1]),
-    B2B=P[1].history.B2B>0,
-    combo=P[1].history.combo,
+    boolField=bot_cc.renderField(P[2]),
+    B2B=P[2].history.B2B>0,
+    combo=P[2].history.combo,
     })
     rule.expect={}
 

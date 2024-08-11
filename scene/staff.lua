@@ -1,8 +1,8 @@
 local BUTTON=scene.button
 
-local logo=gc.newImage('assets/pic/title.png')
+local logo=gc.newImage('pic/assets/title.png')
 local w,h=logo:getPixelDimensions()
-local kairan=gc.newImage('assets/pic/kairan.png')
+local kairan=gc.newImage('pic/assets/kairan.png')
 local kw,kh=kairan:getPixelDimensions()
 local devList={
     program={'Aqua6623 (Aquamarine6623, Kairan, 海兰)'},

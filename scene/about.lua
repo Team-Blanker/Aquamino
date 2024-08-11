@@ -1,7 +1,7 @@
 local BUTTON=scene.button
 
-local logo=gc.newImage('assets/pic/title.png')
-local loveLogo=gc.newImage('assets/pic/love-logo.png')
+local logo=gc.newImage('pic/assets/title.png')
+local loveLogo=gc.newImage('pic/assets/love-logo.png')
 local w,h=logo:getPixelDimensions()
 local lw,lh=loveLogo:getPixelDimensions()
 local ballR=32

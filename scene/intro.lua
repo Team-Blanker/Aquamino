@@ -80,9 +80,9 @@ function intro.update(dt)
     BUTTON.update(dt,adaptWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5))
 end
 
-local logo=gc.newImage('assets/pic/title.png')
-local logo_mzk=gc.newImage('assets/pic/title_Mizuki.png')
-local logo_gg=gc.newImage('assets/pic/title_Goldenglow.png')
+local logo=gc.newImage('pic/assets/title.png')
+local logo_mzk=gc.newImage('pic/assets/title_Mizuki.png')
+local logo_gg=gc.newImage('pic/assets/title_Goldenglow.png')
 
 local lw,lh=logo:getPixelDimensions()
 

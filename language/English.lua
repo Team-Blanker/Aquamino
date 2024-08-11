@@ -16,8 +16,9 @@ return {
         sandbox="Sandbox",
         ['dig 40']="Cheese",
         laser="Laser",
-        backfire="Boomerang",
         battle="Battle",
+        ['core destruction']="Core Destruction",
+        backfire="Boomerang",
         conf_test="conf_test",
         idea_test="idea_test"
     },
@@ -44,6 +45,14 @@ return {
         noBestScore="No score",
         arg={
             battle={
+                bot_PPS="Bot PPS:",
+                player={
+                    pos="Player's place:",
+                    left="left",
+                    right="right"
+                }
+            },
+            ['core destruction']={
                 bot_PPS="Bot PPS:",
                 player={
                     pos="Player's place:",

@@ -666,7 +666,7 @@ function mino.init()
         allowPush={},allowSpin={T=true},spinType='default',enableMiniSpin=true,
         loosen={fallTPL=0}--TPL=Time Per Line
     }
-    mino.mode=mino.modeInfo.mode
+    if mino.modeInfo then mino.mode=mino.modeInfo.mode end
     if mino.mode and fs.getInfo('mino/mode/'..mino.mode..'.lua') then T.combine(mino.rule,require('mino/mode/'..mino.mode)) end
     if mino.rule.init then mino.rule.init(P,mino,mino.modeInfo) end
 
@@ -1136,6 +1136,7 @@ function mino.update(dt)
     vKey.animUpdate(dt)
 end
 
+local x,y
 function mino.draw()
     if mino.unableBG then gc.setColor(.06,.06,.06)
     gc.rectangle('fill',-1000,-600,2000,1200) end
@@ -1145,7 +1146,11 @@ function mino.draw()
         C,H,A=P[i].cur,P[i].hold,P[i].smoothAnim
 
         gc.push()
-            gc.translate(P[i].posx,P[i].posy)
+            x,y=P[i].posx,P[i].posy
+            for k,v in pairs(P[i].posOffset) do
+                x,y=x+v.x,y+v.y
+            end
+            gc.translate(x,y)
             gc.scale(P[i].scale*mino.fieldScale)
             --场地
             if mino.rule.underFieldDraw then mino.rule.underFieldDraw(P[i],mino) end

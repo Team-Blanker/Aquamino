@@ -46,14 +46,17 @@ menu.modeList={
     master={x=-300,y=300,borderColor={1,.25,.25}},
     multitasking={x=0,y=300,borderColor={1,.25,.25}},
     laser={x=450,y=-150,borderColor={0,1,1}},
+    ['core destruction']={x=300,y=-300,borderColor={0,1,1}},
 }
-menu.notRecordScore={sandbox=true,battle=true}
+menu.notRecordScore={sandbox=true,battle=true,['core destruction']=true}
 menu.icon={
     border=gc.newImage('pic/mode icon/border.png')
 }
 menu.option={
     battle={bot_DropDelay=1,playerPos='left'},
+    ['core destruction']={bot_DropDelay=1,playerPos='left'},
 }
+
 for k,v in pairs(menu.modeList) do
     menu.icon[k]=gc.newImage('pic/mode icon/'..k..'.png')
 end
