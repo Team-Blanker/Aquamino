@@ -5,7 +5,7 @@ local rule={}
 function rule.init(P,mino)
     rd=user.lang.rule.dig
     scene.BG=require('BG/bubble') scene.BG.init()
-    mino.musInfo="守己 - アトモスフィア(Atmosphere)"
+    mino.musInfo="守己 - アトモスフィア (Atmosphere)"
     mus.add('music/Hurt Record/Atmosphere','whole','ogg',21.667,64)--192*(60/180)
     mus.start()
     P[1].remainLine=40
