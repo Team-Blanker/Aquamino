@@ -6,8 +6,8 @@ function rule.init(P,mino)
     mus.add('music/Hurt Record/Shape of Tomorrow','whole','ogg',12.375,48.75)
     mus.start()
 
-    mino.seqGenType='pairs'
-
+    --mino.seqGenType='pairs'
+    mino.bag={'Z','S','J','L','T','O','I','Z5','S5','J5','L5','T5','I5','P','Q','N','H','R','Y','E','F','V','W','X','U'}
     mino.rule.allowPush={Z=true,S=true,J=true,L=true,T=true,O=true,I=true,}
     mino.rule.loosen.fallTPL=.1
     mino.rule.allowSpin={Z=true,S=true,J=true,L=true,T=true,O=true,I=true,}
@@ -26,5 +26,9 @@ function rule.onPieceSummon(player)
     if rand()<1/14 then
         c.piece=b.giant(c.piece)
     end
+end
+function rule.overFieldDraw(player)
+    gc.setColor(1,1,1)
+    if player.cur.name then gc.printf(player.cur.name,font.Bender_B,-18*player.w-110,0,1000,'center',0,.5,.5,500,72) end
 end
 return rule

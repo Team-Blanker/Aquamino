@@ -116,6 +116,12 @@ AqRS.kickTable={
         FT={{ 0,-3},{0,0}},
         FL={{ 0,-3},{ 0, 3},{0,0}},
         default={{0,0}}
+    },
+
+    other={--这里边没有的块，最起码能用
+        R={{0,0},{ 0,-1},{ 1,-1},{ 1, 0},{ 2, 0},{ 1, 1},{ 0, 1},{-1, 1},{-1, 0},{-1,-1}},
+        L={{0,0},{ 0,-1},{-1,-1},{-1, 0},{-2, 0},{-1, 1},{ 0, 1},{ 1, 1},{ 1, 0},{ 1,-1}},
+        F={{0,0},{ 0,-1},{ 0,-2},{-1, 0},{ 1, 0},{ 0, 1},{ 0, 2}}
     }
 }
 --AqRS.kickTable.S=getSymTable(AqRS.kickTable.Z)
@@ -166,7 +172,8 @@ function AqRS.getKickTable(data,name,ori,mode)
         else
             if data.u then return AqRS.kickTable[name].LU[ori] else return AqRS.kickTable[name].L[ori] end
         end
-    else return AqRS.kickTable[name][mode][ori]
+    elseif AqRS.kickTable[name] then return AqRS.kickTable[name][mode][ori]
+    else return AqRS.kickTable.other[mode]
     end
 end
 return AqRS
