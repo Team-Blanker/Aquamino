@@ -50,7 +50,7 @@ function skin.fieldDraw(player,mino)
         for x=1,player.w do
             local F=player.field
             if F[y][x] and next(F[y][x]) then
-                setColor(player.color[F[y][x].name])
+                setColor(mino.color[F[y][x].name])
                 --rect('fill',-18+36*x,-18-36*h,36,36,4)
                 draw(bCanvas,36*x,-36*h,0,1,1,18,18)
                 --if not F[y][x].loosen then setColor(1,1,1) gc.draw(skin.sticker,36*x,-36*h,0,1,1,18,18) end
@@ -101,7 +101,7 @@ function skin.loosenDraw(player,mino)
         or player.event[2] and delay or 0
     local N=(delay~=0 and t) and t/delay or 0
     for i=1,#ls do
-        local clr=player.color[ls[i].info.name]
+        local clr=mino.color[ls[i].info.name]
         setColor(clr[1],clr[2],clr[3],.5)
         rect('fill',-18+36*ls[i].x,-18-36*(ls[i].y+N),36,36)
     end

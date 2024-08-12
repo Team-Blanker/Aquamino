@@ -90,7 +90,7 @@ function audio.init()
             gc.setColor(.5,.5,.5,.8)
             gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
             gc.setColor(1,1,1)
-            gc.printf(string.format(cf.audio.mus.."%.0f%% = %.2fdB",audio.info.mus*100,getdB(audio.info.mus)),
+            gc.printf(string.format(cf.audio.mus.."%.0f%%,%.2fdB",audio.info.mus*100,getdB(audio.info.mus)),
                 font.JB,-416,-48,114514,'left',0,.3125,.3125,0,84)
         end,
         buttonDraw=function(pos,sz)
@@ -109,7 +109,7 @@ function audio.init()
             gc.setColor(.5,.5,.5,.8)
             gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
             gc.setColor(1,1,1)
-            gc.printf(string.format(cf.audio.sfx.."%.0f%% = %.2fdB",audio.info.sfx*100,getdB(audio.info.sfx)),
+            gc.printf(string.format(cf.audio.sfx.."%.0f%%,%.2fdB",audio.info.sfx*100,getdB(audio.info.sfx)),
                 font.JB,-416,-48,114514,'left',0,.3125,.3125,0,84)
         end,
         buttonDraw=function(pos,sz)

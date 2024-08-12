@@ -28,12 +28,7 @@ function fieldLib.newPlayer(arg)
         posOffset={},
         field={},w=10,h=20,loosen={},
         moveDir='',pushAtt=0,
-        color={
-            Z={1,.16,.32},S={.5,.96,.04},J={0,.64,1},L={.99,.66,.33},T={.8,.2,1},O={1,1,0},I={.15,1,.75},
 
-            g1={.5,.5,.5},
-            g2={.75,.75,.75},
-        },
         RS_name='SRS',
         RS=nil,
         next={},NO={},NP={},preview=6,--NO next所有块朝向  NP next所有块“实体”
@@ -130,7 +125,7 @@ function fieldLib.kick(player,mode)
         local kickOrder=RS.kick(player,mode)
         if kickOrder then return kickOrder end
     else
-        local ukick=RS.getKickTable and RS.getKickTable(data,cur.name,originO+1,mode) or RS.kickTable[cur.name][mode][originO+1]
+        local ukick=RS.getKickTable and RS.getKickTable(data,cur.name,originO+1,mode) or RS.kickTable[cur.name] and RS.kickTable[cur.name][mode][originO+1]
         if ukick and player.LDR>0 then
             local x,y
             if cur.piece.sz=='giant' then

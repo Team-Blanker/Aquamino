@@ -37,7 +37,7 @@ function skin.fieldDraw(player,mino)
     for y=1,#player.field do
         if player.field[y][1] then
         for x=1,player.w do
-            local C=player.color[F[y][x].name]
+            local C=mino.color[F[y][x].name]
             if F[y][x] and next(F[y][x]) and C then
                 setColor(C[1],C[2],C[3],1)
                 gc.rectangle('fill',36*x-36,36*y-36,36,36)
@@ -62,7 +62,7 @@ function skin.fieldDraw(player,mino)
     for y=1,#player.field do
         if player.field[y][1] then h=h+1
         for x=1,player.w do
-            local C=player.color[F[y][x].name]
+            local C=mino.color[F[y][x].name]
             if F[y][x] and next(F[y][x]) and C then
                 setColor(C)
                 draw(pic,-18+36*x,-18-36*h)
@@ -111,7 +111,7 @@ function skin.loosenDraw(player,mino)
         or player.event[2] and delay or 0
     local N=(delay~=0 and t) and t/delay or 0
     for i=1,#ls do
-        local clr=player.color[ls[i].info.name]
+        local clr=mino.color[ls[i].info.name]
         setColor(clr[1],clr[2],clr[3],0.75)
         draw(pic,-18+36*ls[i].x,-18-36*(ls[i].y+N))
     end

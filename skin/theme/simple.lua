@@ -177,7 +177,7 @@ function simple.updateClearInfo(player,mino)
     else player.clearInfo.combo=his.combo player.clearInfo.wide=-1 end
     if his.PC then player.PCInfo[#player.PCInfo+1]=2.5 end
 end
-function simple.clearTextDraw(player)
+function simple.clearTextDraw(player,mino)
     W,H=36*player.w,36*player.h
     local CInfo=player.clearInfo
     local r,g,b
@@ -200,7 +200,7 @@ function simple.clearTextDraw(player)
     local s=(CInfo.line>=4 and 1-.05*player.clearTxtTimer or .5)
     local r,g,b
     if CInfo.spin and not CInfo.mini then
-        local c=player.color[CInfo.name]
+        local c=mino.color[CInfo.name]
         r,g,b=c[1]+.3*(1-c[1]),c[2]+.3*(1-c[2]),c[3]+.3*(1-c[3])
     else
         local c=clearClr[min(CInfo.line,#clearClr)]

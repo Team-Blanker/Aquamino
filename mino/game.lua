@@ -476,7 +476,7 @@ mino.operate={
             OP.dropAnim[#OP.dropAnim+1]={
                 x=his.x+xlist[j],y=his.y+his.dropHeight-smoothFall+lmax,len=-smoothFall+his.dropHeight,
                 TMax=animTTL,TTL=animTTL, w=xmax-xmin+1,h=ymax-ymin+1,
-                color=OP.color[his.name]
+                color=mino.color[his.name]
             }
         end
 
@@ -614,6 +614,12 @@ function mino.init()
     do
         mino.seqGenType='bag' mino.seqSync=false
         mino.bag={'Z','S','J','L','T','O','I'}
+        mino.orient={
+            Z=0,S=0,J=0,L=0,T=0,O=0,I=0,
+            Z5=0,S5=0,J5=0,L5=0,T5=0,I5=0,
+            N =0,H =0,E =0,F =0,R =0,Y =0,
+            P =0,Q =0,X =0,W =0,V =0,U =0,
+        }
 
 
         local pf={block='pure',theme='simple',sfx='Dr Ocelot',smoothAnimAct=false,smoothTime=.05,fieldScale=1}
@@ -632,12 +638,15 @@ function mino.init()
         T.combine(vi,file.read('conf/video'))
         mino.unableBG=vi.unableBG
 
-        for i=1,#P do
-            P[i].color={Z={.96,.16,.32},S={.48,.96,0},J={0,.64,.96},L={.96,.64,.32},T={.8,.2,.96},O={.96,.96,0},I={.16,.96,.72},
-                g1={.5,.5,.5},g2={.75,.75,.75},
-            }
-            if fs.getInfo('conf/mino color') then T.combine(P[i].color,file.read('conf/mino color')) end
-        end
+
+        mino.color={Z={.96,.16,.32},S={.48,.96,0},J={0,.64,.96},L={.96,.64,.32},T={.8,.2,.96},O={.96,.96,0},I={.16,.96,.72},
+            g1={.5,.5,.5},g2={.75,.75,.75},
+            Z5={.25,.5,.75},S5={.25,.5,.75},J5={.25,.5,.75},L5={.25,.5,.75},T5={.25,.5,.75},I5={.25,.5,.75},
+            N ={.25,.5,.75},H ={.25,.5,.75},E ={.25,.5,.75},F ={.25,.5,.75},R ={.25,.5,.75},Y ={.25,.5,.75},
+            P ={.25,.5,.75},Q ={.25,.5,.75},X ={.25,.5,.75},W ={.25,.5,.75},V ={.25,.5,.75},U ={.25,.5,.75},
+        }
+        if fs.getInfo('conf/mino color') then T.combine(mino.color,file.read('conf/mino color')) end
+
     end
     S.opList={1}
 
@@ -1172,20 +1181,20 @@ function mino.draw()
 
             if C.piece and #C.piece~=0 then
                 --投影
-                mino.blockSkin.ghostDraw(P[i],C.piece,C.x,P[i].cur.ghostY,P[i].color[C.name])
+                mino.blockSkin.ghostDraw(P[i],C.piece,C.x,P[i].cur.ghostY,mino.color[C.name])
                 --手上拿的
                 if mino.smoothAnimAct then
                     mino.setAnimDrawPiece(P[i])
-                    mino.blockSkin.curDraw(P[i],A.drawPiece,0,0,P[i].color[C.name])
-                else mino.blockSkin.curDraw(P[i],C.piece,C.x,C.y,P[i].color[C.name]) end
+                    mino.blockSkin.curDraw(P[i],A.drawPiece,0,0,mino.color[C.name])
+                else mino.blockSkin.curDraw(P[i],C.piece,C.x,C.y,mino.color[C.name]) end
             end
 
             --暂存块（浮空）
             if H.name and H.mode=='A' then gc.push()
-                local holdColor=P[i].color[H.name]
+                local holdColor=mino.color[H.name]
                 gc.setColor(holdColor[1],holdColor[2],holdColor[3],.5)
                 gc.translate(36*H.x,-36*H.y)
-                for k=1,#H.piece do mino.blockSkin.unitDraw(H.piece[k][1],H.piece[k][2],P[i].color[H.name]) end
+                for k=1,#H.piece do mino.blockSkin.unitDraw(H.piece[k][1],H.piece[k][2],mino.color[H.name]) end
             gc.pop() end
 
             if mino.blockSkin.overFieldDraw then mino.blockSkin.overFieldDraw(P[i],mino) end
@@ -1195,12 +1204,11 @@ function mino.draw()
             local w,h,x,y, s
             --暂存块（标准）
             if H.name and H.mode=='S' then gc.push()
-                local holdColor=P[i].color[H.name]
                 w,h,x,y=B.size(H.piece)
                 s=min((w/h>2 and 4/w or 2.5/h),1)
                 gc.translate(-18*P[i].w-90-20,-310)
                 gc.scale(s)
-                mino.blockSkin.holdDraw(P[i],H.piece,x,y,P[i].color[H.name],P[i].canHold)
+                mino.blockSkin.holdDraw(P[i],H.piece,x,y,mino.color[H.name],P[i].canHold)
             gc.pop() end
 
             --预览
@@ -1210,13 +1218,13 @@ function mino.draw()
                 gc.push('transform')
                     gc.translate(18*P[i].w+90+20,-410+100*j)
                     gc.scale(s)
-                    mino.blockSkin.nextDraw(P[i],P[i].NP[j],x,y,P[i].color[P[i].next[j]])
+                    mino.blockSkin.nextDraw(P[i],P[i].NP[j],x,y,mino.color[P[i].next[j]])
                 gc.pop()
             end
 
             if mino.theme.overFieldDraw then mino.theme.overFieldDraw(P[i],mino) end
             --消行文本
-            mino.theme.clearTextDraw(P[i])
+            mino.theme.clearTextDraw(P[i],mino)
 
             if mino.rule.overFieldDraw then mino.rule.overFieldDraw(P[i],mino) end
             --Ready Set Go

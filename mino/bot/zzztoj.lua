@@ -139,7 +139,7 @@ function bot_zzz.execute(player,eq,mino)
                 player.dropAnim[#player.dropAnim+1]={
                     x=C.x+xlist[j],y=C.y-smoothFall+lmax,len=-smoothFall,
                     TMax=.5,TTL=.5, w=xmax-xmin+1,h=ymax-ymin+1,
-                    color=player.color[C.name]
+                    color=mino.color[C.name]
                 }
             end
             his.dropHeight=0

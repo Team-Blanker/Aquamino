@@ -564,7 +564,7 @@ function rule.underFieldDraw(player,mino)
         local o=barOrder[i]
         if     o=='N' then c=NColor
         elseif o=='H' then c=HColor
-        else   c=player.color[o] end
+        else   c=mino.color[o] end
 
         local bb=rule.brickBar[player.side][o]
         setColor(c[1],c[2],c[3],.3)

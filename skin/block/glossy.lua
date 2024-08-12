@@ -56,7 +56,7 @@ function skin.fieldDraw(player,mino)
             for x=1,player.w do
                 local F=player.field
                 if F[y][x] and next(F[y][x]) then
-                    gc.setColor(player.color[F[y][x].name])
+                    gc.setColor(mino.color[F[y][x].name])
                     draw(skin.pic,36*x,-36*h,0,1,1,18,18)
                 end
             end
@@ -143,7 +143,7 @@ function skin.loosenDraw(player,mino)
         or player.event[2] and delay or 0
     local N=(delay~=0 and t) and t/delay or 0
     for i=1,#ls do
-        local clr=player.color[ls[i].info.name]
+        local clr=mino.color[ls[i].info.name]
         setColor(clr[1],clr[2],clr[3],0.5)
         draw(skin.pic,36*ls[i].x,-36*(ls[i].y+N),0,1,1,18,18)
     end
