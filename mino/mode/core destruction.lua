@@ -58,7 +58,7 @@ function rule.init(P,mino,modeInfo)
 
     mino.stacker.opList={1}
 
-    SBrickColor=P[1].color
+    SBrickColor=mino.color
     --bot
     rule.botThread=bot_cc.newThread(1,P,2)
     bot_cc.startThread(rule.botThread,nil)
