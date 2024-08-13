@@ -329,7 +329,7 @@ function love.draw()
     if scene.BG.draw then scene.BG.draw() end
     gc.setColor(1,1,1)
     if scene.cur.draw then scene.cur.draw() end
-    if scene.watermark then
+    if scene.watermark and not fs.isFused then
         gc.setColor(.5,1,.875,.15+.0*sin(scene.totalTime*5*math.pi))
         gc.printf("作者：Aqua6623",font.JB_B,480*sin(scene.totalTime/2*math.pi),-440,5000,'center',0,.5,.5,2500,84)
         gc.printf("作者：Aqua6623",font.JB_B,-480*sin(scene.totalTime/2*math.pi), 440,5000,'center',0,.5,.5,2500,84)
