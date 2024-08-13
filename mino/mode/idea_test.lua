@@ -7,7 +7,10 @@ function rule.init(P,mino)
     mus.start()
 
     --mino.seqGenType='pairs'
-    mino.bag={'Z','S','J','L','T','O','I','Z5','S5','J5','L5','T5','I5','P','Q','N','H','R','Y','E','F','V','W','X','U'}
+    mino.bag={
+        'Z','S','J','L','T','O','I','Z','S','J','L','T','O','I',
+        'Z5','S5','J5','L5','T5','I5','P','Q','N','H','R','Y','E','F','V','W','X','U'
+    }
     mino.rule.allowPush={Z=true,S=true,J=true,L=true,T=true,O=true,I=true,}
     mino.rule.loosen.fallTPL=.1
     mino.rule.allowSpin={Z=true,S=true,J=true,L=true,T=true,O=true,I=true,}
