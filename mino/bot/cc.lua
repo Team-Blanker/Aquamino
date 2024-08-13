@@ -3,6 +3,7 @@ local head=love.filesystem.newFile('mino/bot/coldclear.h'):read()
 ffi.cdef(head)
 local c=ffi.C
 local gamePath=love.filesystem.getWorkingDirectory()
+print(gamePath)
 local CC=ffi.load(gamePath..'/cold_clear.dll')--64位dll
 --CCAsyncBot *cc_launch_async(CCOptions *options, CCWeights *weights, CCBook *book, CCPiece *queue,
 --uint32_t count),
