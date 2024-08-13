@@ -14,8 +14,8 @@ function rule.init(P,mino)
     mino.rule.allowSpin={}
     mino.rule.allowPush={}
     for k,v in pairs(mino.bag) do
-        mino.rule.allowSpin[k]=true
-        mino.rule.allowPush[k]=true
+        mino.rule.allowSpin[v]=true
+        mino.rule.allowPush[v]=true
     end
     mino.rule.loosen.fallTPL=.1
     for k,v in pairs(P) do
