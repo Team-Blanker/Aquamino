@@ -89,7 +89,7 @@ local lw,lh=logo:getPixelDimensions()
 function intro.draw()
     if mzk then gc.clear(0,.03,.15)
     elseif gg then gc.clear(.15,.12,.135)
-    else gc.clear(.08,.08,.08) end
+    end
 
     gc.setColor(1,1,1)
     gc.draw(mzk and logo_mzk or gg and logo_gg or logo,0,-200+12*sin(scene.time/5%2*math.pi),0,1600/lw,1600/lw,lw/2,lh/2)
