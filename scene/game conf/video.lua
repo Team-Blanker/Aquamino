@@ -182,7 +182,7 @@ function video.init()
             gc.setColor(r,g,b)
             gc.setLineWidth(8)
             gc.rectangle('line',-w/2+4,-h/2+4,h-8,h-8)
-            if video.info.vsync then
+            if video.info.discardAfterDraw then
                 gc.circle('line',0,0,(w/2-4)*1.4142,4)
             end
             gc.setColor(r,g,b,2*t)
