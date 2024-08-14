@@ -10,7 +10,7 @@ function skin.unitDraw(player,x,y,color,alpha)
     draw(pic,-18+36*x,-18-36*y)
 end
 function skin.init(player)
-    player.fieldCanvas=gc.newCanvas(50*36,100*36)--最多支持正常显示50*100场地
+    player.fieldCanvas=gc.newCanvas(player.w*36,3*player.h*36)
     player.fieldCanvas:setFilter('nearest')
     player.skinSpinTimer=0
     player.spinAct=false
@@ -49,7 +49,7 @@ function skin.fieldDraw(player,mino)
     gc.setCanvas()
     gc.pop()
 
-    setColor(1,1,1,.03)
+    setColor(1,1,1,.025)
     draw(player.fieldCanvas,18,-18,0,1,-1)
     for i=1,6 do  for j=1,4 do
         local a,b=i*3*cos(j*math.pi/2),i*3*sin(j*math.pi/2)
