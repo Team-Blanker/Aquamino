@@ -167,7 +167,7 @@ function video.init()
             sfx.play(video.info.fullscr and 'cOn' or 'cOff')
         end
     },.2)
-    --[[BUTTON.create('discardAfterDraw',{
+    BUTTON.create('discardAfterDraw',{
         x=390,y=0,type='rect',w=80,h=80,
         draw=function(bt,t,ct)
             local animArg=video.info.discardAfterDraw and min(ct/.2,1) or max(1-ct/.2,0)
@@ -212,7 +212,7 @@ function video.init()
         end,
         event=function()
         end
-    },.25)]]
+    },.25)
     SLIDER.create('frameLim',{
         x=-400,y=0,type='hori',sz={800,32},button={32,32},
         gear=0,pos=(video.info.frameLim-60)/240,

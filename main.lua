@@ -40,6 +40,7 @@ function love.run()
             if drawCtrl.timer>=drawCtrl.dtRestrict then
                 if love.draw then love.draw() end
                 love.graphics.present() drawCtrl.count=drawCtrl.count+1
+                if win.discardAfterDraw then gc.discard() end
                 while drawCtrl.timer>drawCtrl.dtRestrict do drawCtrl.timer=drawCtrl.timer-drawCtrl.dtRestrict end
                 if drawCtrl.FPStimer>1 then
                     drawCtrl.FPS=drawCtrl.count/math.floor(drawCtrl.FPStimer) drawCtrl.count=0
@@ -353,8 +354,6 @@ function love.draw()
         gc.print(infoL,font.Bender,10,25,0,.15,.15)
         gc.printf(infoR,font.Bender,win.W-10-114514*.15,25,114514,'right',0,.15,.15)
     end
-
-    if win.discardAfterDraw then gc.discard() end
 end
 
 function love.quit()
