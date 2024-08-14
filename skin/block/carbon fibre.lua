@@ -116,13 +116,18 @@ function skin.overFieldDraw(player)
         gc.draw(skin.sticker,36*sx,-36*sh,sr,1,1,18,18)
     end
 end
+function skin.setDropAnimTTL(player,mino)
+    return .15*player.history.dropHeight/player.h
+end
 function skin.dropAnim(player)
     local DA=player.dropAnim
     for i=1,#DA do
+        local t=DA[i].TTL/DA[i].TMax
+        local l=DA[i].len
         local c=DA[i].color
-        setColor(c[1],c[2],c[3],0.2*DA[i].TTL/DA[i].TMax*(1+.5*DA[i].h/DA[i].w))
+        setColor(c[1],c[2],c[3],.2*t*(1+.5*DA[i].h/DA[i].w))
         gc.setLineWidth(36)
-        rect('fill',36*(DA[i].x)-18,-36*(DA[i].y+.5),36,36*DA[i].len)
+        rect('fill',36*(DA[i].x)-18,36*(-DA[i].y+.5+l*(1-t)),36,36*l*t)
     end
 end
 function skin.ghostDraw(player,piece,x,y,color)
