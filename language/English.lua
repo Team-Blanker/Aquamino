@@ -98,6 +98,8 @@ return {
             fullScr="Fullscreen",fullScrTxt="Press F11 to switch window mode immediately.",
             vsync="Vertical Sync",
             vsyncTxt="The drawing code and computing code of this program are separated in form. How many times The drawing code executed in 1 second is FPS, so as TPS.\nIf the maximum FPS is lower than or equal to the vertical sync limit FPS, the TPS is not limited.\nThis program mainly considers PC performance, and this option is turned off by default.\nLow-performance devices can turn on this option to optimize the execution of the computing code.",
+            discardAfterDraw="VRAM boost",
+            DADTxt="Discards (trashes) the contents of the screen after each frame is drawn.",
             frameLim="Max draw FPS:",frameTxt="A value equal to your monitor's FPS is recommended."
         },
         custom={

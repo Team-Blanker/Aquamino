@@ -97,6 +97,8 @@ return {
             fullScr="全螢幕",fullScrTxt="按F11可一鍵切換視窗狀態。",
             vsync="垂直同步",
             vsyncTxt="本程式繪製代碼與運算代碼形式上分離，稱繪製幀率為FPS，運算幀率為TPS。\n若設定的最高FPS小於等於垂直同步限制的FPS，則TPS不受限。\n本程式主要考慮PC端運行情況，該選項預設為關閉。\n低性能設備可開啟此選項優化運算代碼運行。",
+            discardAfterDraw="顯存回收加速",
+            DADTxt="每幀繪製完成后立刻回收對應顯存。",
             frameLim="最高繪製幀率:",frameTxt="建議將該值調整為與顯示器幀率相等。"
         },
         custom={

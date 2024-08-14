@@ -117,7 +117,7 @@ win={
     versionTxt="Beta V0.1 Icosahedron",
     OS=love.system.getOS(),
     showInfo=false,
-    fullscr=false,
+    fullscr=false,discardAfterDraw=false,
     distractTime=0,
     date=os.date('*t'),
     W=gc.getWidth(),
@@ -149,7 +149,7 @@ win={
         love.resize(win.W,win.H)
     end,
     UI={
-        back=gc.newImage('pic/UI/sign/back.png'), --120*70
+        back=gc.newImage('pic/UI/sign/back.png'),     --120*70
         lang=gc.newImage('pic/UI/sign/language.png')  --100*100
     }
 }
@@ -199,11 +199,6 @@ adaptWindow=love.math.newTransform(
 )
 
 mus=require'framework/music' sfx=require'framework/sound'
-voice={
-    pack={},
-    buffer={},
-    timer=0
-}
 
 require'init'--初始化各种游戏数据
 
@@ -358,6 +353,8 @@ function love.draw()
         gc.print(infoL,font.Bender,10,25,0,.15,.15)
         gc.printf(infoR,font.Bender,win.W-10-114514*.15,25,114514,'right',0,.15,.15)
     end
+
+    if win.discardAfterDraw then gc.discard() end
 end
 
 function love.quit()
