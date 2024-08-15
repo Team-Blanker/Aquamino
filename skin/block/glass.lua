@@ -25,6 +25,11 @@ function skin.update(player,dt)
     if player.spinAct then player.skinSpinTimer=player.skinSpinTimer+dt
     else player.skinSpinTimer=0 end
 end
+
+local bo={--泛光偏移值
+    1,0, 0,1, -1,0, 0,-1,
+    --.7,.7, -.7,.7, -.7,-.7, .7,-.7
+}
 function skin.fieldDraw(player,mino)
     local h=0 local n=player.event[1] and player.event[1]/player.history.CDelay
     local F=player.field
@@ -49,10 +54,10 @@ function skin.fieldDraw(player,mino)
     gc.setCanvas()
     gc.pop()
 
-    setColor(1,1,1,.025)
+    setColor(1,1,1,.036)
     draw(player.fieldCanvas,18,-18,0,1,-1)
-    for i=1,6 do  for j=1,4 do
-        local a,b=i*3*cos(j*math.pi/2),i*3*sin(j*math.pi/2)
+    for i=1,6 do  for j=1,#bo,2 do
+        local a,b=i*3*bo[j],i*3*bo[j+1]
         draw(player.fieldCanvas,18+a,-18+b,0,1,-1)
     end  end
     setColor(1,1,1,.15)
@@ -76,7 +81,7 @@ function skin.fieldDraw(player,mino)
 end
 function skin.curDraw(player,piece,x,y,color)
     for i=1,#piece do
-        setColor(color[1],color[2],color[3],.25+.25*(1-player.LTimer/player.LDelay))
+        setColor(color[1],color[2],color[3],.25+.3*(1-player.LTimer/player.LDelay))
         rect('fill',-18+36*(x+piece[i][1]),-18-36*(y+piece[i][2]),36,36)
         setColor(color)
         draw(pic,-18+36*(x+piece[i][1]),-18-36*(y+piece[i][2]))
