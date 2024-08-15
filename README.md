@@ -23,6 +23,7 @@ Note that the game path must be in English.
 ## Download the latest version (最新版下载)
 
 GitHub: https://github.com/Team-Blanker/Aquamino/releases/latest
+
 itch.io: https://aqua6623.itch.io/aquamino
 
 欢迎加入QQ群：893232441
