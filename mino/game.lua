@@ -56,6 +56,7 @@ function mino.blockLock(player)
     local his=player.history
     fLib.lock(player) fLib.loosenFall(player) mino.sfxPlay.lock(player)
     if mino.rule.onPieceDrop then mino.rule.onPieceDrop(player,mino) end
+    if mino.blockSkin.onPieceDrop then mino.blockSkin.onPieceDrop(player,mino) end
     if player.loosen[1] then
         his.push=#player.loosen
         if mino.rule.loosen.fallTPL==0 and player.CDelay==0 then

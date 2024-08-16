@@ -38,6 +38,18 @@ function skin.onLineClear(player,mino)
         end
     end
 end
+local his,p
+function skin.onPieceDrop(player,mino)
+    if mino.moreParticle then
+        his=player.history p=his.piece
+        for i=1,#his.piece do
+            for j=1,3 do
+                vel=.5+1*rand() angle=2*math.pi*rand()
+                ins(player.pList,{name=his.name,x=p[i][1]+his.x+rand()-.5,y=p[i][2]+his.y+rand()-.5,vx=vel*cos(angle),vy=vel*sin(angle),timer=0})
+            end
+        end
+    end
+end
 function skin.update(player,dt)
     if player.spinAct then player.skinSpinTimer=player.skinSpinTimer+dt
     else player.skinSpinTimer=0 end
@@ -102,15 +114,16 @@ function skin.fieldDraw(player,mino)
         end
     end
 end
-local arg
+local arg,c
 function skin.overFieldDraw(player,mino)
     local pList=player.pList
     for i=1,#pList do
         arg=1-pList[i].timer/fadeTime
+        c=mino.color[pList[i].name]
         local sx=pList[i].x+pList[i].vx*pList[i].timer
         local sy=pList[i].y+pList[i].vy*pList[i].timer
-        gc.setColor(mino.color[pList[i].name])
-        gc.circle('fill',36*sx,-36*sy,4.5*arg,4)
+        setColor(.25+.75*c[1],.25+.75*c[2],.25+.75*c[3])
+        rect('fill',36*sx-3*arg,-36*sy-3*arg,6*arg,6*arg)
     end
 end
 function skin.curDraw(player,piece,x,y,color)
