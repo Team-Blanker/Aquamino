@@ -16,17 +16,21 @@ function skin.init(player)
     player.stickerBatch=gc.newSpriteBatch(skin.sticker,512,'static')
     player.stickerList={}
 end
-function skin.onLineClear(player)
-    for k,v in pairs(player.history.clearLine) do
-        for i=1,#v do
-            if not v[i].loosen then ins(player.stickerList,{x=i,y=k,vx=3*(rand()-.5),avel=1.5*(rand()-.5),timer=0}) end
+function skin.onLineClear(player,mino)
+    if mino.moreParticle then
+        for k,v in pairs(player.history.clearLine) do
+            for i=1,#v do
+                if not v[i].loosen then ins(player.stickerList,{x=i,y=k,vx=3*(rand()-.5),avel=1.5*(rand()-.5),timer=0}) end
+            end
         end
     end
 end
-function skin.onLoose(player,lBlock)
-    for i=1,#lBlock do
-        if not lBlock[i].info.loosen then
-        ins(player.stickerList,{x=lBlock[i].x,y=lBlock[i].y,vx=3*(rand()-.5),avel=1.5*(rand()-.5),timer=0})
+function skin.onLoose(player,lBlock,mino)
+    if mino.moreParticle then
+        for i=1,#lBlock do
+            if not lBlock[i].info.loosen then
+            ins(player.stickerList,{x=lBlock[i].x,y=lBlock[i].y,vx=3*(rand()-.5),avel=1.5*(rand()-.5),timer=0})
+            end
         end
     end
 end

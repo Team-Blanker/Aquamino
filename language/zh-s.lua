@@ -99,6 +99,7 @@ return {
             vsyncTxt="本程序绘制代码与运算代码形式上分离，称绘制帧率为FPS，运算帧率为TPS。\n若设定的最高FPS小于等于垂直同步限制的FPS，则TPS不受限。\n本程序主要考虑PC端运行情况，该选项默认关闭。\n低性能设备可开启此选项优化运算代码运行。",
             discardAfterDraw="显存回收加速",
             DADTxt="每帧绘制完成后立刻丢弃对应显存。",
+            moreParticle="更多粒子特效",PEScale=.35,PEOffY=0,
             frameLim="最高绘制帧率:",frameTxt="推荐将该值调整为与显示器帧率相等。"
         },
         custom={

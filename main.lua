@@ -188,7 +188,7 @@ scene={
 }
 
 --scene.cur=require('minigame/territory/territory')
---scene.cur=require('scene/test/polar')
+--scene.cur=require('scene/test/nmp')
 --scene.cur=require('mino/game') scene.cur.mode='core destruction'
 
 win.x,win.y=love.window.getPosition()

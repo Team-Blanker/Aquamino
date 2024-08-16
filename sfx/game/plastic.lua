@@ -29,23 +29,23 @@ function plastic.addSFX()
     })
 end
 function plastic.move(player,success,landed)
-    if success then sfx.play('move') end
+    if success then sfx.play('move',1,.95+.1*rand()) end
 end
 function plastic.rotate(player,success,spin)
     if success then
-        if spin then sfx.play('spin') end
-        sfx.play('rotate')
-    else sfx.play('rotateFail') end
+        if spin then sfx.play('spin',1,.95+.1*rand()) end
+        sfx.play('rotate',1,.95+.1*rand())
+    else sfx.play('rotateFail',1,.95+.1*rand()) end
 end
 function plastic.hold()
-    sfx.play('hold')
+    sfx.play('hold',1,.95+.1*rand())
 end
 function plastic.touch(player,touch)
-    if touch then sfx.play('touch') end
+    if touch then sfx.play('touch',1,.95+.1*rand()) end
 end
 function plastic.lock(player)
-    if player.history.dropHeight>0 then sfx.play('HD') end
-    sfx.play('lock')
+    if player.history.dropHeight>0 then sfx.play('HD',1,.95+.1*rand()) end
+    sfx.play('lock',1,.95+.1*rand())
 end
 function plastic.clear(player)
     local his=player.history
@@ -56,10 +56,10 @@ function plastic.clear(player)
     if his.PC then sfx.play('PC') end
 end
 function plastic.loose(player)
-    sfx.play('loose')
+    sfx.play('loose',1,.95+.1*rand())
 end
 function plastic.push(player)
-    sfx.play('push')
+    sfx.play('push',1,.95+.1*rand())
 end
 function plastic.lose()
     sfx.play('lose')

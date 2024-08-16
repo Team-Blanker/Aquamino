@@ -48,9 +48,9 @@ function BUTTON.remove(name)
 end
 function BUTTON.update(dt,x,y,l)
     l=l or 0
-    for li,ly in pairs(BUTTON.list) do
-        for k,v in pairs(ly) do
-        if l==li and BUTTON.check(v,x,y) then
+    if not BUTTON.list[l] then return end
+    for k,v in pairs(BUTTON.list[l]) do
+        if BUTTON.check(v,x,y) then
             v.aboveT=min(v.aboveT+dt,v.aboveTLimit)
             v.hoverPos[1],v.hoverPos[2]=x-v.x,y-v.y
             v.hover=true
@@ -59,9 +59,9 @@ function BUTTON.update(dt,x,y,l)
             v.aboveT=max(v.aboveT-dt,0)
             v.hover=false
         end
+
         v.clickT=v.clickT+dt
         if v.always then v.always(dt,v) end
-        end
     end
 end
 function BUTTON.check(butt,x,y)

@@ -1,3 +1,5 @@
+local fadeTime=1/3
+
 local skin={}
 local COLOR=require('framework/color')
 local setColor,rect,draw=gc.setColor,gc.rectangle,gc.draw
@@ -14,6 +16,8 @@ function skin.init(player)
     player.fieldCanvas:setFilter('nearest')
     player.skinSpinTimer=0
     player.spinAct=false
+
+    player.pList={}
 end
 function skin.keyP(player,k)
     if (k=='CW' or k=='CCW' or k=='flip') and player.cur.kickOrder then
@@ -21,9 +25,28 @@ function skin.keyP(player,k)
     if player.cur.spin then player.skinSpinTimer=0 end
     end
 end
+local vel,angle
+function skin.onLineClear(player,mino)
+    if mino.moreParticle then
+        for k,v in pairs(player.history.clearLine) do
+            for i=1,#v do
+                for j=1,4 do
+                    vel=.5+1*rand() angle=2*math.pi*rand()
+                    ins(player.pList,{name=v[i].name,x=i+rand()-.5,y=k+rand()-.5,vx=vel*cos(angle),vy=vel*sin(angle),timer=0})
+                end
+            end
+        end
+    end
+end
 function skin.update(player,dt)
     if player.spinAct then player.skinSpinTimer=player.skinSpinTimer+dt
     else player.skinSpinTimer=0 end
+
+    local pList=player.pList
+    for i=#pList,1,-1 do
+        pList[i].timer=pList[i].timer+dt
+        if pList[i].timer>fadeTime then rem(pList,i) end
+    end
 end
 
 local bo={--泛光偏移值
@@ -77,6 +100,17 @@ function skin.fieldDraw(player,mino)
             setColor(1,1,1,n)
             rect('fill',18,-36*h-18,36*player.w,36)
         end
+    end
+end
+local arg
+function skin.overFieldDraw(player,mino)
+    local pList=player.pList
+    for i=1,#pList do
+        arg=1-pList[i].timer/fadeTime
+        local sx=pList[i].x+pList[i].vx*pList[i].timer
+        local sy=pList[i].y+pList[i].vy*pList[i].timer
+        gc.setColor(mino.color[pList[i].name])
+        gc.circle('fill',36*sx,-36*sy,4.5*arg,4)
     end
 end
 function skin.curDraw(player,piece,x,y,color)

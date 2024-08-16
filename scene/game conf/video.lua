@@ -5,7 +5,10 @@ local video={}
 local BUTTON,SLIDER=scene.button,scene.slider
 function video.read()
     local isMobile=win.OS=='Android' or win.OS=='iOS'
-    video.info={unableBG=false,vsync=false,fullscr=false,frameLim=isMobile and 60 or 120,discardAfterDraw=false}
+    video.info={
+        unableBG=false,vsync=false,fullscr=false,frameLim=isMobile and 60 or 120,
+        discardAfterDraw=false,moreParticle=false
+    }
     local info=file.read('conf/video')
     T.combine(video.info,info)
     win.setFullscr(video.info.fullscr)
@@ -41,6 +44,7 @@ function video.init()
     video.DADTxt:addf(cf.video.DADTxt,2500,'left')
     video.dth=video.DADTxt:getHeight()
 
+    BUTTON.setLayer(1)
     BUTTON.create('quit',{
         x=-700,y=400,type='rect',w=200,h=100,
         draw=function(bt,t)
@@ -119,23 +123,6 @@ function video.init()
             sfx.play(video.info.vsync and 'cOn' or 'cOff')
         end
     },.2)
-    BUTTON.create('vsyncInfo',{
-        x=800,y=-160,type='circle',r=32,
-        draw=function(bt,t,ct)
-            gc.setColor(1,1,1)
-            gc.draw(iq,0,0,0,.5,.5,32,32)
-            gc.setColor(0,0,0,.5)
-            vsf()
-            vit=t vir=bt.r
-            gc.stencil(vsf,'replace',1)
-            gc.setStencilTest('equal',1)
-            gc.setColor(1,1,1)
-            gc.draw(video.vsyncTxt,bt.r/2,bt.r+8,0,.25,.25,2500,0)
-            gc.setStencilTest()
-        end,
-        event=function()
-        end
-    },.25)
     BUTTON.create('fullscr',{
         x=-180,y=-240,type='rect',w=80,h=80,
         draw=function(bt,t,ct)
@@ -168,7 +155,7 @@ function video.init()
         end
     },.2)
     BUTTON.create('discardAfterDraw',{
-        x=390,y=0,type='rect',w=80,h=80,
+        x=390,y=-40,type='rect',w=80,h=80,
         draw=function(bt,t,ct)
             local animArg=video.info.discardAfterDraw and min(ct/.2,1) or max(1-ct/.2,0)
             local w,h=bt.w,bt.h
@@ -196,8 +183,55 @@ function video.init()
             sfx.play(video.info.discardAfterDraw and 'cOn' or 'cOff')
         end
     },.2)
+    BUTTON.create('moreParticle',{
+        x=-750,y=-40,type='rect',w=80,h=80,
+        draw=function(bt,t,ct)
+            local animArg=video.info.moreParticle and min(ct/.2,1) or max(1-ct/.2,0)
+            local w,h=bt.w,bt.h
+            local r=M.lerp(1,.5,animArg)
+            local g=1
+            local b=M.lerp(1,.875,animArg)
+            gc.setColor(.5,1,.875,.4)
+            gc.rectangle('fill',w/2,-h/2,360*animArg,h)
+            gc.setColor(1,1,1,.4)
+            gc.rectangle('fill',w/2+360*animArg,-h/2,360*(1-animArg),h)
+            gc.setColor(r,g,b)
+            gc.setLineWidth(8)
+            gc.rectangle('line',-w/2+4,-h/2+4,h-8,h-8)
+            if video.info.moreParticle then
+                gc.circle('line',0,0,(w/2-4)*1.4142,4)
+            end
+            gc.setColor(r,g,b,2*t)
+            gc.rectangle('fill',-w/2,-h/2,h,h)
+            gc.setColor(1,1,1)
+            gc.printf(cf.video.moreParticle,font.Bender_B,w/2+40,cf.video.PEOffY,1200,'left',0,cf.video.PEScale,cf.video.PEScale,0,72)
+        end,
+        event=function()
+            video.info.moreParticle=not video.info.moreParticle
+            sfx.play(video.info.moreParticle and 'cOn' or 'cOff')
+        end
+    },.2)
+
+    BUTTON.setLayer(2)
+    BUTTON.create('vsyncInfo',{
+        x=800,y=-160,type='circle',r=32,
+        draw=function(bt,t,ct)
+            gc.setColor(1,1,1)
+            gc.draw(iq,0,0,0,.5,.5,32,32)
+            gc.setColor(0,0,0,.5)
+            vsf()
+            vit=t vir=bt.r
+            gc.stencil(vsf,'replace',1)
+            gc.setStencilTest('equal',1)
+            gc.setColor(1,1,1)
+            gc.draw(video.vsyncTxt,bt.r/2,bt.r+8,0,.25,.25,2500,0)
+            gc.setStencilTest()
+        end,
+        event=function()
+        end
+    },.25)
     BUTTON.create('DADInfo',{
-        x=800,y=80,type='circle',r=32,
+        x=800,y=40,type='circle',r=32,
         draw=function(bt,t,ct)
             gc.setColor(1,1,1)
             gc.draw(iq,0,0,0,.5,.5,32,32)
@@ -214,8 +248,8 @@ function video.init()
         end
     },.25)
     SLIDER.create('frameLim',{
-        x=-400,y=0,type='hori',sz={800,32},button={32,32},
-        gear=0,pos=(video.info.frameLim-60)/240,
+        x=-360,y=160,type='hori',sz={800,32},button={32,32},
+        gear=0,pos=(video.info.frameLim-30)/270,
         sliderDraw=function(g,sz)
             gc.setColor(.5,.5,.5,.8)
             gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
@@ -230,10 +264,10 @@ function video.init()
             gc.circle('fill',sz[1]*(pos-.5),0,20,4)
         end,
         always=function(pos)
-            video.info.frameLim=math.floor(60.5+pos*240)
+            video.info.frameLim=math.floor(30.5+pos*240)
         end,
         release=function(pos)
-            video.info.frameLim=math.floor(60.5+pos*240)
+            video.info.frameLim=math.floor(30.5+pos*240)
             drawCtrl.dtRestrict=1/video.info.frameLim
         end
     })
@@ -242,14 +276,16 @@ function video.detectKeyP(k)
     if k=='f11' then video.info.fullscr=win.fullscr end
 end
 function video.mouseP(x,y,button,istouch)
-    if not BUTTON.press(x,y) and SLIDER.mouseP(x,y,button,istouch) then end
+    if not BUTTON.press(x,y,1) and SLIDER.mouseP(x,y,button,istouch) then end
 end
 function video.mouseR(x,y,button,istouch)
-    BUTTON.release(x,y)
+    BUTTON.release(x,y,1)
     SLIDER.mouseR(x,y,button,istouch)
 end
 function video.update(dt)
-    BUTTON.update(dt,adaptWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5))
+    local msx,msy=adaptWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5)
+    BUTTON.update(dt,msx,msy,1)
+    BUTTON.update(dt,msx,msy,2)
     if SLIDER.acting then SLIDER.always(SLIDER.list[SLIDER.acting],
         adaptWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5))
     end
@@ -257,7 +293,7 @@ end
 function video.draw()
     gc.setColor(1,1,1)
     gc.printf(cf.main.video,font.Bender,0,-430,1280,'center',0,1,1,640,72)
-    BUTTON.draw() SLIDER.draw()
+    BUTTON.draw(1) BUTTON.draw(2) SLIDER.draw()
 end
 function video.exit()
     video.save()

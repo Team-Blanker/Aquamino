@@ -634,10 +634,10 @@ function mino.init()
 
         fLib.setRS(P[1],pf.RS)
 
-        local vi={unableBG=false}
+        local vi={unableBG=false,moreParticle=false}
         T.combine(vi,file.read('conf/video'))
         mino.unableBG=vi.unableBG
-
+        mino.moreParticle=vi.moreParticle
 
         mino.color={Z={.96,.16,.32},S={.48,.96,0},J={0,.64,.96},L={.96,.64,.32},T={.8,.2,.96},O={.96,.96,0},I={.16,.96,.72},
             g1={.5,.5,.5},g2={.75,.75,.75},
@@ -865,7 +865,7 @@ function mino.inputPress(k)
 
                     if lBlock and #lBlock>0 then
                         if mino.sfxPlay.loose then mino.sfxPlay.loose(OP) end
-                        if mino.blockSkin.onLoose then mino.blockSkin.onLoose(OP,lBlock) end
+                        if mino.blockSkin.onLoose then mino.blockSkin.onLoose(OP,lBlock,mino) end
                     end
                     if push then
                         OP.cur.ghostY=fLib.getGhostY(OP)
