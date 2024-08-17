@@ -55,7 +55,7 @@ function skin.onPieceDrop(player,mino)
     if mino.moreParticle then
         his=player.history p=his.piece
         for i=1,#his.piece do
-            for j=1,3 do
+            for j=1,2 do
                 vel=.5+1*rand() angle=2*math.pi*rand()
                 ins(player.pList,{name=his.name,x=p[i][1]+his.x+rand()-.5,y=p[i][2]+his.y+rand()-.5,vx=vel*cos(angle),vy=vel*sin(angle),timer=0})
             end
@@ -130,7 +130,7 @@ local arg,c
 function skin.overFieldDraw(player,mino)
     local pList=player.pList
     for i=1,#pList do
-        arg=1-pList[i].timer/fadeTime
+        arg=min(1-pList[i].timer/fadeTime,1)
         c=mino.color[pList[i].name]
         local sx=pList[i].x+pList[i].vx*pList[i].timer
         local sy=pList[i].y+pList[i].vy*pList[i].timer

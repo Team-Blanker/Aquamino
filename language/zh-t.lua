@@ -154,6 +154,7 @@ return {
         "Lua天下第一！",
         "海蘭就是個彩筆打塊的，懂什麼代碼",
         "Bad argument #6623:Attempt to compare number with nil",
+        "Aquad = Aqua + Quad",
         "我是一條湊數tip",
         "你說得對，但是…",
         "打SDPC不接DPC，那我缺的這個spike這塊誰給我補啊",

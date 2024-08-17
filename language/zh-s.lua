@@ -157,6 +157,7 @@ return {
         "Lua天下第一！",
         "海兰就是个彩笔打块的，懂什么代码",
         "Bad argument #6623:Attempt to compare number with nil",
+        "Aquad = Aqua + Quad",
         "我是一条凑数tip",
         "你说得对，但是……",
         "打SDPC不接DPC，那我缺的这个spike这块谁给我补啊",
