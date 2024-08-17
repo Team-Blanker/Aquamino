@@ -158,7 +158,7 @@ return {
         "Bad argument #6623: Attempt to compare number with nil",
         "I'm just a tip...",
         "This is Kairan, neither capable nor cute,only making nonsense in tips",
-        "I'm not the first one who add tips into a block game,anyway",
+        "I'm not the first one who add tips into a block game, anyway",
         "A Project by TEAM BLANKER",
         "August 14th is the game's birthday, also Kairan's birthday.",
         "Block skin \"Carbon Fibre\" is inspired by Rubik's cubes that use carbon fibre stickers.",
