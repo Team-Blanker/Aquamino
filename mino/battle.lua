@@ -101,12 +101,13 @@ function battle.stdAtkGen(player,time)
 end
 function battle.stdAtkRecv(player)
     local amount=0
-    for i=#player.garbage,1,-1 do
+    local i=1
+    while i<=#player.garbage do
         if player.garbage[i].time<=0 then
             battle.atkRecv(player,player.garbage[i])
             amount=amount+player.garbage[i].amount
             rem(player.garbage,i)
-            end
+        else i=i+1 end
     end
     return amount
 end
