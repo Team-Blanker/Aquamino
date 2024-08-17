@@ -4,6 +4,7 @@ local setColor,rect,line,circle,printf,draw=gc.setColor,gc.rectangle,gc.line,gc.
 
 local atkAnimTMax=.5
 local defAnimTMax=.2
+local recvAnimTMax=.25
 local dangerAnimTMax=.2
 local gts
 function simple.init(player)
@@ -90,7 +91,7 @@ function simple.updateDefenseAnim(player,defList)
 end
 function simple.garbageDraw(player,mino)
     local W,H=36*player.w,36*player.h
-    local t
+    local t,rt
     local dal=player.defAnimList
     local tga=0 --总垃圾数
     for i=1,#dal do
@@ -98,14 +99,22 @@ function simple.garbageDraw(player,mino)
         tga=tga+dal[i].amount*t
     end
     for i=1,#player.garbage do
-        tga=tga+player.garbage[i].amount
-        t=(1-min(player.garbage[i].appearT,.075)/.075)^2
-        gc.setColor(1,.75,.75,1-t)
-        rect('fill',-W/2-18,H/2-36*(tga+t*.75),16,36*player.garbage[i].amount)
-        gc.setColor(1,0,0,1-t)
-        rect('fill',-W/2-17,H/2-36*(tga+t*.75)+2,14,36*player.garbage[i].amount-4)
-        gc.setColor(1,1,1,1-t)
-        rect('fill',-W/2-15,H/2-36*(tga+t*.75)+4,4,1) rect('fill',-W/2-15,H/2-36*(tga+t*.75)+4,1,4)
+        local g=player.garbage[i]
+        tga=tga+g.amount
+        if tga<=40 then
+            rt=-g.time/recvAnimTMax
+            t=(1-min(g.appearT,.075)/.075)^2
+            gc.setColor(1,1,1,2-2*rt)
+            gc.setLineWidth(2)
+            rect('line',-W/2-18-8*rt,H/2-36*(tga+t*.75)-12*rt,16+16*rt,36*g.amount+24*rt)
+
+            if g.time>0 then gc.setColor(.6,.45,.45,1-t) else gc.setColor(1,.75,.75,1-t) end
+            rect('fill',-W/2-18,H/2-36*(tga+t*.75),16,36*g.amount)
+            if g.time>0 then gc.setColor(.5,0,0,1-t) else gc.setColor(1,0,0,1-t) end
+            rect('fill',-W/2-17,H/2-36*(tga+t*.75)+2,14,36*g.amount-4)
+            gc.setColor(1,1,1,1-t)
+            rect('fill',-W/2-15,H/2-36*(tga+t*.75)+4,4,1) rect('fill',-W/2-15,H/2-36*(tga+t*.75)+4,1,4)
+        end
     end
 
     for i=1,#dal do

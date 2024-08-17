@@ -46,13 +46,12 @@ function rule.gameUpdate(P,dt,mino)
         end
     end
     if P[2].deadTimer>=0 then mino.win(P[1]) end
+
+    for i=1,#P do battle.update(P[i],dt) end
 end
 function rule.postCheckClear(player,mino)
     if player.history.line==0 then
-        for i=1,#player.garbage do
-        battle.atkRecv(player,player.garbage[i])
-        end
-        player.garbage={}
+        battle.stdAtkRecv(player)
     else battle.defense(player,battle.stdAtkCalculate(player),mino)
     end
 end

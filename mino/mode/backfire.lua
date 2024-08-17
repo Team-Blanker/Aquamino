@@ -21,11 +21,7 @@ function rule.BGUpdate()
 end
 function rule.postCheckClear(player,mino)
     if player.history.line==0 then
-        for i=1,#player.garbage do
-        battle.atkRecv(player,player.garbage[i])
-        player.recvLine=player.recvLine+player.garbage[i].amount
-        end
-        player.garbage={}
+        player.recvLine=player.recvLine+battle.stdAtkRecv(player)
     else battle.defense(player,battle.stdAtkCalculate(player),mino)
     end
 end
@@ -33,7 +29,7 @@ function rule.onLineClear(player,mino)
     local his=player.history
     player.line=player.line+his.line
     player.atk=player.atk+battle.stdAtkCalculate(player)
-    battle.sendAtk(player,player,battle.stdAtkGen(player))
+    battle.sendAtk(player,player,battle.stdAtkGen(player,0))
 end
 function rule.afterPieceDrop(player,mino)
     if player.recvLine>=80 then mino.win(player) end

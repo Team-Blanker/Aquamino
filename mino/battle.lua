@@ -15,7 +15,8 @@ function battle.sendAtk(player,dest,atk)
     block=什么颜色的方块，建议使用'g1' 'g2'
     cut=该组垃圾会被切割成几行一组一起进入，允许浮点数
     M_OC=Messiness On Change，该组与上一组垃圾的洞位置不一致的概率
-    appearT=垃圾进槽时间
+    appearT=垃圾进入缓冲槽动画时间参数
+    time=垃圾缓冲时间
     cut=1e99 M_OC=1即标准对战垃圾
     }]]
     local x,y,ox,oy=block.size(player.history.piece)
@@ -64,6 +65,11 @@ function battle.defense(player,amount,mino)
 
     player.defAmount=defAmount --抵消了多少攻击
 end
+function battle.update(player,dt)
+    for i=1,#player.garbage do
+        player.garbage[i].time=player.garbage[i].time-dt
+    end
+end
 
 local l,s,m,w,b,c
 function battle.stdAtkCalculate(player)
@@ -77,7 +83,7 @@ function battle.stdAtkCalculate(player)
     return l==0 and 0 or floor(bl+ba+ca)
     end
 end
-function battle.stdAtkGen(player)
+function battle.stdAtkGen(player,time)
     local his=player.history
     l,s,m,w,b,c=his.line,his.spin,his.mini,his.wide,his.B2B,his.combo
 
@@ -88,8 +94,20 @@ function battle.stdAtkGen(player)
         amount=atk,
         block='g1',
         cut=(w==4 or his.PC) and 1e99 or s and atk/2+b or 1e99,
-        M_OC=(w>=2 and w<=4) and (4-w)*.025 or his.PC and 0 or 1/(b+atk-0.1*(c-3)),
+        M_OC=(w>=2 and w<=4) and (4-w)*.025 or his.PC and 0 or max(1/(b+atk-0.1*(c-3)),.2),
         appearT=0,
+        time=time or .5,
     }
+end
+function battle.stdAtkRecv(player)
+    local amount=0
+    for i=#player.garbage,1,-1 do
+        if player.garbage[i].time<=0 then
+            battle.atkRecv(player,player.garbage[i])
+            amount=amount+player.garbage[i].amount
+            rem(player.garbage,i)
+            end
+    end
+    return amount
 end
 return battle
