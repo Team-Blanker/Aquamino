@@ -114,8 +114,8 @@ function love.resize(w,h)
 end
 
 win={
-    stat={launch=0,version="Beta V0.1.1",totalTime=0},
-    versionTxt="Beta V0.1.1 Icosahedron",
+    stat={launch=0,version="Beta V0.1.2",totalTime=0},
+    versionTxt="Beta V0.1.2 Icosahedron",
     OS=love.system.getOS(),
     showInfo=false,
     fullscr=false,discardAfterDraw=false,
