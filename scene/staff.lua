@@ -19,7 +19,7 @@ local devList={
     specialThanks={
         {'MrZ_26'},
         {'XMiao小渺 (XM1ao)','User670','MianSoft','沙盒子','Sunday'},
-        {'T427 默默颗','風洛靈flore','大叔Rex'},
+        {'T427 默默颗','風洛霊flore','大叔Rex'},
         {'Not-A-Normal-Robot','SweetSea-ButImNotSweet'},
         {'nekonaomii (MelloBoo44)'}
     }

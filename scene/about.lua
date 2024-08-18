@@ -31,13 +31,13 @@ function about.init()
         mus.setTag({'menu'})
     end
 
-    local txt=user.lang.about.repo..'\n'
+    local txt=user.lang.about.repo..'\n\n'
     for i=1,#repo do
         txt=txt..string.format('%s by %s\n',repo[i][1],repo[i][2])
     end
     about.rTxt=gc.newText(font.Bender)
     about.rTxt:setf(txt,500*3,'left')
-    txt=user.lang.about.tool..'\n'
+    txt=user.lang.about.tool..'\n\n'
     for i=1,#tool do
         txt=txt..string.format('%s\n',tool[i])
     end
