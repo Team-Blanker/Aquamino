@@ -705,7 +705,7 @@ function mino.init()
     mino.ptList={
         resume={txt=gc.newText(font.Bender,ptxt.resume)},
         retry={txt=gc.newText(font.Bender,ptxt.r)},
-        quit={txt=gc.newText(font.Bender,ptxt.quit)},
+        back={txt=gc.newText(font.Bender,ptxt.back)},
     }
     local pt=mino.ptList
     for k,v in pairs(pt) do
@@ -766,7 +766,7 @@ function mino.init()
             gc.setLineWidth(3)
             gc.rectangle('line',-200,-50,400,100)
             gc.setColor(1,1,1)
-            gc.draw(pt.quit.txt,0,0,0,.5,.5,pt.quit.w/2,pt.quit.h/2)
+            gc.draw(pt.back.txt,0,0,0,.5,.5,pt.back.w/2,pt.back.h/2)
             end
         end,
         event=function()
