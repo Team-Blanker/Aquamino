@@ -79,7 +79,7 @@ return {
         tester="以及其他所有内測成員"
     },
     pause={
-        resume="繼續",quit="退出",r="重開"
+        resume="繼續",back="返回",r="重開"
     },
     game={
         nowPlaying="目前播放 : ",

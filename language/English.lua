@@ -79,7 +79,7 @@ return {
         tester="...and all other testers"
     },
     pause={
-        resume="Return",quit="Quit",r="Restart"
+        resume="Return",back="Back",r="Restart"
     },
     game={
         nowPlaying="Now playing: ",
