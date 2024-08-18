@@ -49,9 +49,7 @@ menu.modeList={
     ['core destruction']={x=300,y=-300,borderColor={0,1,1}},
 }
 menu.notRecordScore={sandbox=true,battle=true,['core destruction']=true}
-menu.icon={
-    border=gc.newImage('pic/mode icon/border.png')
-}
+menu.icon={}
 menu.option={
     battle={bot_DropDelay=1,playerPos='left'},
     ['core destruction']={bot_DropDelay=1,playerPos='left'},
@@ -333,7 +331,8 @@ function menu.draw()
         gc.setColor(c[1],c[2],c[3],.25+v.hoverT)
         gc.draw(cv,v.x,v.y,0,1,1,150,150)
         gc.setColor(c)
-        gc.draw(menu.icon.border,v.x,v.y,0,1,1,150,150)
+        gc.setLineWidth(4)
+        gc.circle('line',v.x,v.y,140,4)
         gc.setColor(1,1,1)
         gc.draw(menu.icon[k],v.x,v.y,0,1,1,150,150)
     end
