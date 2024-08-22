@@ -32,8 +32,9 @@ local progressAct={
     {180,4,function(player)
         local list={}
         for i=1,4 do
-            list[i]={'s','mayhem',i-min(max(abs(floor(player.beat%48/4)-6)-1,0),4)<=0 and i or player.w-4+i}
+            list[i]={'s','mayhem',i-min(max(abs(floor(rule.laserIndex%12)-6)-1,0),4)<=0 and i or player.w-4+i}
         end
+        rule.laserIndex1=rule.laserIndex1+1
         list.beat=4
         return list
     end},
@@ -46,16 +47,18 @@ local progressAct={
         return {{'s','destroy',rand(player.w)},{'s','destroy',rand(player.w)},beat=8}
     end},
     --“走马灯”
-    {240,4,function (player)
+    {245,4,function (player)
         local list={}
-        for i=1,3 do list[i]={'s','mayhem',(i+floor(player.beat%(player.w*4)/4))%player.w+1} end
+        for i=1,3 do list[i]={'s','mayhem',(i+rule.laserIndex2)%player.w+1} end
+        rule.laserIndex2=rule.laserIndex2+1
         list.beat=4
         return list
     end},
     --反向走马灯
     {270,4,function (player)
         local list={}
-        for i=1,3 do list[i]={'s','mayhem',(i-floor(player.beat%(player.w*4)/4))%player.w+1} end
+        for i=1,3 do list[i]={'s','mayhem',(i+rule.laserIndex2)%player.w+1} end
+        rule.laserIndex2=rule.laserIndex2-1
         list.beat=4
         return list
     end},
@@ -101,6 +104,9 @@ function rule.init(P,mino)
     P[1].eventBeat=0
     P[1].beat=0
     P[1].garbageTimer,P[1].garbageTMax=3,3
+
+    rule.laserIndex1=rand(12)
+    rule.laserIndex2=rand(8)
 end
 
 local laserAct={
