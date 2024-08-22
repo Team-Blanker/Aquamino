@@ -275,6 +275,14 @@ end
 function video.detectKeyP(k)
     if k=='f11' then video.info.fullscr=win.fullscr end
 end
+function video.keyP(k)
+    if k=='escape' then
+        scene.switch({
+            dest='conf',destScene=require('scene/game conf/conf_main'),swapT=.15,outT=.1,
+            anim=function() anim.confBack(.1,.05,.1,0,0,0) end
+        })
+    end
+end
 function video.mouseP(x,y,button,istouch)
     if not BUTTON.press(x,y,1) and SLIDER.mouseP(x,y,button,istouch) then end
 end

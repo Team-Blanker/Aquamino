@@ -123,7 +123,12 @@ function key.keyP(k)
                 if not T.include(key.banned,k) then table.insert(K,k) sfx.play('keyAdd') end
             end
         end
-    --[[elseif k=='escape' then key.quit() love.event.quit()]] end
+    elseif k=='escape' then
+        scene.switch({
+            dest='conf',destScene=require('scene/game conf/conf_main'),swapT=.15,outT=.1,
+            anim=function() anim.confBack(.1,.05,.1,0,0,0) end
+        })
+    end
 end
 function key.mouseP(x,y,button,istouch)
     if not (button==1 and BUTTON.press(x,y)) then

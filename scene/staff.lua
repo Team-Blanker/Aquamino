@@ -153,6 +153,14 @@ end
 
 local mp=false local opy,mpy=0,0
 local hp=false local ohy,mhy=0,0
+function stf.keyP(k)
+    if k=='escape' then
+        scene.switch({
+            dest='about',destScene=require('scene/about'),swapT=.6,outT=.2,
+            anim=function() anim.cover(.2,.4,.2,0,0,0) end
+        })
+    end
+end
 function stf.mouseP(x,y,button,istouch)
     mp=true opy,mpy=stf.posy,y
     if stf.posy==posyMax then

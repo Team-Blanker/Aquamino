@@ -136,6 +136,14 @@ function hand.init()
         end
     })
 end
+function hand.keyP(k)
+    if k=='escape' then
+        scene.switch({
+            dest='conf',destScene=require('scene/game conf/conf_main'),swapT=.15,outT=.1,
+            anim=function() anim.confBack(.1,.05,.1,0,0,0) end
+        })
+    end
+end
 function hand.mouseP(x,y,button,istouch)
     if not BUTTON.press(x,y) and SLIDER.mouseP(x,y,button,istouch) then end
 end

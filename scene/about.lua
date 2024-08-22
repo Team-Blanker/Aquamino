@@ -122,6 +122,14 @@ function about.init()
     }
     about.obs2.fixture=LP.newFixture(about.obs2.body,about.obs2.shape,1)
 end
+function about.keyP(k)
+    if k=='escape' then
+        scene.switch({
+            dest='menu',destScene=require('scene/menu'),swapT=.3,outT=.2,
+            anim=function() anim.enterDL(.2,.1,.2,0,0,0) end
+        })
+    end
+end
 local drag=false
 function about.mouseP(x,y,button,istouch)
     if (x-about.loveBall.body:getX())^2+(y-about.loveBall.body:getY())^2<ballR^2 then

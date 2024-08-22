@@ -213,6 +213,14 @@ function bc.init()
         end
     })
 end
+function bc.keyP(k)
+    if k=='escape' then
+        scene.switch({
+            dest='custom',destScene=require('scene/game conf/custom'),swapT=.15,outT=.1,
+            anim=function() anim.confBack(.1,.05,.1,0,0,0) end
+        })
+    end
+end
 function bc.mouseP(x,y,button,istouch)
     if not BUTTON.press(x,y) and SLIDER.mouseP(x,y,button,istouch) then
     end
