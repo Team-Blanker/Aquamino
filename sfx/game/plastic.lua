@@ -21,6 +21,8 @@ function plastic.addSFX()
         ['4']='sfx/game/plastic/4.wav',
         combo='sfx/game/plastic/combo.wav',
 
+        B2BBreak='sfx/game/plastic/B2BBreak.wav',
+
         spinClear='sfx/game/plastic/spin clear.wav',
         PC='sfx/game/plastic/PC.wav',
 
@@ -54,6 +56,9 @@ function plastic.clear(player)
     if his.spin then sfx.play('spinClear',his.line>0 and 1 or .5,his.mini and .75 or 1) end
     if his.line>0 then sfx.play('combo',1,pitch) end
     if his.PC then sfx.play('PC') end
+end
+function plastic.B2BBreak()
+    sfx.play('B2BBreak')
 end
 function plastic.loose(player)
     sfx.play('loose',1,.95+.1*rand())
