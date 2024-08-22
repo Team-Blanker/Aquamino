@@ -918,12 +918,16 @@ end
 
 function mino.keyP(k)
     for ki,v in pairs(S.keySet) do
-        if T.include(v,k) then mino.inputPress(ki) end
+        if T.include(v,k) then mino.inputPress(ki)
+            if S.VKey.enabled then vKey.animPress(ki) end
+        end
     end
 end
 function mino.keyR(k)
     for ki,v in pairs(S.keySet) do
-        if T.include(v,k) then mino.inputRelease(ki) end
+        if T.include(v,k) then mino.inputRelease(ki)
+        if S.VKey.enabled then vKey.animRelease(ki) end
+        end
     end
 end
 function mino.touchP(id,x,y)

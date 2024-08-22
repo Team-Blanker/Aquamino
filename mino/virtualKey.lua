@@ -20,8 +20,12 @@ local abs=math.abs
 local tau=2*math.pi
 local vk={}
 
+local function checkAct(k)
+    return T.include(vk.act,k) or vk.animAct[k]
+end
+
 local function defaultVkDraw(k,v)
-    if T.include(vk.act,k) then gc.setColor(1,1,1,.25)
+    if checkAct(k) then gc.setColor(1,1,1,.25)
     gc.circle('fill',v.x,v.y,v.r*15/16,4)
     end
 
@@ -35,12 +39,13 @@ local function defaultVkDraw(k,v)
     gc.setColor(1,1,1,.8)
     gc.draw(keyIcon[k],v.x,v.y,0,v.r/100,v.r/100,100,100)
 end
+
 local vkDraw={
     ML=function(k,v)
         local l=v.holdT>=vk.ctrl.ASD and v.holdT>0
         local va=min(v.holdT-vk.ctrl.ASD,.1)*5
 
-        if T.include(vk.act,k) then
+        if checkAct(k) then
             if l then gc.setColor(.5,1,.875,.25) else gc.setColor(1,1,1,.25) end
             gc.circle('fill',v.x,v.y,v.r*15/16,4)
         end
@@ -63,7 +68,7 @@ local vkDraw={
         local l=v.holdT>=vk.ctrl.ASD and v.holdT>0
         local va=min(v.holdT-vk.ctrl.ASD,.1)*5
 
-        if T.include(vk.act,k) then
+        if checkAct(k) then
             if l then gc.setColor(.5,1,.875,.25) else gc.setColor(1,1,1,.25) end
             gc.circle('fill',v.x,v.y,v.r*15/16,4)
         end
@@ -86,7 +91,7 @@ local vkDraw={
         local l=v.holdT>=vk.ctrl.SD_ASD and v.holdT>0
         local va=min(v.holdT-vk.ctrl.SD_ASD,.1)*5
 
-        if T.include(vk.act,k) then
+        if checkAct(k) then
             if l then gc.setColor(.5,1,.875,.25) else gc.setColor(1,1,1,.25) end
             gc.circle('fill',v.x,v.y,v.r*15/16,4)
         end
@@ -108,7 +113,7 @@ local vkDraw={
     CW=function(k,v)
     local as=min(max((1-v.clickT/.2)^3,0),1)
 
-    if T.include(vk.act,k) then gc.setColor(1,1,1,.25)
+    if checkAct(k) then gc.setColor(1,1,1,.25)
         gc.arc('fill','closed',v.x,v.y,v.r*15/16,-as/4*tau,(3-as)/4*tau,3)
     end
 
@@ -126,7 +131,7 @@ local vkDraw={
     CCW=function(k,v)
         local as=min(max((1-v.clickT/.2)^3,0),1)
 
-        if T.include(vk.act,k) then gc.setColor(1,1,1,.25)
+        if checkAct(k) then gc.setColor(1,1,1,.25)
             gc.arc('fill','closed',v.x,v.y,v.r*15/16,as/4*tau,(3+as)/4*tau,3)
         end
 
@@ -144,7 +149,7 @@ local vkDraw={
     flip=function(k,v)
         local as=min(max((1-v.clickT/.2)^3,0),1)
 
-        if T.include(vk.act,k) then gc.setColor(1,1,1,1-3^.5/2)
+        if checkAct(k) then gc.setColor(1,1,1,1-3^.5/2)
             gc.arc('fill','closed',v.x,v.y,v.r*15/16,-as/4*tau,(3-as)/4*tau,3)
             gc.arc('fill','closed',v.x,v.y,v.r*15/16, as/4*tau,(3+as)/4*tau,3)
         end
@@ -166,6 +171,7 @@ local vkDraw={
 function vk.init(ctrl,anim)
     vk.key={}
     vk.act={}
+    vk.animAct={}--非触屏
     vk.ctrl=ctrl
     vk.anim=anim
 end
@@ -193,9 +199,17 @@ function vk.release(id,x,y)
     vk.act[id]=nil
     return rk
 end
+
+function vk.animPress(k)
+    vk.animAct[k]=true vk.key[k].clickT=0
+end
+function vk.animRelease(k)
+    vk.animAct[k]=false
+end
+
 function vk.update(dt)
     for k,v in pairs(vk.key) do
-        if T.include(vk.act,k) then v.holdT=v.holdT+dt else v.holdT=0 end
+        if checkAct(k) then v.holdT=v.holdT+dt else v.holdT=0 end
     end
 end
 function vk.animUpdate(dt)
