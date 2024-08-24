@@ -1156,6 +1156,7 @@ function mino.draw()
     gc.rectangle('fill',-1000,-600,2000,1200) end
 
     if mino.rule.underAllDraw then mino.rule.underAllDraw(P,mino) end
+
     for i=#P,1,-1 do
         C,H,A=P[i].cur,P[i].hold,P[i].smoothAnim
 
@@ -1242,6 +1243,8 @@ function mino.draw()
             if P[i].loseTimer>=0 and mino.theme.loseAnim then mino.theme.loseAnim(P[i],S,mino) end
         gc.pop()
     end
+
+    if mino.rule.overAllDraw then mino.rule.overAllDraw(P,mino) end
 
     vKey.draw()
 

@@ -46,13 +46,13 @@ menu.modeList={
     master={x=-300,y=300,borderColor={1,.25,.25}},
     multitasking={x=0,y=300,borderColor={1,.25,.25}},
     laser={x=450,y=-150,borderColor={0,1,1}},
-    ['core destruction']={x=300,y=-300,borderColor={0,1,1}},
+    ['tower defense']={x=300,y=-300,borderColor={0,1,1}},
 }
-menu.notRecordScore={sandbox=true,battle=true,['core destruction']=true}
+menu.notRecordScore={sandbox=true,battle=true,['tower defense']=true}
 menu.icon={}
 menu.option={
     battle={bot_DropDelay=1,playerPos='left'},
-    ['core destruction']={bot_DropDelay=1,playerPos='left'},
+    ['tower defense']={bot_DropDelay=1,playerPos='left'},
 }
 
 for k,v in pairs(menu.modeList) do
@@ -114,6 +114,9 @@ function menu.init()
     for k,v in pairs(menu.pb) do
         menu.pbString[k]=bso[k](v)
     end
+
+    menu.CDTimer=0--旧核心毁灭进入计时
+    menu.CDEnter=false
 
     BUTTON.setLayer(1)
     BUTTON.create('setting',{
@@ -307,6 +310,18 @@ function menu.update(dt)
         else v.hoverT=max(v.hoverT-dt,0) end
     end
     if (not n) and hv~='' then scene.BG.setPolyColor(1,1,1) hv='' end
+    if hv=='tower defense' and not menu.CDEnter then menu.CDTimer=menu.CDTimer+dt
+        if menu.CDTimer>=10 then menu.CDEnter=true
+            sfx.play('gameEnter')
+            scene.switch({
+                dest='game',destScene=require'mino/game',
+                swapT=1.6,outT=.2,
+                anim=function() anim.enterGame(.4,1.2,.2) end
+            })
+            scene.sendArg={mode='core destruction',arg=menu.option[hv]}
+            menu.send=menu.gameSend
+        end
+    end
 
     if menu.pAnim then menu.pAnimTimer=menu.pAnimTimer+dt end
     menu.sAnimTimer=menu.lvl==2 and min(menu.sAnimTimer+dt,sAnimTMax) or max(menu.sAnimTimer-dt,0)

@@ -64,28 +64,28 @@ function lst.slider(menu)
     })
     SLIDER.create('cd_botDropDelay',{
         x=0,y=-64,type='hori',sz={800,32},button={32,32},
-        gear=0,pos=(1/opt['core destruction'].bot_DropDelay-.2)/4.8,
+        gear=0,pos=(1/opt['tower defense'].bot_DropDelay-.2)/4.8,
         act=function ()
-            return menu.lvl==2 and menu.selectedMode=='core destruction'
+            return menu.lvl==2 and menu.selectedMode=='tower defense'
         end,
         sliderDraw=function(g,sz)
-            if menu.lvl==2 and menu.selectedMode=='core destruction' then
+            if menu.lvl==2 and menu.selectedMode=='tower defense' then
             gc.setColor(.5,.5,.5,.8)
             gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
             gc.setColor(1,1,1)
-            gc.printf(string.format(argTxt.battle.bot_PPS.."%.2f",1/opt['core destruction'].bot_DropDelay),
+            gc.printf(string.format(argTxt.battle.bot_PPS.."%.2f",1/opt['tower defense'].bot_DropDelay),
                 font.JB,-416,-48,114514,'left',0,.3125,.3125,0,84)
             end
         end,
         buttonDraw=function(pos,sz)
-            if menu.lvl==2 and menu.selectedMode=='core destruction' then
+            if menu.lvl==2 and menu.selectedMode=='tower defense' then
             gc.setColor(1,1,1)
             gc.circle('fill',sz[1]*(pos-.5),0,20,4)
             end
         end,
         always=function(pos)
-            if menu.lvl==2 and menu.selectedMode=='core destruction' then
-            opt['core destruction'].bot_DropDelay=1/(4.8*pos+.2)
+            if menu.lvl==2 and menu.selectedMode=='tower defense' then
+            opt['tower defense'].bot_DropDelay=1/(4.8*pos+.2)
             end
         end
     })

@@ -1,12 +1,10 @@
---旧模式，在menu界面把鼠标停留在塔防模式按钮上10秒进入
-
 local M,T=mymath,mytable
 
 local bot_cc=require'mino/bot/cc'
 
 local rule={}
 
-local barOrder={'N','Z','S','L','J','H'}
+local barOrder={'Z','S','L','J','H'}
 local specialBrick={'Z','S','L','J'}
 
 --属性克制：J->Z->S->L->J
@@ -22,6 +20,11 @@ local function checkEmpty(list)
     --print(k)
     return k
 end
+
+local brickW,brickH=40,8
+local brickPlaceH=300
+
+local barLvMax=5
 
 local SBrickColor
 local freq=60/128
@@ -43,8 +46,8 @@ function rule.init(P,mino,modeInfo)
     for i=1,100 do
         P[1].failDropParList[i]={x=-300+600*rand(),y=-300+600*rand(),t=i/40+4*(rand()-.5),sz=120+240*rand()}
     end
-    P[1].posx=-700
-    P[2]=T.copy(P[1]) P[2].posx=700
+    P[1].posx=-540 P[1].posy=-60
+    P[2]=T.copy(P[1]) P[2].posx=540
     P[1].side='L' P[2].side='R'
     P[1].id=1 P[2].id=2
     P[1].isBot=false P[2].isBot=true P[2].FDelay=1e99
@@ -56,7 +59,7 @@ function rule.init(P,mino,modeInfo)
     rule.freezed=false
 
     rule.wallBelong={L=1,R=2}
-    mino.fieldScale=400/720
+    mino.fieldScale=600/720
 
     mino.stacker.opList={1}
 
@@ -73,6 +76,8 @@ function rule.init(P,mino,modeInfo)
     rule.opDelay=modeInfo.arg.bot_DropDelay
     rule.opTimer=0
 
+    rule.botSpin=specialBrick[rand(#specialBrick)]
+    rule.botspinT,rule.botspinTMax=30,30
     --攻击/防御
     rule.atk={
         L=false,R=false,nextL=nil,nextR=nil,
@@ -87,7 +92,6 @@ function rule.init(P,mino,modeInfo)
     --积攒条
     rule.brickBar={
         L={
-            N={lvl=0,bar=0},
             Z={lvl=0,bar=0},
             S={lvl=0,bar=0},
             L={lvl=0,bar=0},
@@ -95,7 +99,6 @@ function rule.init(P,mino,modeInfo)
             H={lvl=0,bar=0},
         },
         R={
-            N={lvl=0,bar=0},
             Z={lvl=0,bar=0},
             S={lvl=0,bar=0},
             L={lvl=0,bar=0},
@@ -104,24 +107,23 @@ function rule.init(P,mino,modeInfo)
         },
     }
     --生成砖块
-    local e
     rule.brick={}
     rule.brick.L={}
-    for i=0,23 do
+    for i=0,brickH do
         rule.brick.L[i+1]={}
-        for j=0,19 do
+        for j=0,brickW do
             rule.brick.L[i+1][j+1]={
-                pos={-480+10+20*j,-240+10+20*i},block=j<2 and 'H' or nil,
+                pos={-20*brickW-80+10+20*j,brickPlaceH+10+20*i},block=j<2 and 'H' or nil,
                 hp=j<20 and 6 or 0,hpMax=j<2 and 6 or 0
             }
         end
     end
     rule.brick.R={}
-    for i=0,23 do
+    for i=0,brickH do
         rule.brick.R[i+1]={}
-        for j=0,19 do
+        for j=0,brickW do
             rule.brick.R[i+1][j+1]={
-                pos={ 480-10-20*j,-240+10+20*i},block=j<2 and 'H' or nil,
+                pos={ 20*brickW+80-10-20*j,brickPlaceH+10+20*i},block=j<2 and 'H' or nil,
                 hp=j<2 and 6 or 0,hpMax=j<2 and 6 or 0
             }
         end
@@ -152,8 +154,8 @@ end
 
 local function searchBlock(side)
     local btb=rule.brickToBuild
-    for i=1,6 do
-        btb.index[side]=btb.index[side]%6+1
+    for i=1,#barOrder do
+        btb.index[side]=btb.index[side]%#barOrder+1
         local id=barOrder[btb.index[side]]
         if btb[side][id]>0 then
             btb[side][id]=btb[side][id]-1
@@ -163,8 +165,8 @@ local function searchBlock(side)
 end
 local function searchBullet(side)
     local bts=rule.bulletToShoot
-    for i=1,6 do
-        bts.index[side]=bts.index[side]%6+1
+    for i=1,#barOrder do
+        bts.index[side]=bts.index[side]%#barOrder+1
         local id=barOrder[bts.index[side]]
         if bts[side][id]>0 then
             bts[side][id]=bts[side][id]-1
@@ -174,27 +176,28 @@ local function searchBullet(side)
 end
 local function placeBlock(brick,block)
     brick.block=block
-    brick.hp=block=='N' and 2 or block=='H' and 6 or 3
+    brick.hp=block=='H' and 6 or 8
     brick.hpMax=brick.hp
 end
 
 local function bulletShoot(side,posy,type)--子弹源自哪一方，纵坐标，属性
     if not type then return end
     local bl=side=='L' and rule.bullet.R or rule.bullet.L
-    table.insert(bl,{type=type,h=23,t=1/rule.bulletVel,posy=posy,damage=(type=='N' or type=='H') and 1 or 2})
+    table.insert(bl,{type=type,h=brickW+3,t=1/rule.bulletVel,posy=posy})
 end
 local function bulletCollide(bullet,brick)
     if not brick then return end
-    if     brick.block=='N' then brick.hp=brick.hp-bullet.damage
-    elseif brick.block=='H' then brick.hp=brick.hp-1
+    if brick.block=='H' then brick.hp=brick.hp-1
     else
-        if restraintOrder[bullet.type] and restraintOrder[bullet.type]%4+1==restraintOrder[brick.block] then brick.hp=0
+        if restraintOrder[bullet.type] then
+            if restraintOrder[bullet.type]%4+1==restraintOrder[brick.block] then brick.hp=0
+            else brick.hp=brick.hp-2 end
         else brick.hp=brick.hp-1 end
     end
     if brick.hp<=0 then brick.block=nil end
 end
 
-local spinStart,spinEnd=9,1.5
+local spinStart,spinEnd=8,1.5
 local abl,epp
 function rule.gameUpdate(P,dt,mino)
     --bot定时操作
@@ -211,13 +214,21 @@ function rule.gameUpdate(P,dt,mino)
 
     --游戏逻辑更新
     rule.gameTimer=rule.gameTimer+dt
+
+    rule.botspinT=rule.botspinT-dt
+    if rule.botspinT<=0 then
+        rule.botspinT=rule.botspinT+rule.botspinTMax
+        rule.botSpin=specialBrick[rand(#specialBrick)]
+        print(rule.botSpin)
+    end
+
     for i=1,#P do
         for k,v in pairs(rule.brickBar[P[i].side]) do
-            v.bar=max(v.bar-dt*.08*(.5+.5*v.lvl),0)
+            v.bar=max(v.bar-dt*.1*(.5+.5*v.lvl),0)
             if v.bar==0 then
                 if v.lvl~=0 then
                     if rule.atk[P[i].side] then
-                    rule.bulletToShoot[P[i].side][k]=2^v.lvl*(k=='N' and 2 or 1)
+                    rule.bulletToShoot[P[i].side][k]=2^v.lvl*2
                     else
                     rule.brickToBuild[P[i].side][k]=2^v.lvl
                     end
@@ -239,8 +250,8 @@ function rule.gameUpdate(P,dt,mino)
             local eb=checkEmpty(rule.brick[k][v.pos])
             if eb then placeBlock(rule.brick[k][v.pos][eb],sb) end
 
-            v.phase=v.phase%48+1
-            v.pos=v.phase<=24 and v.phase or 49-v.phase
+            v.phase=v.phase%(2*brickH)+1
+            v.pos=v.phase<=brickH and v.phase or 2*brickH+1-v.phase
         end
     end
     --炮弹碰撞
@@ -248,7 +259,7 @@ function rule.gameUpdate(P,dt,mino)
         for i=#v,1,-1 do
             v[i].t=v[i].t-dt
             if v[i].t<=0 then
-                if v[i].h<-1 then table.remove(v,i) rule.HP[k]=rule.HP[k]-1
+                if v[i].h<0 then table.remove(v,i) rule.HP[k]=rule.HP[k]-1
                 else
                     local brick=rule.brick[k][v[i].posy][v[i].h]
                     if brick and brick.block then
@@ -259,8 +270,8 @@ function rule.gameUpdate(P,dt,mino)
                                 brick=rule.brick[k][abl.posy+y] and rule.brick[k][abl.posy+y][abl.h+1+x]
                                 bulletCollide(abl,brick)
                                 ins(rule.explodeAnim,{
-                                    x=k=='L' and -480+20*abl.h or 480-20*abl.h,
-                                    y=-240+10+20*abl.posy,
+                                    x=k=='L' and -(20*brickW+100)+20*abl.h or (20*brickW+100)-20*abl.h,
+                                    y=brickPlaceH+20*abl.posy-10,
                                     t=rule.explodeAnimTMax
                                 })
                             end
@@ -316,8 +327,12 @@ function rule.gameUpdate(P,dt,mino)
     HColor[1],HColor[2],HColor[3]=b,b,b
 end
 
+local bb
+local function addBar(side,k,v)
+    bb=rule.brickBar[side]
+    if bb[k].lvl<barLvMax then bb[k].bar=bb[k].bar+v end
+end
 function rule.onLineClear(player,mino)
-    local b=rule.bullet
     --[[if player.name==1 then
         b.L[#b.L+1]={}
         e=b.L[#b.L]
@@ -327,39 +342,42 @@ function rule.onLineClear(player,mino)
     else
     end]]
     local his=player.history
-    local bb=rule.brickBar[player.side]
+    local sd=player.side
     local PCmtp=his.PC and 3 or 1
     if his.spin then
         if T.include(specialBrick,his.name) then
-            bb[his.name].bar=bb[his.name].bar+1.25
-            bb.H.bar=bb.H.bar+.05*his.line*player.Hmtp*PCmtp
+            addBar(sd,his.name,his.combo<3 and 1.25 or 0.25)
+            addBar(sd,'H',.125*his.line*player.Hmtp*PCmtp)
         else
-            bb.H.bar=bb.H.bar+.25*his.line*player.Hmtp
-            for k,v in pairs(specialBrick) do
-                bb[v].bar=bb[v].bar+.15*player.mtp
+            addBar(sd,'H',.25*his.line*player.Hmtp)
+            if player.isBot then
+                addBar(sd,rule.botSpin,.75)
+            else
+                for k,v in pairs(specialBrick) do
+                    addBar(sd,v,.125*player.mtp)
+                end
             end
-            local v=specialBrick[rand(#specialBrick)]
-            bb[v].bar=bb[v].bar+(player.isBot and .75 or .25)
         end
     elseif his.line==4 then
-        if player.isBot and not rule.atk[player.side] then bb.N.bar=bb.N.bar+1 bb.H.bar=bb.H.bar+.4*player.Hmtp*PCmtp
-        else bb.H.bar=bb.H.bar+.8*player.Hmtp*PCmtp end
+        if player.isBot and not rule.atk[player.side] then
+            addBar(sd,'H',.25*player.Hmtp*PCmtp)
+            addBar(sd,rule.botSpin,.75)
+        else addBar(sd,'H',.625*player.Hmtp*PCmtp) end
         for k,v in pairs(specialBrick) do
-            bb[v].bar=bb[v].bar+.25*player.mtp
+            addBar(sd,v,.25*player.mtp)
         end
     else
         if T.include(specialBrick,his.name) then
-            bb[his.name].bar=bb[his.name].bar+.08*his.line*player.mtp
+            addBar(sd,his.name,.125*his.line*player.mtp/his.combo)
         end
         for k,v in pairs(specialBrick) do
-            bb[v].bar=bb[v].bar+.08*his.line*player.mtp
+            addBar(sd,v,.125*his.line*player.mtp/his.combo)
         end
-        bb.N.bar=bb.N.bar+(-.2+1.2*his.line)*.32*(.96+.04*his.combo)*max(player.mtp,PCmtp)
     end
 end
 function rule.afterPieceDrop(player,mino)
     for k,v in pairs(rule.brickBar[player.side]) do
-        while v.bar>=1 do v.bar=v.bar-.5 v.lvl=min(v.lvl+1,6) end
+        while v.bar>=1 do v.bar=v.bar-.5 v.lvl=min(v.lvl+1,barLvMax) end
     end
 
     --给bot刷新数据
@@ -378,10 +396,10 @@ function rule.onNextGen(player,nextStart,mino)
     end
 end
 
-local draw,rect,setColor=gc.draw,gc.rectangle,gc.setColor
+local draw,rect,line,setColor,setLineWidth=gc.draw,gc.rectangle,gc.line,gc.setColor,gc.setLineWidth
 --800*240
-local ldpic=gc.newImage('pic/mode/core destruction/ldpic.png')
-local rdpic=gc.newImage('pic/mode/core destruction/rdpic.png')
+local lpic=gc.newImage('pic/mode/core destruction/ldpic.png')
+local rpic=gc.newImage('pic/mode/core destruction/rdpic.png')
 
 local ATKTxt={txt=gc.newText(font.Bender,'ATK')}
 ATKTxt.w,ATKTxt.h=ATKTxt.txt:getDimensions()
@@ -395,10 +413,11 @@ local epp,epw,hpr,rsz,txt
 local atk,atkr
 function rule.underAllDraw()
     --说明图
-    draw(ldpic,-960,300) draw(rdpic,160,300)
+    draw(lpic,-540,-480,0,1,1,400,120)
+    draw(rpic, 540,-480,0,1,1,400,120)
     --砖块
-    for i=1,24 do
-        for j=1,20 do
+    for i=1,brickH do
+        for j=1,brickW do
             e=rule.brick.L[i][j]
 
             setColor(1,.5,0,.08+(i+j)%2*.08)
@@ -417,8 +436,8 @@ function rule.underAllDraw()
         end
     end
 
-    for i=1,24 do
-        for j=1,20 do
+    for i=1,brickH do
+        for j=1,brickW do
             e=rule.brick.R[i][j]
 
             setColor(0,.5,1,.08+(i+j)%2*.08)
@@ -444,14 +463,14 @@ function rule.underAllDraw()
         if     e.type=='N' then setColor(NColor)
         elseif e.type=='H' then setColor(HColor)
         else   setColor(SBrickColor[e.type]) end
-        gc.circle('fill',-480+(e.h+e.t*rule.bulletVel)*20,-250+20*e.posy,6)
+        gc.circle('fill',-20*(brickW+4)+(e.h+e.t*rule.bulletVel)*20,brickPlaceH-10+20*e.posy,6)
     end
     for i=1,#rbr do
         e=rbr[i]
         if     e.type=='N' then setColor(NColor)
         elseif e.type=='H' then setColor(HColor)
         else   setColor(SBrickColor[e.type]) end
-        gc.circle('fill',480-(e.h+e.t*rule.bulletVel)*20,-250+20*e.posy,6)
+        gc.circle('fill', 20*(brickW+4)-(e.h+e.t*rule.bulletVel)*20,brickPlaceH-10+20*e.posy,6)
     end
     --高级炮弹爆炸动画
     setColor(1,1,1)
@@ -464,21 +483,20 @@ function rule.underAllDraw()
 
     --指针
     local lp,rp=20*rule.pointer.L.pos,20*rule.pointer.R.pos
-    if rule.atk.L then setColor(1,.5,0) gc.polygon('fill',  0,-260+lp,  0,-240+lp, 10,-250+lp)
-    else               setColor(1,1,1)  gc.polygon('fill',-10,-260+lp,-10,-240+lp,-20,-250+lp)
+    if rule.atk.L then setColor(1,.5,0) gc.polygon('fill',  0,brickPlaceH+lp,  0,brickPlaceH-20+lp, 10,brickPlaceH-10+lp)
+    else               setColor(1,1,1)  gc.polygon('fill',-10,brickPlaceH+lp,-10,brickPlaceH-20+lp,-20,brickPlaceH-10+lp)
     end
-    if rule.atk.R then setColor(0,.5,1) gc.polygon('fill',  0,-260+rp,  0,-240+rp,-10,-250+rp)
-    else               setColor(1,1,1)  gc.polygon('fill', 10,-260+rp, 10,-240+rp, 20,-250+rp)
+    if rule.atk.R then setColor(0,.5,1) gc.polygon('fill',  0,brickPlaceH+rp,  0,brickPlaceH-20+rp,-10,brickPlaceH-10+rp)
+    else               setColor(1,1,1)  gc.polygon('fill', 10,brickPlaceH+rp, 10,brickPlaceH-20+rp, 20,brickPlaceH-10+rp)
     end
 
-    --转盘和攻防显示
+    --转盘
     atk=rule.atk atkr=atk.wheel
     for i=1,atk.wheelBar do
         local a1,a2=(i-1)/atk.wheelBar,i/atk.wheelBar
         local rn=atkr.next and atkr.next*(1-max((atk.switchTimer-spinEnd)/(spinStart-spinEnd),0)^2) or 0
-        --setColor(1,1,1,.2+.6*a1)
         if atk.wheelBar+1-i<=atk.atkBar then setColor(1,.2,.2) else setColor(.5,1,.875) end
-        gc.arc('fill',0,-390,100,(atkr.cur+a1+rn)*tau,(atkr.cur+a2+rn)*tau,2)
+        gc.arc('fill',0,-390,100,(atkr.cur+a1+rn)*tau,(atkr.cur+a2+rn)*tau,1)
     end
 
     if atk.switchTimer>spinStart then
@@ -489,75 +507,36 @@ function rule.underAllDraw()
     gc.setLineWidth(7.5*2^.5)
     setColor(1,.5,0) gc.circle('fill',-135,-390,10,4) gc.line(-155,-410,-175,-390,-155,-370)
     setColor(0,.5,1) gc.circle('fill', 135,-390,10,4) gc.line( 155,-410, 175,-390, 155,-370)
-
-    if atk.switchTimer>=spinEnd/3 then
-        local k=max(atk.switchTimer/spinEnd-2/3,0)*3
-        local y=k^3*-600
-        if rule.atk.nextL then txt=ATKTxt else txt=DEFTxt end
-        setColor(0,0,0,.5)
-        for i=-3,3,6 do for j=-3,3,6 do
-        draw(txt.txt,-300+i,y+j,0,.75,.75,txt.w/2,txt.h/2)
-        end end
-
-        if rule.atk.nextL then setColor(1,.2,.2) else setColor(.5,1,.875) end
-        draw(txt.txt,-300,y,0,.75,.75,txt.w/2,txt.h/2)
-
-        if rule.atk.nextR then txt=ATKTxt else txt=DEFTxt end
-        setColor(0,0,0,.5)
-        for i=-3,3,6 do for j=-3,3,6 do
-        draw(txt.txt, 300+i,y+j,0,.75,.75,txt.w/2,txt.h/2)
-        end end
-
-        if rule.atk.nextR then setColor(1,.2,.2) else setColor(.5,1,.875) end
-        draw(txt.txt, 300,y,0,.75,.75,txt.w/2,txt.h/2)
-    else
-        local k=1-atk.switchTimer/spinEnd*3
-        local y=k^3*-600
-        if rule.atk.nextL then txt=ATKTxt else txt=DEFTxt end
-        setColor(0,0,0,.5)
-        for i=-3,3,6 do for j=-3,3,6 do
-        draw(txt.txt,-300+i,y+j,0,.75,.75,txt.w/2,txt.h/2)
-        end end
-
-        if rule.atk.nextL then setColor(1,.2,.2) else setColor(.5,1,.875) end
-        draw(txt.txt,-300,y,0,.75,.75,txt.w/2,txt.h/2)
-
-        if rule.atk.nextR then txt=ATKTxt else txt=DEFTxt end
-        setColor(0,0,0,.5)
-        for i=-3,3,6 do for j=-3,3,6 do
-        draw(txt.txt, 300+i,y+j,0,.75,.75,txt.w/2,txt.h/2) 
-        end end
-
-        if rule.atk.nextR then setColor(1,.2,.2) else setColor(.5,1,.875) end
-        draw(txt.txt, 300,y,0,.75,.75,txt.w/2,txt.h/2)
-    end
     --当前状态，攻/防
     local st=rule.atk.switchTimer-rule.atk.switchT
     if rule.atk.L then
         setColor(1,.2,.2)
-        draw(ATKTxt.txt,-700,-390,0,.75,.75,ATKTxt.w/2,ATKTxt.h/2)
+        draw(ATKTxt.txt,-100,-100,0,.75,.75,ATKTxt.w/2,ATKTxt.h/2)
         setColor(1,.2,.2,1+2*st)
-        draw(ATKTxt.txt,-700,-390,0,.75-.75*st,.75-.5*st,ATKTxt.w/2,ATKTxt.h/2)
+        draw(ATKTxt.txt,-100,-100,0,.75-.75*st,.75-.5*st,ATKTxt.w/2,ATKTxt.h/2)
     else
         setColor(.5,1,.875)
-        draw(DEFTxt.txt,-700,-390,0,.75,.75,DEFTxt.w/2,DEFTxt.h/2)
+        draw(DEFTxt.txt,-100,-100,0,.75,.75,DEFTxt.w/2,DEFTxt.h/2)
         setColor(.5,1,.875,1+2*st)
-        draw(DEFTxt.txt,-700,-390,0,.75-.75*st,.75-.5*st,DEFTxt.w/2,DEFTxt.h/2)
+        draw(DEFTxt.txt,-100,-100,0,.75-.75*st,.75-.5*st,DEFTxt.w/2,DEFTxt.h/2)
     end
     if rule.atk.R then
         setColor(1,.2,.2)
-        draw(ATKTxt.txt, 700,-390,0,.75,.75,ATKTxt.w/2,ATKTxt.h/2)
+        draw(ATKTxt.txt, 100, 100,0,.75,.75,ATKTxt.w/2,ATKTxt.h/2)
         setColor(1,.2,.2,1+2*st)
-        draw(ATKTxt.txt, 700,-390,0,.75-.75*st,.75-.5*st,ATKTxt.w/2,ATKTxt.h/2)
+        draw(ATKTxt.txt, 100, 100,0,.75-.75*st,.75-.5*st,ATKTxt.w/2,ATKTxt.h/2)
     else
         setColor(.5,1,.875)
-        draw(DEFTxt.txt, 700,-390,0,.75,.75,DEFTxt.w/2,DEFTxt.h/2)
+        draw(DEFTxt.txt, 100, 100,0,.75,.75,DEFTxt.w/2,DEFTxt.h/2)
         setColor(.5,1,.875,1+2*st)
-        draw(DEFTxt.txt, 700,-390,0,.75-.75*st,.75-.5*st,DEFTxt.w/2,DEFTxt.h/2)
+        draw(DEFTxt.txt, 100, 100,0,.75-.75*st,.75-.5*st,DEFTxt.w/2,DEFTxt.h/2)
     end
+    setLineWidth(6)
+    setColor(1,1,1)
+    line(-120,120,120,-120)
     --当前轮数
     setColor(1,1,1)
-    gc.printf(string.format("Round %d",rule.atk.round),font.Bender,0,360,20000,'center',0,.5,.5,10000,72)
+    gc.printf(string.format("Round %d",rule.atk.round),font.Bender,0,-260,20000,'center',0,.5,.5,10000,72)
 end
 function rule.underFieldDraw(player,mino)
     w,h=player.w,player.h
@@ -574,11 +553,33 @@ function rule.underFieldDraw(player,mino)
         setColor(c)
         rect('fill',18*player.w+30,18*player.h-40*i-10,160*bb.bar,30)
         setColor(1-c[1],1-c[2],1-c[3])
-        gc.printf(string.format("%d",2^bb.lvl),font.Bender_B,18*player.w+35,18*player.h-40*i+5,2000,'left',0,.2,.2,0,72)
+        gc.printf(string.format(bb.lvl==barLvMax and "%d [MAX]" or "%d",2^bb.lvl),font.Bender_B,18*player.w+35,18*player.h-40*i+5,2000,'left',0,.2,.2,0,72)
     end
     setColor(1,1,1)
-    gc.printf(string.format("HP\n%d/%d",rule.HP[player.side],rule.HP.max),font.Bender_B,18*player.w+35,0,2000,'left',0,.33,.33,0,72)
+    gc.printf(string.format("HP\n%d/%d",rule.HP[player.side],rule.HP.max),font.Bender,18*player.w+35,0,2000,'left',0,.33,.33,0,72)
 end
+function rule.overAllDraw()
+    --下一轮是攻是防
+    local k=atk.switchTimer>=spinEnd/3 and max(atk.switchTimer/spinEnd-2/3,0)*3 or 1-atk.switchTimer/spinEnd*3
+    local y=k^3*-600-60
+
+    if rule.atk.nextL then txt=ATKTxt else txt=DEFTxt end
+    setColor(.1,.1,.1,.3)
+    for i=-3,3,6 do for j=-3,3,6 do
+    draw(txt.txt,-540+i,y+j,0,.75,.75,txt.w/2,txt.h/2)
+    end end
+    if rule.atk.nextL then setColor(1,.2,.2) else setColor(.5,1,.875) end
+    draw(txt.txt,-540,y,0,.75,.75,txt.w/2,txt.h/2)
+
+    if rule.atk.nextR then txt=ATKTxt else txt=DEFTxt end
+    setColor(.1,.1,.1,.3)
+    for i=-3,3,6 do for j=-3,3,6 do
+    draw(txt.txt, 540+i,y+j,0,.75,.75,txt.w/2,txt.h/2)
+    end end
+    if rule.atk.nextR then setColor(1,.2,.2) else setColor(.5,1,.875) end
+    draw(txt.txt, 540,y,0,.75,.75,txt.w/2,txt.h/2)
+end
+
 local fdt,fdp,pszt
 function rule.overFieldDraw(player,mino)
     setColor(1,1,1)

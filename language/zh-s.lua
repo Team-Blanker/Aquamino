@@ -18,7 +18,7 @@ return {
         laser="激光",
         backfire="回旋镖",
         battle="对战",
-        ['core destruction']="核心毁灭",
+        ['tower defense']="塔防",
         conf_test="设置 - 测试界面",
         idea_test="idea_test"
     },
@@ -36,7 +36,7 @@ return {
         laser={{1,1,1},"做人不要太攀比，踏踏实实做自己\n如果非要比一比，那就比比激光雨\n",{1,1,0},"节奏模式，强烈建议开启音乐游玩"},
         backfire="吃下自己打出的攻击",
         battle={{1,1,1}," 战斗，爽！\n",{1,1,0},"该模式不记录成绩"},
-        ['core destruction']={{1,1,0},"该模式不记录成绩\n",{1,.2,.2},"启动/重开该模式可能会让程序卡死，原因未知"}
+        ['tower defense']={{1,1,0},"该模式不记录成绩\n",{1,.2,.2},"启动/重开该模式可能会让程序卡死，原因未知"}
     },
     intro={
         start="按任意键开始",
@@ -53,7 +53,7 @@ return {
                     right="右侧"
                 }
             },
-            ['core destruction']={
+            ['tower defense']={
                 bot_PPS="机器人PPS:",
                 player={
                     pos="玩家位置:",
