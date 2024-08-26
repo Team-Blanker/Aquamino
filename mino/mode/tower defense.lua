@@ -496,7 +496,7 @@ function rule.underAllDraw()
         local a1,a2=(i-1)/atk.wheelBar,i/atk.wheelBar
         local rn=atkr.next and atkr.next*(1-max((atk.switchTimer-spinEnd)/(spinStart-spinEnd),0)^2) or 0
         if atk.wheelBar+1-i<=atk.atkBar then setColor(1,.2,.2) else setColor(.5,1,.875) end
-        gc.arc('fill',0,-390,100,(atkr.cur+a1+rn)*tau,(atkr.cur+a2+rn)*tau,1)
+        gc.arc('fill',0,-390,100,(atkr.cur+a1+rn)*tau,(atkr.cur+a2+rn)*tau,2)
     end
 
     if atk.switchTimer>spinStart then
