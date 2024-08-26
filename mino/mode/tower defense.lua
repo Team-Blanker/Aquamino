@@ -46,8 +46,8 @@ function rule.init(P,mino,modeInfo)
     for i=1,100 do
         P[1].failDropParList[i]={x=-300+600*rand(),y=-300+600*rand(),t=i/40+4*(rand()-.5),sz=120+240*rand()}
     end
-    P[1].posx=-540 P[1].posy=-60
-    P[2]=T.copy(P[1]) P[2].posx=540
+    P[1].posX=-540 P[1].posY=-60
+    P[2]=T.copy(P[1]) P[2].posX=540
     P[1].side='L' P[2].side='R'
     P[1].id=1 P[2].id=2
     P[1].isBot=false P[2].isBot=true P[2].FDelay=1e99
@@ -180,10 +180,10 @@ local function placeBlock(brick,block)
     brick.hpMax=brick.hp
 end
 
-local function bulletShoot(side,posy,type)--子弹源自哪一方，纵坐标，属性
+local function bulletShoot(side,posY,type)--子弹源自哪一方，纵坐标，属性
     if not type then return end
     local bl=side=='L' and rule.bullet.R or rule.bullet.L
-    table.insert(bl,{type=type,h=brickW+3,t=1/rule.bulletVel,posy=posy})
+    table.insert(bl,{type=type,h=brickW+3,t=1/rule.bulletVel,posY=posY})
 end
 local function bulletCollide(bullet,brick)
     if not brick then return end
@@ -261,17 +261,17 @@ function rule.gameUpdate(P,dt,mino)
             if v[i].t<=0 then
                 if v[i].h<0 then table.remove(v,i) rule.HP[k]=rule.HP[k]-1
                 else
-                    local brick=rule.brick[k][v[i].posy][v[i].h]
+                    local brick=rule.brick[k][v[i].posY][v[i].h]
                     if brick and brick.block then
                         abl=table.remove(v,i)
                         if abl.type=='H' then
                             for x=-2,2 do local a=2-abs(x)
                             for y=-a,a do
-                                brick=rule.brick[k][abl.posy+y] and rule.brick[k][abl.posy+y][abl.h+1+x]
+                                brick=rule.brick[k][abl.posY+y] and rule.brick[k][abl.posY+y][abl.h+1+x]
                                 bulletCollide(abl,brick)
                                 ins(rule.explodeAnim,{
                                     x=k=='L' and -(20*brickW+100)+20*abl.h or (20*brickW+100)-20*abl.h,
-                                    y=brickPlaceH+20*abl.posy-10,
+                                    y=brickPlaceH+20*abl.posY-10,
                                     t=rule.explodeAnimTMax
                                 })
                             end
@@ -463,14 +463,14 @@ function rule.underAllDraw()
         if     e.type=='N' then setColor(NColor)
         elseif e.type=='H' then setColor(HColor)
         else   setColor(SBrickColor[e.type]) end
-        gc.circle('fill',-20*(brickW+4)+(e.h+e.t*rule.bulletVel)*20,brickPlaceH-10+20*e.posy,6)
+        gc.circle('fill',-20*(brickW+4)+(e.h+e.t*rule.bulletVel)*20,brickPlaceH-10+20*e.posY,6)
     end
     for i=1,#rbr do
         e=rbr[i]
         if     e.type=='N' then setColor(NColor)
         elseif e.type=='H' then setColor(HColor)
         else   setColor(SBrickColor[e.type]) end
-        gc.circle('fill', 20*(brickW+4)-(e.h+e.t*rule.bulletVel)*20,brickPlaceH-10+20*e.posy,6)
+        gc.circle('fill', 20*(brickW+4)-(e.h+e.t*rule.bulletVel)*20,brickPlaceH-10+20*e.posY,6)
     end
     --高级炮弹爆炸动画
     setColor(1,1,1)
@@ -536,7 +536,7 @@ function rule.underAllDraw()
     line(-120,120,120,-120)
     --当前轮数
     setColor(1,1,1)
-    gc.printf(string.format("Round %d",rule.atk.round),font.Bender,0,-260,20000,'center',0,.5,.5,10000,72)
+    gc.printf(string.format("Round %d",rule.atk.round),font.Bender,0,-240,20000,'center',0,.5,.5,10000,72)
 end
 function rule.underFieldDraw(player,mino)
     w,h=player.w,player.h
@@ -558,7 +558,7 @@ function rule.underFieldDraw(player,mino)
     setColor(1,1,1)
     gc.printf(string.format("HP\n%d/%d",rule.HP[player.side],rule.HP.max),font.Bender,18*player.w+35,0,2000,'left',0,.33,.33,0,72)
 end
-function rule.overAllDraw()
+function rule.overAllDraw(P)
     --下一轮是攻是防
     local k=atk.switchTimer>=spinEnd/3 and max(atk.switchTimer/spinEnd-2/3,0)*3 or 1-atk.switchTimer/spinEnd*3
     local y=k^3*-600-60

@@ -39,7 +39,7 @@ local function getH(num)
     return th
 end
 
-local posyMax=2160
+local posYMax=2160
 
 function stf.init()
     sfx.add({
@@ -60,7 +60,7 @@ function stf.init()
     end
 
     uls=user.lang.staff
-    stf.posy=0
+    stf.posY=0
     stf.hidey=0 stf.hideAnimy=0 stf.showKairan=false
     stf.txt1={c1,uls.program,c2,'\n\n'..devList.program[1],c1,'\n\n'..uls.UI,c2}
 
@@ -127,7 +127,7 @@ function stf.init()
     stf.h[3]=stf.stftxt3:getHeight()
 
 
-    posyMax=400+getH(3)
+    posYMax=400+getH(3)
 
     BUTTON.create('quit',{
         x=-700,y=400,type='rect',w=200,h=100,
@@ -162,20 +162,20 @@ function stf.keyP(k)
     end
 end
 function stf.mouseP(x,y,button,istouch)
-    mp=true opy,mpy=stf.posy,y
-    if stf.posy==posyMax then
+    mp=true opy,mpy=stf.posY,y
+    if stf.posY==posYMax then
         hp=true ohy,mhy=0,y
     end
     BUTTON.press(x,y)
 end
 function stf.mouseR(x,y,button,istouch)
-    mp=false stf.posy=max(min(opy-y+mpy,posyMax),0)
+    mp=false stf.posY=max(min(opy-y+mpy,posYMax),0)
     hp=false ohy,mhy=0,0
     BUTTON.release(x,y)
 end
 
 function stf.wheelMove(dx,dy)
-    stf.posy=max(min(stf.posy-dy*90,posyMax),0)
+    stf.posY=max(min(stf.posY-dy*90,posYMax),0)
 end
 
 local function setAnimy(hidey)
@@ -185,7 +185,7 @@ end
 function stf.update(dt)
     local mx,my=adaptWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5)
     if love.mouse.isDown(1,2) then
-        stf.posy=max(min(opy-my+mpy,posyMax),0)
+        stf.posY=max(min(opy-my+mpy,posYMax),0)
         if hp and not stf.showKairan then stf.hidey=max(min(ohy-my+mhy,1000),0) stf.hideAnimy=setAnimy(stf.hidey)
         if stf.hidey>=1000 then stf.showKairan=true end
         end
@@ -195,11 +195,11 @@ function stf.update(dt)
 
     BUTTON.update(dt,mx,my)
 
-    if kb.isDown('up') then stf.posy=max(stf.posy-720*dt,0) end
-    if kb.isDown('down') then stf.posy=min(stf.posy+720*dt,posyMax) end
+    if kb.isDown('up') then stf.posY=max(stf.posY-720*dt,0) end
+    if kb.isDown('down') then stf.posY=min(stf.posY+720*dt,posYMax) end
 end
 function stf.draw()
-    gc.translate(0,-stf.posy)
+    gc.translate(0,-stf.posY)
     gc.setColor(1,1,1)
     gc.draw(logo,0,0,0,1280/w,1280/w,w/2,h/2)
     gc.printf("by Team Blanker",font.Bender,0,240,10000,'center',0,.75,.75,5000,72)
@@ -208,8 +208,8 @@ function stf.draw()
     gc.draw(stf.stftxt3,0,400+getH(2),0,stf.s[3],stf.s[3],2000)
 
     local p=stf.hideAnimy/1000
-    gc.draw(kairan,900-kw/4,posyMax+540-kh/2*p,0,.5,.5,kw/2,0)
-    gc.translate(0,stf.posy)
+    gc.draw(kairan,900-kw/4,posYMax+540-kh/2*p,0,.5,.5,kw/2,0)
+    gc.translate(0,stf.posY)
     BUTTON.draw()
 end
 return stf

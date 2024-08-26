@@ -34,7 +34,8 @@ local mino={
     stacker={
         keySet={},ctrl={},opList={1},event={},
         dieAnim=function() end,
-        winState=0,started=false
+        winState=0,started=false,
+        stereo=0
     },
     seqGenType='bag',seqSync=false,
     bag={'Z','S','J','L','T','O','I'},orient={Z=0,S=0,J=0,L=0,T=0,O=0,I=0},
@@ -54,7 +55,7 @@ function mino.freeze(player)
 end
 function mino.blockLock(player)
     local his=player.history
-    fLib.lock(player) fLib.loosenFall(player) mino.sfxPlay.lock(player)
+    fLib.lock(player) fLib.loosenFall(player) mino.sfxPlay.lock(player,fLib.getSourcePos(player,S.stereo,'history'))
     if mino.rule.onPieceDrop then mino.rule.onPieceDrop(player,mino) end
     if mino.blockSkin.onPieceDrop then mino.blockSkin.onPieceDrop(player,mino) end
     if player.loosen[1] then
@@ -66,7 +67,7 @@ function mino.blockLock(player)
     else
         his.push=0
         his.line,his.PC,his.clearLine=fLib.lineClear(player)
-        mino.checkClear(player,true) mino.sfxPlay.clear(player)
+        mino.checkClear(player,true) mino.sfxPlay.clear(player,fLib.getSourcePos(player,S.stereo))
         if mino.rule.postCheckClear then mino.rule.postCheckClear(player,mino) end
         if his.line>0 then
             if mino.rule.onLineClear then mino.rule.onLineClear(player,mino) end
@@ -113,7 +114,7 @@ function mino.checkDie(player)
 end
 function mino.Ins20GDrop(player)
     while not coincide(player,0,-1) do player.cur.y=player.cur.y-1 end
-    if mino.sfxPlay.touch then mino.sfxPlay.touch(player,true) end
+    if mino.sfxPlay.touch then mino.sfxPlay.touch(player,true,fLib.getSourcePos(player,S.stereo,'cur')) end
 end
 
 function mino.nextIns(player)
@@ -215,7 +216,7 @@ function mino.checkClear(player,comboBreak,delayBreak)
         his.CDelay=player.CDelay
     elseif comboBreak then his.combo=0 end
     his.wide=fLib.wideDetect(player)
-    if his.B2B==-1 and b2b>0 and mino.sfxPlay.B2BBreak then mino.sfxPlay.B2BBreak(player,b2b) end
+    if his.B2B==-1 and b2b>0 and mino.sfxPlay.B2BBreak then mino.sfxPlay.B2BBreak(player,b2b,fLib.getSourcePos(player,S.stereo)) end
     if mino.theme.updateClearInfo then mino.theme.updateClearInfo(player,mino) end
 end
 
@@ -292,7 +293,7 @@ end
 local success,landed,C
 mino.operate={
     initHold=function(OP)--提前hold
-        mino.hold(OP) if mino.sfxPlay.hold then mino.sfxPlay.hold(OP) end
+        mino.hold(OP) if mino.sfxPlay.hold then mino.sfxPlay.hold(OP,fLib.getSourcePos(OP,S.stereo)) end
         OP.canHold=false OP.canInitHold=true
     end,
     initML=function(OP)--提前左移
@@ -305,7 +306,7 @@ mino.operate={
         end
         OP.moveDir='L'
         if S.keyDown.MR then OP.MTimer=0 end
-        if mino.sfxPlay.move then mino.sfxPlay.move(OP,success,landed) end
+        if mino.sfxPlay.move then mino.sfxPlay.move(OP,success,landed,fLib.getSourcePos(OP,S.stereo,'cur')) end
         OP.canInitMove=true
     end,
     initMR=function(OP)--提前右移
@@ -318,7 +319,7 @@ mino.operate={
         end
         OP.moveDir='R'
         if S.keyDown.ML then OP.MTimer=0 end
-        if mino.sfxPlay.move then mino.sfxPlay.move(OP,success,landed) end
+        if mino.sfxPlay.move then mino.sfxPlay.move(OP,success,landed,fLib.getSourcePos(OP,S.stereo,'cur')) end
         OP.canInitMove=true
     end,
     initRotateCW=function(OP)--提前顺时针旋转
@@ -332,7 +333,7 @@ mino.operate={
         end
         OP.canInitRotate=true
 
-        if mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,C.spin) end
+        if mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,C.spin,fLib.getSourcePos(OP,S.stereo,'cur')) end
     end,
     initRotateCCW=function(OP)--提前逆时针旋转
         C=OP.cur
@@ -345,7 +346,7 @@ mino.operate={
         end
         OP.canInitRotate=true
 
-        if mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,C.spin) end
+        if mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,C.spin,fLib.getSourcePos(OP,S.stereo,'cur')) end
     end,
     initRotate180=function(OP)--提前180°旋转
         C=OP.cur
@@ -358,10 +359,9 @@ mino.operate={
         end
         OP.canInitRotate=true
 
-        if mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,C.spin) end
+        if mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,C.spin,fLib.getSourcePos(OP,S.stereo,'cur')) end
     end,
 
-    --landed=coincide(OP,0,-1)
     ML=function(OP,playSFX)--左移
         success=not coincide(OP,-1,0)
         landed=coincide(OP,0,-1)
@@ -374,7 +374,7 @@ mino.operate={
         OP.moveDir='L'
         if S.keyDown.MR then OP.MTimer=0 end
 
-        if playSFX and mino.sfxPlay.move then mino.sfxPlay.move(OP,success,landed) end
+        if playSFX and mino.sfxPlay.move then mino.sfxPlay.move(OP,success,landed,fLib.getSourcePos(OP,S.stereo,'cur')) end
     end,
     MR=function(OP,playSFX)--右移
         success=not coincide(OP,1,0)
@@ -388,7 +388,7 @@ mino.operate={
         OP.moveDir='R'
         if S.keyDown.ML then OP.MTimer=0 end
 
-        if playSFX and mino.sfxPlay.move then mino.sfxPlay.move(OP,success,landed) end
+        if playSFX and mino.sfxPlay.move then mino.sfxPlay.move(OP,success,landed,fLib.getSourcePos(OP,S.stereo,'cur')) end
     end,
     rotateCW=function(OP,playSFX)--顺时针旋转
         landed=coincide(OP,0,-1)
@@ -406,7 +406,7 @@ mino.operate={
             else C.spin,C.mini=false,false end
         end
 
-        if playSFX and mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,C.spin) end
+        if playSFX and mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,C.spin,fLib.getSourcePos(OP,S.stereo,'cur')) end
     end,
 
     rotateCCW=function(OP,playSFX)--顺时针旋转
@@ -425,7 +425,7 @@ mino.operate={
             else C.spin,C.mini=false,false end
         end
 
-        if playSFX and mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,C.spin) end
+        if playSFX and mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,C.spin,fLib.getSourcePos(OP,S.stereo,'cur')) end
     end,
     rotate180=function(OP,playSFX)--180°旋转
         landed=coincide(OP,0,-1)
@@ -443,7 +443,7 @@ mino.operate={
             else C.spin,C.mini=false,false end
         end
 
-        if playSFX and mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,C.spin) end
+        if playSFX and mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,C.spin,fLib.getSourcePos(OP,S.stereo,'cur')) end
     end,
 
     HD=function(OP,isStacker)--硬降
@@ -495,35 +495,35 @@ mino.operate={
             while not coincide(OP,0,-1) do local h=0
                 mino.setAnimPrePiece(OP) OP.smoothAnim.timer=mino.smoothTime
                 C.y=C.y-1 h=h+1 C.spin=false
-                if mino.sfxPlay.SD then mino.sfxPlay.SD(OP) end
+                if mino.sfxPlay.SD then mino.sfxPlay.SD(OP,fLib.getSourcePos(OP,S.stereo,'cur')) end
             end
         elseif not coincide(OP,0,-1) then
             mino.setAnimPrePiece(OP) OP.smoothAnim.timer=mino.smoothTime
             C.y=C.y-1 C.spin=false
-            if playSFX and mino.sfxPlay.SD then mino.sfxPlay.SD(OP) end
+            if playSFX and mino.sfxPlay.SD then mino.sfxPlay.SD(OP,fLib.getSourcePos(OP,S.stereo,'cur')) end
         end
-        mino.sfxPlay.touch(OP,coincide(OP,0,-1))
+        mino.sfxPlay.touch(OP,coincide(OP,0,-1),fLib.getSourcePos(OP,S.stereo,'cur'))
     end,
     SD_drop=function(OP,playSFX)--软降到底
         C=OP.cur
         while not coincide(OP,0,-1) do local h=0
             mino.setAnimPrePiece(OP) OP.smoothAnim.timer=mino.smoothTime
             C.y=C.y-1 h=h+1 C.spin=false
-            if mino.sfxPlay.SD then mino.sfxPlay.SD(OP) end
+            if mino.sfxPlay.SD then mino.sfxPlay.SD(OP,fLib.getSourcePos(OP,S.stereo,'cur')) end
         end
-        mino.sfxPlay.touch(OP,coincide(OP,0,-1))
+        mino.sfxPlay.touch(OP,coincide(OP,0,-1),fLib.getSourcePos(OP,S.stereo,'cur'))
     end,
     SD1H=function(OP,playSFX)--软降一格
         C=OP.cur
         if not coincide(OP,0,-1) then
             mino.setAnimPrePiece(OP) OP.smoothAnim.timer=mino.smoothTime
             C.y=C.y-1 C.spin=false
-            if playSFX and mino.sfxPlay.SD then mino.sfxPlay.SD(OP) end
+            if playSFX and mino.sfxPlay.SD then mino.sfxPlay.SD(OP,fLib.getSourcePos(OP,S.stereo,'cur')) end
         end
-        mino.sfxPlay.touch(OP,coincide(OP,0,-1))
+        mino.sfxPlay.touch(OP,coincide(OP,0,-1),fLib.getSourcePos(OP,S.stereo,'cur'))
     end,
     hold=function(OP,playSFX)--暂存
-        mino.hold(OP) if playSFX and mino.sfxPlay.hold then mino.sfxPlay.hold(OP) end
+        mino.hold(OP) if playSFX and mino.sfxPlay.hold then mino.sfxPlay.hold(OP,fLib.getSourcePos(OP,S.stereo)) end
         OP.canHold=false
     end
 }
@@ -533,7 +533,7 @@ function mino.loosenDrop(player)
     fLib.loosenFall(player)
     if player.loosen[1] then mino.addEvent(player,delay,'loosenDrop')
     else his.line,his.PC,his.clearLine=fLib.lineClear(player)
-        mino.checkClear(player,true) mino.sfxPlay.clear(player)
+        mino.checkClear(player,true) mino.sfxPlay.clear(player,fLib.getSourcePos(player,S.stereo))
         if mino.rule.postCheckClear then mino.rule.postCheckClear(player,mino) end
         if his.line>0 then
             if mino.rule.onLineClear then mino.rule.onLineClear(player,mino) end
@@ -670,6 +670,9 @@ function mino.init()
             vKey.new(ki,v)
         end
     end
+
+    local ad=file.read('conf/audio')
+    S.stereo=ad.stereo or 0
 
     mino.rule={
         timer=0,
@@ -865,12 +868,12 @@ function mino.inputPress(k)
                     if reset then OP.pushAtt=0 end
 
                     if lBlock and #lBlock>0 then
-                        if mino.sfxPlay.loose then mino.sfxPlay.loose(OP) end
+                        if mino.sfxPlay.loose then mino.sfxPlay.loose(OP,fLib.getSourcePos(OP,S.stereo,'cur')) end
                         if mino.blockSkin.onLoose then mino.blockSkin.onLoose(OP,lBlock,mino) end
                     end
                     if push then
                         OP.cur.ghostY=fLib.getGhostY(OP)
-                        if mino.sfxPlay.push then mino.sfxPlay.push(OP) end
+                        if mino.sfxPlay.push then mino.sfxPlay.push(OP,fLib.getSourcePos(OP,S.stereo,'cur')) end
                     end
                 end
 
@@ -878,7 +881,7 @@ function mino.inputPress(k)
                 if not k=='HD' and OP.FDelay==0 then
                     local h=0
                     while not coincide(OP,0,-1) do C.y=C.y-1 h=h+1 C.spin=false end
-                    if h>0 then mino.sfxPlay.touch(OP,true) end
+                    if h>0 then mino.sfxPlay.touch(OP,true,fLib.getSourcePos(OP,S.stereo,'cur')) end
                 end
 
                 --给皮肤传按键事件
@@ -939,27 +942,26 @@ function mino.touchR(id,x,y)
     mino.mouseR(x,y)
 end
 
-local cxk,remainTime
+local ctrl,remainTime
 function mino.gameUpdate(dt)
-    cxk=S.ctrl
+    ctrl=S.ctrl
     remainTime=0
 
     for i=1,#S.opList do
         local OP=P[S.opList[i]]
         C,A=OP.cur,OP.smoothAnim
-        local his=OP.history
 
-        if OP.event[1] then OP.MTimer=min(OP.MTimer+dt,cxk.ASD)
+        if OP.event[1] then OP.MTimer=min(OP.MTimer+dt,ctrl.ASD)
         elseif S.winState==0 and canop then
         --长按移动键
         if S.keyDown.SD then
-            if OP.event[1] or coincide(OP,0,-1) then OP.DTimer=min(OP.DTimer+dt,cxk.SD_ASD)
+            if OP.event[1] or coincide(OP,0,-1) then OP.DTimer=min(OP.DTimer+dt,ctrl.SD_ASD)
             else OP.DTimer=OP.DTimer+dt
                 local m=0
-                while OP.DTimer>=cxk.SD_ASD and not coincide(OP,0,-1) do
+                while OP.DTimer>=ctrl.SD_ASD and not coincide(OP,0,-1) do
                     m=m+1
-                    mino.operate.SD1H(OP,cxk.SD_ASP~=0 or m==1)
-                    OP.DTimer=OP.DTimer-cxk.SD_ASP
+                    mino.operate.SD1H(OP,ctrl.SD_ASP~=0 or m==1)
+                    OP.DTimer=OP.DTimer-ctrl.SD_ASP
                 end
                 mino.setAnimPrePiece(OP)
                 OP.cur.ghostY=fLib.getGhostY(OP)
@@ -968,26 +970,26 @@ function mino.gameUpdate(dt)
 
         if S.keyDown.ML or S.keyDown.MR then OP.MTimer=OP.MTimer+dt end
         if S.keyDown.ML then local m=0
-            if coincide(OP,-1,0) then OP.MTimer=min(OP.MTimer+dt,cxk.ASD) end
+            if coincide(OP,-1,0) then OP.MTimer=min(OP.MTimer+dt,ctrl.ASD) end
 
-            while OP.MTimer>=cxk.ASD and OP.moveDir=='L' and not coincide(OP,-1,0) do
+            while OP.MTimer>=ctrl.ASD and OP.moveDir=='L' and not coincide(OP,-1,0) do
                 C.x=C.x-1 C.spin=false m=m+1
-                C.moveSuccess=true OP.MTimer=OP.MTimer-cxk.ASP
+                C.moveSuccess=true OP.MTimer=OP.MTimer-ctrl.ASP
                 if coincide(OP,0,-1) and OP.LDR>0 then OP.LTimer=0 OP.LDR=OP.LDR-1 end
 
-                if S.ctrl.ASP~=0 or m==1 then mino.sfxPlay.move(OP,true,coincide(OP,0,-1)) end
+                if S.ctrl.ASP~=0 or m==1 then mino.sfxPlay.move(OP,true,coincide(OP,0,-1),fLib.getSourcePos(OP,S.stereo,'cur')) end
 
                 if OP.FDelay==0 then
                     while not coincide(OP,0,-1) do C.y=C.y-1 end
                 else
                     if S.keyDown.SD then
-                    if coincide(OP,0,-1) then OP.DTimer=min(OP.DTimer+dt,cxk.SD_ASD)
+                    if coincide(OP,0,-1) then OP.DTimer=min(OP.DTimer+dt,ctrl.SD_ASD)
                     else
                         local m=0
-                        while OP.DTimer>=cxk.SD_ASD and not coincide(OP,0,-1) do
+                        while OP.DTimer>=ctrl.SD_ASD and not coincide(OP,0,-1) do
                             m=m+1
-                            mino.operate.SD1H(OP,cxk.SD_ASP~=0 or m==1)
-                            OP.DTimer=OP.DTimer-cxk.SD_ASP
+                            mino.operate.SD1H(OP,ctrl.SD_ASP~=0 or m==1)
+                            OP.DTimer=OP.DTimer-ctrl.SD_ASP
                         end
                     end
                     else OP.DTimer=0 end
@@ -998,27 +1000,27 @@ function mino.gameUpdate(dt)
         end
 
         if S.keyDown.MR then local m=0
-            if coincide(OP,1,0) then OP.MTimer=min(OP.MTimer+dt,cxk.ASD) end
+            if coincide(OP,1,0) then OP.MTimer=min(OP.MTimer+dt,ctrl.ASD) end
 
-            while OP.MTimer>=cxk.ASD and OP.moveDir=='R' and not coincide(OP,1,0) do
+            while OP.MTimer>=ctrl.ASD and OP.moveDir=='R' and not coincide(OP,1,0) do
                 C.x=C.x+1 C.spin=false m=m+1
                 OP.cur.ghostY=fLib.getGhostY(OP)
-                C.moveSuccess=true OP.MTimer=OP.MTimer-cxk.ASP
+                C.moveSuccess=true OP.MTimer=OP.MTimer-ctrl.ASP
                 if coincide(OP,0,-1) and OP.LDR>0 then OP.LTimer=0 OP.LDR=OP.LDR-1 end
 
-                if S.ctrl.ASP~=0 or m==1 then mino.sfxPlay.move(OP,true,coincide(OP,0,-1)) end
+                if S.ctrl.ASP~=0 or m==1 then mino.sfxPlay.move(OP,true,coincide(OP,0,-1),fLib.getSourcePos(OP,S.stereo,'cur')) end
 
                 if OP.FDelay==0 then
                     while not coincide(OP,0,-1) do C.y=C.y-1 end
                 else
                     if S.keyDown.SD then
-                    if coincide(OP,0,-1) then OP.DTimer=min(OP.DTimer+dt,cxk.SD_ASD)
+                    if coincide(OP,0,-1) then OP.DTimer=min(OP.DTimer+dt,ctrl.SD_ASD)
                     else
                         local m=0
-                        while OP.DTimer>=cxk.SD_ASD and not coincide(OP,0,-1) do
+                        while OP.DTimer>=ctrl.SD_ASD and not coincide(OP,0,-1) do
                             m=m+1
-                            mino.operate.SD1H(OP,cxk.SD_ASP~=0 or m==1)
-                            OP.DTimer=OP.DTimer-cxk.SD_ASP
+                            mino.operate.SD1H(OP,ctrl.SD_ASP~=0 or m==1)
+                            OP.DTimer=OP.DTimer-ctrl.SD_ASP
                         end
                     end
                     else OP.DTimer=0 end
@@ -1113,6 +1115,15 @@ function mino.update(dt)
             S.keyDown[ki]=love.keyboard.isDown(S.keySet[ki]) or vKey.checkActive(ki)
         end
         vKey.update(dt)
+
+        for i=1,#P do
+            local x,y=P[i].posX,P[i].posY
+            for k,v in pairs(P[i].posOffset) do
+                x,y=x+v.x,y+v.y
+            end
+            P[i].finalPosX=x P[i].finalPosY=y
+        end
+
         if mino.waitTime<=0 then mino.gameUpdate(dt)
             if not S.started then
                 S.started=true
@@ -1161,11 +1172,7 @@ function mino.draw()
         C,H,A=P[i].cur,P[i].hold,P[i].smoothAnim
 
         gc.push()
-            x,y=P[i].posx,P[i].posy
-            for k,v in pairs(P[i].posOffset) do
-                x,y=x+v.x,y+v.y
-            end
-            gc.translate(x,y)
+            gc.translate(P[i].finalPosX,P[i].finalPosY)
             gc.scale(P[i].scale*mino.fieldScale)
             --场地
             if mino.rule.underFieldDraw then mino.rule.underFieldDraw(P[i],mino) end

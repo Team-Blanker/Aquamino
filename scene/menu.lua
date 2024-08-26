@@ -269,10 +269,11 @@ function menu.mouseP(x,y,button,istouch)
             if abs(x)+abs(y)<150 then
                 menu.rCount=menu.rCount+1
                 if menu.rCount>=8 then
+                    sfx.play('gameEnter')
                     scene.switch({
                         dest='game',destScene=require'mino/game',
-                        swapT=.6,outT=.2,
-                        anim=function() anim.cover(.2,.4,.2,0,0,0) end
+                        swapT=1.6,outT=.2,
+                        anim=function() anim.enterGame(.4,1.2,.2) end
                     })
                     scene.sendArg={mode='idea_test'}
                     menu.send=menu.gameSend

@@ -29,38 +29,38 @@ function krystal.addSFX()
         push='sfx/game/krystal/push.wav'
     })
 end
-function krystal.move(player,success,landed)
+function krystal.move(player,success,landed,stereo)
     if success then
-        if landed and sfx.key.landedMove then sfx.play('landedMove') else sfx.play('move') end
-    else sfx.play('moveFail') end
+        if landed and sfx.key.landedMove then sfx.play('landedMove',1,1,stereo) else sfx.play('move',1,1,stereo) end
+    else sfx.play('moveFail',1,1,stereo) end
 end
-function krystal.rotate(player,success,spin)
+function krystal.rotate(player,success,spin,stereo)
     if success then
-        if spin then sfx.play('spin')
-        else sfx.play('rotate')end
-    else sfx.play('rotateFail') end
+        if spin then sfx.play('spin',1,1,stereo)
+        else sfx.play('rotate',1,1,stereo)end
+    else sfx.play('rotateFail',1,1,stereo) end
 end
-function krystal.hold()
-    sfx.play('hold')
+function krystal.hold(player,stereo)
+    sfx.play('hold',1,1,stereo)
 end
-function krystal.touch(player,touch)
-    if touch then sfx.play('touch') end
+function krystal.touch(player,touch,stereo)
+    if touch then sfx.play('touch',1,1,stereo) end
 end
-function krystal.lock(player)
-    sfx.play('lock')
+function krystal.lock(player,stereo)
+    sfx.play('lock',1,1,stereo)
 end
-function krystal.clear(player)
+function krystal.clear(player,stereo)
     local his=player.history
     local clearType=(his.spin and 'spin' or '')..min(his.line,(his.spin and 3 or 4))
     local pitch=(his.line==0 or his.spin) and 1 or min(2^((his.combo-1)/12),2.848)
-    sfx.play(clearType,1,pitch)
-    if his.PC then sfx.play('PC') end
+    sfx.play(clearType,1,pitch,stereo)
+    if his.PC then sfx.play('PC',1,1,stereo) end
 end
-function krystal.loose(player)
-    sfx.play('loose')
+function krystal.loose(player,stereo)
+    sfx.play('loose',1,1,stereo)
 end
-function krystal.push(player)
-    sfx.play('push')
+function krystal.push(player,stereo)
+    sfx.play('push',1,1,stereo)
 end
 function krystal.lose()
     sfx.play('lose')

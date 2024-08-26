@@ -1,5 +1,5 @@
 local mymath={}
-function mymath.lerp(a,b,t)
+function mymath.lerp(a,b,t)--ab间选择插值
     if type(a)~=type(b) then error('a and b nust be the same type') end
     if type(a)=='number' then return b*t+a*(1-t)
     elseif type(a)=='table' then
@@ -15,6 +15,13 @@ function mymath.clamp(n,low,high)
     high=high or 1
     low=low or 0
     return max(min(n,high),low)
+end
+function mymath.direction(x,y,z)--获取模长为1的方向向量
+    local r=(x*x+y*y+(z and z*z or 0))^.5
+    if r==0 then return x,y,z
+    elseif z then return x/r,y/r,z/r
+    else return x/r,y/r
+    end
 end
 function mymath.vecplus(a,b)--矢量叠加
     local l=math.min(#a,#b) local c={}

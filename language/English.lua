@@ -92,7 +92,10 @@ return {
         test="Test",
         main={title="Settings",audio="Audio",video="Video",custom="Custom",ctrl="Handling",keys="Keys"},
 
-        audio={mus="Music Volume:",sfx="SFX Volume:",distract="Mute when unfocus",DOX=-22},
+        audio={
+            mus="Music Volume:",distract="Mute when unfocus",DOX=-22,
+            sfx="SFX Volume:",stereo="Stereo:"
+        },
         video={
             unableBG="Disable BGs",
             fullScr="Fullscreen",fullScrTxt="Press F11 to switch window mode immediately.",

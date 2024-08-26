@@ -30,41 +30,41 @@ function plastic.addSFX()
         push='sfx/game/plastic/push.wav'
     })
 end
-function plastic.move(player,success,landed)
-    if success then sfx.play('move') end
+function plastic.move(player,success,landed,stereo)
+    if success then sfx.play('move',1,1,stereo) end
 end
-function plastic.rotate(player,success,spin)
+function plastic.rotate(player,success,spin,stereo)
     if success then
-        if spin then sfx.play('spin') end
-        sfx.play('rotate')
-    else sfx.play('rotateFail') end
+        if spin then sfx.play('spin',1,1,stereo) end
+        sfx.play('rotate',1,1,stereo)
+    else sfx.play('rotateFail',1,1,stereo) end
 end
-function plastic.hold()
-    sfx.play('hold')
+function plastic.hold(player,stereo)
+    sfx.play('hold',1,1,stereo)
 end
 function plastic.touch(player,touch)
-    if touch then sfx.play('touch') end
+    if touch then sfx.play('touch',1,1,stereo) end
 end
-function plastic.lock(player)
-    if player.history.dropHeight>0 then sfx.play('HD') end
-    sfx.play('lock')
+function plastic.lock(player,stereo)
+    if player.history.dropHeight>0 then sfx.play('HD',1,1,stereo) end
+    sfx.play('lock',1,1,stereo)
 end
-function plastic.clear(player)
+function plastic.clear(player,stereo)
     local his=player.history
     local pitch=his.line==0 and 1 or min(2^((his.combo-1)/12),2.848)
     sfx.play(''..min(his.line,4))
-    if his.spin then sfx.play('spinClear',his.line>0 and 1 or .5,his.mini and .75 or 1) end
-    if his.line>0 then sfx.play('combo',1,pitch) end
-    if his.PC then sfx.play('PC') end
+    if his.spin then sfx.play('spinClear',his.line>0 and 1 or .5,his.mini and .75 or 1,stereo) end
+    if his.line>0 then sfx.play('combo',1,pitch,stereo) end
+    if his.PC then sfx.play('PC',1,1,stereo) end
 end
-function plastic.B2BBreak()
-    sfx.play('B2BBreak')
+function plastic.B2BBreak(player,b2b,stereo)
+    sfx.play('B2BBreak',1,1,stereo)
 end
-function plastic.loose(player)
-    sfx.play('loose')
+function plastic.loose(player,stereo)
+    sfx.play('loose',1,1,stereo)
 end
-function plastic.push(player)
-    sfx.play('push')
+function plastic.push(player,stereo)
+    sfx.play('push',1,1,stereo)
 end
 function plastic.lose()
     sfx.play('lose')

@@ -12,8 +12,8 @@ function rule.init(P,mino)
        ASD=.15,ASP=.03,SDType='D',SD_ASD=0,SD_ASP=.03
     }
     P[1].FDelay=1e99
-    P[1].posx=-400 P[2]=mytable.copy(P[1]) P[2].posx=400 mino.stacker.opList={1,2}
-    --P[1].posx=-6666 P[2].posx=6666
+    P[1].posX=-400 P[2]=mytable.copy(P[1]) P[2].posX=400 mino.stacker.opList={1,2}
+    --P[1].posX=-6666 P[2].posX=6666
     for k,v in pairs(P) do
         v.CDelay=.2
         v.EDelay=.1

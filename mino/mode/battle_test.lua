@@ -12,7 +12,7 @@ function rule.init(P,mino)
     P[1].atk=0
     P[1].line=0
     P[1].LDelay=1e99
-    P[1].posx=-400 P[2]=mytable.copy(P[1]) P[2].posx=400
+    P[1].posX=-400 P[2]=mytable.copy(P[1]) P[2].posX=400
     P[1].target=2 P[2].target=1
     mino.fieldScale=min(mino.fieldScale,1)
     battle.init(P[1]) battle.init(P[2]) fLib.setRS(P[2],'SRS')

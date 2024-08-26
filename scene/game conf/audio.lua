@@ -4,7 +4,10 @@ local cf=user.lang.conf
 
 local audio={}
 function audio.read()
-    audio.info={mus=.5,sfx=.8,distractCut=false}
+    audio.info={
+        mus=.5,distractCut=false,
+        sfx=.8,stereo=.5
+    }
     local info=file.read('conf/audio')
     if fs.getInfo('conf/audio') then T.combine(audio.info,info) end
     mus.volume,sfx.volume=audio.info.mus,audio.info.sfx
@@ -122,6 +125,27 @@ function audio.init()
         release=function(pos)
             audio.info.sfx,sfx.volume=pos,pos
             sfx.play('test')
+        end
+    })
+    SLIDER.create('sfx_stereo',{
+        x=240,y=-125,type='hori',sz={400,32},button={32,32},
+        gear=0,pos=(audio.info.stereo+1)/2,
+        sliderDraw=function(g,sz)
+            gc.setColor(.5,.5,.5,.8)
+            gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
+            gc.setColor(1,1,1)
+            gc.printf(string.format(cf.audio.stereo.."%.0f%%",audio.info.stereo*100),
+                font.JB,-216,-48,114514,'left',0,.3125,.3125,0,84)
+        end,
+        buttonDraw=function(pos,sz)
+            gc.setColor(1,1,1)
+            gc.circle('fill',sz[1]*(pos-.5),0,20,4)
+        end,
+        always=function(pos)
+            audio.info.stereo=pos*2-1
+        end,
+        release=function(pos)
+            audio.info.stereo=pos*2-1
         end
     })
 end

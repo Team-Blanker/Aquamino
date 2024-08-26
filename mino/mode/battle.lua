@@ -13,8 +13,8 @@ function rule.init(P,mino,modeInfo)
     P[1].line=0
     P[2]=mytable.copy(P[1])
     print(modeInfo.arg.playerPos)
-    if modeInfo.arg.playerPos=='left' then P[1].posx=-400 P[2].posx=400
-    else P[1].posx=400 P[2].posx=-400 end
+    if modeInfo.arg.playerPos=='left' then P[1].posX=-400 P[2].posX=400
+    else P[1].posX=400 P[2].posX=-400 end
     P[2].LDelay=1e99
     P[2].FDelay=1e99
     P[1].target=2 P[2].target=1

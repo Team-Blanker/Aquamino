@@ -24,8 +24,9 @@ function fieldLib.newPlayer(arg)
 
         event={0,'start',0,'nextIns'},
         initOpQueue={},--I_S操作序列
-        posx=0,posy=0,r=0,scale=1,
+        posX=0,posY=0,r=0,scale=1,
         posOffset={},
+        finalPosX=0,finalPosY=0,
         field={},w=10,h=20,loosen={},
         moveDir='',pushAtt=0,
 
@@ -394,5 +395,12 @@ function fieldLib.pushField(player,mode) --loosen[1]={x=1,y=1,name='Z'}
     for i=1,#BTM do table.insert(ls,BTM[i]) end --放回松动块列表，结束
 
     return looseBlock,canMove
+end
+
+--玩家，立体声参数，哪个地方的数据（cur/history）
+function fieldLib.getSourcePos(player,stereo,bdata)--获取音频播放位置
+    stereo=stereo or 0
+    local x=bdata and (player[bdata].x-.5-player.w/2)*36*player.scale or 0
+    return M.clamp((player.finalPosX+x)/960,-1,1)*stereo
 end
 return fieldLib

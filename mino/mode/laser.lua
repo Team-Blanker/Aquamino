@@ -94,7 +94,7 @@ function rule.init(P,mino)
     P[1].point=0
     P[1].laserLv=1
     P[1].scoreTxt={}--[1]={x,y,v,g,color,size,TTL,Tmax}
-    --P[1].posy=600
+    --P[1].posY=600
     --激光表，destroy摧毁，reverse反转，random随机；h水平(horizontal)，s竖直(straight)
     P[1].laserArg={}
     P[1].laserList={} P[1].nextLaserList={} P[1].animLaserList={}

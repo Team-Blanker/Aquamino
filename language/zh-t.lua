@@ -91,7 +91,9 @@ return {
     conf={
         test="測試",
         main={title="設定 - 首頁",audio="音頻設定",video="畫面設定",custom="主题設定",ctrl="控制設定",keys="鍵位設定"},
-        audio={mus="音樂音量:",sfx="音效音量:",distract="失去焦點自動靜音",DOX=0},
+        audio={mus="音樂音量:",distract="失去焦點自動靜音",DOX=0,
+            sfx="音效音量:",stereo="立体声:"
+        },
         video={
             unableBG="禁用遊戲背景",
             fullScr="全螢幕",fullScrTxt="按F11可一鍵切換視窗狀態。",

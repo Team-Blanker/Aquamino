@@ -91,7 +91,10 @@ return {
     conf={
         test="测试",
         main={title="设置 - 主页",audio="音频设置",video="画面设置",custom="主题设置",ctrl="控制设置",keys="键位设置"},
-        audio={mus="音乐音量:",sfx="音效音量:",distract="失去焦点自动静音",DOX=0},
+        audio={
+            mus="音乐音量:",distract="失去焦点自动静音",DOX=0,
+            sfx="音效音量:",stereo="立体声:"
+        },
         video={
             unableBG="禁用游戏背景",
             fullScr="全屏",fullScrTxt="按F11可一键切换窗口状态。",
