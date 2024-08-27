@@ -6,9 +6,9 @@ for i=1,#keyName do
     keyIcon[keyName[i]]=gc.newImage('pic/virtual key/'..keyName[i]..'.png')--200*200
 end
 
-local actCanvas=gc.newCanvas(450,450)
+local borderCanvas=gc.newCanvas(450,450)
 gc.setScissor(0,0,450,450)
-gc.setCanvas(actCanvas)
+gc.setCanvas(borderCanvas)
 gc.setLineWidth(10)
 gc.setColor(1,1,1)
 gc.circle('line',225,225,200,4)
@@ -35,7 +35,7 @@ local function defaultVkDraw(k,v)
     gc.circle('line',v.x,v.y,v.r,4)
 
     gc.setColor(1,1,1,1-5*v.clickT)
-    gc.draw(actCanvas,v.x,v.y,0,v.r/200*(1+2*v.clickT),v.r/200*(1+2*v.clickT),225,225)
+    gc.draw(borderCanvas,v.x,v.y,0,v.r/200*(1+2*v.clickT),v.r/200*(1+2*v.clickT),225,225)
 
     gc.setColor(1,1,1,.8)
     gc.draw(keyIcon[k],v.x,v.y,0,v.r/100,v.r/100,100,100)
@@ -45,6 +45,7 @@ local vkDraw={
     ML=function(k,v)
         local l=v.holdT>=vk.ctrl.ASD and v.holdT>0
         local va=min(v.holdT-vk.ctrl.ASD,.1)*5
+        local ia=vk.ctrl.ASD==0 and (v.holdT>0 and 1 or 0) or min(v.holdT/vk.ctrl.ASD,1)^3
 
         if checkAct(k) then
             if l then gc.setColor(.5,1,.875,.25) else gc.setColor(1,1,1,.25) end
@@ -59,15 +60,16 @@ local vkDraw={
         end
 
         gc.setColor(1,1,1,1-5*v.clickT)
-        gc.draw(actCanvas,v.x,v.y,0,v.r/200*(1+2*v.clickT),v.r/200*(1+2*v.clickT),225,225)
+        gc.draw(borderCanvas,v.x,v.y,0,v.r/200*(1+2*v.clickT),v.r/200*(1+2*v.clickT),225,225)
 
         gc.setColor(1,1,1,.8)
-        gc.draw(keyIcon[k],v.x,v.y,0,v.r/100,v.r/100,100,100)
+        gc.draw(keyIcon[k],v.x-v.r*.25*ia,v.y,0,v.r/100,v.r/100,100,100)
     end,
 
     MR=function(k,v)
         local l=v.holdT>=vk.ctrl.ASD and v.holdT>0
         local va=min(v.holdT-vk.ctrl.ASD,.1)*5
+        local ia=vk.ctrl.ASD==0 and (v.holdT>0 and 1 or 0) or min(v.holdT/vk.ctrl.ASD,1)^3
 
         if checkAct(k) then
             if l then gc.setColor(.5,1,.875,.25) else gc.setColor(1,1,1,.25) end
@@ -82,15 +84,16 @@ local vkDraw={
         end
 
         gc.setColor(1,1,1,1-5*v.clickT)
-        gc.draw(actCanvas,v.x,v.y,0,v.r/200*(1+2*v.clickT),v.r/200*(1+2*v.clickT),225,225)
+        gc.draw(borderCanvas,v.x,v.y,0,v.r/200*(1+2*v.clickT),v.r/200*(1+2*v.clickT),225,225)
 
         gc.setColor(1,1,1,.8)
-        gc.draw(keyIcon[k],v.x,v.y,0,v.r/100,v.r/100,100,100)
+        gc.draw(keyIcon[k],v.x+v.r*.25*ia,v.y,0,v.r/100,v.r/100,100,100)
     end,
 
     SD=function(k,v)
         local l=v.holdT>=vk.ctrl.SD_ASD and v.holdT>0
         local va=min(v.holdT-vk.ctrl.SD_ASD,.1)*5
+        local ia=vk.ctrl.SD_ASD==0 and (v.holdT>0 and 1 or 0) or min(v.holdT/vk.ctrl.SD_ASD,1)^3
 
         if checkAct(k) then
             if l then gc.setColor(.5,1,.875,.25) else gc.setColor(1,1,1,.25) end
@@ -105,10 +108,30 @@ local vkDraw={
         end
 
         gc.setColor(1,1,1,1-5*v.clickT)
-        gc.draw(actCanvas,v.x,v.y,0,v.r/200*(1+2*v.clickT),v.r/200*(1+2*v.clickT),225,225)
+        gc.draw(borderCanvas,v.x,v.y,0,v.r/200*(1+2*v.clickT),v.r/200*(1+2*v.clickT),225,225)
 
         gc.setColor(1,1,1,.8)
-        gc.draw(keyIcon[k],v.x,v.y,0,v.r/100,v.r/100,100,100)
+        gc.draw(keyIcon[k],v.x,v.y+v.r*.25*ia,0,v.r/100,v.r/100,100,100)
+    end,
+
+    HD=function(k,v)
+        local l=v.holdT>=vk.ctrl.SD_ASD and v.holdT>0
+        local ia=max(-abs(v.clickT-.05)+.05,0)*2
+
+        if checkAct(k) then
+            gc.setColor(1,1,1,.25)
+            gc.circle('fill',v.x,v.y,v.r*15/16,4)
+        end
+
+        gc.setColor(1,1,1)
+        gc.setLineWidth(5*v.r/100)
+        gc.circle('line',v.x,v.y,v.r,4)
+
+        gc.setColor(1,1,1,1-5*v.clickT)
+        gc.draw(borderCanvas,v.x,v.y,0,v.r/200*(1+2*v.clickT),v.r/200*(1+2*v.clickT),225,225)
+
+        gc.setColor(1,1,1,.8)
+        gc.draw(keyIcon[k],v.x,v.y+v.r*ia,0,v.r/100,v.r/100,100,100)
     end,
 
     CW=function(k,v)
@@ -123,7 +146,7 @@ local vkDraw={
     gc.arc('line','closed',v.x,v.y,v.r,-as/4*tau,(3-as)/4*tau,3)
 
     gc.setColor(1,1,1,1-5*v.clickT)
-    gc.draw(actCanvas,v.x,v.y,0,v.r/200*(1+2*v.clickT),v.r/200*(1+2*v.clickT),225,225)
+    gc.draw(borderCanvas,v.x,v.y,0,v.r/200*(1+2*v.clickT),v.r/200*(1+2*v.clickT),225,225)
 
     gc.setColor(1,1,1,.8)
     gc.draw(keyIcon[k],v.x,v.y,0,v.r/100,v.r/100,100,100)
@@ -141,7 +164,7 @@ local vkDraw={
         gc.arc('line','closed',v.x,v.y,v.r,as/4*tau,(3+as)/4*tau,3)
 
         gc.setColor(1,1,1,1-5*v.clickT)
-        gc.draw(actCanvas,v.x,v.y,0,v.r/200*(1+2*v.clickT),v.r/200*(1+2*v.clickT),225,225)
+        gc.draw(borderCanvas,v.x,v.y,0,v.r/200*(1+2*v.clickT),v.r/200*(1+2*v.clickT),225,225)
 
         gc.setColor(1,1,1,.8)
         gc.draw(keyIcon[k],v.x,v.y,0,v.r/100,v.r/100,100,100)
@@ -161,12 +184,31 @@ local vkDraw={
         gc.arc('line','closed',v.x,v.y,v.r, as/4*tau,(3+as)/4*tau,3)
 
         gc.setColor(1,1,1,1-5*v.clickT)
-        gc.draw(actCanvas,v.x,v.y,0,v.r/200*(1+2*v.clickT),v.r/200*(1+2*v.clickT),225,225)
+        gc.draw(borderCanvas,v.x,v.y,0,v.r/200*(1+2*v.clickT),v.r/200*(1+2*v.clickT),225,225)
 
         gc.setColor(1,1,1,.8)
         gc.draw(keyIcon[k],v.x,v.y,0,v.r/100,v.r/100,100,100)
     end,
 
+    hold=function(k,v)
+        local l=v.holdT>=vk.ctrl.SD_ASD and v.holdT>0
+        local ia=min(abs(v.clickT-.05),.05)/.05
+
+        if checkAct(k) then
+            gc.setColor(1,1,1,.25)
+            gc.ellipse('fill',v.x,v.y,v.r*15/16,v.r*15/16,4)
+        end
+
+        gc.setColor(1,1,1)
+        gc.setLineWidth(5*v.r/100)
+        gc.ellipse('line',v.x,v.y,v.r,v.r,4)
+
+        gc.setColor(1,1,1,1-5*v.clickT)
+        gc.draw(borderCanvas,v.x,v.y,0,v.r/200*(1+2*v.clickT),v.r/200*(1+2*v.clickT),225,225)
+
+        gc.setColor(1,1,1,.8)
+        gc.draw(keyIcon[k],v.x,v.y,0,v.r/100*ia,v.r/100,100,100)
+    end,
 }
 
 function vk.init(ctrl,anim)
