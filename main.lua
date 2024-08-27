@@ -49,7 +49,7 @@ function love.run()
             end
         end
 
-        if love.timer then love.timer.sleep(0.001) end
+        if love.timer then love.timer.sleep(.001) end
     end
 end
 
@@ -65,7 +65,6 @@ mymath=require'framework/mathextend' mytable=require'framework/tableextend'
 anim=require'scene/swapAnim'
 COLOR=require'framework/color'
 
-json=require'framework/json'
 file=require'framework/fileextend'
 
 rand=math.random
@@ -336,6 +335,17 @@ function love.draw()
     gc.setColor(1,1,1,.5)
     gc.print("TPS: "..love.timer.getFPS()..", FPS: "..drawCtrl.FPS..", gcinfo: "..gcinfo(),font.Bender_B,-950,510,0,.2,.2)
 
+    gc.setColor(1,1,1)
+    if win.showInfo then
+        --local infoL="Current scene: "..scene.pos.."\nCursor pos:"..("%.2f,%.2f"):format(rx,ry)
+        --[[if canop then infoL=infoL.."\nYou can operate now"
+        else infoL=infoL.."\nYou can\'t operate now" end
+        infoR="You\'ve stayed here for "..string.format("%.2f",scene.time).."s".."\nRes:"..win.W.."*"..win.H.."\nReal res:"..rw.."*"..rh.."\nWindow mode position:"..win.x_win..","..win.y_win.."\n"..drawCtrl.timer.."/"..drawCtrl.dtRestrict.."\n"..(lastkeyP and lastkeyP or "")
+        gc.print(infoL,font.Bender,10,25,0,.15,.15)
+        gc.printf(infoR,font.Bender,win.W-10-114514*.15,25,114514,'right',0,.15,.15)]]
+        gc.printf(("%.2f,%.2f"):format(rx,ry),font.Bender,rx,ry-16,2000,'center',0,.15,.15,1000,72)
+    end
+
     gc.origin()
 
     local aw,ah=win.H/win.W<9/16 and win.H*16/9 or win.W,win.H/win.W<9/16 and win.H or win.W*9/16
@@ -344,16 +354,6 @@ function love.draw()
     gc.rectangle('fill',(win.W+aw)/2,0,(win.W-aw)/2,win.H)
     gc.rectangle('fill',0,0,win.W,(win.H-ah)/2)
     gc.rectangle('fill',0,(win.H+ah)/2,win.W,(win.H-ah)/2)
-
-    gc.setColor(1,1,1)
-    if win.showInfo then
-        local infoL="Current scene: "..scene.pos.."\nCursor pos:"..("%.2f,%.2f"):format(rx,ry)
-        if canop then infoL=infoL.."\nYou can operate now"
-        else infoL=infoL.."\nYou can\'t operate now" end
-        infoR="You\'ve stayed here for "..string.format("%.2f",scene.time).."s".."\nRes:"..win.W.."*"..win.H.."\nReal res:"..rw.."*"..rh.."\nWindow mode position:"..win.x_win..","..win.y_win.."\n"..drawCtrl.timer.."/"..drawCtrl.dtRestrict.."\n"..(lastkeyP and lastkeyP or "")
-        gc.print(infoL,font.Bender,10,25,0,.15,.15)
-        gc.printf(infoR,font.Bender,win.W-10-114514*.15,25,114514,'right',0,.15,.15)
-    end
 end
 
 function love.quit()
