@@ -52,8 +52,8 @@ local defaultPreset={
     {
         ML=   {x= 360,y= 420,r=120,tolerance=60},
         MR=   {x= 840,y= 420,r=120,tolerance=60},
-        SD=   {x= 600,y= 180,r=120,tolerance=60},
-        HD=   {x= 600,y= 420,r=120,tolerance=60},
+        SD=   {x= 600,y= 420,r=120,tolerance=60},
+        HD=   {x= 600,y= 180,r=120,tolerance=60},
         CW=   {x=-600,y= 420,r=120,tolerance=60},
         CCW=  {x=-840,y= 420,r=120,tolerance=60},
         flip= {x=-600,y= 180,r=120,tolerance=60},
