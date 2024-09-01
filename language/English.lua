@@ -32,7 +32,7 @@ return {
         master={{1,1,1},"Survive in the cruelest speed!\n",{1,.5,0},"Fall delay is 0, lock delay shortens with\nlevel increases\n",{1,1,0},"Handling Restriction: ASD=150ms ASP=30ms"},
         multitasking={{1,1,1},"*Galaxy Brain Meme*\n",{1,1,0},"Handling Restriction:\nASD=150ms ASP=30ms SD ASP=30ms\nGravity increases with level"},
         sandbox={{1,1,0},"This mode does not record any score"},
-        ['dig 40']="Think. Dig. Effeciency.",
+        ['dig 40']="Dig 40 garbages with as few blocks\nas you can.",
         laser={{1,1,1},"U  N  D-E-R  G  R  O-U-N\nU  N  D-E-R  G  R  O-U-N-D\n",{1,1,0},"This is a rhythmical mode.\nTurning on music is strongly recommended."},
         backfire="Receive the attack sent by yourself!",
         battle={{1,1,1},"Let's battle!\n",{1,1,0},"This mode does not record any score"},
