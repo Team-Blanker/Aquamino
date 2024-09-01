@@ -878,7 +878,7 @@ function mino.inputPress(k)
                 end
 
                 --最高下落速度
-                if not k=='HD' and OP.FDelay==0 then
+                if k~='HD' and OP.FDelay==0 then
                     local h=0
                     while not coincide(OP,0,-1) do C.y=C.y-1 h=h+1 C.spin=false end
                     if h>0 then mino.sfxPlay.touch(OP,true,fLib.getSourcePos(OP,S.stereo,'cur')) end
