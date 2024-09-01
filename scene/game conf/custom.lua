@@ -181,10 +181,10 @@ function custom.init()
             gc.setColor(1,1,1,.4)
             gc.rectangle('fill',w/2+320*animArg,-h/2,320*(1-animArg),h)
             gc.setColor(r,g,b)
-            gc.setLineWidth(8)
-            gc.rectangle('line',-w/2+4,-h/2+4,h-8,h-8)
+            gc.setLineWidth(6)
+            gc.rectangle('line',-w/2+3,-h/2+3,w-6,h-6)
             if custom.info.smoothAnimAct then
-                gc.circle('line',0,0,(w/2-4)*1.4142,4)
+                gc.line(-w*3/8,0,-w/8,h/4,w*3/8,-h/4)
             end
             gc.setColor(r,g,b,2*t)
             gc.rectangle('fill',-w/2,-h/2,h,h)
