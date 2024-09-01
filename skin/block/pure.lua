@@ -28,8 +28,14 @@ function skin.curDraw(player,piece,x,y,color)
         setColor(1,1,1,1-player.LTimer/player.LDelay)
         rect('fill',36*(x+piece[i][1])-21,-36*(y+piece[i][2])-21,42,42)
     end
+    setColor(color[1],color[2],color[3],color[4] or alpha or 1)
     for i=1,#piece do
-        setColor(color[1],color[2],color[3],color[4] or alpha or 1)
+        rect('fill',-18+36*(x+piece[i][1]),-18-36*(y+piece[i][2]),36,36)
+    end
+end
+function skin.previewDraw(piece,x,y,color)--设置内预览方块材质用
+    setColor(color)
+    for i=1,#piece do
         rect('fill',-18+36*(x+piece[i][1]),-18-36*(y+piece[i][2]),36,36)
     end
 end

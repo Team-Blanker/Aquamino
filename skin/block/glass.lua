@@ -160,6 +160,14 @@ function skin.holdDraw(player,piece,x,y,color,canHold)
         draw(pic,-18+36*(x+piece[i][1]),-18-36*(y+piece[i][2]))
     end
 end
+function skin.previewDraw(piece,x,y,color)--设置内预览方块材质用
+    for i=1,#piece do
+        setColor(color[1],color[2],color[3],.25)
+        rect('fill',-18+36*(x+piece[i][1]),-18-36*(y+piece[i][2]),36,36)
+        setColor(color)
+        draw(pic,-18+36*(x+piece[i][1]),-18-36*(y+piece[i][2]))
+    end
+end
 function skin.nextDraw(player,piece,x,y,color,order)
     for i=1,#piece do
         setColor(color[1],color[2],color[3],.25)

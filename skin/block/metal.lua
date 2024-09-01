@@ -6,13 +6,13 @@ local arc,circle,rect=gc.arc,gc.circle,gc.rectangle
 function skin.setDropAnimTTL(player)
     return .25
 end
-skin.pic=gc.newImage('skin/block/glossy/glossy.png')
-local sd=fs.newFile('shader/grayscale stain.glsl'):read()
-skin.sd=gc.newShader(sd)
+skin.pic=gc.newImage('skin/block/metal/metal.png')
+skin.sd=gc.newShader('shader/grayscale stain.glsl')
 
 local bb=gc.newCanvas(42,42)
 gc.setCanvas(bb)
 setColor(1,1,1)
+rect('fill',0,0,42,42)
 rect('fill',3,0,36,42)
 rect('fill',0,3,42,36)
 gc.setCanvas()
@@ -164,13 +164,18 @@ function skin.ghostDraw(player,piece,x,y,color)
     end
     setShader()
 end
+function skin.setDropAnimTTL(player,mino)
+    return .15*player.history.dropHeight/player.h
+end
 function skin.dropAnim(player)
     local DA=player.dropAnim
     for i=1,#DA do
+        local t=DA[i].TTL/DA[i].TMax
+        local l=DA[i].len
         local c=DA[i].color
-        setColor(c[1],c[2],c[3],0.125*DA[i].TTL/DA[i].TMax*(1+.25*DA[i].h/DA[i].w))
+        setColor(c[1],c[2],c[3],.125*t*(1+.5*DA[i].h/DA[i].w))
         gc.setLineWidth(36)
-        rect('fill',36*(DA[i].x)-18,-36*(DA[i].y+.5),36,36*DA[i].len)
+        rect('fill',36*(DA[i].x)-18,36*(-DA[i].y+.5+l*(1-t)),36,36*l*t)
     end
 end
 function skin.clearEffect(y,h,alpha,width)

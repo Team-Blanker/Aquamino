@@ -1,14 +1,12 @@
 local BUTTON,SLIDER=scene.button,scene.slider
 local blocks=require'mino/blocks'
-local fLib=require'mino/fieldLib'
-local player=fLib.newPlayer()
 local cfcc=user.lang.conf.custom.colorSet
 
 local bc={blockIndex=1}
 local defaultColor={
     Z={.96,.16,.32},S={.48,.96,0},J={0,.64,.96},L={.96,.64,.32},T={.8,.2,.96},O={.96,.96,0},I={.16,.96,.72},
 }
-local canAdjustColor={glossy=true,glass=true,pure=true,['carbon fibre']=true,wheelchair=true}
+local canAdjustColor={glossy=true,glass=true,metal=true,pure=true,['carbon fibre']=true,wheelchair=true}
 local bList={'Z','S','J','L','T','O','I'}
 local skinName
 function bc.read()
@@ -245,28 +243,32 @@ function bc.draw()
     end
     BUTTON.draw() SLIDER.draw()
 
-    gc.push('transform')
-    gc.translate(0,-250)
-    gc.scale(2.5)
-    w,h,x,y=blocks.size(blocks[bList[bc.blockIndex]])
-    if bc.blockSkin.curDraw then bc.blockSkin.curDraw(player,blocks[bList[bc.blockIndex]],x,y,bc.color[bList[bc.blockIndex]]) end
-    gc.pop()
-    gc.push('transform')
-    gc.translate(-400,-250)
-    gc.scale(1.5)
-    if bc.blockSkin.curDraw and bc.blockIndex-1>0 then
-        w,h,x,y=blocks.size(blocks[bList[bc.blockIndex-1]])
-        bc.blockSkin.curDraw(player,blocks[bList[bc.blockIndex-1]],x,y,bc.color[bList[bc.blockIndex-1]])
+    if bc.blockSkin.previewDraw then
+        gc.push('transform')
+        gc.translate(0,-250)
+        gc.scale(2.5)
+        w,h,x,y=blocks.size(blocks[bList[bc.blockIndex]])
+        bc.blockSkin.previewDraw(blocks[bList[bc.blockIndex]],x,y,bc.color[bList[bc.blockIndex]])
+        gc.pop()
+
+        gc.push('transform')
+        gc.translate(-400,-250)
+        gc.scale(1.5)
+        if bc.blockIndex-1>0 then
+            w,h,x,y=blocks.size(blocks[bList[bc.blockIndex-1]])
+            bc.blockSkin.previewDraw(blocks[bList[bc.blockIndex-1]],x,y,bc.color[bList[bc.blockIndex-1]])
+        end
+        gc.pop()
+
+        gc.push('transform')
+        gc.translate(400,-250)
+        gc.scale(1.5)
+        if bc.blockIndex+1<=#bList then
+            w,h,x,y=blocks.size(blocks[bList[bc.blockIndex+1]])
+            bc.blockSkin.previewDraw(blocks[bList[bc.blockIndex+1]],x,y,bc.color[bList[bc.blockIndex+1]])
+        end
+        gc.pop()
     end
-    gc.pop()
-    gc.push('transform')
-    gc.translate(400,-250)
-    gc.scale(1.5)
-    if bc.blockSkin.curDraw and bc.blockIndex+1<=#bList then
-        w,h,x,y=blocks.size(blocks[bList[bc.blockIndex+1]])
-        bc.blockSkin.curDraw(player,blocks[bList[bc.blockIndex+1]],x,y,bc.color[bList[bc.blockIndex+1]])
-    end
-    gc.pop()
 end
 function bc.exit()
     bc.save()

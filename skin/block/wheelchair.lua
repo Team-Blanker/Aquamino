@@ -56,6 +56,14 @@ function skin.holdDraw(player,piece,x,y,color,canHold)
     end
     gc.setShader()
 end
+function skin.previewDraw(piece,x,y,color)--设置内预览方块材质用
+    setShader(skin.sd)
+    for i=1,#piece do
+        gc.setColor(color)
+        draw(skin.pic,36*(x+piece[i][1]),-36*(y+piece[i][2]),0,.5,.5,36,36)
+    end
+    setShader()
+end
 function skin.nextDraw(player,piece,x,y,color,order)
     setShader(skin.sd)
     for i=1,#piece do
