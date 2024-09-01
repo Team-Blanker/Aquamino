@@ -1,6 +1,6 @@
 local lang={}
 local BUTTON,SLIDER=scene.button,scene.slider
-local langList={'English','zh-s','zh-t'}
+local langList={'English','zh-s','zh-t','Italian'}
 function lang.read()
     lang.uage=file.read('conf/lang')
     if not mytable.include(langList,lang.uage[1]) then lang.uage[1]='English' end
@@ -39,7 +39,7 @@ function lang.init()
         end
     },.2)
     BUTTON.create('zh-s',{
-        x=-500,y=0,type='rect',w=360,h=100,
+        x=-240,y=-100,type='rect',w=360,h=100,
         draw=function(bt,t,ct)
             local w,h=bt.w,bt.h
             gc.setColor(.6,.4,.4,.3+t)
@@ -59,7 +59,7 @@ function lang.init()
         end
     },.2)
     BUTTON.create('zh-t',{
-        x=0,y=0,type='rect',w=360,h=100,
+        x=240,y=-100,type='rect',w=360,h=100,
         draw=function(bt,t,ct)
             local w,h=bt.w,bt.h
             gc.setColor(.6,.5,.4,.3+t)
@@ -79,7 +79,7 @@ function lang.init()
         end
     },.2)
     BUTTON.create('English',{
-        x=500,y=0,type='rect',w=360,h=100,
+        x=-240,y=100,type='rect',w=360,h=100,
         draw=function(bt,t,ct)
             local w,h=bt.w,bt.h
             gc.setColor(.4,.5,.6,.3+t)
@@ -95,6 +95,26 @@ function lang.init()
         event=function()
             sfx.play('click')
             lang.uage[1],user.langName="English","English"
+            user.lang=require('language/'..user.langName)
+        end
+    },.2)
+    BUTTON.create('Italian',{
+        x= 240,y=100,type='rect',w=360,h=100,
+        draw=function(bt,t,ct)
+            local w,h=bt.w,bt.h
+            gc.setColor(.5,.6,.4,.3+t)
+            gc.rectangle('fill',-w/2,-h/2,w,h)
+            gc.setColor(.75,.9,.6)
+            gc.setLineWidth(3)
+            gc.rectangle('line',-w/2,-h/2,w,h)
+            gc.setColor(1,1,1)
+            gc.printf("Italiano",font.Bender,0,0,1280,'center',0,.5,.5,640,72)
+            gc.setColor(.6,.75,.9,1-4*ct)
+            gc.rectangle('line',-w/2-ct*80,-h/2-ct*80,w+ct*160,h+ct*160)
+        end,
+        event=function()
+            sfx.play('click')
+            lang.uage[1],user.langName="Italian","Italian"
             user.lang=require('language/'..user.langName)
         end
     },.2)
@@ -120,7 +140,7 @@ function lang.update(dt)
 end
 function lang.draw()
     gc.setColor(1,1,1)
-    gc.printf("语言/Language",font.Bender,0,-430,1280,'center',0,1,1,640,72)
+    gc.printf("语言/Language/Lingua",font.Bender,0,-430,6000,'center',0,1,1,3000,72)
     gc.printf(user.lang.conf.lang.cur,font.Bender,0,-280,5000,'center',0,.5,.5,2500,72)
     BUTTON.draw() SLIDER.draw()
 end
