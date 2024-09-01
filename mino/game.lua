@@ -137,7 +137,7 @@ function mino.nextIns(player)
     if player.next[player.preview+1] then
         local n=player.preview+1
         player.NP[n]=T.copy(B[player.next[n]])
-        player.NO[n]=mino.orient[player.next[n]]
+        player.NO[n]=mino.orient[player.next[n]] or mino.orient.default
         for k=1,player.NO[n] do
             player.NP[n]=B.rotate(player.NP[n],0,'R')
         end
@@ -222,21 +222,23 @@ end
 
 function mino.hold(player)
     local H,C,A=player.hold,player.cur,player.smoothAnim
+    print('p',C.O,H.O)
     H.name,C.name=C.name,H.name  H.piece,C.piece=C.piece,H.piece  H.O,C.O=C.O,H.O
+    print('n',C.O,H.O)
     if player.hold.mode=='A' then
         H.x,H.y,C.x,C.y=C.x,C.y,H.x,H.y
         while C.piece and coincide(player) and C.y<player.h+B.Soff[C.name][2] do C.y=C.y+1 end
     elseif player.hold.mode=='S' then
     if C.name and C.piece then
         fLib.entryPlace(player)
-        C.O=mino.orient[C.name]
+        C.O=mino.orient[C.name] or mino.orient.default
     else
         if player.next[player.preview+1] then
-            local wtf=player.preview+1
-            player.NP[wtf]=T.copy(B[player.next[wtf]])
-            player.NO[wtf]=mino.orient[player.next[wtf]]
-            for k=1,player.NO[wtf] do
-                player.NP[wtf]=B.rotate(player.NP[wtf],0,'R')
+            local nxt=player.preview+1
+            player.NP[nxt]=T.copy(B[player.next[nxt]])
+            player.NO[nxt]=mino.orient[player.next[nxt]] or mino.orient.default
+            for k=1,player.NO[nxt] do
+                player.NP[nxt]=B.rotate(player.NP[nxt],0,'R')
             end
         end
 
@@ -620,6 +622,7 @@ function mino.init()
             Z5=0,S5=0,J5=0,L5=0,T5=0,I5=0,
             N =0,H =0,E =0,F =0,R =0,Y =0,
             P =0,Q =0,X =0,W =0,V =0,U =0,
+            default=0
         }
 
 
@@ -640,11 +643,18 @@ function mino.init()
         mino.unableBG=vi.unableBG
         mino.moreParticle=vi.moreParticle
 
-        mino.color={Z={.96,.16,.32},S={.48,.96,0},J={0,.64,.96},L={.96,.64,.32},T={.8,.2,.96},O={.96,.96,0},I={.16,.96,.72},
+        mino.color={
+            Z={.96,.16,.32},S={.48,.96,0},J={0,.64,.96},L={.96,.64,.32},T={.8,.2,.96},O={.96,.96,0},I={.16,.96,.72},
             g1={.5,.5,.5},g2={.75,.75,.75},
+
             Z5={.84,.07,.14},S5={.42,.84,0},J5={0,.56,.84},L5={.84,.56,.28},T5={.7,.175,.84},I5={.9,.9,.9},
             N ={.84,.42,.56},H ={.14,.84,.63},E ={0,.84,.14},F ={.84,.14,.49},R ={.49,.14,.84},Y ={0,.35,.84},
             P ={.28,.28,.84},Q ={.84,.35,.14},X ={.84,.84,0},W ={.84,0,.84},V ={0,.84,.84},U ={.7,.84,0},
+
+            I6={.9,.9,.9},U6={.84,.96,.72},T6={.6,.48,.96},O6={.48,.72,.96},WT={.6,.48,.96},Ht={.96,.96,.48},A={.48,.96,.84},
+            XT={.72,.96,.48},Tr={.48,.84,.84},Pl={.8,.6,.8},
+            WZ={.96,.48,.6},WS={.6,.96,.48},Z6={.96,.72,.72},S6={.72,.96,.72},
+            ZI={.72,.72,.96},SI={.96,.84,.72},LZ={.96,.78,.72},LS={.72,.72,.96},ZZ={.96,.48,.96},SS={.48,.96,.6},
         }
         if fs.getInfo('conf/mino color') then T.combine(mino.color,file.read('conf/mino color')) end
 
@@ -690,7 +700,7 @@ function mino.init()
         while #P[i].next<3*#mino.bag do mino.insertNextQueue(P[i]) end
         for j=1,P[i].preview do --给所有玩家放上预览块
             P[i].NP[j]=T.copy(B[P[i].next[j]])
-            P[i].NO[j]=mino.orient[P[i].next[j]]
+            P[i].NO[j]=mino.orient[P[i].next[j]] or mino.orient.default
             for k=1,P[i].NO[j] do
             P[i].NP[j]=B.rotate(P[i].NP[j],0,'R')
             end

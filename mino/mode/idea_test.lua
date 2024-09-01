@@ -9,7 +9,9 @@ function rule.init(P,mino)
     --mino.seqGenType='pairs'
     mino.bag={
         'Z','S','J','L','T','O','I','Z','S','J','L','T','O','I',
-        'Z5','S5','J5','L5','T5','I5','P','Q','N','H','R','Y','E','F','V','W','X','U'
+        'Z5','S5','J5','L5','T5','I5','P','Q','N','H','R','Y','E','F','V','W','X','U',
+        'I6','U6','T6','O6','WT','Ht','XT','Tr','A','Pl',
+        'WZ','WS','Z6','S6','ZI','SI','LZ','LS','ZZ','SS'
     }
     mino.rule.allowSpin={}
     mino.rule.allowPush={}
@@ -30,7 +32,7 @@ function rule.onPieceSummon(player)
     if rand()<1/2 then
         table.remove(c.piece,rand(#c.piece))
     end
-    if rand()<1/14 then
+    if c.name~='I6' and rand()<1/14 then
         c.piece=b.giant(c.piece)
     end
 end
