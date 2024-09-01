@@ -109,7 +109,7 @@ function lang.init()
             gc.rectangle('line',-w/2,-h/2,w,h)
             gc.setColor(1,1,1)
             gc.printf("Italiano",font.Bender,0,0,1280,'center',0,.5,.5,640,72)
-            gc.setColor(.6,.75,.9,1-4*ct)
+            gc.setColor(.75,.9,.6,1-4*ct)
             gc.rectangle('line',-w/2-ct*80,-h/2-ct*80,w+ct*160,h+ct*160)
         end,
         event=function()

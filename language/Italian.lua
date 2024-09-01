@@ -23,20 +23,20 @@ return {
         idea_test="idea_test"
     },
     modeDescription={
-        ['40 lines']="Completa 40 righe il più velocemente possibile!",
+        ['40 lines']="Completa 40 righe\nil più velocemente possibile!",
         marathon={{1,1,1},"Completa 150 righe con velocità crescente.\n",{1,1,0},"Restrizioni del movimento:\nASD=150ms ASP=30ms SD ASP=30ms\nLa gravità aumenta ad ogni livello."},
-        ['ice storm']="Usa le meccaniche All-spin per fermare la risalita dei ghiacciai!",
-        thunder="Si prega di fare del proprio meglio per evitare la \ndistruzione causata dai fulmini.",
-        smooth={{1,1,1},"È davvero così liscio?\n",{1,1,0},"Il Ritardo di Caduta è 0 mentre Il Ritardo di Blocco è aumentato a 3s"},
-        levitate={{1,1,0},"I blocchi non cadono dopo aver completato linee"},
-        master={{1,1,1},"Sopravvivi alla velocità più infame!\n",{1,.5,0},"Il Ritardo di Caduta è 0 mentre il Ritardo di Blocco si riduce ad\nogni livello.\n",{1,1,0},"Restrizioni del movimento: ASD=150ms ASP=30ms"},
+        ['ice storm']="Usa le meccaniche All-spin\nper fermare la risalita dei ghiacciai!",
+        thunder="Si prega di fare del proprio meglio per\nevitare la distruzione causata dai fulmini.",
+        smooth={{1,1,1},"È davvero così liscio?\n",{1,1,0},"Il Ritardo di Caduta è 0\nmentre Il Ritardo di Blocco è aumentato a 3s"},
+        levitate={{1,1,0},"I blocchi non cadono\ndopo aver completato linee"},
+        master={{1,1,1},"Sopravvivi alla velocità più infame!\n",{1,.5,0},"Il Ritardo di Caduta è 0\nmentre il Ritardo di Blocco\nsi riduce ad ogni livello.\n",{1,1,0},"Restrizioni del movimento: ASD=150ms ASP=30ms"},
         multitasking={{1,1,1},"*Galaxy Brain Meme*\n",{1,1,0},"Restrizioni del movimento:\nASD=150ms ASP=30ms SD ASP=30ms\nLa gravità aumenta ad ogni livello."},
-        sandbox={{1,1,0},"Questa modalità non registra alcun punteggio."},
+        sandbox={{1,1,0},"Questa modalità non registra\nalcun punteggio."},
         ['dig 40']="Pensa. Scava. Sii Efficiente.",
-        laser={{1,1,1},"U  N  D-E-R  G  R  O-U-N\nU  N  D-E-R  G  R  O-U-N-D\n",{1,1,0},"Questa è una modalità ritmica.\nSi consiglia vivamente di attivare la musica."},
+        laser={{1,1,1},"U  N  D-E-R  G  R  O-U-N\nU  N  D-E-R  G  R  O-U-N-D\n",{1,1,0},"Questa è una modalità ritmica.\nSi consiglia vivamente\ndi attivare la musica."},
         backfire="Ricevi l'attacco inviato da te stesso!",
-        battle={{1,1,1},"Combattiamo!\n",{1,1,0},"Questa modalità non registra alcun punteggio."},
-        ['tower defense']={{1,1,0},"Questa modalità non registra alcun punteggio.\n",{1,.2,.2},"L'avvio/riavvio di questa modalità potrebbe causare il blocco del gioco per motivi sconosciuti"}
+        battle={{1,1,1},"Combattiamo!\n",{1,1,0},"Questa modalità non registra\nalcun punteggio."},
+        ['tower defense']={{1,1,0},"Questa modalità non registra\nalcun punteggio.\n",{1,.2,.2},"L'avvio/riavvio di questa modalità\npotrebbe causare il blocco del gioco\nper motivi sconosciuti"}
     },
     intro={
         start="Premi un tasto qualsiasi per iniziare",
@@ -49,8 +49,8 @@ return {
                 bot_PPS="Bot PPS:",
                 player={
                     pos="Posto del giocatore:",
-                    left="left",
-                    right="right"
+                    left="sinistra",
+                    right="destra"
                 }
             },
             ['tower defense']={
@@ -127,7 +127,7 @@ return {
         keys={
             keyName={"Muovi a Sinistra","Muovi a Destra","Ruota in senso orario","Ruota in senso antiorario","Ruota a 180°",'Soft drop','Hard Drop','Riserva','Riavvia','Pausa'},
             kScale=.26,
-            info="Fai clic su un set di chiavi per associare i tuoi controlli.\nPremi Backspace per cancellare il set di controlli selezionato.\nPremi un tasto associato per rimuoverlo dai controlli.",
+            info="- Fai clic associare i tuoi controlli.\n- Premi Backspace per cancellare\nil set di controlli selezionato.\n- Premi un tasto associato per rimuoverlo dai controlli.",
             virtualKey="Impostazioni touchscreen..."
         },
         virtualKey={
@@ -139,11 +139,11 @@ return {
             attach="Allineamento:"
         },
         handling={
-            ASD="Ritardo spostamento automatico (ASD):",ASP="Auto Shift Preiod(ASP):",
+            ASD="Ritardo spostamento automatico (ASD):",ASP="Periodo di spostamento automatico(ASP):",
             SD_ASD="Soft drop ASD:",SD_ASP="Soft drop ASP:"
         },
         other={title="Other",nothing="Ancora nulla qua..."},
-        lang={cur="Lingua attuale: Italiano (by Asriel)"}
+        lang={cur="Lingua attuale: Italiano"}
     },
 
     rule={
