@@ -7,7 +7,7 @@ local kw,kh=kairan:getPixelDimensions()
 local devList={
     program={'Aqua6623 (Aquamarine6623, Kairan, 海兰)'},
     UI={'Aqua6623','Not-A-Normal-Robot'},
-    sfx={'Aqua6623','MrZ_26','Farter'},
+    sfx={'Aqua6623','Asriel (Fab052)','MrZ_26','Farter'},
     music={
         hurtRecord={
             {'たかゆき','R-side','T-Malu','守己','カモキング','龍飛'},
@@ -20,8 +20,8 @@ local devList={
         {'MrZ_26'},
         {'XMiao小渺 (XM1ao)','User670','MianSoft','沙盒子','Sunday'},
         {'T427 默默颗','風洛霊flore','大叔Rex'},
-        {'Not-A-Normal-Robot','SweetSea-ButImNotSweet'},
-        {'nekonaomii (MelloBoo44)'}
+        {'Asriel (Fab052)','Not-A-Normal-Robot'},
+        {'SweetSea','nekonaomii (MelloBoo44)'}
     }
 }
 

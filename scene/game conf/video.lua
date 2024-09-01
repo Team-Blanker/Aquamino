@@ -184,7 +184,7 @@ function video.init()
         end
     },.2)
     BUTTON.create('moreParticle',{
-        x=-750,y=-40,type='rect',w=80,h=80,
+        x=-180,y=-40,type='rect',w=80,h=80,
         draw=function(bt,t,ct)
             local animArg=video.info.moreParticle and min(ct/.2,1) or max(1-ct/.2,0)
             local w,h=bt.w,bt.h
