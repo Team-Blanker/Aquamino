@@ -64,7 +64,7 @@ return {
         }
     },
     about={
-        engineText="Offerto da LÖVE",
+        engineText="Alimentato da LÖVE",
         tool="Strumenti utilizzati:",
         repo="Repositori Utilizzati:",
         time="Avviato %d volte\nTempo totale giocato: %ds",
@@ -82,7 +82,7 @@ return {
         resume="Riprendi",back="Esci",r="Riavvia"
     },
     game={
-        nowPlaying="In riproduzione adesso: ",
+        nowPlaying="In riproduzione: ",
         paused="In pausa",result="Partita Finita",
         theme={
             simple={win="Vittoria!",lose="Sconfitta",newRecord="Nuovo record!"}
@@ -93,12 +93,12 @@ return {
         main={title="Opzioni",audio="Audio",video="Video",custom="Personalizza",ctrl="Movimento",keys="Controlli"},
 
         audio={
-            mus="Musica:",distract="muta quando la finestra non è selezionata",DOX=-22,
+            mus="Musica:",distract="muta quando la finestra non è focalizzata",DOX=-22,
             sfx="Effetti Sonori:",stereo="Stereo:"
         },
         video={
             unableBG="Disabilita Sfondi",
-            fullScr="Fullscreen",fullScrTxt="Premi F11 per attivare/disattivare la visualizzazione a schermo intero.",
+            fullScr="Schermo Intero",fullScrTxt="Premi F11 per andare a schermo intero.",
             vsync="VSync",
             vsyncTxt="Sincronizza la frequenza dei fotogrammi con la frequenza di aggiornamento del monitor.",
             discardAfterDraw="Aumento della VRAM",
