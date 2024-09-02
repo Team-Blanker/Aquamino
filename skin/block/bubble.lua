@@ -6,7 +6,8 @@ local arc,circle,rect=gc.arc,gc.circle,gc.rectangle
 function skin.setDropAnimTTL(player)
     return .25
 end
-skin.pic=gc.newImage('skin/block/metal/metal.png')
+skin.pic=gc.newImage('skin/block/bubble/bubble.png')
+skin.white=gc.newImage('skin/block/bubble/white.png')
 skin.sd=gc.newShader('shader/grayscale stain.glsl')
 
 local bb=gc.newCanvas(42,42)
@@ -66,49 +67,36 @@ function skin.fieldDraw(player,mino)
     h=0
     for y=1,#player.field do
         if player.field[y][1] then h=h+1
+            for x=1,player.w do
+                local F=player.field
+                if F[y][x] and next(F[y][x]) then
+                    gc.setColor(0,0,0,.125)
+                    draw(skin.white,36*x,-36*h,0,1,1,18,18)
+                end
+            end
+        else h=h+1 end
+    end
+    h=0
+    for y=1,#player.field do
+        if player.field[y][1] then h=h+1
         else h=h+1
             setColor(1,1,1,n)
             rect('fill',18,-36*h-18,36*player.w,36)
         end
     end
 end
-local laCanvas=gc.newCanvas(36,36)
 function skin.overFieldDraw(player)
     local h=player.history local p=h.piece
     if p then
-        gc.push()
-        gc.origin()
-        gc.setCanvas(laCanvas)
-        gc.clear(0,0,0,0)
-        gc.setColor(1,1,1)
-        gc.rectangle('fill',(-.5+1.5*(player.laTimer/player.laTMax))*36,0,18,36)
-        --gc.rectangle('fill',0,0,36,36)
-        gc.setCanvas()
-        gc.pop()
-
         for i=1,#p do
-        gc.setColor(1,1,1,.5)
-        gc.draw(laCanvas,36*(p[i][1]+h.x),-36*(p[i][2]+h.y),0,1,1,18,18)
+        gc.setColor(1,1,1,.25*(1-player.laTimer/player.laTMax))
+        gc.draw(skin.white,36*(p[i][1]+h.x),-36*(p[i][2]+h.y),0,1,1,18,18)
         end
     end
 end
 local t
 local tau=2*math.pi
 function skin.curDraw(player,piece,x,y,color)
-    for i=1,#piece do
-        setColor(1,1,1,1-player.LTimer/player.LDelay)
-        if player.spinAct then
-            t=min(player.skinSpinTimer*5,.25)
-            if player.spinOp=='CW' or player.spinOp=='flip' then
-                draw(bb,36*(x+piece[i][1]),-36*(y+piece[i][2]),tau*t,1,1,21,21)
-            end
-            if player.spinOp=='CCW' or player.spinOp=='flip' then
-                draw(bb,36*(x+piece[i][1]),-36*(y+piece[i][2]),-tau*t,1,1,21,21)
-            end
-        else
-            draw(bb,36*(x+piece[i][1]),-36*(y+piece[i][2]),0,1,1,21,21)
-        end
-    end
     setShader(skin.sd)
     for i=1,#piece do
         gc.setColor(color)
@@ -116,6 +104,8 @@ function skin.curDraw(player,piece,x,y,color)
     end
     setShader()
     for i=1,#piece do
+        setColor(0,0,0,(player.LTimer/player.LDelay)*.125)
+        draw(skin.white,36*(x+piece[i][1]),-36*(y+piece[i][2]),0,1,1,18,18)
     end
 end
 function skin.AscHoldDraw(player,piece,x,y,color)
@@ -158,8 +148,8 @@ function skin.loosenDraw(player,mino)
 end
 function skin.ghostDraw(player,piece,x,y,color)
     setShader(skin.sd)
+    gc.setColor(.5,.5,.5,.5)
     for i=1,#piece do
-        gc.setColor(color[1],color[2],color[3],.5)
         draw(skin.pic,36*(x+piece[i][1]),-36*(y+piece[i][2]),0,1,1,18,18)
     end
     setShader()

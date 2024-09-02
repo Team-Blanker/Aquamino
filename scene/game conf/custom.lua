@@ -5,7 +5,7 @@ local custom={}
 local block=require'mino/blocks'
 local BUTTON,SLIDER=scene.button,scene.slider
 
-local blockSkinList={'glossy','glass','metal','pure','carbon fibre','wheelchair'}
+local blockSkinList={'glossy','glass','metal','pure','bubble','carbon fibre','wheelchair'}
 local themeList={'simple'}
 local sfxList={'plastic','krystal','meme','otto'}
 local RSList={'SRS','AqRS'}

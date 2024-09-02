@@ -51,7 +51,7 @@ end
 function skin.holdDraw(player,piece,x,y,color,canHold)
     setShader(skin.sd)
     for i=1,#piece do
-        setColor(canHold and color or {.5,.5,.5})
+        if canHold then gc.setColor(color) else gc.setColor(.5,.5,.5) end
         draw(skin.pic,36*(x+piece[i][1]),-36*(y+piece[i][2]),0,.5,.5,36,36)
     end
     gc.setShader()
