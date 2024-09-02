@@ -8,10 +8,12 @@ function rule.init(P,mino)
 
     --mino.seqGenType='pairs'
     mino.bag={
-        'Z','S','J','L','T','O','I','Z','S','J','L','T','O','I',
+        'Z','S','J','L','T','O','I', 'Z','S','J','L','T','O','I',
         'Z5','S5','J5','L5','T5','I5','P','Q','N','H','R','Y','E','F','V','W','X','U',
-        'I6','U6','T6','O6','WT','Ht','XT','Tr','A','Pl',
-        'WZ','WS','Z6','S6','ZI','SI','LZ','LS','ZZ','SS'
+        'I6','U6','T6','O6','wT','Ht','XT','Tr','A','Pl',
+        'Pl','Pl','Tr','Tr',
+        'OZ','OS','bZ','bS','TZ','TS',
+        'lSt','rSt','lHk','rHk'
     }
     mino.rule.allowSpin={}
     mino.rule.allowPush={}
