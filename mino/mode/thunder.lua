@@ -25,10 +25,11 @@ function rule.init(P,mino)
     sfx.add({
         lvup='sfx/mode/general/level up.wav',
         top='sfx/mode/thunder/top.wav',
-        thunder1='sfx/mode/thunder/thunder1.wav',
-        thunder2='sfx/mode/thunder/thunder2.wav',
-        thunder3='sfx/mode/thunder/thunder3.wav',
-        thunder4='sfx/mode/thunder/thunder4.wav',
+        thunder1='sfx/mode/thunder/thunder1.ogg',
+        thunder2='sfx/mode/thunder/thunder2.ogg',
+        thunder3='sfx/mode/thunder/thunder3.ogg',
+        thunder4='sfx/mode/thunder/thunder4.ogg',
+        thunder5='sfx/mode/thunder/thunder5.ogg',
     })
     for k,v in pairs(P) do
         v.stormLv=1
@@ -95,7 +96,7 @@ function rule.onPieceDrop(player,mino)
                 local ex,ey=rule.find(player)
                     rule.remove(player,ex,ey,1)
                     player.explodePos={x=ex,y=ey}
-                    sfx.play('thunder'..rand(4),.8+.2*rand(),.95+.1*rand())
+                    sfx.play('thunder'..rand(5),.8+.2*rand(),.95+.1*rand())
                 end
                 f=f-1
             end
@@ -110,7 +111,7 @@ function rule.onPieceDrop(player,mino)
                 local ex,ey=rule.find(player)
                     rule.explode(player,ex,ey,2)
                     player.explodePos={x=ex,y=ey}
-                    sfx.play('thunder'..rand(4),.8+.2*rand(),.95+.1*rand())
+                    sfx.play('thunder'..rand(5),.8+.2*rand(),.95+.1*rand())
                 end
                 f=f-1
             end
@@ -125,7 +126,7 @@ function rule.onPieceDrop(player,mino)
                 local ex,ey=rule.find(player)
                     rule.explodeX(player,ex,ey,2)
                     player.explodePos={x=ex,y=ey}
-                    sfx.play('thunder'..rand(4),.8+.2*rand(),.95+.1*rand())
+                    sfx.play('thunder'..rand(5),.8+.2*rand(),.95+.1*rand())
                 end
                 f=f-1
             end

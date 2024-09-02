@@ -7,7 +7,7 @@ local BUTTON,SLIDER=scene.button,scene.slider
 
 local blockSkinList={'glossy','glass','metal','pure','bubble','carbon fibre','wheelchair'}
 local themeList={'simple'}
-local sfxList={'plastic','krystal','meme','otto'}
+local sfxList={'plastic_v2','plastic','krystal','meme','otto'}
 local RSList={'SRS','AqRS'}
 function custom.read()
     custom.info={block='glossy',theme='simple',sfx='plastic',RS='SRS',smoothAnimAct=false,smoothTime=.05,fieldScale=1}
