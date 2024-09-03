@@ -29,7 +29,7 @@ return {
         thunder="Si prega di fare del proprio meglio per\nevitare la distruzione causata dai fulmini.",
         smooth={{1,1,1},"È davvero così liscio?\n",{1,1,0},"Il Ritardo di Caduta è 0\nmentre Il Ritardo di Blocco è aumentato a 3s"},
         levitate={{1,1,0},"I blocchi non cadono\ndopo aver completato linee"},
-        master={{1,1,1},"Sopravvivi alla velocità più infame!\n",{1,.5,0},"Il Ritardo di Caduta è 0\nmentre il Ritardo di Blocco\nsi riduce ad ogni livello.\n",{1,1,0},"Restrizioni del movimento: ASD=150ms ASP=30ms"},
+        master={{1,1,1},"Sopravvivi alla velocità più crudele!\n",{1,.5,0},"Il Ritardo di Caduta è 0\nmentre il Ritardo di Blocco\nsi riduce ad ogni livello.\n",{1,1,0},"Restrizioni del movimento: ASD=150ms ASP=30ms"},
         multitasking={{1,1,1},"*Galaxy Brain Meme*\n",{1,1,0},"Restrizioni del movimento:\nASD=150ms ASP=30ms SD ASP=30ms\nLa gravità aumenta ad ogni livello."},
         sandbox={{1,1,0},"Questa modalità non registra\nalcun punteggio."},
         ['dig 40']="Pensa. Scava. Sii Efficiente.",
@@ -147,7 +147,7 @@ return {
     },
 
     rule={
-        dig={remain="Da scavare",piece="Tetramini"},
+        dig={remain="Da scavare",piece="Tetrimini"},
         backfire={remain="Da ricevere",eff="Efficienza"}
     },
 
