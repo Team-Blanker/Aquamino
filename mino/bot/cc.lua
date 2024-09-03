@@ -4,7 +4,8 @@ ffi.cdef(head)
 local c=ffi.C
 local gamePath=love.filesystem.getWorkingDirectory()
 print(gamePath)
-local CC=ffi.load(gamePath..'/cold_clear.dll')--64位dll
+local os=love.system.getOS()
+local CC=ffi.load(gamePath..'/cold_clear'..(os=='Windows' and '.dll' or os=='Linux' and '.so'))
 --CCAsyncBot *cc_launch_async(CCOptions *options, CCWeights *weights, CCBook *book, CCPiece *queue,
 --uint32_t count),
 --[[
@@ -152,6 +153,7 @@ function ccWrap.newThread(channelIndex,P,index)
     thread.recvChannel=th.getChannel("cc_send"..channelIndex)
     thread.recvChannel:clear()
     thread.thread=th.newThread([[
+        require'love.system'
         local cc=require('mino/bot/cc')
         local channelIndex,option,weight=...
         local bot=cc.newBot(option,weight) cc.requestMove(bot)
