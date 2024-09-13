@@ -89,7 +89,7 @@ function skin.overFieldDraw(player)
     local h=player.history local p=h.piece
     if p then
         for i=1,#p do
-        gc.setColor(1,1,1,.25*(1-player.laTimer/player.laTMax))
+        gc.setColor(1,1,1,.5*(1-player.laTimer/player.laTMax))
         gc.draw(skin.white,36*(p[i][1]+h.x),-36*(p[i][2]+h.y),0,1,1,18,18)
         end
     end
@@ -148,7 +148,7 @@ function skin.loosenDraw(player,mino)
 end
 function skin.ghostDraw(player,piece,x,y,color)
     setShader(skin.sd)
-    gc.setColor(.5,.5,.5,.5)
+    gc.setColor(color[1],color[2],color[3],.5)
     for i=1,#piece do
         draw(skin.pic,36*(x+piece[i][1]),-36*(y+piece[i][2]),0,1,1,18,18)
     end

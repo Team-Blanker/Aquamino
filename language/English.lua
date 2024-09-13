@@ -48,7 +48,7 @@ return {
             battle={
                 bot_PPS="Bot PPS:",
                 player={
-                    pos="Player's place:",
+                    pos="Player's place",
                     left="left",
                     right="right"
                 }
@@ -56,7 +56,7 @@ return {
             ['tower defense']={
                 bot_PPS="Bot PPS:",
                 player={
-                    pos="Player's place:",
+                    pos="Player's place",
                     left="left",
                     right="right"
                 }
@@ -75,6 +75,7 @@ return {
         UI="UI & Art Design",
         music="Music by",
         sfx="SFX Design",
+        translate="Translation & Localization",
         specialThanks="Special Thanks",
         tester="...and all other testers"
     },
@@ -90,29 +91,30 @@ return {
     },
     conf={
         test="Test",
-        main={title="Settings",audio="Audio",video="Video",custom="Custom",ctrl="Handling",keys="Keys"},
+        main={title="Settings",audio="Audio",video="Video",custom="Custom",handling="Handling",keys="Keys"},
 
         audio={
-            mus="Music Volume:",distract="Mute when unfocus",DOX=-22,
-            sfx="SFX Volume:",stereo="Stereo:"
+            mus="Music Volume",distract="Mute when unfocus",DOX=-22,
+            sfx="SFX Volume",stereo="Stereo"
         },
         video={
             unableBG="Disable BGs",
+            BGset="Manage BGs...",
             fullScr="Fullscreen",fullScrTxt="Press F11 to switch window mode immediately.",
             vsync="Vertical Sync",
             vsyncTxt="The drawing code and computing code of this program are separated in form. How many times The drawing code executed in 1 second is FPS, so as TPS.\nIf the maximum FPS is lower than or equal to the vertical sync limit FPS, the TPS is not limited.\nThis program mainly considers PC performance, and this option is turned off by default.\nLow-performance devices can turn on this option to optimize the execution of the computing code.",
             discardAfterDraw="VRAM boost",
             DADTxt="Discards (trashes) the contents of the screen after each frame is drawn.",
-            moreParticle="More in-game particles",PEScale=.25,PEOffY=-16,
-            frameLim="Max draw FPS:",frameTxt="A value equal to your monitor's FPS is recommended."
+            moreParticle="More in-game\nparticles",
+            frameLim="Max draw FPS",frameTxt="A value equal to your monitor's FPS is recommended."
         },
         custom={
             texture="Block texture",color="Color adjust...",
-            RS="Rotate system",
+            RS="Rotation system",
             smooth="Smooth move",
-            smoothScale=.3,smoothOffX=-15,smoothTime="Time:",
+            smoothTime="Time",
             theme="Board theme",
-            scale="Board scale",scaleTxt="Cell size:",
+            scale="Board scale",scaleTxt="Cell size",
             sfx="SFX pack",sfxWarning={
                 otto="LOUD SOUND WARNING. TAKE AT YOUR OWN RISK."
             },
@@ -120,13 +122,13 @@ return {
             colorSet={
                 title="Color adjust",
                 rAll="Reset all",rCur="Reset this",
-                adjY="This texture can adjust color freely.",
+                adjY="This texture can freely adjust color.",
                 adjN="This texture cannot adjust color."
             }
         },
         keys={
             keyName={"Move Left","Move Right","Rotate CW","Rotate CCW","Rotate 180",'Soft drop','Hard Drop','Hold piece','Restart','Pause'},
-            kScale=.26,
+            kScale=.25,
             info="Click a key set to bind your keys.\nHit backspace to erase selected key set.\nHit a bound key to remove this bind.",
             virtualKey="Touch settings..."
         },
@@ -134,13 +136,13 @@ return {
             enable="Enable virtual keys",enableTxtScale=.2,
             anim="Key animations",animTxtScale=.2,
             preset="presets...",
-            btsz="Size:",
-            tolerance="Margin:",
-            attach="Alignment:"
+            btsz="Size",
+            tolerance="Margin",
+            attach="Alignment"
         },
         handling={
-            ASD="Auto Shift Delay(ASD):",ASP="Auto Shift Preiod(ASP):",
-            SD_ASD="Soft drop ASD:",SD_ASP="Soft drop ASP:"
+            ASD="Auto Shift Delay(ASD)",ASP="Auto Shift Preiod(ASP)",
+            SD_ASD="Soft drop ASD",SD_ASP="Soft drop ASP"
         },
         other={title="Other",nothing="Nothing yet..."},
         lang={cur="Current Language: English"}

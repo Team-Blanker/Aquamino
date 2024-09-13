@@ -105,6 +105,9 @@ function VKey.save()
     local lst={enabled=VKey.enabled,set=VKey.set,anim=VKey.anim}
     file.save('conf/virtualKey',lst)
 end
+
+VKey.txt={preset={},vkEnable={},animEnable={}}
+VKey.sliderTxt={btsz={},tolerance={},attach={}}
 function VKey.init()
     sfx.add({
         cOn='sfx/general/checkerOn.wav',
@@ -121,6 +124,27 @@ function VKey.init()
     VKey.posShowTimer=0
 
     cfv=user.lang.conf.virtualKey
+
+    local p=VKey.txt.preset
+    p.txt=gc.newText(font.Bender,cfv.preset)
+    p.w,p.h=p.txt:getDimensions()
+    p.s=min(288/p.w,.4)
+    local v=VKey.txt.vkEnable
+    v.txt=gc.newText(font.Bender_B,cfv.enable)
+    v.w,v.h=v.txt:getDimensions()
+    v.s=min(270/v.w,cfv.enableTxtScale)
+    local a=VKey.txt.animEnable
+    a.txt=gc.newText(font.Bender_B,cfv.anim)
+    a.w,a.h=a.txt:getDimensions()
+    a.s=min(270/a.w,cfv.animTxtScale)
+
+    for k,t in pairs(VKey.sliderTxt) do
+        t.txt=gc.newText(font.JB,cfv[k])
+        t.w,t.h=t.txt:getDimensions()
+        t.s=min(240/t.w,.25)
+        t.ow=min(240,t.w*.25)
+        t.numTxt=gc.newText(font.JB)
+    end
 
     BUTTON.create('quit',{
         x=0,y=300,type='rect',w=140,h=80,
@@ -155,15 +179,16 @@ function VKey.init()
             gc.setColor(1,1,1,.4)
             gc.rectangle('fill',w/2+300*animArg,-h/2,300*(1-animArg),h)
             gc.setColor(r,g,b)
-            gc.setLineWidth(6)
-            gc.rectangle('line',-w/2+4,-h/2+4,h-8,h-8)
+            gc.setLineWidth(4)
+            gc.rectangle('line',-w/2+2,-h/2+2,h-4,h-4)
             if VKey.enabled then
-                gc.circle('line',0,0,(w/2-4)*1.4142,4)
+                gc.line(-w*3/8,0,-w/8,h/4,w*3/8,-h/4)
             end
             gc.setColor(r,g,b,2*t)
             gc.rectangle('fill',-w/2,-h/2,h,h)
             gc.setColor(1,1,1)
-            gc.printf(cfv.enable,font.Bender_B,w/2+30,0,1200,'left',0,cfv.enableTxtScale,cfv.enableTxtScale,0,72)
+            gc.draw(v.txt,w/2+15,0,0,v.s,v.s,0,v.h/2)
+            --gc.printf(cfv.enable,font.Bender_B,w/2+30,0,1200,'left',0,cfv.enableTxtScale,cfv.enableTxtScale,0,72)
         end,
         event=function()
             VKey.enabled=not VKey.enabled
@@ -183,15 +208,15 @@ function VKey.init()
             gc.setColor(1,1,1,.4)
             gc.rectangle('fill',w/2+300*animArg,-h/2,300*(1-animArg),h)
             gc.setColor(r,g,b)
-            gc.setLineWidth(6)
-            gc.rectangle('line',-w/2+4,-h/2+4,h-8,h-8)
+            gc.setLineWidth(4)
+            gc.rectangle('line',-w/2+2,-h/2+2,h-4,h-4)
             if VKey.anim then
-                gc.circle('line',0,0,(w/2-4)*1.4142,4)
+                gc.line(-w*3/8,0,-w/8,h/4,w*3/8,-h/4)
             end
             gc.setColor(r,g,b,2*t)
             gc.rectangle('fill',-w/2,-h/2,h,h)
             gc.setColor(1,1,1)
-            gc.printf(cfv.anim,font.Bender_B,w/2+30,0,1200,'left',0,cfv.animTxtScale,cfv.animTxtScale,0,72)
+            gc.draw(a.txt,w/2+15,0,0,a.s,a.s,0,a.h/2)
         end,
         event=function()
             VKey.anim=not VKey.anim
@@ -209,7 +234,7 @@ function VKey.init()
             gc.setLineWidth(3)
             gc.rectangle('line',-w/2,-h/2,w,h)
             gc.setColor(1,1,1)
-            gc.printf(cfv.preset,font.Bender,0,0,1280,'center',0,.4,.4,640,72)
+            gc.draw(p.txt,0,0,0,p.s,p.s,p.w/2,p.h/2)
             gc.setColor(1,1,1,1-4*ct)
             gc.rectangle('line',-w/2-ct*80,-h/2-ct*80,w+ct*160,h+ct*160)
             end
@@ -231,7 +256,11 @@ function VKey.init()
             gc.setColor(.5,.5,.5,.8)
             gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
             gc.setColor(1,1,1)
-            gc.printf(cfv.btsz..VKey.set[VKey.choose].r, font.JB,-sz[1]/2-12,-36,114514,'left',0,.25,.25,0,84)
+            local t=VKey.sliderTxt.btsz
+            gc.draw(t.txt,-160,-20,0,t.s,t.s,0,t.h)
+            t.numTxt:clear()
+            t.numTxt:add(string.format(":%3d",VKey.set[VKey.choose].r))
+            gc.draw(t.numTxt,-160+t.ow,-20,0,.25,.25,0,t.h)
             end
         end,
         buttonDraw=function(pos,sz)
@@ -254,7 +283,11 @@ function VKey.init()
             gc.setColor(.5,.5,.5,.8)
             gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
             gc.setColor(1,1,1)
-            gc.printf(cfv.tolerance..VKey.set[VKey.choose].tolerance, font.JB,-sz[1]/2-12,-36,114514,'left',0,.25,.25,0,84)
+            local t=VKey.sliderTxt.tolerance
+            gc.draw(t.txt,-160,-20,0,t.s,t.s,0,t.h)
+            t.numTxt:clear()
+            t.numTxt:add(string.format(":%3d",VKey.set[VKey.choose].tolerance))
+            gc.draw(t.numTxt,-160+t.ow,-20,0,.25,.25,0,t.h)
             end
         end,
         buttonDraw=function(pos,sz)
@@ -277,7 +310,11 @@ function VKey.init()
             gc.setColor(.5,.5,.5,.8)
             gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
             gc.setColor(1,1,1)
-            gc.printf(cfv.attach..attachList[attachIndex],font.JB,-sz[1]/2-12,-36,114514,'left',0,.25,.25,0,84)
+            local t=VKey.sliderTxt.attach
+            gc.draw(t.txt,-160,-20,0,t.s,t.s,0,t.h)
+            t.numTxt:clear()
+            t.numTxt:add(string.format(":%3d",attachList[attachIndex]))
+            gc.draw(t.numTxt,-160+t.ow,-20,0,.25,.25,0,t.h)
             end
         end,
         buttonDraw=function(pos,sz)

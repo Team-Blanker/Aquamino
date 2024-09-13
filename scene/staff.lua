@@ -6,7 +6,7 @@ local kairan=gc.newImage('pic/assets/kairan.png')
 local kw,kh=kairan:getPixelDimensions()
 local devList={
     program={'Aqua6623 (Aquamarine6623, Kairan, 海兰)'},
-    UI={'Aqua6623','Not-A-Normal-Robot'},
+    UI={'Aqua6623','Not-A-Robot'},
     sfx={'Aqua6623','Asriel (Fab052)','MrZ_26','Farter'},
     music={
         hurtRecord={
@@ -16,11 +16,12 @@ local devList={
             {'ミレラ','周藤三日月','DiscreetDragon'}
         }
     },
+    translate={'Aqua6623','Asriel (Fab052)'},
     specialThanks={
         {'MrZ_26'},
         {'XMiao小渺 (XM1ao)','User670','MianSoft','沙盒子','Sunday'},
         {'T427 默默颗','風洛霊flore','大叔Rex'},
-        {'Asriel (Fab052)','Not-A-Normal-Robot'},
+        {'Asriel (Fab052)','Not-A-Robot'},
         {'SweetSea','nekonaomii (MelloBoo44)'}
     }
 }
@@ -62,7 +63,7 @@ function stf.init()
     uls=user.lang.staff
     stf.posY=0
     stf.hidey=0 stf.hideAnimy=0 stf.showKairan=false
-    stf.txt1={c1,uls.program,c2,'\n\n'..devList.program[1],c1,'\n\n'..uls.UI,c2}
+    stf.txt1={c1,uls.program,c2,'\n\n'..devList.program[1],c1,'\n\n\n'..uls.UI,c2}
 
 
     local t1='\n\n'
@@ -73,7 +74,7 @@ function stf.init()
     stf.txt1[#stf.txt1+1]=t1
 
     stf.txt1[#stf.txt1+1]=c1
-    stf.txt1[#stf.txt1+1]='\n\n'..uls.sfx
+    stf.txt1[#stf.txt1+1]='\n\n\n'..uls.sfx
     stf.txt1[#stf.txt1+1]=c2
     t1='\n\n'
     for i=1,#devList.sfx do
@@ -83,7 +84,7 @@ function stf.init()
     stf.txt1[#stf.txt1+1]=t1
 
     stf.txt1[#stf.txt1+1]=c1
-    stf.txt1[#stf.txt1+1]='\n\n'..uls.music
+    stf.txt1[#stf.txt1+1]='\n\n\n'..uls.music
     stf.txt1[#stf.txt1+1]={1,.75,.75}
     stf.txt1[#stf.txt1+1]=' HURT RECORD (https://www.hurtrecord.com)'
 
@@ -100,7 +101,17 @@ function stf.init()
     stf.txt1[#stf.txt1+1]=t1
 
     stf.txt1[#stf.txt1+1]=c1
-    stf.txt1[#stf.txt1+1]='\n'..uls.specialThanks..'\n'
+    stf.txt1[#stf.txt1+1]='\n\n'..uls.translate
+    stf.txt1[#stf.txt1+1]=c2
+    t1='\n\n'
+    for i=1,#devList.translate do
+        t1=t1..devList.translate[i]
+        if i~=#devList.translate then t1=t1..'    ' end
+    end
+    stf.txt1[#stf.txt1+1]=t1
+
+    stf.txt1[#stf.txt1+1]=c1
+    stf.txt1[#stf.txt1+1]='\n\n\n'..uls.specialThanks..'\n'
 
     stf.stftxt1=gc.newText(font.Bender)
     stf.stftxt1:addf(stf.txt1,4000,'center')
@@ -209,6 +220,7 @@ function stf.draw()
 
     local p=stf.hideAnimy/1000
     gc.draw(kairan,900-kw/4,posYMax+540-kh/2*p,0,.5,.5,kw/2,0)
+    gc.printf("Illustration by PteaGreen",font.Bender,900-kw/2,posYMax+540-kh/2*(p-1),10000,'right',0,.25,.25,10000,160)
     gc.translate(0,stf.posY)
     BUTTON.draw()
 end

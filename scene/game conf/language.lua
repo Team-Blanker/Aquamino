@@ -140,7 +140,7 @@ function lang.update(dt)
 end
 function lang.draw()
     gc.setColor(1,1,1)
-    gc.printf("语言/Language/Lingua",font.Bender,0,-430,6000,'center',0,1,1,3000,72)
+    gc.printf("语言/Language/Lingua",font.Bender,0,-510,1920,'center',0,1,1,960,0)
     gc.printf(user.lang.conf.lang.cur,font.Bender,0,-280,5000,'center',0,.5,.5,2500,72)
     BUTTON.draw() SLIDER.draw()
 end

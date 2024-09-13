@@ -19,20 +19,32 @@ end
 local function getdB(v)
     return v==0 and -1e999 or math.log(v,10)*10
 end
+
+audio.titleTxt={txt=gc.newText(font.Bender)}
+local tt
+audio.distractTxt={}
 function audio.init()
     sfx.add({
         cOn='sfx/general/checkerOn.wav',
         cOff='sfx/general/checkerOff.wav',
         quit='sfx/general/confSwitch.wav',
+        test='sfx/other/metal pipe.wav'
     })
+
+    tt=audio.titleTxt
+    tt.txt:clear()
+    tt.txt:add(user.lang.conf.main.audio)
+    tt.w,tt.h=tt.txt:getDimensions()
+    tt.s=min(600/tt.w,1)
 
     cf=user.lang.conf
     audio.read()
     mus.volume,sfx.volume=audio.info.mus,audio.info.sfx
 
-    sfx.add({
-        test='sfx/other/metal pipe.wav'
-    })
+    local dtxt=audio.distractTxt
+    dtxt.txt=gc.newText(font.Bender_B,cf.audio.distract)
+    dtxt.w,dtxt.h=dtxt.txt:getDimensions()
+    dtxt.s=min(270/dtxt.w,.25)
 
     BUTTON.create('quit',{
         x=-700,y=400,type='rect',w=200,h=100,
@@ -69,14 +81,15 @@ function audio.init()
             gc.rectangle('fill',w/2+300*animArg,-h/2,300*(1-animArg),h)
             gc.setColor(r,g,b)
             gc.setLineWidth(4)
-            gc.rectangle('line',-w/2+3,-h/2+3,w-6,h-6)
+            gc.rectangle('line',-w/2+2,-h/2+2,w-4,h-4)
             if audio.info.distractCut then
                 gc.line(-w*3/8,0,-w/8,h/4,w*3/8,-h/4)
             end
             gc.setColor(r,g,b,2*t)
             gc.rectangle('fill',-w/2,-h/2,h,h)
             gc.setColor(1,1,1)
-            gc.printf(cf.audio.distract,font.Bender_B,w/2+25+cf.audio.DOX,0,1200,'left',0,.25,.25,0,72)
+            gc.draw(dtxt.txt,w/2+15,0,0,dtxt.s,dtxt.s,0,dtxt.h/2)
+            --gc.printf(cf.audio.distract,font.Bender_B,w/2+25+cf.audio.DOX,0,1200,'left',0,.25,.25,0,72)
             --DOX=Distract Offset X
         end,
         event=function()
@@ -93,7 +106,7 @@ function audio.init()
             gc.setColor(.5,.5,.5,.8)
             gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
             gc.setColor(1,1,1)
-            gc.printf(string.format(cf.audio.mus.."%.0f%%,%.2fdB",audio.info.mus*100,getdB(audio.info.mus)),
+            gc.printf(string.format(cf.audio.mus..":%3.0f%%",audio.info.mus*100,getdB(audio.info.mus)),
                 font.JB,-416,-48,114514,'left',0,.3125,.3125,0,84)
         end,
         buttonDraw=function(pos,sz)
@@ -112,7 +125,7 @@ function audio.init()
             gc.setColor(.5,.5,.5,.8)
             gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
             gc.setColor(1,1,1)
-            gc.printf(string.format(cf.audio.sfx.."%.0f%%,%.2fdB",audio.info.sfx*100,getdB(audio.info.sfx)),
+            gc.printf(string.format(cf.audio.sfx..":%3.0f%%",audio.info.sfx*100,getdB(audio.info.sfx)),
                 font.JB,-416,-48,114514,'left',0,.3125,.3125,0,84)
         end,
         buttonDraw=function(pos,sz)
@@ -134,7 +147,7 @@ function audio.init()
             gc.setColor(.5,.5,.5,.8)
             gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
             gc.setColor(1,1,1)
-            gc.printf(string.format(cf.audio.stereo.."%.0f%%",audio.info.stereo*100),
+            gc.printf(string.format(cf.audio.stereo..":%3.0f%%",audio.info.stereo*100),
                 font.JB,-216,-48,114514,'left',0,.3125,.3125,0,84)
         end,
         buttonDraw=function(pos,sz)
@@ -171,7 +184,7 @@ function audio.update(dt)
 end
 function audio.draw()
     gc.setColor(1,1,1)
-    gc.printf(cf.main.audio,font.Bender,0,-430,1280,'center',0,1,1,640,72)
+    gc.draw(tt.txt,0,-510,0,tt.s,tt.s,tt.w/2,0)
     BUTTON.draw() SLIDER.draw()
 end
 function audio.exit()

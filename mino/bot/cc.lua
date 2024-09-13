@@ -3,9 +3,15 @@ local head=love.filesystem.newFile('mino/bot/coldclear.h'):read()
 ffi.cdef(head)
 local c=ffi.C
 local gamePath=love.filesystem.getWorkingDirectory()
+local SBPath=love.filesystem.getSourceBaseDirectory()
 print(gamePath)
 local os=love.system.getOS()
-local CC=ffi.load(gamePath..'/cold_clear'..(os=='Windows' and '.dll' or os=='Linux' and '.so'))
+local CC
+if os=='Windows' then
+    CC=ffi.load(gamePath..'/cold_clear.dll')
+elseif os=='Linux' then
+    CC=ffi.load(SBPath..'/Aquamino/cold_clear.dll')
+end
 --CCAsyncBot *cc_launch_async(CCOptions *options, CCWeights *weights, CCBook *book, CCPiece *queue,
 --uint32_t count),
 --[[

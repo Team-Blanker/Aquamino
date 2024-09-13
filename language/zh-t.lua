@@ -46,17 +46,17 @@ return {
         noBestScore="暫無成績",
         arg={
             battle={
-                bot_PPS="機器人PPS:",
+                bot_PPS="機器人PPS",
                 player={
-                    pos="玩家位置:",
+                    pos="玩家位置",
                     left="左侧",
                     right="右侧"
                 }
             },
             ['tower defense']={
-                bot_PPS="機器人PPS:",
+                bot_PPS="機器人PPS",
                 player={
-                    pos="玩家位置:",
+                    pos="玩家位置",
                     left="左侧",
                     right="右侧"
                 }
@@ -75,6 +75,7 @@ return {
         UI="UI & 視覺設計",
         music="音樂来自",
         sfx="音效",
+        translate="翻譯 & 本地化",
         specialThanks="特別感謝",
         tester="以及其他所有内測成員"
     },
@@ -90,25 +91,26 @@ return {
     },
     conf={
         test="測試",
-        main={title="設定 - 首頁",audio="音頻設定",video="畫面設定",custom="主题設定",ctrl="控制設定",keys="鍵位設定"},
-        audio={mus="音樂音量:",distract="失去焦點自動靜音",DOX=0,
-            sfx="音效音量:",stereo="立体声:"
+        main={title="設定 - 首頁",audio="音頻設定",video="畫面設定",custom="主题設定",handling="控制設定",keys="鍵位設定"},
+        audio={mus="音樂音量",distract="失去焦點自動靜音",DOX=0,
+            sfx="音效音量",stereo="立体声"
         },
         video={
             unableBG="禁用遊戲背景",
+            BGset="游戲背景設定...",
             fullScr="全螢幕",fullScrTxt="按F11可一鍵切換視窗狀態。",
             vsync="垂直同步",
             vsyncTxt="本程式繪製代碼與運算代碼形式上分離，稱繪製幀率為FPS，運算幀率為TPS。\n若設定的最高FPS小於等於垂直同步限制的FPS，則TPS不受限。\n本程式主要考慮PC端運行情況，該選項預設為關閉。\n低性能設備可開啟此選項優化運算代碼運行。",
             discardAfterDraw="顯存回收加速",
             DADTxt="每幀繪製完成后立刻回收對應顯存。",
-            moreParticle="更多粒子特效",PEScale=.35,PEOffY=0,
-            frameLim="最高繪製幀率:",frameTxt="建議將該值調整為與顯示器幀率相等。"
+            moreParticle="更多粒子特效",
+            frameLim="最高繪製幀率",frameTxt="建議將該值調整為與顯示器幀率相等。"
         },
         custom={
             texture="方塊材質",color="方塊配色...",
             RS="旋轉系統",
             smooth="平滑運動",
-            smoothScale=.35,smoothOffX=0,smoothTime="動畫時長:",
+            smoothTime="動畫時長",
             theme="版面風格",
             scale="版面縮放",scaleTxt="單元方塊大小：",
             sfx="音效包",sfxWarning={
@@ -124,20 +126,20 @@ return {
         keys={
             keyName={'左移','右移','順轉','逆轉','180°轉','軟降','硬降','暫存','重開','暫停'} ,
             kScale=.5,
-            info="點選新增鍵位綁定（最多3個）\nBackspace清空選定鍵位\n按下已綁定鍵位以刪除該綁定",
+            info="點選新增鍵位綁定 (最多3個)\nBackspace清空選定鍵位\n按下已綁定鍵位以刪除該綁定",
             virtualKey="觸控設定..."
         },
         virtualKey={
             enable="啓用虛擬擊鍵",enableTxtScale=.25,
             anim="按鈕動畫",animTxtScale=.25,
             preset="预設...",
-            btsz="大小:",
-            tolerance="容錯:",
-            attach="網格對齊:"
+            btsz="大小",
+            tolerance="容錯",
+            attach="網格對齊"
         },
         handling={
-            ASD="自動移動延遲(ASD,舊稱DAS):",ASP="自動移動週期(ASP,舊稱ARR):",
-            SD_ASD="軟降ASD:",SD_ASP="軟降ASP:"
+            ASD="自動移動延遲(ASD,舊稱DAS)",ASP="自動移動週期(ASP,舊稱ARR)",
+            SD_ASD="軟降ASD",SD_ASP="軟降ASP"
         },
         other={title="其它設定",nothing="暫無內容"},
         lang={cur="當前語言：繁體中文"}
@@ -155,7 +157,7 @@ return {
         "c4w，爽！",
         "Lua天下第一！",
         "海蘭就是個彩筆打塊的，懂什麼代碼",
-        "Bad argument #6623:Attempt to compare number with nil",
+        "Bad argument #6623Attempt to compare number with nil",
         "Aquad = Aqua + Quad",
         "我是一條湊數tip",
         "你說得對，但是…",

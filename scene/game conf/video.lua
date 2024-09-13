@@ -26,6 +26,8 @@ local vsf=function() gc.rectangle('fill',vir/2-635,vir+3,645,(video.vth*.25+10)*
 local dit,dir=0,0
 local dsf=function() gc.rectangle('fill',dir/2-635,dir+3,645,(video.dth*.25+10)*4*dit) end
 
+video.titleTxt={txt=gc.newText(font.Bender)}
+local tt
 function video.init()
     sfx.add({
         cOn='sfx/general/checkerOn.wav',
@@ -33,12 +35,23 @@ function video.init()
         quit='sfx/general/confSwitch.wav',
     })
 
+    tt=video.titleTxt
+    tt.txt:clear()
+    tt.txt:add(cf.main.video)
+    tt.w,tt.h=tt.txt:getDimensions()
+    tt.s=min(600/tt.w,1)
+
     cf=user.lang.conf
     video.info.fullscr=win.fullscr video.save() video.read()
 
-    video.vsyncTxt=gc.newText(font.Bender_B)
-    video.vsyncTxt:addf(cf.video.vsyncTxt,2500,'left')
-    video.vth=video.vsyncTxt:getHeight()
+    video.ubgTxt=gc.newText(font.Bender_B,cf.video.unableBG)
+    video.fscrTxt=gc.newText(font.Bender_B,cf.video.fullScr)
+    video.VRAMTxt=gc.newText(font.Bender_B,cf.video.discardAfterDraw)
+    video.mpTxt=gc.newText(font.Bender_B,cf.video.moreParticle)
+
+    video.VSDTxt=gc.newText(font.Bender_B)
+    video.VSDTxt:addf(cf.video.vsyncTxt,2500,'left')
+    video.vth=video.VSDTxt:getHeight()
 
     video.DADTxt=gc.newText(font.Bender_B)
     video.DADTxt:addf(cf.video.DADTxt,2500,'left')
@@ -67,7 +80,7 @@ function video.init()
     },.2)
 
     BUTTON.create('unableBG',{
-        x=-750,y=-240,type='rect',w=80,h=80,
+        x=-780,y=-240,type='rect',w=80,h=80,
         draw=function(bt,t,ct)
             local animArg=video.info.unableBG and min(ct/.2,1) or max(1-ct/.2,0)
             local w,h=bt.w,bt.h
@@ -87,15 +100,36 @@ function video.init()
             gc.setColor(r,g,b,2*t)
             gc.rectangle('fill',-w/2,-h/2,h,h)
             gc.setColor(1,1,1)
-            gc.printf(cf.video.unableBG,font.Bender_B,w/2+40,0,1200,'left',0,.35,.35,0,72)
+            local s=min(280/video.ubgTxt:getWidth(),1/3)
+            gc.draw(video.ubgTxt,w/2+40,0,0,s,s,0,video.ubgTxt:getHeight()/2)
         end,
         event=function()
             video.info.unableBG=not video.info.unableBG
             sfx.play(video.info.unableBG and 'cOn' or 'cOff')
         end
     },.2)
+    BUTTON.create('BGSetting',{
+        x=-600,y=-420,type='rect',w=400,h=80,
+        draw=function(bt,t)
+            local w,h=bt.w,bt.h
+            gc.setColor(.5,.5,.5,.3+t)
+            gc.rectangle('fill',-w/2,-h/2,w,h)
+            gc.setColor(.8,.8,.8)
+            gc.setLineWidth(3)
+            gc.rectangle('line',-w/2,-h/2,w,h)
+            gc.setColor(1,1,1)
+            gc.printf(cf.video.BGset,font.Bender_B,0,0,1280,'center',0,1/3,1/3,640,72)
+        end,
+        event=function()
+            sfx.play('quit')
+            scene.switch({
+                dest='conf',destScene=require('scene/game conf/enableBG'),swapT=.15,outT=.1,
+                anim=function() anim.confSelect(.1,.05,.1,0,0,0) end
+            })
+        end
+    },.2)
     BUTTON.create('vsync',{
-        x=390,y=-240,type='rect',w=80,h=80,
+        x=420,y=-240,type='rect',w=80,h=80,
         draw=function(bt,t,ct)
             local animArg=video.info.vsync and min(ct/.2,1) or max(1-ct/.2,0)
             local w,h=bt.w,bt.h
@@ -115,7 +149,7 @@ function video.init()
             gc.setColor(r,g,b,2*t)
             gc.rectangle('fill',-w/2,-h/2,h,h)
             gc.setColor(1,1,1)
-            gc.printf(cf.video.vsync,font.Bender_B,w/2+40,0,1200,'left',0,.35,.35,0,72)
+            gc.printf(cf.video.vsync,font.Bender_B,w/2+40,0,1200,'left',0,1/3,1/3,0,72)
         end,
         event=function()
             video.info.vsync=not video.info.vsync
@@ -144,9 +178,8 @@ function video.init()
             gc.setColor(r,g,b,2*t)
             gc.rectangle('fill',-w/2,-h/2,h,h)
             gc.setColor(1,1,1)
-            gc.printf(cf.video.fullScr,font.Bender_B,w/2+40,0,1200,'left',0,.35,.35,0,72)
-            gc.setColor(1,1,1,.75)
-            gc.printf(cf.video.fullScrTxt,font.Bender_B,-w/2,h/2+64,1840,'left',0,.25,.25,0,152)
+            local s=min(280/video.fscrTxt:getWidth(),1/3)
+            gc.draw(video.fscrTxt,w/2+40,0,0,s,s,0,video.fscrTxt:getHeight()/2)
         end,
         event=function()
             video.info.fullscr=not video.info.fullscr
@@ -154,8 +187,8 @@ function video.init()
             sfx.play(video.info.fullscr and 'cOn' or 'cOff')
         end
     },.2)
-    BUTTON.create('discardAfterDraw',{
-        x=390,y=-40,type='rect',w=80,h=80,
+    BUTTON.create('VRAMBoost',{
+        x=420,y=-40,type='rect',w=80,h=80,
         draw=function(bt,t,ct)
             local animArg=video.info.discardAfterDraw and min(ct/.2,1) or max(1-ct/.2,0)
             local w,h=bt.w,bt.h
@@ -175,7 +208,8 @@ function video.init()
             gc.setColor(r,g,b,2*t)
             gc.rectangle('fill',-w/2,-h/2,h,h)
             gc.setColor(1,1,1)
-            gc.printf(cf.video.discardAfterDraw,font.Bender_B,w/2+40,0,1200,'left',0,.35,.35,0,72)
+            local s=min(280/video.VRAMTxt:getWidth(),1/3)
+            gc.draw(video.VRAMTxt,w/2+40,0,0,s,s,0,video.VRAMTxt:getHeight()/2)
         end,
         event=function()
             video.info.discardAfterDraw=not video.info.discardAfterDraw
@@ -204,7 +238,8 @@ function video.init()
             gc.setColor(r,g,b,2*t)
             gc.rectangle('fill',-w/2,-h/2,h,h)
             gc.setColor(1,1,1)
-            gc.printf(cf.video.moreParticle,font.Bender_B,w/2+40,cf.video.PEOffY,1200,'left',0,cf.video.PEScale,cf.video.PEScale,0,72)
+            local s=min(min(280/video.mpTxt:getWidth(),bt.h/video.mpTxt:getHeight()),1/3)
+            gc.draw(video.mpTxt,w/2+40,0,0,s,s,0,video.mpTxt:getHeight()/2)
         end,
         event=function()
             video.info.moreParticle=not video.info.moreParticle
@@ -214,7 +249,7 @@ function video.init()
 
     BUTTON.setLayer(2)
     BUTTON.create('vsyncInfo',{
-        x=800,y=-160,type='circle',r=32,
+        x=810,y=-160,type='circle',r=32,
         draw=function(bt,t,ct)
             gc.setColor(1,1,1)
             gc.draw(iq,0,0,0,.5,.5,32,32)
@@ -224,14 +259,14 @@ function video.init()
             gc.stencil(vsf,'replace',1)
             gc.setStencilTest('equal',1)
             gc.setColor(1,1,1)
-            gc.draw(video.vsyncTxt,bt.r/2,bt.r+8,0,.25,.25,2500,0)
+            gc.draw(video.VSDTxt,bt.r/2,bt.r+8,0,.25,.25,2500,0)
             gc.setStencilTest()
         end,
         event=function()
         end
     },.25)
     BUTTON.create('DADInfo',{
-        x=800,y=40,type='circle',r=32,
+        x=810,y=40,type='circle',r=32,
         draw=function(bt,t,ct)
             gc.setColor(1,1,1)
             gc.draw(iq,0,0,0,.5,.5,32,32)
@@ -254,20 +289,20 @@ function video.init()
             gc.setColor(.5,.5,.5,.8)
             gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
             gc.setColor(1,1,1)
-            gc.printf(string.format(cf.video.frameLim.."%d",video.info.frameLim),
+            gc.printf(string.format(cf.video.frameLim..":%3d",video.info.frameLim),
                 font.JB,-419,-48,114514,'left',0,.3125,.3125,0,84)
             gc.setColor(1,1,1,.75)
-            gc.printf(cf.video.frameTxt,font.Bender_B,-419,48,114514,'left',0,.25,.25,0,72)
+            gc.printf(cf.video.frameTxt,font.Bender_B,-419,48,800/.25,'left',0,.25,.25,0,72)
         end,
         buttonDraw=function(pos,sz)
             gc.setColor(1,1,1)
             gc.circle('fill',sz[1]*(pos-.5),0,20,4)
         end,
         always=function(pos)
-            video.info.frameLim=math.floor(30.5+pos*240)
+            video.info.frameLim=math.floor(30.5+pos*270)
         end,
         release=function(pos)
-            video.info.frameLim=math.floor(30.5+pos*240)
+            video.info.frameLim=math.floor(30.5+pos*270)
             drawCtrl.dtRestrict=1/video.info.frameLim
         end
     })
@@ -300,7 +335,7 @@ function video.update(dt)
 end
 function video.draw()
     gc.setColor(1,1,1)
-    gc.printf(cf.main.video,font.Bender,0,-430,1280,'center',0,1,1,640,72)
+    gc.draw(tt.txt,0,-510,0,tt.s,tt.s,tt.w/2,0)
     BUTTON.draw(1) BUTTON.draw(2) SLIDER.draw()
 end
 function video.exit()

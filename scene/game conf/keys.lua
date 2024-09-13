@@ -5,7 +5,6 @@ local BUTTON=scene.button
 local keyName={'ML','MR','CW','CCW','flip','SD','HD','hold','R','pause'}
 local key={
     keySet={},
-    keyName={},
     banned={'f1','f2','f3','f4','f5','f6','f7','f8','f9','f10','f11','f12', 'f17','f18',
         'tab','backspace',
         'audiomute','audioplay','volumeup','volumedown',
@@ -35,6 +34,19 @@ function key.save()
     file.save('conf/keySet',key.keySet)
 end
 
+key.desTxt={}
+key.keyTxt={}
+for i=1,#keyName do
+    key.keyTxt[keyName[i]]={}
+end
+key.vkTxt={}
+
+local keyBtWidth=85
+local keyAmount=14
+local keySheet=ceil(keyAmount/2)
+
+key.titleTxt={txt=gc.newText(font.Bender)}
+local tt
 function key.init()
     sfx.add({
         keyAdd='sfx/general/checkerOn.wav',
@@ -46,8 +58,30 @@ function key.init()
 
     cfk=user.lang.conf.keys
 
+    tt=key.titleTxt
+    tt.txt:clear()
+    tt.txt:add(user.lang.conf.main.keys)
+    tt.w,tt.h=tt.txt:getDimensions()
+    tt.s=min(600/tt.w,1)
+
     key.read()
     key.order=nil
+
+    key.desTxt.txt=gc.newText(font.JB)
+    key.desTxt.txt:addf(cfk.info,8000,'center',0,0,0,1,1,4000,0)
+    key.desTxt.w,key.desTxt.h=key.desTxt.txt:getDimensions()
+    key.desTxt.s=min(.3125,1000/key.desTxt.w)
+
+    for i=1,#keyName do
+        local v=key.keyTxt[keyName[i]]
+        v.txt=gc.newText(font.Bender_B,cfk.keyName[i])
+        v.w,v.h=v.txt:getDimensions()
+        v.s=min(cfk.kScale,180/v.w)
+    end
+
+    key.vkTxt.txt=gc.newText(font.Bender_B,cfk.virtualKey)
+    key.vkTxt.w,key.vkTxt.h=key.vkTxt.txt:getDimensions()
+    key.vkTxt.s=min(.4,360/key.vkTxt.w)
 
     BUTTON.create('quit',{
         x=-700,y=400,type='rect',w=200,h=100,
@@ -79,7 +113,7 @@ function key.init()
             gc.setLineWidth(3)
             gc.rectangle('line',-w/2,-h/2,w,h)
             gc.setColor(1,1,1)
-            gc.printf(user.lang.conf.test,font.Bender,0,0,1280,'center',0,.5,.5,640,72)
+            gc.printf(user.lang.conf.test,font.Bender,0,0,1280,'center',0,.5,.5,640,font.height.Bender/2)
         end,
         event=function()
             sfx.play('click')
@@ -100,7 +134,8 @@ function key.init()
             gc.setLineWidth(3)
             gc.rectangle('line',-w/2,-h/2,w,h)
             gc.setColor(1,1,1)
-            gc.printf(cfk.virtualKey,font.Bender_B,0,0,1280,'center',0,.4,.4,640,72)
+            local tt=key.vkTxt
+            gc.draw(tt.txt,0,0,0,tt.s,tt.s,tt.w/2,tt.h/2)
         end,
         event=function()
             sfx.play('quit')
@@ -132,11 +167,12 @@ function key.keyP(k)
 end
 function key.mouseP(x,y,button,istouch)
     if not (button==1 and BUTTON.press(x,y)) then
-        if button==1 and (x>-800 and x<800 and y>-300 and y<300) then
-            local o=ceil(y/100)+3+(x>0 and 6 or 0)
+        if button==1 and (x>-800 and x<800 and y>-300 and y<-300+keySheet*keyBtWidth) then
+            local o=ceil((y+300)/keyBtWidth)+(x>0 and keySheet or 0)
             key.order=o<=#keyName and o~=key.order and o or nil
             sfx.play('choose')
         else key.order=nil end
+        --print(key.order)
     end
 end
 function key.mouseR(x,y,button,istouch)
@@ -146,30 +182,40 @@ function key.update(dt)
     BUTTON.update(dt,adaptWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5))
 end
 function key.draw()
+    gc.setColor(1,1,1)
+    gc.draw(tt.txt,0,-510,0,tt.s,tt.s,tt.w/2,0)
+    gc.draw(key.desTxt.txt,0,420,0,key.desTxt.s,key.desTxt.s,0,key.desTxt.h/2)
     gc.setColor(1,1,1,.25)
-    for i=0,5 do
-        gc.rectangle('fill',-800,-300+100*i,200,100)
-        gc.rectangle('fill',   0,-300+100*i,200,100)
+    for i=0,keySheet-1 do
+        gc.rectangle('fill',-800,-300+keyBtWidth*i,200,keyBtWidth)
+        gc.rectangle('fill',   0,-300+keyBtWidth*i,200,keyBtWidth)
     end
     gc.setColor(1,1,1,scene.time%.2<.1 and .25 or .125)
-    if key.order then gc.rectangle('fill',key.order>6 and 200 or -600,(key.order-1)%6*100-300,600,100) end
+    if key.order then gc.rectangle('fill',key.order>keySheet and 200 or -600,(key.order-1)%keySheet*keyBtWidth-300,600,keyBtWidth) end
+
     gc.setColor(1,1,1)
-    gc.printf(user.lang.conf.main.keys,font.Bender,0,-430,1280,'center',0,1,1,640,72)
-    gc.printf(cfk.info,font.JB,0,400,8000,'center',0,.3,.3,4000,192)
-    for i=0,5 do
-        if cfk.keyName[i+1] then gc.printf(cfk.keyName[i+1],font.Bender_B,-700,-250+100*i,2000,'center',0,cfk.kScale,cfk.kScale,1000,72) end
-        if cfk.keyName[i+7] then gc.printf(cfk.keyName[i+7],font.Bender_B, 100,-250+100*i,2000,'center',0,cfk.kScale,cfk.kScale,1000,72) end
+    local t
+    for i=0,keySheet-1 do
+        if key.keyTxt[keyName[i+1]] then
+            t=key.keyTxt[keyName[i+1]]
+            gc.draw(t.txt,-700,-300+keyBtWidth*(i+.5),0,t.s,t.s,t.w/2,t.h/2)
+        end
+        if key.keyTxt[keyName[i+keySheet+1]] then
+            t=key.keyTxt[keyName[i+keySheet+1]]
+            gc.draw(t.txt, 100,-300+keyBtWidth*(i+.5),0,t.s,t.s,t.w/2,t.h/2)
+        end
     end
+
     gc.setColor(.5,1,.875)
     for i=1,#keyName do local K=key.keySet[keyName[i]]
         for j=1,#K do
             gc.printf(K[j]:len()==1 and K[j]:upper() or K[j],
-            font.JB,(i>6 and 100 or -700)+200*j,-300+100*((i-1)%6)+128*.4,2000,'center',0,.4,.4,1000,84)
+            font.JB,(i>keySheet and keyBtWidth or -700)+200*j,-300+keyBtWidth*((i-1)%keySheet+.5),2000,'center',0,1/3,1/3,1000,84)
         end
     end
     gc.setColor(.5,1,.875)
-    gc.setLineWidth(4)
-    for i=0,6 do gc.line(-800,-300+100*i,800,-300+100*i) end
+    gc.setLineWidth(2)
+    for i=0,keySheet do gc.line(-800,-300+keyBtWidth*i,800,-300+keyBtWidth*i) end
     BUTTON.draw()
 end
 

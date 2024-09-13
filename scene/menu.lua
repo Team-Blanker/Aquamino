@@ -2,8 +2,7 @@ local m=user.lang.menu
 local BUTTON=scene.button
 local SLIDER=scene.slider
 
-local menu={modeKey=1}
-local sAnimTMax=.15
+local menu={modeKey=1,sAnimTMax=.15}
 
 local bso=require'mino/bestScoreOrder'
 
@@ -197,7 +196,7 @@ function menu.init()
     BUTTON.create('back',{
         x=-960,y=540,type='diamond',r=225,
         draw=function(bt,t)
-            local a=menu.sAnimTimer/sAnimTMax
+            local a=menu.sAnimTimer/menu.sAnimTMax
             gc.setColor(.5,.5,.5,(.3+t)*a)
             gc.circle('fill',0,0,bt.r,4)
             gc.setColor(.8,.8,.8,a)
@@ -214,7 +213,7 @@ function menu.init()
     BUTTON.create('play',{
         x=0,y=390,type='rect',w=450,h=100,
         draw=function(bt,t)
-            local a=menu.sAnimTimer/sAnimTMax*2-1
+            local a=menu.sAnimTimer/menu.sAnimTMax*2-1
             if menu.pAnim then
                 local s=menu.pAnimTimer>.2 and 1 or menu.pAnimTimer%.1<.05 and 1 or 0
                 gc.setColor(.75,.75,.75,.5+.1*s)
@@ -325,7 +324,7 @@ function menu.update(dt)
     end
 
     if menu.pAnim then menu.pAnimTimer=menu.pAnimTimer+dt end
-    menu.sAnimTimer=menu.lvl==2 and min(menu.sAnimTimer+dt,sAnimTMax) or max(menu.sAnimTimer-dt,0)
+    menu.sAnimTimer=menu.lvl==2 and min(menu.sAnimTimer+dt,menu.sAnimTMax) or max(menu.sAnimTimer-dt,0)
     BUTTON.update(dt,msx,msy,menu.lvl)
 end
 
@@ -367,7 +366,7 @@ function menu.draw()
 
     if menu.selectedMode~='' then
     c=menu.modeList[menu.selectedMode].borderColor
-    local a=menu.sAnimTimer/sAnimTMax
+    local a=menu.sAnimTimer/menu.sAnimTMax
     gc.setColor(.05,.05,.05,a*.75)
     gc.rectangle('fill',-960,-540,1920,1080)
     gc.setColor(c[1],c[2],c[3],a)
@@ -378,8 +377,9 @@ function menu.draw()
 
     gc.setColor(1,1,1,a*2-1)
     local t,det,bst=mt[menu.selectedMode],menu.describeTxt[menu.selectedMode],menu.pb[menu.selectedMode]
-    gc.draw(t.txt,0,-390,0,.75,.75,t.w/2,t.h)
-    if det then gc.draw(det.txt,0,-360,0,.4,.4,0,0) end
+    local s=min(750/t.w,.75)
+    gc.draw(t.txt,0,-390,0,s,s,t.w/2,t.h)
+    if det then gc.draw(det.txt,0,-360,0,3/8,3/8,0,0) end
     if not menu.notRecordScore[menu.selectedMode] then
         if bst then
             gc.printf(user.lang.menu.bestScore,font.Bender,0,150,2000,'center',0,.5,.5,1000,72)

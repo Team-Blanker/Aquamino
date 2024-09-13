@@ -33,10 +33,10 @@ return {
         multitasking={{1,1,1},"*Galaxy Brain Meme*\n",{1,1,0},"Restrizioni del movimento:\nASD=150ms ASP=30ms SD ASP=30ms\nLa gravità aumenta ad ogni livello."},
         sandbox={{1,1,0},"Questa modalità non registra\nalcun punteggio."},
         ['dig 40']="Pensa. Scava. Sii Efficiente.",
-        laser={{1,1,1},"U  N  D-E-R  G  R  O-U-N\nU  N  D-E-R  G  R  O-U-N-D\n",{1,1,0},"Questa è una modalità ritmica.\nSi consiglia vivamente\ndi attivare la musica."},
+        laser={{1,1,1},"U  N  D-E-R  G  R  O-U-N\nU  N  D-E-R  G  R  O-U-N-D\n",{1,1,0},"Questa è una modalità ritmica.\nSi consiglia vivamente di attivare la musica."},
         backfire="Ricevi l'attacco inviato da te stesso!",
         battle={{1,1,1},"Combattiamo!\n",{1,1,0},"Questa modalità non registra\nalcun punteggio."},
-        ['tower defense']={{1,1,0},"Questa modalità non registra\nalcun punteggio.\n",{1,.2,.2},"L'avvio/riavvio di questa modalità\npotrebbe causare il blocco del gioco\nper motivi sconosciuti"}
+        ['tower defense']={{1,1,0},"Questa modalità non registra\nalcun punteggio.\n",{1,.2,.2},"L'avvio/riavvio di questa modalità potrebbe\ncausare il blocco del gioco per motivi sconosciuti"}
     },
     intro={
         start="Premi un tasto qualsiasi per iniziare",
@@ -46,17 +46,17 @@ return {
         noBestScore="Nessun Punteggio",
         arg={
             battle={
-                bot_PPS="Bot PPS:",
+                bot_PPS="Bot PPS",
                 player={
-                    pos="Posto del giocatore:",
+                    pos="Posto del giocatore",
                     left="sinistra",
                     right="destra"
                 }
             },
             ['tower defense']={
-                bot_PPS="Bot PPS:",
+                bot_PPS="Bot PPS",
                 player={
-                    pos="Player's place:",
+                    pos="Player's place",
                     left="Sinistra",
                     right="Destra"
                 }
@@ -75,6 +75,7 @@ return {
         UI="Interfaccia Utente & Progettazione Artistica",
         music="Musica composta da",
         sfx="Progettazione di effetti sonori",
+        translate="Translation & Localization",
         specialThanks="Ringraziamenti Speciali",
         tester="...e tutti gli altri testers"
     },
@@ -90,29 +91,30 @@ return {
     },
     conf={
         test="Test",
-        main={title="Opzioni",audio="Audio",video="Video",custom="Personalizza",ctrl="Movimento",keys="Controlli"},
+        main={title="Opzioni",audio="Audio",video="Video",custom="Personalizza",handling="Movimento",keys="Controlli"},
 
         audio={
-            mus="Musica:",distract="muta quando la finestra non è focalizzata",DOX=-22,
-            sfx="Effetti Sonori:",stereo="Stereo:"
+            mus="Musica",distract="muta quando la finestra\nnon è focalizzata",DOX=-22,
+            sfx="Effetti Sonori",stereo="Stereo"
         },
         video={
             unableBG="Disabilita Sfondi",
+            BGset="Manage BGs...",
             fullScr="Schermo Intero",fullScrTxt="Premi F11 per andare a schermo intero.",
             vsync="VSync",
             vsyncTxt="Sincronizza la frequenza dei fotogrammi con la frequenza di aggiornamento del monitor.",
             discardAfterDraw="Aumento della VRAM",
             DADTxt="Elimina il contenuto dello schermo dopo aver disegnato ciascun fotogramma.",
-            moreParticle="Più particelle in gioco",PEScale=.25,PEOffY=-16,
-            frameLim="FPS Massimi:",frameTxt="Si consiglia un valore pari alla frequenza di aggiornamento del monitor."
+            moreParticle="Più particelle\nin gioco",
+            frameLim="FPS Massimi",frameTxt="Si consiglia un valore pari alla frequenza di aggiornamento del monitor."
         },
         custom={
             texture="Texture dei blocchi",color="Regolazione del colore...",
             RS="Sistema di rotazione",
             smooth="Movimento Liscio",
-            smoothScale=.3,smoothOffX=-15,smoothTime="Tempo di movimento:",
+            smoothTime="Tempo di movimento",
             theme="Tema della griglia",
-            scale="Scala della griglia",scaleTxt="Dimensione della cella:",
+            scale="Scala della griglia",scaleTxt="Dimensione della cella",
             sfx="Effetti Sonori",sfxWarning={
                 otto="LOUD SOUND WARNING. TAKE AT YOUR OWN RISK."
             },
@@ -125,22 +127,22 @@ return {
             }
         },
         keys={
-            keyName={"Muovi a Sinistra","Muovi a Destra","Ruota in senso orario","Ruota in senso antiorario","Ruota a 180°",'Soft drop','Hard Drop','Riserva','Riavvia','Pausa'},
-            kScale=.26,
-            info="- Fai clic associare i tuoi controlli.\n- Premi Backspace per cancellare\nil set di controlli selezionato.\n- Premi un tasto associato per rimuoverlo dai controlli.",
+            keyName={"Muovi a Sinistra","Muovi a Destra","Ruota in senso\norario","Ruota in senso\nantiorario","Ruota a 180°",'Soft drop','Hard Drop','Riserva','Riavvia','Pausa'},
+            kScale=.25,
+            info="- Fai clic associare i tuoi controlli.\n- Premi Backspace per cancellare il set di controlli selezionato.\n- Premi un tasto associato per rimuoverlo dai controlli.",
             virtualKey="Impostazioni touchscreen..."
         },
         virtualKey={
             enable="Abilita i controlli virtuali",enableTxtScale=.2,
             anim="Animazioni controlli",animTxtScale=.2,
             preset="preimpostazioni...",
-            btsz="Dimensione:",
-            tolerance="Margine:",
-            attach="Allineamento:"
+            btsz="Dimensione",
+            tolerance="Margine",
+            attach="Allineamento"
         },
         handling={
-            ASD="Ritardo spostamento automatico (ASD):",ASP="Periodo di spostamento automatico(ASP):",
-            SD_ASD="Soft drop ASD:",SD_ASP="Soft drop ASP:"
+            ASD="Ritardo spostamento automatico (ASD)",ASP="Periodo di spostamento automatico(ASP)",
+            SD_ASD="Soft drop ASD",SD_ASP="Soft drop ASP"
         },
         other={title="Other",nothing="Ancora nulla qua..."},
         lang={cur="Lingua attuale: Italiano"}

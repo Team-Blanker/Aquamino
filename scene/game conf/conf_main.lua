@@ -1,11 +1,14 @@
 local BUTTON=scene.button
+local sfxList={
+    confEnter='sfx/general/confSwitch.wav',
+    click='sfx/general/buttonClick.wav',
+    quit='sfx/general/buttonQuit.wav',
+}
 local config={}
+config.txt={title={},audio={},video={},custom={},handling={},keys={},test={}}
+local tt
 function config.init()
-    sfx.add({
-        confEnter='sfx/general/confSwitch.wav',
-        click='sfx/general/buttonClick.wav',
-        quit='sfx/general/buttonQuit.wav',
-    })
+    sfx.add(sfxList)
 
     scene.BG=require'BG/settings'
     if not scene.BG.time then scene.BG.init() end
@@ -18,16 +21,18 @@ function config.init()
         audio=0,video=0,custom=0,ctrl=0,keys=0
     }
     config.clrList={}
-    config.txtList={} local ct=config.txtList
-    for k,v in pairs(cfm) do
-        ct[k]={}
-        local t=ct[k]
-        t.txt=gc.newText(font.Bender,v)
-        t.w,t.h=t.txt:getWidth(),t.txt:getHeight()
+
+    tt=config.txt.title
+    local ct=config.txt
+    for k,v in pairs(config.txt) do
+        v.txt=gc.newText(font.Bender,cfm[k])
+        v.w,v.h=v.txt:getWidth(),v.txt:getHeight()
+        v.s=min(.75,(k=='title' and 450 or 400)/v.w)
     end
     ct.test={}
     ct.test.txt=gc.newText(font.Bender,cf.test)
     ct.test.w,ct.test.h=ct.test.txt:getWidth(),ct.test.txt:getHeight()
+    ct.test.s=min(.75,240/ct.test.w)
 
     BUTTON.create('quit',{
         x=-675,y=225*3^.5,type='circle',r=150,
@@ -64,7 +69,7 @@ function config.init()
             gc.setLineWidth(9)
             gc.arc('line','closed',0,0,bt.r,arcs,arcf,6)
             gc.setColor(1,1,1)
-            gc.draw(ct.test.txt,0,0,0,.75,.75,ct.test.w/2,ct.test.h/2)
+            gc.draw(ct.test.txt,0,0,0,ct.test.s,ct.test.s,ct.test.w/2,ct.test.h/2)
         end,
         event=function()
             sfx.play('click')
@@ -85,7 +90,7 @@ function config.init()
             gc.setLineWidth(9)
             gc.arc('line','closed',0,0,bt.r,arcs,arcf,6)
             gc.setColor(1,1,1)
-            gc.printf(cfm.keys,font.Bender,0,0,1280,'center',0,.75,.75,640,72)
+            gc.draw(ct.keys.txt,0,0,0,ct.keys.s,ct.keys.s,ct.keys.w/2,ct.keys.h/2)
         end,
         event=function()
             sfx.play('confEnter')
@@ -95,7 +100,7 @@ function config.init()
             })
         end
     },.2)
-    BUTTON.create('ctrl',{
+    BUTTON.create('handling',{
         x=500,y=0,type='circle',r=250,
         draw=function(bt,t)
             gc.setColor(.125,.25,.5,.3+t)
@@ -104,7 +109,7 @@ function config.init()
             gc.setLineWidth(9)
             gc.arc('line','closed',0,0,bt.r,arcs,arcf,6)
             gc.setColor(1,1,1)
-            gc.printf(cfm.ctrl,font.Bender,0,0,1280,'center',0,.75,.75,640,72)
+            gc.draw(ct.handling.txt,0,0,0,ct.handling.s,ct.handling.s,ct.handling.w/2,ct.handling.h/2)
         end,
         event=function()
             sfx.play('confEnter')
@@ -144,7 +149,7 @@ function config.init()
             gc.setLineWidth(9)
             gc.arc('line','closed',0,0,bt.r,arcs,arcf,6)
             gc.setColor(1,1,1)
-            gc.printf(cfm.audio,font.Bender,0,0,1280,'center',0,.75,.75,640,72)
+            gc.draw(ct.audio.txt,0,0,0,ct.audio.s,ct.audio.s,ct.audio.w/2,ct.audio.h/2)
         end,
         event=function()
             sfx.play('confEnter')
@@ -163,7 +168,7 @@ function config.init()
             gc.setLineWidth(9)
             gc.arc('line','closed',0,0,bt.r,arcs,arcf,6)
             gc.setColor(1,1,1)
-            gc.printf(cfm.video,font.Bender,0,0,1280,'center',0,.75,.75,640,72)
+            gc.draw(ct.video.txt,0,0,0,ct.video.s,ct.video.s,ct.video.w/2,ct.video.h/2)
         end,
         event=function()
             sfx.play('confEnter')
@@ -182,7 +187,7 @@ function config.init()
             gc.setLineWidth(9)
             gc.arc('line','closed',0,0,bt.r,arcs,arcf,6)
             gc.setColor(1,1,1)
-            gc.printf(cfm.custom,font.Bender,0,0,1280,'center',0,.75,.75,640,72)
+            gc.draw(ct.custom.txt,0,0,0,ct.custom.s,ct.custom.s,ct.custom.w/2,ct.custom.h/2)
         end,
         event=function()
             sfx.play('confEnter')
@@ -221,7 +226,7 @@ function config.update(dt)
 end
 function config.draw()
     gc.setColor(1,1,1)
-    gc.printf(user.lang.conf.main.title,font.Bender_B,0,0,1280,'center',0,.75,.75,640,72)
+    gc.draw(tt.txt,0,0,0,tt.s,tt.s,tt.w/2,tt.h/2)
     BUTTON.draw()
 end
 function config.send(destScene,arg)

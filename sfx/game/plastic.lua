@@ -54,7 +54,7 @@ function plastic.clear(player,stereo)
     local pitch=his.line==0 and 1 or min(2^((his.combo-1)/12),2.848)
     sfx.play(''..min(his.line,4))
     if his.spin then sfx.play('spinClear',his.line>0 and 1 or .5,his.mini and .75 or 1,stereo) end
-    if his.line>0 then sfx.play('combo',1,pitch,stereo) end
+    if his.line>0 then sfx.play('combo',min((his.combo+1)/5,1),pitch,stereo) end
     if his.PC then sfx.play('PC',1,1,stereo) end
 end
 function plastic.B2BBreak(player,b2b,stereo)

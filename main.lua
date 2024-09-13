@@ -61,11 +61,12 @@ kb=love.keyboard
 ms=love.mouse
 touch=love.touch
 
-mymath=require'framework/mathextend' mytable=require'framework/tableextend'
+mymath=require'framework/mathExtend' mytable=require'framework/tableExtend'
 anim=require'scene/swapAnim'
 COLOR=require'framework/color'
 
-file=require'framework/fileextend'
+file=require'framework/fileExtend'
+gcExtend=require'framework/graphicsExtend'
 
 rand=math.random
 sin=math.sin cos=math.cos
@@ -83,6 +84,8 @@ do
 end
 
 font={
+    height={},
+
     SYHT=gc.newFont('font/SourceHanSans-Regular.otf',128),
     Bender=gc.newFont('font/Bender.otf',128),
     Bender_B=gc.newFont('font/Bender-Bold.otf',128),
@@ -93,6 +96,12 @@ font={
 
     LED=gc.newFont('font/UniDreamLED.ttf',128)
 }
+for k,v in pairs(font) do
+    if k~='height' then
+        font.height[k]=v:getHeight()
+        print(k,font.height[k])
+    end
+end
 font.Bender:setFallbacks(font.SYHT) font.Bender_B:setFallbacks(font.SYHT) font.Bender_L:setFallbacks(font.SYHT)
 font.JB:setFallbacks(font.SYHT) font.JB_B:setFallbacks(font.SYHT)
 

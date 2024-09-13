@@ -222,9 +222,9 @@ end
 
 function mino.hold(player)
     local H,C,A=player.hold,player.cur,player.smoothAnim
-    print('p',C.O,H.O)
+    --print('p',C.O,H.O)
     H.name,C.name=C.name,H.name  H.piece,C.piece=C.piece,H.piece  H.O,C.O=C.O,H.O
-    print('n',C.O,H.O)
+    --print('n',C.O,H.O)
     if player.hold.mode=='A' then
         H.x,H.y,C.x,C.y=C.x,C.y,H.x,H.y
         while C.piece and coincide(player) and C.y<player.h+B.Soff[C.name][2] do C.y=C.y+1 end
@@ -676,7 +676,7 @@ function mino.init()
     vKey.init(S.ctrl,S.VKey.anim)
     if S.VKey.enabled then
         for ki,v in pairs(S.VKey.set) do
-            print(v)
+            --print(v)
             vKey.new(ki,v)
         end
     end

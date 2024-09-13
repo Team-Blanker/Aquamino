@@ -46,9 +46,9 @@ return {
         noBestScore="暂无成绩",
         arg={
             battle={
-                bot_PPS="机器人PPS:",
+                bot_PPS="机器人PPS",
                 player={
-                    pos="玩家位置:",
+                    pos="玩家位置",
                     left="左侧",
                     right="右侧"
                 }
@@ -75,6 +75,7 @@ return {
         UI="UI & 视觉设计",
         music="音乐来自",
         sfx="音效",
+        translate="翻译 & 本地化",
         specialThanks="特别感谢",
         tester="以及其他所有内测成员"
     },
@@ -90,28 +91,29 @@ return {
     },
     conf={
         test="测试",
-        main={title="设置 - 主页",audio="音频设置",video="画面设置",custom="主题设置",ctrl="控制设置",keys="键位设置"},
+        main={title="设置 - 主页",audio="音频设置",video="画面设置",custom="主题设置",handling="控制设置",keys="键位设置"},
         audio={
-            mus="音乐音量:",distract="失去焦点自动静音",DOX=0,
-            sfx="音效音量:",stereo="立体声:"
+            mus="音乐音量",distract="失去焦点自动静音",DOX=0,
+            sfx="音效音量",stereo="立体声"
         },
         video={
             unableBG="禁用游戏背景",
+            BGset="游戏背景设置...",
             fullScr="全屏",fullScrTxt="按F11可一键切换窗口状态。",
             vsync="垂直同步",
             vsyncTxt="本程序绘制代码与运算代码形式上分离，称绘制帧率为FPS，运算帧率为TPS。\n若设定的最高FPS小于等于垂直同步限制的FPS，则TPS不受限。\n本程序主要考虑PC端运行情况，该选项默认关闭。\n低性能设备可开启此选项优化运算代码运行。",
             discardAfterDraw="显存回收加速",
             DADTxt="每帧绘制完成后立刻丢弃对应显存。",
-            moreParticle="更多粒子特效",PEScale=.35,PEOffY=0,
-            frameLim="最高绘制帧率:",frameTxt="推荐将该值调整为与显示器帧率相等。"
+            moreParticle="更多粒子特效",
+            frameLim="最高绘制帧率",frameTxt="推荐将该值调整为与显示器帧率相等。"
         },
         custom={
             texture="方块材质",color="方块配色...",
             RS="旋转系统",
             smooth="平滑运动",
-            smoothScale=.35,smoothOffX=0,smoothTime="动画时长:",
+            smoothTime="动画时长",
             theme="版面风格",
-            scale="版面缩放",scaleTxt="单格方块大小：",
+            scale="版面缩放",scaleTxt="单格方块大小",
             sfx="音效包",sfxWarning={
                 otto="该音效包包含音量过大内容，谨慎选择。"
             },
@@ -124,21 +126,21 @@ return {
         },
         keys={
             keyName={'左移','右移','顺转','逆转','180°转','软降','硬降','暂存','重开','暂停'},
-            kScale=.5,
-            info="点击添加键位绑定（最多3个）\nBackspace清空选定键位\n按下已绑定键位以删除该绑定",
+            kScale=.4,
+            info="点击添加键位绑定 (最多3个)\nBackspace清空选定键位\n按下已绑定键位以删除该绑定",
             virtualKey="触控设置..."
         },
         virtualKey={
             enable="启用虚拟按键",enableTxtScale=.25,
             anim="按钮动画",animTxtScale=.25,
             preset="预设...",
-            btsz="大小:",
-            tolerance="容错:",
-            attach="网格对齐:"
+            btsz="大小",
+            tolerance="容错",
+            attach="网格对齐"
         },
         handling={
-            ASD="自动移动延迟(ASD,旧称DAS):",ASP="自动移动周期(ASP,旧称ARR):",
-            SD_ASD="软降ASD:",SD_ASP="软降ASP:"
+            ASD="自动移动延迟(ASD,旧称DAS)",ASP="自动移动周期(ASP,旧称ARR)",
+            SD_ASD="软降ASD",SD_ASP="软降ASP"
         },
         other={title="其它设置",nothing="暂无内容"},
         lang={cur="当前语言：简体中文"}

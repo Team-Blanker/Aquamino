@@ -17,6 +17,7 @@ end
 function bc.save()
     file.save('conf/mino color',bc.color)
 end
+bc.txt={rAll={},rCur={}}
 function bc.init()
     sfx.add({
         swap='sfx/general/optionSwitch.wav',
@@ -25,6 +26,16 @@ function bc.init()
     })
 
     cfcc=user.lang.conf.custom.colorSet
+
+    local ra=bc.txt.rAll
+    ra.txt=gc.newText(font.Bender,cfcc.rAll)
+    ra.w,ra.h=ra.txt:getDimensions()
+    ra.s=min(315/ra.w,.5)
+    local rc=bc.txt.rCur
+    rc.txt=gc.newText(font.Bender,cfcc.rCur)
+    rc.w,rc.h=rc.txt:getDimensions()
+    rc.s=min(315/rc.w,.5)
+
     bc.read()
     do
         local pf={block='pure',theme='simple',sfx='Dr Ocelot',smoothAnimAct=false,fieldScale=1}
@@ -64,7 +75,7 @@ function bc.init()
             gc.setLineWidth(3)
             gc.rectangle('line',-w/2,-h/2,w,h)
             gc.setColor(1,1,1)
-            gc.printf(cfcc.rAll,font.Bender,0,0,1280,'center',0,.5,.5,640,72)
+            gc.draw(ra.txt,0,0,0,ra.s,ra.s,ra.w/2,ra.h/2)
             gc.setColor(1,1,1,1-4*ct)
             gc.rectangle('line',-w/2-ct*80,-h/2-ct*80,w+ct*160,h+ct*160)
         end,
@@ -90,7 +101,7 @@ function bc.init()
             gc.setLineWidth(3)
             gc.rectangle('line',-w/2,-h/2,w,h)
             gc.setColor(1,1,1)
-            gc.printf(cfcc.rCur,font.Bender,0,0,1280,'center',0,.5,.5,640,72)
+            gc.draw(rc.txt,0,0,0,rc.s,rc.s,rc.w/2,rc.h/2)
             gc.setColor(dc[1],dc[2],dc[3],1-4*ct)
             gc.rectangle('line',-w/2-ct*80,-h/2-ct*80,w+ct*160,h+ct*160)
         end,
@@ -235,7 +246,7 @@ end
 local w,h,x,y
 function bc.draw()
     gc.setColor(1,1,1)
-    gc.printf(cfcc.title,font.Bender,0,-450,1280,'center',0,.75,.75,640,72)
+    gc.printf(cfcc.title,font.Bender,0,-510,1280,'center',0,1,1,640,0)
     if canAdjustColor[skinName] then gc.setColor(1,1,1,.6)
         gc.printf(cfcc.adjY,font.Bender,0,-40,10000,'center',0,.4,.4,5000,72)
     else gc.setColor(1,1,1,.6)

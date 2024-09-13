@@ -23,7 +23,7 @@ function rule.init(P,mino)
     end
     mino.rule.loosen.fallTPL=.1
     for k,v in pairs(P) do
-        --v.w=4
+        v.w=12
         v.LDRInit=1e99 v.FDelay=5 v.LDelay=1e99 v.LDR=1e99
     end
 end

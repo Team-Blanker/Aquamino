@@ -30,20 +30,28 @@ end
 local arrowClr={
     {1,1,1},{1,1,1},{1,1,1},{1,1,1},
     {.6,1,.2},{.6,1,.2},{.6,1,.2},{.6,1,.2},{.6,1,.2},{.6,1,.2},{.6,1,.2},{.6,1,.2},
-    {1,.6,.2},
+    {1,.7,.4},
     {.5,1,.875},{.5,1,.875},{.5,1,.875},
 }
 
+bg.arrowList={}
+for i=1,128 do
+    bg.arrowList[i]={x=mapW*rand(),y=mapH*rand(),v=100,angle=tau*rand(),state=rand()<.85 and 0 or 1,color=arrowClr[i%#arrowClr+1]}
+    bg.arrowList[i].attach={x=floor(bg.arrowList[i].x/attach+.5),y=floor(bg.arrowList[i].y/attach+.5)}
+    bg.arrowList[i].follow={index=nil,angle=0}
+    bg.arrowList[i].guideT=bg.arrowList[i].state==1 and 1 or 0
+    bg.arrowList[i].dropT=bg.arrowList[i].state==1 and 2 or 0
+    bg.arrowList[i].freeT=0
+end
 function bg.init()
-    bg.arrowList={}
-    for i=1,128 do
+    --[[for i=1,#bg.arrowList do
         bg.arrowList[i]={x=mapW*rand(),y=mapH*rand(),v=100,angle=tau*rand(),state=rand()<.85 and 0 or 1,color=arrowClr[i%#arrowClr+1]}
         bg.arrowList[i].attach={x=floor(bg.arrowList[i].x/attach+.5),y=floor(bg.arrowList[i].y/attach+.5)}
         bg.arrowList[i].follow={index=nil,angle=0}
         bg.arrowList[i].guideT=bg.arrowList[i].state==1 and 1 or 0
         bg.arrowList[i].dropT=bg.arrowList[i].state==1 and 2 or 0
         bg.arrowList[i].freeT=0
-    end
+    end]]
 
     bg.attach={}--[x][y]格式
     for x=0,mapW/attach-1 do
