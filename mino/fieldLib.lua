@@ -11,8 +11,8 @@ block={
 }
 空气一律为{}
 ]]
-local M=require'framework/mathextend'
-local T=require'framework/tableextend'
+local M=require'framework/mathExtend'
+local T=require'framework/tableExtend'
 local B=require'mino/blocks'
 local IRS_RS=require('mino/rotateSys/IRS-RS')
 

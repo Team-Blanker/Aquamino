@@ -1,6 +1,6 @@
 local GenShin={}
 local Impact=GenShin
-local M,T=require'framework/mathextend',require'framework/tableextend'
+local M,T=require'framework/mathExtend',require'framework/tableExtend'
 local rand=math.random
 
 function GenShin.bag(bag,player)
