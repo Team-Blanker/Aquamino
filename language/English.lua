@@ -127,7 +127,7 @@ return {
             }
         },
         keys={
-            keyName={"Move Left","Move Right","Rotate CW","Rotate CCW","Rotate 180",'Soft drop','Hard Drop','Hold piece','Restart','Pause'},
+            keyName={"Move Left","Move Right","Rotate CW","Rotate CCW","Rotate 180",'Soft Drop','Hard Drop','Hold Piece','Restart','Pause'},
             kScale=.25,
             info="Click a key set to bind your keys.\nHit backspace to erase selected key set.\nHit a bound key to remove this bind.",
             virtualKey="Touch settings..."
@@ -141,8 +141,8 @@ return {
             attach="Alignment"
         },
         handling={
-            ASD="Auto Shift Delay(ASD)",ASP="Auto Shift Preiod(ASP)",
-            SD_ASD="Soft drop ASD",SD_ASP="Soft drop ASP"
+            ASD="Auto Shift Delay(ASD)",ASP="Auto Shift Period(ASP)",
+            SD_ASD="Soft Drop ASD",SD_ASP="Soft Drop ASP"
         },
         other={title="Other",nothing="Nothing yet..."},
         lang={cur="Current Language: English"}
