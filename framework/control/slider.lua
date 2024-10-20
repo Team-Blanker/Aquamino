@@ -59,4 +59,9 @@ function slider.setPos(slidName,pos)
     local v=slider.list[slidName]
     v.pos=pos
 end
+function slider.setPosWithValue(slidName,value)
+    local v=slider.list[slidName]
+    if v.setPosWithValue then v.pos=v.setPosWithValue(value)
+    else v.pos=value end
+end
 return slider
