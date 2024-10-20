@@ -15,7 +15,7 @@ function bb.read()
 
         elasticFactor=800,
         spinFactor=400,
-        clearFactor=0,
+        clearFactor=.8,
 
         level=0,custom=false
     }
