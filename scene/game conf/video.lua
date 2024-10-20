@@ -108,26 +108,6 @@ function video.init()
             sfx.play(video.info.unableBG and 'cOn' or 'cOff')
         end
     },.2)
-    BUTTON.create('BGSetting',{
-        x=-600,y=-420,type='rect',w=400,h=80,
-        draw=function(bt,t)
-            local w,h=bt.w,bt.h
-            gc.setColor(.5,.5,.5,.3+t)
-            gc.rectangle('fill',-w/2,-h/2,w,h)
-            gc.setColor(.8,.8,.8)
-            gc.setLineWidth(3)
-            gc.rectangle('line',-w/2,-h/2,w,h)
-            gc.setColor(1,1,1)
-            gc.printf(cf.video.BGset,font.Bender_B,0,0,1280,'center',0,1/3,1/3,640,72)
-        end,
-        event=function()
-            sfx.play('quit')
-            scene.switch({
-                dest='conf',destScene=require('scene/game conf/enableBG'),swapT=.15,outT=.1,
-                anim=function() anim.confSelect(.1,.05,.1,0,0,0) end
-            })
-        end
-    },.2)
     BUTTON.create('vsync',{
         x=420,y=-240,type='rect',w=80,h=80,
         draw=function(bt,t,ct)

@@ -73,7 +73,7 @@ return {
     staff={
         program="Programmazione",
         UI="Interfaccia Utente & Progettazione Artistica",
-        music="Musica composta da",
+        music="Musica composta da", hurtRecord="Of which from HURT RECORD (https://www.hurtrecord.com) :",
         sfx="Progettazione di effetti sonori",
         translate="Translation & Localization",
         specialThanks="Ringraziamenti Speciali",
@@ -113,6 +113,7 @@ return {
             RS="Sistema di rotazione",
             smooth="Movimento Liscio",
             smoothTime="Tempo di movimento",
+            boardBounce="Board Bounce...",
             theme="Tema della griglia",
             scale="Scala della griglia",scaleTxt="Dimensione della cella",
             sfx="Effetti Sonori",sfxWarning={
@@ -124,6 +125,19 @@ return {
                 rAll="Ripristina tutto",rCur="Ripristina",
                 adjY="Questa texture supporta la regolazione libera del colore.",
                 adjN="Questa texture non supporta la regolazione libera del colore."
+            },
+            boardSet={
+                title="Board bounce",
+
+                moveForce="Move force",
+                dropVel="Drop momentum",
+                clearFactor="Clear momentom factor",
+                velDamping="Velocity damping",
+                elasticFactor="Elastic factor",
+
+                spinAngvel="Spin angular momentum",
+                angDamping="Spin damping",
+                spinFactor="Spin elastic factor",
             }
         },
         keys={
@@ -179,5 +193,6 @@ return {
 
         "Ogni singolo pentamino può periodicamente affiancare il piano."
     },tipScale=.3,
-    territory={info="Spazio,Enter=Pausa/run\nesc=Esci"}
+    territory={info="Spazio,Enter=Pausa/run\nesc=Esci"},
+    tracks={info="Spazio,Enter=Pausa/run\nesc=Esci"}
 }

@@ -73,7 +73,7 @@ return {
     staff={
         program="程序",
         UI="UI & 视觉设计",
-        music="音乐来自",
+        music="音乐", hurtRecord="来自 HURT RECORD (https://www.hurtrecord.com) :",
         sfx="音效",
         translate="翻译 & 本地化",
         specialThanks="特别感谢",
@@ -103,7 +103,7 @@ return {
             vsync="垂直同步",
             vsyncTxt="本程序绘制代码与运算代码形式上分离，称绘制帧率为FPS，运算帧率为TPS。\n若设定的最高FPS小于等于垂直同步限制的FPS，则TPS不受限。\n本程序主要考虑PC端运行情况，该选项默认关闭。\n低性能设备可开启此选项优化运算代码运行。",
             discardAfterDraw="显存回收加速",
-            DADTxt="每帧绘制完成后立刻丢弃对应显存。",
+            DADTxt="每帧绘制完成后立刻丢弃对应显存。用于移动端优化。",
             moreParticle="更多粒子特效",
             frameLim="最高绘制帧率",frameTxt="推荐将该值调整为与显示器帧率相等。"
         },
@@ -112,6 +112,7 @@ return {
             RS="旋转系统",
             smooth="平滑运动",
             smoothTime="动画时长",
+            boardBounce="版面晃动...",
             theme="版面风格",
             scale="版面缩放",scaleTxt="单格方块大小",
             sfx="音效包",sfxWarning={
@@ -122,6 +123,19 @@ return {
                 rAll="重置所有",rCur="重置当前",
                 adjY="该皮肤可自由调整颜色。",
                 adjN="该皮肤不可调整颜色。"
+            },
+            boardSet={
+                title="版面晃动",
+
+                moveForce="移动推力",
+                dropVel="硬降动量",
+                clearFactor="消除动量倍率",
+                velDamping="平移阻尼",
+                elasticFactor="平移弹性系数",
+
+                spinAngvel="扭转角动量",
+                angDamping="扭转阻尼",
+                spinFactor="扭转弹性系数",
             }
         },
         keys={
@@ -185,5 +199,6 @@ return {
 
         "任意五连块均可以周期性密铺整个平面。"
     },tipScale=.4,
-    territory={info="空格/Enter 切换暂停/运行状态\nesc 退出"}
+    territory={info="空格/Enter 切换暂停/运行状态\nesc 退出"},
+    tracks={info="空格/Enter 切换暂停/运行状态\nesc 退出"}
 }

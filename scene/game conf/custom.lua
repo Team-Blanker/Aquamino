@@ -22,6 +22,7 @@ custom.seTxt={texture={},RS={},theme={},sfx={},scale={}}
 custom.smslTxt={}--平滑运动滑块文本
 custom.smTxt={}--平滑运动勾选框文本
 custom.csTxt={}--方块颜色按钮文本
+custom.bbTxt={}--版面晃动按钮文本
 custom.sTxt={}--版面缩放说明文本
 custom.titleTxt={txt=gc.newText(font.Bender)}
 local tt
@@ -51,6 +52,11 @@ function custom.init()
     cs.txt=gc.newText(font.Bender_B,cfc.color)
     cs.w,cs.h=cs.txt:getDimensions()
     cs.s=min(360/cs.w,.4)
+
+    local bb=custom.bbTxt
+    bb.txt=gc.newText(font.Bender_B,cfc.boardBounce)
+    bb.w,bb.h=bb.txt:getDimensions()
+    bb.s=min(360/bb.w,.4)
 
     local sm=custom.smTxt
     sm.txt=gc.newText(font.Bender_B,cfc.smooth)
@@ -112,6 +118,47 @@ function custom.init()
                 dest='game',destScene=require'mino/game',
                 swapT=.6,outT=.2,
                 anim=function() anim.cover(.2,.4,.2,0,0,0) end
+            })
+        end
+    },.2)
+
+    BUTTON.create('colorAdjust',{
+        x=600,y=-280,type='rect',w=400,h=80,
+        draw=function(bt,t)
+            local w,h=bt.w,bt.h
+            gc.setColor(.5,.5,.5,.3+t)
+            gc.rectangle('fill',-w/2,-h/2,w,h)
+            gc.setColor(.8,.8,.8)
+            gc.setLineWidth(3)
+            gc.rectangle('line',-w/2,-h/2,w,h)
+            gc.setColor(1,1,1)
+            gc.draw(cs.txt,0,0,0,cs.s,cs.s,cs.w/2,cs.h/2)
+        end,
+        event=function()
+            sfx.play('sceneSwitch')
+            scene.switch({
+                dest='conf',destScene=require('scene/game conf/mino color'),swapT=.15,outT=.1,
+                anim=function() anim.confSelect(.1,.05,.1,0,0,0) end
+            })
+        end
+    },.2)
+    BUTTON.create('boardBounce',{
+        x=-600,y=-280,type='rect',w=400,h=80,
+        draw=function(bt,t)
+            local w,h=bt.w,bt.h
+            gc.setColor(.5,.5,.5,.3+t)
+            gc.rectangle('fill',-w/2,-h/2,w,h)
+            gc.setColor(.8,.8,.8)
+            gc.setLineWidth(3)
+            gc.rectangle('line',-w/2,-h/2,w,h)
+            gc.setColor(1,1,1)
+            gc.draw(bb.txt,0,0,0,bb.s,bb.s,bb.w/2,bb.h/2)
+        end,
+        event=function()
+            sfx.play('sceneSwitch')
+            scene.switch({
+                dest='conf',destScene=require('scene/game conf/board bounce'),swapT=.15,outT=.1,
+                anim=function() anim.confSelect(.1,.05,.1,0,0,0) end
             })
         end
     },.2)
@@ -186,84 +233,8 @@ function custom.init()
         end
     },.2)
 
-    BUTTON.create('colorAdjust',{
-        x=600,y=-280,type='rect',w=400,h=80,
-        draw=function(bt,t)
-            local w,h=bt.w,bt.h
-            gc.setColor(.5,.5,.5,.3+t)
-            gc.rectangle('fill',-w/2,-h/2,w,h)
-            gc.setColor(.8,.8,.8)
-            gc.setLineWidth(3)
-            gc.rectangle('line',-w/2,-h/2,w,h)
-            gc.setColor(1,1,1)
-            gc.draw(cs.txt,0,0,0,cs.s,cs.s,cs.w/2,cs.h/2)
-        end,
-        event=function()
-            sfx.play('sceneSwitch')
-            scene.switch({
-                dest='conf',destScene=require('scene/game conf/mino color'),swapT=.15,outT=.1,
-                anim=function() anim.confSelect(.1,.05,.1,0,0,0) end
-            })
-        end
-    },.2)
-    BUTTON.create('smoothAnim',{
-        x=-760,y=-280,type='rect',w=80,h=80,
-        draw=function(bt,t,ct)
-            local animArg=custom.info.smoothAnimAct and min(ct/.2,1) or max(1-ct/.2,0)
-            local w,h=bt.w,bt.h
-            local r=M.lerp(1,.5,animArg)
-            local g=1
-            local b=M.lerp(1,.875,animArg)
-            gc.setColor(.5,1,.875,.4)
-            gc.rectangle('fill',w/2,-h/2,320*animArg,h)
-            gc.setColor(1,1,1,.4)
-            gc.rectangle('fill',w/2+320*animArg,-h/2,320*(1-animArg),h)
-            gc.setColor(r,g,b)
-            gc.setLineWidth(6)
-            gc.rectangle('line',-w/2+3,-h/2+3,w-6,h-6)
-            if custom.info.smoothAnimAct then
-                gc.line(-w*3/8,0,-w/8,h/4,w*3/8,-h/4)
-            end
-            gc.setColor(r,g,b,2*t)
-            gc.rectangle('fill',-w/2,-h/2,h,h)
-            gc.setColor(1,1,1)
-            gc.draw(sm.txt,w/2+16,0,0,sm.s,sm.s,0,sm.h/2)
-        end,
-        event=function()
-            custom.info.smoothAnimAct=not custom.info.smoothAnimAct
-            sfx.play(custom.info.smoothAnimAct and 'cOn' or 'cOff')
-        end
-    },.2)
-    SLIDER.create('smoothAnimTime',{
-        x=-600,y=-400,type='hori',sz={400,32},button={32,32},
-        gear=0,pos=(custom.info.smoothTime-1/30)*15,
-        sliderDraw=function(g,sz)
-            if custom.info.smoothAnimAct then
-            gc.setColor(.24,.48,.42,.8)
-            gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
-            gc.setColor(1,1,1)
-            gc.draw(st.txt,-210,-24,0,st.s,st.s,0,st.h)
-            st.numTxt:clear()
-            st.numTxt:add(string.format(":%3.0fms",custom.info.smoothTime*1000))
-            gc.draw(st.numTxt,-210+st.ow,-24,0,.3125,.3125,0,st.h)
-            end
-        end,
-        buttonDraw=function(pos,sz)
-            if custom.info.smoothAnimAct then
-                gc.setColor(1,1,1)
-                gc.circle('fill',sz[1]*(pos-.5),0,20,4)
-            end
-        end,
-        always=function(pos,s)
-            if custom.info.smoothAnimAct then
-            custom.info.smoothTime=(1+2*(floor(8*pos+.5)/8))/30
-            end
-            s.pos=(custom.info.smoothTime-1/30)*15
-        end
-    })
-
     BUTTON.create('themeChoose',{
-        x=0,y=320,type='rect',w=450,h=80,success=false,
+        x=600,y=200,type='rect',w=450,h=80,success=false,
         draw=function(bt,t,ct,cp)
             local o,l=custom.tOrder,#themeList
             local w,h=bt.w,bt.h
@@ -333,8 +304,9 @@ function custom.init()
             if success then sfx.play('optionSwitch') end
         end
     },.2)
+
     BUTTON.create('scaleAdjust',{
-        x=0,y=-160,type='rect',w=450,h=80,success=false,
+        x=0,y=80,type='rect',w=450,h=80,success=false,
         draw=function(bt,t,ct,cp)
             local sz=custom.info.fieldScale
             local w,h=bt.w,bt.h
@@ -380,6 +352,62 @@ function custom.init()
             if success then sfx.play('optionSwitch') end
         end
     },.2)
+
+    BUTTON.create('smoothAnim',{
+        x=-160,y=-160,type='rect',w=80,h=80,
+        draw=function(bt,t,ct)
+            local animArg=custom.info.smoothAnimAct and min(ct/.2,1) or max(1-ct/.2,0)
+            local w,h=bt.w,bt.h
+            local r=M.lerp(1,.5,animArg)
+            local g=1
+            local b=M.lerp(1,.875,animArg)
+            gc.setColor(.5,1,.875,.4)
+            gc.rectangle('fill',w/2,-h/2,320*animArg,h)
+            gc.setColor(1,1,1,.4)
+            gc.rectangle('fill',w/2+320*animArg,-h/2,320*(1-animArg),h)
+            gc.setColor(r,g,b)
+            gc.setLineWidth(6)
+            gc.rectangle('line',-w/2+3,-h/2+3,w-6,h-6)
+            if custom.info.smoothAnimAct then
+                gc.line(-w*3/8,0,-w/8,h/4,w*3/8,-h/4)
+            end
+            gc.setColor(r,g,b,2*t)
+            gc.rectangle('fill',-w/2,-h/2,h,h)
+            gc.setColor(1,1,1)
+            gc.draw(sm.txt,w/2+16,0,0,sm.s,sm.s,0,sm.h/2)
+        end,
+        event=function()
+            custom.info.smoothAnimAct=not custom.info.smoothAnimAct
+            sfx.play(custom.info.smoothAnimAct and 'cOn' or 'cOff')
+        end
+    },.2)
+    SLIDER.create('smoothAnimTime',{
+        x=0,y=-280,type='hori',sz={400,32},button={32,32},
+        gear=0,pos=(custom.info.smoothTime-1/30)*15,
+        sliderDraw=function(g,sz)
+            if custom.info.smoothAnimAct then
+            gc.setColor(.24,.48,.42,.8)
+            gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
+            gc.setColor(1,1,1)
+            gc.draw(st.txt,-210,-24,0,st.s,st.s,0,st.h)
+            st.numTxt:clear()
+            st.numTxt:add(string.format(":%3.0fms",custom.info.smoothTime*1000))
+            gc.draw(st.numTxt,-210+st.ow,-24,0,.3125,.3125,0,st.h)
+            end
+        end,
+        buttonDraw=function(pos,sz)
+            if custom.info.smoothAnimAct then
+                gc.setColor(1,1,1)
+                gc.circle('fill',sz[1]*(pos-.5),0,20,4)
+            end
+        end,
+        always=function(pos,s)
+            if custom.info.smoothAnimAct then
+            custom.info.smoothTime=(1+2*(floor(8*pos+.5)/8))/30
+            end
+            s.pos=(custom.info.smoothTime-1/30)*15
+        end
+    })
 end
 function custom.keyP(k)
     if k=='escape' then

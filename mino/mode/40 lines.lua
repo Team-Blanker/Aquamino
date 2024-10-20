@@ -27,8 +27,8 @@ function rule.overFieldDraw(player)
         gc.setColor((remain<=10 and player.gameTimer%.2<.1) and clra or clrb)
         gc.setLineWidth(2)
         gc.line(lx,y,rx,y)
-        gc.circle('fill',lx,y,9,4)
-        gc.circle('fill',rx,y,9,4)
+        gc.arc('fill','closed',lx,y,8,-math.pi/2,  math.pi/2,2)
+        gc.arc('fill','closed',rx,y,8, math.pi/2,3*math.pi/2,2)
     end
 end
 

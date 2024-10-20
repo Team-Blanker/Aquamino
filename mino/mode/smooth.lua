@@ -6,7 +6,7 @@ function rule.init(P,mino)
     mino.musInfo="たかゆき - Exciter"
     mus.add('music/Hurt Record/Exciter','whole','ogg',30.709,192*60/127)
     mus.start()
-    for i=1,#P do P[i].line=0 P[i].FDelay=0 P[i].LDelay=3 P[i].LDRInit=32 end
+    for i=1,#P do P[i].line=0 P[i].FDelay=0 P[i].LDelay=3 P[i].LDRInit=32 P[i].LDR=32 end
     mino.stacker.ctrl.ASD=0 mino.stacker.ctrl.ASP=0
 end
 function rule.onLineClear(player,mino)
@@ -26,8 +26,8 @@ function rule.overFieldDraw(player)
         gc.setColor((remain<=10 and player.gameTimer%.2<.1) and clra or clrb)
         gc.setLineWidth(2)
         gc.line(lx,y,rx,y)
-        gc.circle('fill',lx,y,9,4)
-        gc.circle('fill',rx,y,9,4)
+        gc.arc('fill','closed',lx,y,8,-math.pi/2,  math.pi/2,2)
+        gc.arc('fill','closed',rx,y,8, math.pi/2,3*math.pi/2,2)
     end
 end
 

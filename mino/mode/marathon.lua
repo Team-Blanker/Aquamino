@@ -6,7 +6,7 @@ function rule.init(P,mino)
     scene.BG=require('BG/chessboard')
     scene.BG.speed=125/120 scene.BG.delay=.241
     scene.BG.baseColor={.4,.4,.4}
-    local r,g,b=COLOR.hsv(rand()*6,.8,.8)
+    local r,g,b=COLOR.hsv(rand()*6,.8,.75)
     rule.finalColor={r,g,b}
     mino.musInfo="つかスタジオ - リズムよく心地よく汗を流す時のテーマ"
     mus.add('music/Hurt Record/sweat','whole','ogg',20.879,336*60/125)

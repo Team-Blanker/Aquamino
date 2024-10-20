@@ -41,7 +41,7 @@ function rule.gameUpdate(P,dt,mino)
     end
     if P[2].deadTimer>=0 then mino.win(P[1]) end
 end
-function rule.postCheckClear(player,mino)
+function rule.afterCheckClear(player,mino)
     if player.history.line==0 then
         for i=1,#player.garbage do
         battle.atkRecv(player,player.garbage[i])

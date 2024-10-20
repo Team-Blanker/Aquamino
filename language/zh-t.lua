@@ -73,7 +73,7 @@ return {
     staff={
         program="程序",
         UI="UI & 視覺設計",
-        music="音樂来自",
+        music="音樂来自", hurtRecord="来自 HURT RECORD (https://www.hurtrecord.com) :",
         sfx="音效",
         translate="翻譯 & 本地化",
         specialThanks="特別感謝",
@@ -102,7 +102,7 @@ return {
             vsync="垂直同步",
             vsyncTxt="本程式繪製代碼與運算代碼形式上分離，稱繪製幀率為FPS，運算幀率為TPS。\n若設定的最高FPS小於等於垂直同步限制的FPS，則TPS不受限。\n本程式主要考慮PC端運行情況，該選項預設為關閉。\n低性能設備可開啟此選項優化運算代碼運行。",
             discardAfterDraw="顯存回收加速",
-            DADTxt="每幀繪製完成后立刻回收對應顯存。",
+            DADTxt="每幀繪製完成后立刻回收對應顯存。用于移動端优化。",
             moreParticle="更多粒子特效",
             frameLim="最高繪製幀率",frameTxt="建議將該值調整為與顯示器幀率相等。"
         },
@@ -111,6 +111,7 @@ return {
             RS="旋轉系統",
             smooth="平滑運動",
             smoothTime="動畫時長",
+            boardBounce="版面晃动...",
             theme="版面風格",
             scale="版面縮放",scaleTxt="單元方塊大小：",
             sfx="音效包",sfxWarning={
@@ -119,8 +120,21 @@ return {
             colorSet={
                 title="調整方塊顏色",
                 rAll="重置所有",rCur="重置目前",
-                adjY="該皮膚可自由調整顏色。",
-                adjN="該皮膚不可調整顏色。"
+                adjY="該材質可自由調整顏色。",
+                adjN="該材質不可調整顏色。"
+            },
+            boardSet={
+                title="版面晃动",
+
+                moveForce="移動推力",
+                dropVel="硬降動量",
+                clearFactor="消除動量倍率",
+                velDamping="平移阻尼",
+                elasticFactor="平移彈性係數",
+
+                spinAngvel="扭轉角动量",
+                angDamping="扭轉阻尼",
+                spinFactor="扭轉彈性係數",
             }
         },
         keys={
@@ -181,5 +195,6 @@ return {
 
         "任意五連塊均可以周期性密鋪整個平面"
     },tipScale=.4,
-    territory={info="空格/Enter 切換暫停/運轉狀態\nesc 退出"}
+    territory={info="空格/Enter 切換暫停/運轉狀態\nesc 退出"},
+    tracks={info="空格/Enter 切換暫停/運轉狀態\nesc 退出"}
 }

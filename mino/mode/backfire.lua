@@ -19,7 +19,7 @@ end
 function rule.BGUpdate()
     scene.BG.setTime(mus.whole:tell())
 end
-function rule.postCheckClear(player,mino)
+function rule.afterCheckClear(player,mino)
     if player.history.line==0 then
         player.recvLine=player.recvLine+battle.stdAtkRecv(player)
     else battle.defense(player,battle.stdAtkCalculate(player),mino)

@@ -73,7 +73,7 @@ return {
     staff={
         program="Programming",
         UI="UI & Art Design",
-        music="Music by",
+        music="Music by", hurtRecord="Of which from HURT RECORD (https://www.hurtrecord.com) :",
         sfx="SFX Design",
         translate="Translation & Localization",
         specialThanks="Special Thanks",
@@ -112,11 +112,12 @@ return {
             texture="Block texture",color="Color adjust...",
             RS="Rotation system",
             smooth="Smooth move",
+            boardBounce="Board Bounce...",
             smoothTime="Time",
             theme="Board theme",
             scale="Board scale",scaleTxt="Cell size",
             sfx="SFX pack",sfxWarning={
-                otto="LOUD SOUND WARNING. TAKE AT YOUR OWN RISK."
+                otto="LOUD SOUND WARNING. USE AT YOUR OWN RISK."
             },
 
             colorSet={
@@ -124,6 +125,19 @@ return {
                 rAll="Reset all",rCur="Reset this",
                 adjY="This texture can freely adjust color.",
                 adjN="This texture cannot adjust color."
+            },
+            boardSet={
+                title="Board bounce",
+
+                moveForce="Move force",
+                dropVel="Drop momentum",
+                clearFactor="Clear momentom factor",
+                velDamping="Velocity damping",
+                elasticFactor="Elastic factor",
+
+                spinAngvel="Spin angular momentum",
+                angDamping="Spin damping",
+                spinFactor="Spin elastic factor",
             }
         },
         keys={
@@ -179,5 +193,6 @@ return {
 
         "Every single pentominoes can periodically tile the plane."
     },tipScale=.3,
-    territory={info="Space,Enter=pause/run\nesc=exit"}
+    territory={info="Space,Enter=pause/run\nesc=exit"},
+    tracks={info="Space,Enter=pause/run\nesc=exit"}
 }

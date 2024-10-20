@@ -19,6 +19,8 @@ do
     custom.read() custom.save()
     local clr=require'scene/game conf/mino color'
     clr.read() clr.save()
+    local bb=require'scene/game conf/board bounce'
+    bb.read() bb.save()
     local lang=require'scene/game conf/language'
     lang.read() lang.save()
 end

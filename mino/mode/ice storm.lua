@@ -56,7 +56,7 @@ function rule.rise(player,col)
         ice.speed=(player.stormLv<12 and .015+player.stormLv*.015 or .24)*(.75+.5*rand())
     end
 end
-function rule.destroy(player,col,scoring,mtp)
+function rule.destroy(player,col,scoring,mtp,sfxPlay)
     if not mtp then mtp=1 end
     local A=player.ruleAnim
     local ice,AIce=player.iceColumn[col],A.ice[col]
@@ -74,7 +74,8 @@ function rule.destroy(player,col,scoring,mtp)
                 })
             end
         end
-        sfx.play('smash') smash=true
+        if sfxPlay then sfx.play('smash') end
+        smash=true
 
         local H=M.lerp(min(ice.H,1),A.ice[col].preH,(A.ice[col].t/A.iceTMax)^2)
         for i=1,floor((1+.4*rand())*H*player.h+.5) do
@@ -123,10 +124,13 @@ end
 local function getsl(player)
     return player.stormLv<12 and rule.scoreUp*(player.stormLv-1)+rule.scoreBase or 8400
 end
+
 function rule.lvup(player,mino)
     local A=player.ruleAnim
     if player.iceScore>=getsl(player) then
-        for i=1,player.w do rule.destroy(player,i) end
+        for i=1,player.w do
+            local d=rule.destroy(player,i,false,0,false)
+        end
         if 12==player.stormLv then mino.win(player) return end
         rule.rise(player,rand(2,player.w-1))
         A.preScore=rule.scoreUp*(player.stormLv-1)+rule.scoreBase
@@ -219,7 +223,7 @@ function rule.onLineClear(player,mino)
     if his.line>=4 then
         local k=his.piece[1][1]+his.x
         for i=k-1,k+1 do
-            iceSmash=rule.destroy(player,i,true,(i==k and 2.5 or 1.5)*getmtp(player.smashCombo+iceSmash)) and iceSmash+1 or iceSmash
+            iceSmash=rule.destroy(player,i,true,(i==k and 2.5 or 1.5)*getmtp(player.smashCombo+iceSmash),true) and iceSmash+1 or iceSmash
         end
         if PIC[k-2] then rule.decrease(player,k-2,min(PIC[k-2].H,1),2) end
         if PIC[k+2] then rule.decrease(player,k+2,min(PIC[k+2].H,1),2) end
@@ -231,7 +235,7 @@ function rule.onLineClear(player,mino)
                 for i=1,#r do rule.decrease(player,r[i]+his.x,1,.625) end
             else
                 for i=1,#r do
-                    iceSmash=rule.destroy(player,r[i]+his.x,true,(.8+.2*his.line)*getmtp(player.smashCombo+iceSmash)) and iceSmash+1 or iceSmash
+                    iceSmash=rule.destroy(player,r[i]+his.x,true,(.8+.2*his.line)*getmtp(player.smashCombo+iceSmash),true) and iceSmash+1 or iceSmash
                 end
             end
         else
@@ -262,12 +266,12 @@ function rule.underFieldDraw(player)
         gc.setColor(1,1,1,.1)
         gc.rectangle('fill',-45,-150,90,300)
         gc.setColor(1,1,1)
-        gc.printf("Lv."..player.stormLv,font.JB_B,0,-180,1000,'center',0,1/3,1/3,500,84)
+        gc.printf("Lv."..player.stormLv,font.JB_B,0,-180,1000,'center',0,1/3,1/3,500,font.height.JB_B/2)
         gc.printf(player.stormLv<12 and ("%d/%d"):format(score,tar) or "???/???",
-        font.JB,0,180,1000,'center',0,.25,.25,500,84)
+        font.JB,0,180,1000,'center',0,.25,.25,500,font.height.JB_B/2)
         if player.smashCombo>1 then
             gc.setColor(1,1,1,.25+.25*max(player.smashCombo-2,1)/8*(1-player.scAnimTimer%.25/.25))
-            gc.printf(player.smashCombo>16 and "MAX" or "x"..player.smashCombo,font.JB,0,0,5000,'center',0,1/3,1/3,2500,84)
+            gc.printf(player.smashCombo>16 and "MAX" or "x"..player.smashCombo,font.JB,0,0,5000,'center',0,1/3,1/3,2500,font.height.JB_B/2)
         end
     gc.pop()
 end

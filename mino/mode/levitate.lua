@@ -8,7 +8,7 @@ function rule.init(P,mino)
     mino.musInfo="Naoki Hirai - flex"
     mus.add('music/Hurt Record/flex','whole','ogg',.443,196*60/117.5)
     mus.start()
-    P[1].line=0 P[1].LDRInit=20 P[1].fallAfterClear=false
+    P[1].line=0 P[1].LDRInit=32 P[1].LDR=32 P[1].fallAfterClear=false
 end
 function rule.onLineClear(player,mino)
     player.line=player.line+player.history.line
@@ -27,8 +27,8 @@ function rule.overFieldDraw(player)
         gc.setColor((remain<=10 and player.gameTimer%.2<.1) and clra or clrb)
         gc.setLineWidth(2)
         gc.line(lx,y,rx,y)
-        gc.circle('fill',lx,y,9,4)
-        gc.circle('fill',rx,y,9,4)
+        gc.arc('fill','closed',lx,y,8,-math.pi/2,  math.pi/2,2)
+        gc.arc('fill','closed',rx,y,8, math.pi/2,3*math.pi/2,2)
     end
 end
 

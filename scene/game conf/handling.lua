@@ -1,4 +1,4 @@
-local cfh=user.lang.conf.handling
+local cfh=user.lang.conf.boardSet
 
 local hand={}
 local BUTTON,SLIDER=scene.button,scene.slider
@@ -28,7 +28,7 @@ function hand.init()
     tt.w,tt.h=tt.txt:getDimensions()
     tt.s=min(600/tt.w,1)
 
-    cfh=user.lang.conf.handling
+    cfh=user.lang.conf.boardSet
     hand.read()
 
     for k,v in pairs(hand.txt) do
@@ -103,7 +103,7 @@ function hand.init()
             hand.ctrl.ASD=.2*pos
         end
     })
-    SLIDER.create('ARR',{
+    SLIDER.create('ASP',{
         x=-380,y=-125,type='hori',sz={1000,32},button={32,32},
         gear=0,pos=hand.ctrl.ASP/.1,
         sliderDraw=function(g,sz)
@@ -145,7 +145,7 @@ function hand.init()
             hand.ctrl.SD_ASD=.2*pos
         end
     })
-    SLIDER.create('SD_ARR',{
+    SLIDER.create('SD_ASP',{
         x=-380,y=125,type='hori',sz={1000,32},button={32,32},
         gear=0,pos=hand.ctrl.SD_ASP/.1,
         sliderDraw=function(g,sz)

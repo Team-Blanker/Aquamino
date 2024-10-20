@@ -8,10 +8,6 @@ local rect,draw,setColor=gc.rectangle,gc.draw,gc.setColor
 local stickerTTL=.5
 local fadeTime=.2
 
-local bCanvas=gc.newCanvas(36,36)
-gc.setCanvas(bCanvas)
-rect('fill',0,0,36,36,4)
-gc.setCanvas()
 function skin.init(player)
     player.stickerBatch=gc.newSpriteBatch(skin.sticker,512,'static')
     player.stickerList={}
@@ -55,8 +51,7 @@ function skin.fieldDraw(player,mino)
             local F=player.field
             if F[y][x] and next(F[y][x]) then
                 setColor(mino.color[F[y][x].name])
-                --rect('fill',-18+36*x,-18-36*h,36,36,4)
-                draw(bCanvas,36*x,-36*h,0,1,1,18,18)
+                rect('fill',-18+36*x,-18-36*h,36,36,4)
                 --if not F[y][x].loosen then setColor(1,1,1) gc.draw(skin.sticker,36*x,-36*h,0,1,1,18,18) end
                 if not F[y][x].loosen then player.stickerBatch:add(36*x,-36*h,0,1,1,18,18) end
             end

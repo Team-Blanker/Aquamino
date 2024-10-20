@@ -1,6 +1,6 @@
-if os.getenv('LOCAL_LUA_DEBUGGER_VSCODE')=='1' then
-    require('lldebugger').start()
-end
+--if os.getenv('LOCAL_LUA_DEBUGGER_VSCODE')=='1' then
+--    require('lldebugger').start()
+--end
 
 loopTime=0
 
@@ -122,8 +122,8 @@ function love.resize(w,h)
 end
 
 win={
-    stat={launch=0,version="Beta V0.2.0",totalTime=0},
-    versionTxt="Beta V0.2.0 Icosahedron",
+    stat={launch=0,version="Beta V0.3.0",totalTime=0},
+    versionTxt="Beta V0.3.0 Icosahedron",
     OS=love.system.getOS(),
     showInfo=false,
     fullscr=false,discardAfterDraw=false,
@@ -195,7 +195,7 @@ scene={
     slider=require'framework/control/slider'
 }
 
---scene.cur=require('minigame/territory/territory')
+--scene.cur=require('minigame/tracks/tracks')
 --scene.cur=require('scene/test/BG_Test')
 --scene.cur=require('mino/game') scene.cur.mode='tower defense'
 

@@ -7,8 +7,9 @@ local kw,kh=kairan:getPixelDimensions()
 local devList={
     program={'Aqua6623 (Aquamarine6623, Kairan, 海兰)'},
     UI={'Aqua6623','Not-A-Robot'},
-    sfx={'Aqua6623','Asriel (Fab052)','MrZ_26','Farter'},
+    sfx={'Aqua6623','DJ Asriel','MrZ_26','Farter'},
     music={
+        {'DJ Asriel'},
         hurtRecord={
             {'たかゆき','R-side','T-Malu','守己','カモキング','龍飛'},
             {'Syun Nakano','Naoki Hirai','つかスタジオ'},
@@ -16,13 +17,12 @@ local devList={
             {'ミレラ','周藤三日月','DiscreetDragon'}
         }
     },
-    translate={'Aqua6623','Asriel (Fab052)'},
+    translate={'Aqua6623','DJ Asriel'},
     specialThanks={
         {'MrZ_26'},
         {'XMiao小渺 (XM1ao)','User670','MianSoft','沙盒子','Sunday'},
         {'T427 默默颗','風洛霊flore','大叔Rex'},
-        {'Asriel (Fab052)','Not-A-Robot'},
-        {'SweetSea','nekonaomii (MelloBoo44)'}
+        {'DJ Asriel','Not-A-Robot','SweetSea','nekonaomii (MelloBoo44)'}
     }
 }
 
@@ -65,7 +65,7 @@ function stf.init()
     stf.hidey=0 stf.hideAnimy=0 stf.showKairan=false
     stf.txt1={c1,uls.program,c2,'\n\n'..devList.program[1],c1,'\n\n\n'..uls.UI,c2}
 
-
+    --开发人员的文本
     local t1='\n\n'
     for i=1,#devList.UI do
         t1=t1..devList.UI[i]
@@ -85,8 +85,21 @@ function stf.init()
 
     stf.txt1[#stf.txt1+1]=c1
     stf.txt1[#stf.txt1+1]='\n\n\n'..uls.music
+
+    stf.txt1[#stf.txt1+1]=c2
+    t1='\n\n'
+    local ms=devList.music
+    for i=1,#ms do
+        for j=1,#ms[i] do
+        t1=t1..ms[i][j]
+        if i~=#ms[i] then t1=t1..'    ' end
+        end
+        t1=t1..'\n'
+    end
+    stf.txt1[#stf.txt1+1]=t1
+
     stf.txt1[#stf.txt1+1]={1,.75,.75}
-    stf.txt1[#stf.txt1+1]=' HURT RECORD (https://www.hurtrecord.com)'
+    stf.txt1[#stf.txt1+1]='\n'..uls.hurtRecord
 
     stf.txt1[#stf.txt1+1]=c2
     t1='\n\n'

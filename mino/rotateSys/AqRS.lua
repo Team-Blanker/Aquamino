@@ -102,10 +102,10 @@ AqRS.kickTable={
             {{0,0},{ 1, 0},{-2,-1},{ 0,-1},{-2, 0},{ 1, 2},{ 0, 2},{ 1, 1},{ 0, 1},{-1,-1},{-1, 0},{-1, 1}} --L->2
         },
         F={
-            {{0,0},{ 1, 0},{-1, 0},{ 0,-1},{-1,-1},{ 1,-1},{ 0, 1}},
-            {{0,0},{ 0,-1},{ 0, 1},{-1, 0},{-1,-1},{-1, 1},{ 1, 0}},
-            {{0,0},{-1, 0},{ 1, 0},{ 0, 1},{-1, 1},{ 1, 1},{ 0,-1}},
-            {{0,0},{ 0, 1},{ 0,-1},{ 1, 0},{ 1,-1},{ 1, 1},{-1, 0}}
+            {{0,0},{ 0,-1},{ 1, 0},{-1, 0},{-1,-1},{ 1,-1},{ 0, 1}},
+            {{0,0},{-1, 0},{ 0,-1},{ 0, 1},{-1,-1},{-1, 1},{ 1, 0}},
+            {{0,0},{ 0, 1},{-1, 0},{ 1, 0},{-1, 1},{ 1, 1},{ 0,-1}},
+            {{0,0},{ 1, 0},{ 0, 1},{ 0,-1},{ 1,-1},{ 1, 1},{-1, 0}}
         }
     },
     O={--嵌套少一层
@@ -114,13 +114,22 @@ AqRS.kickTable={
         LT={{ 0,-1},{-1,-1},{-1,-2},{-1, 0},{-1, 1},{-1, 2},{-3, 0},{-2,-1},{-2,-2},{ 0, 1},{-2, 1},{-2, 2},{0,0}},
         LL={{-1, 0},{-1, 1},{-1, 2},{-3, 0},{0,0}},
         FT={{ 0,-3},{0,0}},
-        FL={{ 0,-3},{ 0, 3},{0,0}},
+        FL={{ 0,-1},{ 0,-3},{ 0, 3},{0,0}},
+        default={{0,0}}
+    },
+    X={--嵌套少一层
+        RT={{ 0,-1},{ 1,-1},{ 1,-2},{ 1, 0},{ 1, 1},{ 1, 2},{ 2, 0},{ 2,-1},{ 2,-2},{ 0, 1},{ 2, 1},{ 2, 2},{0,0}},
+        RL={{ 1, 0},{ 1, 1},{ 1, 2},{ 2, 0},{0,0}},
+        LT={{ 0,-1},{-1,-1},{-1,-2},{-1, 0},{-1, 1},{-1, 2},{-2, 0},{-2,-1},{-2,-2},{ 0, 1},{-2, 1},{-2, 2},{0,0}},
+        LL={{-1, 0},{-1, 1},{-1, 2},{-2, 0},{0,0}},
+        FT={{ 0,-2},{0,0}},
+        FL={{ 0,-1},{ 0,-2},{ 0, 2},{0,0}},
         default={{0,0}}
     },
 
     other={--这里边没有的块，最起码能用
-        R={{0,0},{ 0,-1},{ 1, 0},{ 1,-1},{ 2, 0},{ 1, 1},{ 0, 1},{-1, 0},{-1, 1},{-1,-1}},
-        L={{0,0},{ 0,-1},{-1, 0},{-1,-1},{-2, 0},{-1, 1},{ 0, 1},{ 1, 0},{ 1, 1},{ 1,-1}},
+        R={{0,0},{ 0,-1},{-1, 0},{-1,-1},{-1, 1},{ 1,-1},{ 0, 1},{ 1, 0},{ 1, 1},{ 2, 0}},
+        L={{0,0},{ 0,-1},{ 1, 0},{ 1,-1},{ 1, 1},{-1,-1},{ 0, 1},{-1, 0},{-1, 1},{-2, 0}},
         F={{0,0},{ 0,-1},{-1,-1},{ 1,-1},{ 0,-2},{-1, 0},{ 1, 0},{ 0, 1},{-1, 1},{ 1, 1},{ 0, 2}}
     }
 }
@@ -142,35 +151,35 @@ AqRS.kickTable.Z.F={
 }
 
 function AqRS.getData(data,player,fLib)
-    data.u=fLib.coincide(player, 0, 1)
-    data.d=fLib.coincide(player, 0,-1)
-    data.l=fLib.coincide(player,-1, 0)
-    data.r=fLib.coincide(player, 1, 0)
+    data.uWall=fLib.coincide(player, 0, 1)
+    data.dWall=fLib.coincide(player, 0,-1)
+    data.lWall=fLib.coincide(player,-1, 0)
+    data.rWall=fLib.coincide(player, 1, 0)
 end
 function AqRS.getKickTable(data,name,ori,mode)
-    if name=='O' then
+    if name=='O' or name=='X' then
         if mode=='R' then
-            if data.d then return AqRS.kickTable[name].RT
-            elseif data.r then return AqRS.kickTable[name].RL
+            if data.dWall then return AqRS.kickTable[name].RT
+            elseif data.rWall then return AqRS.kickTable[name].RL
             end
         elseif mode=='L' then
-            if data.d then return AqRS.kickTable[name].LT
-            elseif data.l then return AqRS.kickTable[name].LL
+            if data.dWall then return AqRS.kickTable[name].LT
+            elseif data.lWall then return AqRS.kickTable[name].LL
             end
         elseif mode=='F' then
-            if data.u then return AqRS.kickTable[name].FL
-            elseif data.d then return AqRS.kickTable[name].FT
+            if data.uWall then return AqRS.kickTable[name].FL
+            elseif data.dWall then return AqRS.kickTable[name].FT
             end
         end
         return AqRS.kickTable[name]['default']
     elseif name=='T' and mode=='F' then
-        if data.l then return AqRS.kickTable[name].FL[ori]
+        if data.lWall then return AqRS.kickTable[name].FL[ori]
         else return AqRS.kickTable[name].FR[ori] end
     elseif name=='I' and mode~='F' then--根据上方有无方块，判定平放时是钻洞还是翻越
         if mode=='R' then
-            if data.u then return AqRS.kickTable[name].RU[ori] else return AqRS.kickTable[name].R[ori] end
+            if data.uWall then return AqRS.kickTable[name].RU[ori] else return AqRS.kickTable[name].R[ori] end
         else
-            if data.u then return AqRS.kickTable[name].LU[ori] else return AqRS.kickTable[name].L[ori] end
+            if data.uWall then return AqRS.kickTable[name].LU[ori] else return AqRS.kickTable[name].L[ori] end
         end
     elseif AqRS.kickTable[name] then return AqRS.kickTable[name][mode][ori]
     else return AqRS.kickTable.other[mode]

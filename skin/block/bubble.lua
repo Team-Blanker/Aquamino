@@ -7,7 +7,6 @@ function skin.setDropAnimTTL(player)
     return .25
 end
 skin.pic=gc.newImage('skin/block/bubble/bubble.png')
-skin.white=gc.newImage('skin/block/bubble/white.png')
 skin.sd=gc.newShader('shader/grayscale stain.glsl')
 
 local bb=gc.newCanvas(42,42)
@@ -57,25 +56,15 @@ function skin.fieldDraw(player,mino)
             for x=1,player.w do
                 local F=player.field
                 if F[y][x] and next(F[y][x]) then
-                    gc.setColor(mino.color[F[y][x].name])
+                    setColor(mino.color[F[y][x].name])
+                    draw(skin.pic,36*x,-36*h,0,1,1,18,18)
+                    setColor(0,0,0,.125)
                     draw(skin.pic,36*x,-36*h,0,1,1,18,18)
                 end
             end
         else h=h+1 end
     end
     setShader()
-    h=0
-    for y=1,#player.field do
-        if player.field[y][1] then h=h+1
-            for x=1,player.w do
-                local F=player.field
-                if F[y][x] and next(F[y][x]) then
-                    gc.setColor(0,0,0,.125)
-                    draw(skin.white,36*x,-36*h,0,1,1,18,18)
-                end
-            end
-        else h=h+1 end
-    end
     h=0
     for y=1,#player.field do
         if player.field[y][1] then h=h+1
@@ -87,12 +76,14 @@ function skin.fieldDraw(player,mino)
 end
 function skin.overFieldDraw(player)
     local h=player.history local p=h.piece
+    setShader(skin.sd)
     if p then
         for i=1,#p do
-        gc.setColor(1,1,1,.5*(1-player.laTimer/player.laTMax))
-        gc.draw(skin.white,36*(p[i][1]+h.x),-36*(p[i][2]+h.y),0,1,1,18,18)
+        setColor(1,1,1,.5*(1-player.laTimer/player.laTMax))
+        draw(skin.pic,36*(p[i][1]+h.x),-36*(p[i][2]+h.y),0,1,1,18,18)
         end
     end
+    setShader()
 end
 local t
 local tau=2*math.pi
@@ -101,12 +92,10 @@ function skin.curDraw(player,piece,x,y,color)
     for i=1,#piece do
         gc.setColor(color)
         draw(skin.pic,36*(x+piece[i][1]),-36*(y+piece[i][2]),0,1,1,18,18)
+        setColor(0,0,0,(player.LTimer/player.LDelay)*.125)
+        draw(skin.pic,36*(x+piece[i][1]),-36*(y+piece[i][2]),0,1,1,18,18)
     end
     setShader()
-    for i=1,#piece do
-        setColor(0,0,0,(player.LTimer/player.LDelay)*.125)
-        draw(skin.white,36*(x+piece[i][1]),-36*(y+piece[i][2]),0,1,1,18,18)
-    end
 end
 function skin.AscHoldDraw(player,piece,x,y,color)
 end

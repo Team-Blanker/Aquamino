@@ -25,7 +25,18 @@ function fieldLib.newPlayer(arg)
         event={0,'start',0,'nextIns'},
         initOpQueue={},--I_S操作序列
         posX=0,posY=0,r=0,scale=1,
-        posOffset={},
+        boardOffset={--版面晃动的偏移和参数
+            x=0,y=0,
+            a={0,0},--加速度
+            vel={0,0},--速度
+            angle=0,--角度
+            angvel=0,--角速度
+            angacc=0,--角加速度
+            force={--各种受力/力矩
+                move={0,0},
+            }
+        },
+        posOffset={},--其它的坐标偏移列表，由规则包定义
         finalPosX=0,finalPosY=0,
         field={},w=10,h=20,loosen={},
         moveDir='',pushAtt=0,
@@ -50,9 +61,12 @@ function fieldLib.newPlayer(arg)
             CDelay=0,wide=0,
         },
         cur={--当前块的所有信息
-            name=nil,piece={},x=5,y=21,O=0,ghostY=0,spin=false,
+            name=nil,piece={},x=5,y=21,O=0,ghostY=0,spin=false,mini=false,
             moveSuccess=false,
             kickOrder=0
+        },
+        stat={--统计数据
+            block=0
         },
 
         nWideDetect={},--空n列检测，仅消行时使用，不消就清空
@@ -212,11 +226,14 @@ end
 function fieldLib.lock(player)
     local C=player.cur
     local his=player.history
+
+    player.stat.block=player.stat.block+1
+
     for i=1,#C.piece do
         local x=C.x+C.piece[i][1]
         local y=C.y+C.piece[i][2]
         while not player.field[y] do fieldLib.addLine(player)  end
-        player.field[y][x]={name=C.name,loosen=false}
+        player.field[y][x]={name=C.name,loosen=false,id=player.stat.block}
     end
     his.piece,his.name,his.o,his.x,his.y=C.piece,C.name,C.o,C.x,C.y
     C.piece,C.name,C.o={},nil,nil
@@ -325,7 +342,7 @@ function fieldLib.loosenFall(player)
     for y=(minH or 0),(maxH or 0) do  for i=#ls,1,-1 do
         if ls[i].y==y then
             if next(fieldLib.blockType(player,ls[i].x,ls[i].y-1)) then
-            field[ls[i].y][ls[i].x]={name=ls[i].info.name,loosen=true} table.remove(ls,i)
+            field[ls[i].y][ls[i].x]=ls[i].info field[ls[i].y][ls[i].x].loosen=true table.remove(ls,i)
             end
         end
     end  end
@@ -400,7 +417,12 @@ end
 --玩家，立体声参数，哪个地方的数据（cur/history）
 function fieldLib.getSourcePos(player,stereo,bdata)--获取音频播放位置
     stereo=stereo or 0
-    local x=bdata and (player[bdata].x-.5-player.w/2)*36*player.scale or 0
+    local x
+    if type(bdata)=='string' then
+        x=(player[bdata].x-.5-player.w/2)*36*player.scale
+    elseif type(bdata)=='number' then
+        x=(bdata-.5-player.w/2)*36*player.scale
+    else x=0 end
     return M.clamp((player.finalPosX+x)/960,-1,1)*stereo
 end
 return fieldLib

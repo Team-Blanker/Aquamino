@@ -153,7 +153,7 @@ local clearTxt={
     'Boron','Carbon','Nitrogen','Oxygen',
     'Fluorine','Neon','Sodium','Magnesium',
     'Aluminium','Silicon','Phosphorus','Sulfur',
-    'Chlorine','Argon','Potassium','Calcium','AAAUUUGGGHHH'
+    'Chlorine','Argon','Potassium','Calcium','NUCLEAR FUSION'
 }
 local clearClr={
     [0]={1,1,1},

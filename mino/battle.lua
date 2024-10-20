@@ -77,7 +77,7 @@ function battle.stdAtkCalculate(player)
     l,s,m,w,b,c=his.line,his.spin,his.mini,his.wide,his.B2B,his.combo
 
     local bl=(s and not m) and 2*l-1 or l>=4 and 1.5*l-1.5 or l-.5
-    local ba=b>0 and min((3+b)/4,7) or 0
+    local ba=b>0 and min((3+b)/4,2.5) or 0
     local ca=max(min((c-(l>=4 and 1 or 2))/2,w<=4 and 4.5-w or 3.5),0)
     if his.PC then return 4+l else
     return l==0 and 0 or floor(bl+ba+ca)

@@ -56,4 +56,7 @@ function GenShin.pairs(bag,player)
 end
 function GenShin.history(bag,player)
 end
+function GenShin.mayhem(bag,player)
+    table.insert(player.next,bag[rand(#bag)])
+end
 return Impact

@@ -49,7 +49,7 @@ function rule.gameUpdate(P,dt,mino)
 
     for i=1,#P do battle.update(P[i],dt) end
 end
-function rule.postCheckClear(player,mino)
+function rule.afterCheckClear(player,mino)
     if player.history.line==0 then
         battle.stdAtkRecv(player)
     else battle.defense(player,battle.stdAtkCalculate(player),mino)

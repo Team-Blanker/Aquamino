@@ -51,8 +51,8 @@ for k,v in pairs(IRS_RS.kickTable.T) do v[2],v[3],v[4]=v[1],v[1],v[1] end
 
 IRS_RS.kickTable.J=IRS_RS.kickTable.Z IRS_RS.kickTable.L=IRS_RS.kickTable.S
 
-function IRS_RS.getKickTable()
-    if IRS_RS.kickTable[name] then return IRS_RS.kickTable[name][mode][ori]
-    else return IRS_RS.kickTable.O[mode] end
+function IRS_RS.getKickTable(data,name,ori,mode)
+    if IRS_RS.kickTable[name] then return IRS_RS.kickTable[name][mode][1]
+    else return IRS_RS.kickTable.O[mode][1] end
 end
 return IRS_RS

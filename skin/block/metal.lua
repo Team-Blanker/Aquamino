@@ -9,12 +9,10 @@ end
 skin.pic=gc.newImage('skin/block/metal/metal.png')
 skin.sd=gc.newShader('shader/grayscale stain.glsl')
 
-local bb=gc.newCanvas(42,42)
+local bb=gc.newCanvas(36,36)
 gc.setCanvas(bb)
 setColor(1,1,1)
-rect('fill',0,0,42,42)
-rect('fill',3,0,36,42)
-rect('fill',0,3,42,36)
+rect('fill',0,0,36,36)
 gc.setCanvas()
 function skin.init(player)
     player.laTimer=0
@@ -96,17 +94,18 @@ local t
 local tau=2*math.pi
 function skin.curDraw(player,piece,x,y,color)
     for i=1,#piece do
-        setColor(1,1,1,1-player.LTimer/player.LDelay)
+        setColor(1,1,1)
+        local s=(36+6*(1-player.LTimer/player.LDelay))/36
         if player.spinAct then
             t=min(player.skinSpinTimer*5,.25)
             if player.spinOp=='CW' or player.spinOp=='flip' then
-                draw(bb,36*(x+piece[i][1]),-36*(y+piece[i][2]),tau*t,1,1,21,21)
+                draw(bb,36*(x+piece[i][1]),-36*(y+piece[i][2]),tau*t,s,s,18,18)
             end
             if player.spinOp=='CCW' or player.spinOp=='flip' then
-                draw(bb,36*(x+piece[i][1]),-36*(y+piece[i][2]),-tau*t,1,1,21,21)
+                draw(bb,36*(x+piece[i][1]),-36*(y+piece[i][2]),-tau*t,s,s,18,18)
             end
         else
-            draw(bb,36*(x+piece[i][1]),-36*(y+piece[i][2]),0,1,1,21,21)
+            draw(bb,36*(x+piece[i][1]),-36*(y+piece[i][2]),0,s,s,18,18)
         end
     end
     setShader(skin.sd)
