@@ -70,7 +70,7 @@ function bg.draw()
     end
 
     if bg.pc==1 then gc.setColor(1,.96,.6) else gc.setColor(1,1,1) end
-    gc.setLineWidth(40+(beat>=bg.introBeat and (20*max(2*m-1,0)) or 0))
+    gc.setLineWidth(40+(beat>=bg.introBeat and (15*max(3*m-2,0)) or 0))
     local P=bg.pc*(1-bg.pcAnimT/bg.pcAnimTMax)+bg.postpc*(bg.pcAnimT/bg.pcAnimTMax)
     gc.arc('line','open',0,0,450,-math.pi/2,(P*2-.5)*math.pi,64)
 end
