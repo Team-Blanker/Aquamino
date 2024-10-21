@@ -21,17 +21,19 @@ function skin.init(player)
 end
 local c,p
 function skin.keyP(player,k,mino)
-    if (k=='CW' or k=='CCW' or k=='flip') and player.cur.kickOrder then
+    if (k=='CW' or k=='CCW' or k=='flip') and player.cur.kickOrder and player.cur.spin then
         player.spinAct=player.cur.spin
-        if player.cur.spin then
-            player.skinSpinTimer=0
-            if mino.moreParticle then
-                c=player.cur p=c.piece
-                for i=1,#c.piece do
-                    for j=1,3 do
-                        vel=.5+1*rand() angle=2*math.pi*rand()
-                        ins(player.pList,{name='spin',x=p[i][1]+c.x+rand()-.5,y=p[i][2]+c.y+rand()-.5,vx=vel*cos(angle)+4*p[i][1],vy=vel*sin(angle)+4*p[i][2],timer=0})
-                    end
+        player.skinSpinTimer=0
+
+        if mino.moreParticle then
+            c=player.cur p=c.piece
+
+            for i=1,#c.piece do
+                local mx=k=='CW' and p[i][1]+p[i][2] or k=='CCW' and p[i][1]-p[i][2] or k=='flip' and p[i][1]*2^.5
+                local my=k=='CW' and p[i][2]-p[i][1] or k=='CCW' and p[i][2]+p[i][1] or k=='flip' and p[i][2]*2^.5
+                for j=1,3 do
+                    vel=.5+1*rand() angle=2*math.pi*rand()
+                    ins(player.pList,{name='spin',x=p[i][1]+c.x+rand()-.5,y=p[i][2]+c.y+rand()-.5,vx=vel*cos(angle)+4*mx,vy=vel*sin(angle)+4*my,timer=0})
                 end
             end
         end
