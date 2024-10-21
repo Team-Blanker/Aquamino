@@ -54,7 +54,7 @@ return {
                 }
             },
             ['tower defense']={
-                bot_PPS="Bot PPS:",
+                bot_PPS="Bot PPS",
                 player={
                     pos="Player's place",
                     left="left",
