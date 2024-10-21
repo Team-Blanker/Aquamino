@@ -128,7 +128,7 @@ function bb.init()
     })
     SLIDER.create('dropVel',{
         x=-480,y=-80,type='hori',sz={800,32},button={32,32},
-        gear=0,pos=bb.boardBounce.dropVel/20,
+        gear=0,pos=(bb.boardBounce.dropVel/20)^.5,
         sliderDraw=function(g,sz)
             gc.setColor(.5,.5,.5,.8)
             gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
@@ -144,7 +144,7 @@ function bb.init()
             gc.circle('fill',sz[1]*(pos-.5),0,20,4)
         end,
         always=function(pos)
-            bb.boardBounce.dropVel=20*pos
+            bb.boardBounce.dropVel=20*pos^2
         end
     })
     SLIDER.create('velDamping',{
@@ -213,7 +213,7 @@ function bb.init()
 
     SLIDER.create('spinAngvel',{
         x=480,y=-80,type='hori',sz={800,32},button={32,32},
-        gear=0,pos=bb.boardBounce.spinAngvel/50,
+        gear=0,pos=(bb.boardBounce.spinAngvel/50)^.5,
         sliderDraw=function(g,sz)
             gc.setColor(.5,.5,.5,.8)
             gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
@@ -229,7 +229,7 @@ function bb.init()
             gc.circle('fill',sz[1]*(pos-.5),0,20,4)
         end,
         always=function(pos)
-            bb.boardBounce.spinAngvel=50*pos
+            bb.boardBounce.spinAngvel=50*pos^2
         end
     })
     SLIDER.create('angDamping',{
