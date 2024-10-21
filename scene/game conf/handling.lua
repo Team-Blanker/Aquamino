@@ -28,7 +28,7 @@ function hand.init()
     tt.w,tt.h=tt.txt:getDimensions()
     tt.s=min(600/tt.w,1)
 
-    cfh=user.lang.conf.boardSet
+    cfh=user.lang.conf.handling
     hand.read()
 
     for k,v in pairs(hand.txt) do
