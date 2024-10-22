@@ -24,7 +24,7 @@ function rule.init(P,mino)
         --'lSt','rSt','lHk','rHk'
     }
     mino.color.gold={.9,.81,.045}
-    mino.color.silver={.8,.8,.8}
+    mino.color.silver={.8,.8,.88}
     mino.rule.allowSpin={}
     mino.rule.allowPush={}
     for k,v in pairs(mino.bag) do
@@ -64,7 +64,7 @@ local checkFunc={
         return true
     end
 }
-function rule.postCheckClear(player,mino)--正方拼合，先检测进，再检测银
+function rule.postCheckClear(player,mino)--正方拼合，先检测金，再检测银
 local sq=player.sqAnimList
     for o=1,#checkOrder do
 

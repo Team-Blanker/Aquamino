@@ -11,6 +11,7 @@ return {
         thunder="雷暴",
         smooth="丝滑 40 行",
         levitate="悬浮 40 行",
+        square="正方拼合",
         master="大师",
         multitasking="双线程",
         sandbox="无尽 - 沙盒",
@@ -29,6 +30,7 @@ return {
         thunder="应对雷电的破坏",
         smooth={{1,1,1}," 真的有这么丝滑吗？\n",{1,1,0},"降落延迟为0，锁定延迟增加至3秒"},
         levitate={{1,1,0},"消行后场地内砖格不掉落"},
+        square={{1,1,1}," 你能在3分钟内拼出多少4×4正方形？"},
         master={{1,1,1}," 在最高下落速度下极限堆叠！\n",{1,.5,0},"降落延迟为0，锁定延迟随等级提升缩短\n",{1,1,0},"参数限制：ASD=150ms ASP=30ms"},
         multitasking={{1,1,1},"妈妈生的.mp4\n",{1,1,0},"参数限制：ASD=150ms ASP=30ms 软降ASP=30ms\n重力随等级提升而增大"},
         sandbox={{1,1,0},"该模式不记录成绩"},
@@ -162,7 +164,8 @@ return {
 
     rule={
         dig={remain="剩余行数",piece="使用块数"},
-        backfire={remain="剩余垃圾行数",eff="效率"}
+        backfire={remain="剩余垃圾行数",eff="效率"},
+        square={time="剩余时间",amount="构造正方数",remainTime={"2 分钟","1 分钟","30 秒"}}
     },
 
     tip={

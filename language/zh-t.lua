@@ -11,6 +11,7 @@ return {
         thunder="雷暴",
         smooth="絲滑 40 行",
         levitate="懸浮 40 行",
+        square="正方拼合",
         master="大師",
         multitasking="雙線程",
         sandbox="沙盒",
@@ -29,6 +30,7 @@ return {
         thunder="應對雷電的破壞",
         smooth={{1,1,1}," 眞的有這麽絲滑嗎？\n",{1,1,0},"降落延遲爲0，鎖定延遲增加至3秒"},
         levitate={{1,1,0},"消除后場地内磚格不掉落"},
+        square={{1,1,1}," 你能在3分鐘内拼出多少4×4正方形？"},
         master={{1,1,1}," 在最高下落速度下極限堆疊！\n",{1,.5,0},"降落延遲爲0，鎖定延遲隨等級提升縮短\n",{1,1,0},"參數限製：ASD=150ms ASP=30ms"},
         multitasking={{1,1,1},"*Galaxy Brain Meme*\n",{1,1,0},"參數限製：ASD=150ms ASP=30ms 軟降ASP=30ms\n重力隨等級提升而增大"},
         sandbox={{1,1,0},"該模式不記錄成績"},
@@ -161,7 +163,8 @@ return {
 
     rule={
         dig={remain="剩餘行數",piece="使用塊數"},
-        backfire={remain="剩餘垃圾行數",eff="效率"}
+        backfire={remain="剩餘垃圾行數",eff="效率"},
+        square={time="剩餘时间",amount="構造正方數",remainTime={"2 分鐘","1 分鐘","30 秒"}}
     },
 
     tip={

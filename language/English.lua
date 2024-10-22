@@ -11,6 +11,7 @@ return {
         thunder="Thunderstorm",
         smooth="Sprint Smooth",
         levitate="Levitation",
+        square="Square",
         master="Master",
         multitasking="Multitasking",
         sandbox="Sandbox",
@@ -29,6 +30,7 @@ return {
         thunder="Please do your best to avoid\ndestruction from lightning.",
         smooth={{1,1,1},"Is it really that smooth?\n",{1,1,0},"Fall delay is 0, Lock delay is increased to 3s"},
         levitate={{1,1,0},"Blocks don't fall after clearing"},
+        square={{1,1,1}," How many 4*4 squares can you biuld \nin 3 minutes?"},
         master={{1,1,1},"Survive in the cruelest speed!\n",{1,.5,0},"Fall delay is 0, lock delay shortens with\nlevel increases\n",{1,1,0},"Handling Restriction: ASD=150ms ASP=30ms"},
         multitasking={{1,1,1},"*Galaxy Brain Meme*\n",{1,1,0},"Handling Restriction:\nASD=150ms ASP=30ms SD ASP=30ms\nGravity increases with level"},
         sandbox={{1,1,0},"This mode does not record any score"},
@@ -164,7 +166,8 @@ return {
 
     rule={
         dig={remain="To dig",piece="Pieces"},
-        backfire={remain="To receive",eff="Effeciency"}
+        backfire={remain="To receive",eff="Effeciency"},
+        square={time="Time",amount="Squares",remainTime={"2 minutes","1 minute","30 SECONDS"}}
     },
 
     tip={

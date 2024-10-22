@@ -17,6 +17,9 @@ return {
     levitate=function(t)
         return string.format('%.3f"',t.time)
     end,
+    square=function(t)
+        return string.format('%d squares',t.sqPoint)
+    end,
     master=function(t)
         return string.format('Lv.M%d  %d lines  %d\'%.3f"',t.level,t.line,t.time/60,t.time%60)
     end,

@@ -16,9 +16,9 @@ local mus={
         mus.path=path mus.type=mode
         if mode=='parts' then
             if not isSameMusic then
-            if fs.getInfo(path..'/intro.'..form) then mus.intro=love.audio.newSource(path..'/intro.'..form,'stream') end
-            if fs.getInfo(path..'/loop.'..form) then mus.loop=love.audio.newSource(path..'/loop.'..form,'stream') end
-            if fs.getInfo(path..'/ITrans.'..form) then mus.ITrans=love.audio.newSource(path..'/ITrans.'..form,'stream') end
+            if fs.getInfo(path..'/intro.'..form) then mus.intro=love.audio.newSource(path..'/intro.'..form,'stream') else mus.intro=nil end
+            if fs.getInfo(path..'/loop.'..form) then mus.loop=love.audio.newSource(path..'/loop.'..form,'stream') else mus.loop=nil end
+            if fs.getInfo(path..'/ITrans.'..form) then mus.ITrans=love.audio.newSource(path..'/ITrans.'..form,'stream') else mus.ITrans=nil end
             end
             if mus.intro then mus.intro:seek(0) end
             if mus.loop then mus.loop:seek(0) end
