@@ -11,7 +11,7 @@ return {
         thunder="Temporale",
         smooth="Sprint Liscio",
         levitate="Levitazione",
-        square="Square",
+        square="Quadrati",
         master="Maestro",
         multitasking="Multitasking",
         sandbox="Sandbox",
@@ -30,7 +30,7 @@ return {
         thunder="Si prega di fare del proprio meglio per\nevitare la distruzione causata dai fulmini.",
         smooth={{1,1,1},"È davvero così liscio?\n",{1,1,0},"Il Ritardo di Caduta è 0\nmentre Il Ritardo di Blocco è aumentato a 3s"},
         levitate={{1,1,0},"I blocchi non cadono\ndopo aver completato linee"},
-        square={{1,1,1}," How many 4*4 squares can you biuld \nin 3 minutes?"},
+        square={{1,1,1}," Quanti quadrati 4*4 puoi costruire \nin 3 minuti?"},
         master={{1,1,1},"Sopravvivi alla velocità più crudele!\n",{1,.5,0},"Il Ritardo di Caduta è 0\nmentre il Ritardo di Blocco\nsi riduce ad ogni livello.\n",{1,1,0},"Restrizioni del movimento: ASD=150ms ASP=30ms"},
         multitasking={{1,1,1},"*Galaxy Brain Meme*\n",{1,1,0},"Restrizioni del movimento:\nASD=150ms ASP=30ms SD ASP=30ms\nLa gravità aumenta ad ogni livello."},
         sandbox={{1,1,0},"Questa modalità non registra\nalcun punteggio."},
@@ -115,7 +115,7 @@ return {
             RS="Sistema di rotazione",
             smooth="Movimento Liscio",
             smoothTime="Tempo di movimento",
-            boardBounce="Board Bounce...",
+            boardBounce="Rimbalzo della griglia...",
             theme="Tema della griglia",
             scale="Scala della griglia",scaleTxt="Dimensione della cella",
             sfx="Effetti Sonori",sfxWarning={
@@ -129,11 +129,11 @@ return {
                 adjN="Questa texture non supporta la regolazione libera del colore."
             },
             boardSet={
-                title="Board bounce",
+                title="Rimbalzo della griglia",
 
                 moveForce="Move force",
                 dropVel="Drop momentum",
-                clearFactor="Clear momentom factor",
+                clearFactor="Clear momentum factor",
                 velDamping="Velocity damping",
                 elasticFactor="Elastic factor",
 
@@ -167,7 +167,7 @@ return {
     rule={
         dig={remain="Da scavare",piece="Tetrimini"},
         backfire={remain="Da ricevere",eff="Efficienza"},
-        square={time="Time",amount="Squares",remainTime={"2 minutes","1 minute","30 SECONDS"}}
+        square={time="Tempo",amount="Quadrati",remainTime={"2 minuti","1 minuto","30 SECONDI"}}
     },
 
     tip={
@@ -176,15 +176,15 @@ return {
         "C4W è divertente",
         "AAAUUUGGGGGGGGGGGGGGGGHHH",
         "Lua No.1!",
-        "Kairan è solo un noob in blocchi, non conosce nemmeno una riga di codice.",
+        "Kairan è solo un nabbo in blocchi, non conosce nemmeno una riga di codice.",
         "Bad argument #6623: Attempt to compare number with nil",
         "Aquad = Aqua + Quad",
         "Sono sono un consiglio...",
         "Questo è Kairan, né capace né carino, che dice solo sciocchezze al posto di consigli",
-        "n ogni caso, non sono il primo ad aggiungere suggerimenti in un gioco a blocchi",
+        "In ogni caso, non sono il primo ad aggiungere suggerimenti in un gioco a blocchi",
         "Un progetto creato da TEAM BLANKER",
         "Il 14 agosto è il compleanno del gioco ed anche il compleanno di Kairan.",
-        "La skin dei blocchi \"Carbon Fibre\" è inspirata dai cubi di Rubik che usano stickers in fibra di carbonio.",
+        "La skin dei blocchi \"Carbon Fiber\" è inspirata dai cubi di Rubik che usano stickers in fibra di carbonio.",
         "Prova la meccanica Push di Aquamino in modalità Sandbox!",
         "Non tutte le modalità sono legate all'acqua, anche se il gioco si chiamava \"Aqua\".",
         "L'SRS in questo gioco ha l'I-spin simmetrico e potenti kicktables da 180.",
@@ -192,7 +192,7 @@ return {
         "La modalità \"Tempesta di ghiaccio\" deriva dalla modalità con lo stesso nome in Bejeweled 3",
         "Puoi fare un T-spin Aquad in Aquamino!",
         "...weak table...",
-        "a e b o c e d o e e f o g",
+        "a and b or c and d or e and f or g",
 
         "Ogni singolo pentamino può periodicamente affiancare il piano."
     },tipScale=.3,

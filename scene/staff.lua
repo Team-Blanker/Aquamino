@@ -9,7 +9,7 @@ local devList={
     UI={'Aqua6623','Not-A-Robot'},
     sfx={'Aqua6623','DJ Asriel','MrZ_26','Farter'},
     music={
-        {'DJ Asriel'},
+        --{},
         hurtRecord={
             {'たかゆき','R-side','T-Malu','守己','カモキング','龍飛'},
             {'Syun Nakano','Naoki Hirai','つかスタジオ'},
@@ -87,19 +87,18 @@ function stf.init()
     stf.txt1[#stf.txt1+1]='\n\n\n'..uls.music
 
     stf.txt1[#stf.txt1+1]=c2
-    t1='\n\n'
+    --[[t1='\n\n'
     local ms=devList.music
     for i=1,#ms do
         for j=1,#ms[i] do
         t1=t1..ms[i][j]
         if i~=#ms[i] then t1=t1..'    ' end
         end
-        t1=t1..'\n'
     end
-    stf.txt1[#stf.txt1+1]=t1
+    stf.txt1[#stf.txt1+1]=t1]]
 
     stf.txt1[#stf.txt1+1]={1,.75,.75}
-    stf.txt1[#stf.txt1+1]='\n'..uls.hurtRecord
+    stf.txt1[#stf.txt1+1]='\n\n'..uls.hurtRecord
 
     stf.txt1[#stf.txt1+1]=c2
     t1='\n\n'

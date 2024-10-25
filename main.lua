@@ -197,7 +197,7 @@ scene={
 
 --scene.cur=require('minigame/tracks/tracks')
 --scene.cur=require('scene/test/BG_Test')
---scene.cur=require('mino/game') scene.cur.mode='tower defense'
+--scene.cur=require('mino/game') scene.cur.mode='bot_test'
 
 win.x,win.y=love.window.getPosition()
 win.x_win,win.y_win=love.window.getPosition()

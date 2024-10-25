@@ -197,18 +197,24 @@ local function bulletCollide(bullet,brick)
     if brick.hp<=0 then brick.block=nil end
 end
 
+local msgSend=false
+
 local spinStart,spinEnd=8,1.5
 local abl,epp
 function rule.gameUpdate(P,dt,mino)
     --bot定时操作
     rule.opTimer=rule.opTimer+dt
     if rule.opTimer>1 and rule.HP[P[2].side]>0 then
+        if not msgSend then
         rule.botThread.sendChannel:push({op='require'})
+        msgSend=true
+        end
         local op=rule.botThread.recvChannel:demand()
-        if op then
+        if op and msgSend then
         rule.expect=op.expect
         bot_cc.operate(P[2],op,false,mino)
         rule.opTimer=rule.opTimer-rule.opDelay
+        msgSend=false
         end
     end
 

@@ -167,7 +167,6 @@ function ccWrap.newThread(channelIndex,P,index)
         local s,r,nr=th.getChannel("cc_send"..channelIndex),th.getChannel("cc_recv"..channelIndex),th.getChannel("cc_nextRecv"..channelIndex)
         local sCount,rCount=0,0
         while true do
-            arg=r:pop()
             next=nr:pop()
             if next then
                 for i=1,#next do
@@ -175,14 +174,18 @@ function ccWrap.newThread(channelIndex,P,index)
                 end
                 --print('added '..#next..' pieces')
             end
+            arg=r:demand()
             if arg then
+            --print(arg.op)
                 if arg.op=='send' then
                     sCount=sCount+1
                     cc.updateBot(bot,cc.fieldToC(arg.boolField),arg.B2B,arg.combo)
                     cc.requestMove(bot,arg.garbage)
                 elseif arg.op=='require' then
                     rCount=rCount+1
+                    --print(0)
                     local op=cc.getOperation(bot)
+                    --print(1)
                     s:push(op)
                 elseif arg.op=='destroy' then
                     cc.destroyBot(bot)

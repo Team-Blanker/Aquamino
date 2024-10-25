@@ -38,7 +38,7 @@ return {
         laser={{1,1,1},"U  N  D-E-R  G  R  O-U-N\nU  N  D-E-R  G  R  O-U-N-D\n",{1,1,0},"This is a rhythmical mode.\nTurning on music is strongly recommended."},
         backfire="Receive the attack sent by yourself!",
         battle={{1,1,1},"Let's battle!\n",{1,1,0},"This mode does not record any score"},
-        ['tower defense']={{1,1,0},"This mode does not record any score\n",{1,.2,.2},"Starting/restarting this mode may cause\nthe game to freeze for unknown reasons"}
+        ['tower defense']={{1,1,0},"This mode does not record any score\n",{1,.2,.2},"This mode is unstable. (Re)starting this mode\nmay cause the game to freeze."}
     },
     intro={
         start="Press any key to start",
@@ -48,7 +48,7 @@ return {
         noBestScore="No score",
         arg={
             battle={
-                bot_PPS="Bot PPS:",
+                bot_PPS="Bot PPS",
                 player={
                     pos="Player's place",
                     left="left",

@@ -34,15 +34,20 @@ function rule.init(P,mino,modeInfo)
     rule.opTimer=0
 end
 
+local msgSend=false
 function rule.gameUpdate(P,dt,mino)
     rule.opTimer=rule.opTimer+dt
     if rule.opTimer>1 then
+        if not msgSend then
         rule.botThread.sendChannel:push({op='require'})
-        local op=rule.botThread.recvChannel:demand()
-        if op then
+        msgSend=true
+        end
+        local op=rule.botThread.recvChannel:pop()
+        if op and msgSend then
         rule.expect=op.expect
         bot_cc.operate(P[2],op,false,mino)
         rule.opTimer=rule.opTimer-rule.opDelay
+        msgSend=false
         end
     end
     if P[2].deadTimer>=0 then mino.win(P[1]) end
