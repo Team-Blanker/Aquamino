@@ -17,7 +17,7 @@ function rule.init(P,mino)
         sq='sfx/mode/general/sq.wav',
     })
 
-    mino.seqGenType='pairs'
+    mino.seqGenType='bagp1FromBag'
 
     mino.color.gold={.9,.81,.045}
     mino.color.silver={.8,.8,.88}
@@ -27,7 +27,7 @@ function rule.init(P,mino)
 
     for k,v in pairs(mino.bag) do
         mino.rule.allowSpin[v]=true
-        mino.rule.allowPush[v]=true
+        mino.rule.allowPush[v]=false
     end
 
     mino.rule.loosen.fallTPL=.1
@@ -60,7 +60,7 @@ local checkOrder={
 }
 local checkFunc={
     gold=function (nList)
-        return #nList==1
+        return #nList<=2
     end,
     silver=function ()
         return true
