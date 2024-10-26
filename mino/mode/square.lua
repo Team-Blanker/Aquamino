@@ -17,8 +17,10 @@ function rule.init(P,mino)
         sq='sfx/mode/general/sq.wav',
     })
 
+    mino.bag={'Z','S','J','J','L','L','O','O','I','I','T','T','T','T'}
     mino.seqGenType='bagp1FromBag'
 
+    mino.color.plum={.96,.48,.84}
     mino.color.gold={.9,.81,.045}
     mino.color.silver={.8,.8,.88}
 
@@ -56,9 +58,12 @@ local idList,nameList={},{}
 local sqAnimTMax=.2
 
 local checkOrder={
-    'gold','silver'
+    'plum','gold','silver'
 }
 local checkFunc={
+    plum=function (nList)
+        return #nList==1
+    end,
     gold=function (nList)
         return #nList<=2
     end,
@@ -66,7 +71,8 @@ local checkFunc={
         return true
     end
 }
-local sqPoint={gold=2,silver=1}
+local effectColor={plum={.96,.48,.84},gold={1,.9,.2},silver={.95,.95,.95}}
+local sqPoint={plum=3,gold=2,silver=1}
 
 function rule.postCheckClear(player,mino)--正方拼合，先检测金，再检测银
 local sq=player.sqAnimList
@@ -140,7 +146,7 @@ end
 function rule.overFieldDraw(player)
     local sq=player.sqAnimList
     for i=1,#sq do
-        if sq[i].type=='gold' then gc.setColor(1,.9,.2) else gc.setColor(.95,.95,.95) end
+        gc.setColor(effectColor[sq[i].type])
         local ti=sq[i].t/sqAnimTMax
         local sz=36*(4+1.25*ti)
         gc.setLineWidth(6*(1-ti))
