@@ -37,6 +37,202 @@ angDamping={},
 spinFactor={},
 }
 bb.titleTxt={txt=gc.newText(font.Bender)}
+
+local sliderList={
+    moveForce={
+        x=-480,y=-240,type='hori',sz={800,32},button={32,32},
+        gear=0,pos=0,
+        setPosWithValue=function (v)
+            return v/100
+        end,
+        sliderDraw=function(g,sz)
+            gc.setColor(.5,.5,.5,.8)
+            gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
+            gc.setColor(1,1,1)
+            local v=bb.txt.moveForce
+            gc.draw(v.txt,-sz[1]/2-20,-24,0,v.s,v.s,0,v.h)
+            v.numTxt:clear()
+            v.numTxt:add(string.format(":%6.2f",bb.boardBounce.moveForce))
+            gc.draw(v.numTxt,-sz[1]/2-20+v.ow,-24,0,.3125,.3125,0,v.h)
+        end,
+        buttonDraw=function(pos,sz)
+            gc.setColor(1,1,1)
+            gc.circle('fill',sz[1]*(pos-.5),0,20,4)
+        end,
+        always=function(pos)
+            bb.boardBounce.moveForce=100*pos
+        end
+    },
+    dropVel={
+        x=-480,y=-80,type='hori',sz={800,32},button={32,32},
+        gear=0,pos=0,
+        setPosWithValue=function (v)
+            return (v/20)^.5
+        end,
+        sliderDraw=function(g,sz)
+            gc.setColor(.5,.5,.5,.8)
+            gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
+            gc.setColor(1,1,1)
+            local v=bb.txt.dropVel
+            gc.draw(v.txt,-sz[1]/2-20,-24,0,v.s,v.s,0,v.h)
+            v.numTxt:clear()
+            v.numTxt:add(string.format(":%5.2f",bb.boardBounce.dropVel))
+            gc.draw(v.numTxt,-sz[1]/2-20+v.ow,-24,0,.3125,.3125,0,v.h)
+        end,
+        buttonDraw=function(pos,sz)
+            gc.setColor(1,1,1)
+            gc.circle('fill',sz[1]*(pos-.5),0,20,4)
+        end,
+        always=function(pos)
+            bb.boardBounce.dropVel=20*pos^2
+        end
+    },
+    velDamping={
+        x=-480,y=80,type='hori',sz={800,32},button={32,32},
+        gear=0,pos=0,
+        setPosWithValue=function (v)
+            return v<1e-2 and 0 or (math.log(v,10)+2)/5
+        end,
+        sliderDraw=function(g,sz)
+            gc.setColor(.5,.5,.5,.8)
+            gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
+            gc.setColor(1,1,1)
+            local v=bb.txt.velDamping
+            gc.draw(v.txt,-sz[1]/2-20,-24,0,v.s,v.s,0,v.h)
+            v.numTxt:clear()
+            v.numTxt:add(string.format(":%3.2e",bb.boardBounce.velDamping))
+            gc.draw(v.numTxt,-sz[1]/2-20+v.ow,-24,0,.3125,.3125,0,v.h)
+        end,
+        buttonDraw=function(pos,sz)
+            gc.setColor(1,1,1)
+            gc.circle('fill',sz[1]*(pos-.5),0,20,4)
+        end,
+        always=function(pos)
+            bb.boardBounce.velDamping=pos==0 and 0 or 10^(pos*5-2)
+        end
+    },
+    elasticFactor={
+        x=-480,y=240,type='hori',sz={800,32},button={32,32},
+        gear=0,pos=0,
+        setPosWithValue=function (v)
+            return v<1e-1 and 0 or (math.log(v,10)+1)/5
+        end,
+        sliderDraw=function(g,sz)
+            gc.setColor(.5,.5,.5,.8)
+            gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
+            gc.setColor(1,1,1)
+            local v=bb.txt.elasticFactor
+            gc.draw(v.txt,-sz[1]/2-20,-24,0,v.s,v.s,0,v.h)
+            v.numTxt:clear()
+            v.numTxt:add(string.format(":%3.2e",bb.boardBounce.elasticFactor))
+            gc.draw(v.numTxt,-sz[1]/2-20+v.ow,-24,0,.3125,.3125,0,v.h)
+        end,
+        buttonDraw=function(pos,sz)
+            gc.setColor(1,1,1)
+            gc.circle('fill',sz[1]*(pos-.5),0,20,4)
+        end,
+        always=function(pos)
+            bb.boardBounce.elasticFactor=10^(pos*5-1)
+        end
+    },
+    clearFactor={
+        x=480,y=-240,type='hori',sz={800,32},button={32,32},
+        gear=0,pos=0,
+        setPosWithValue=function (v)
+            return v/10
+        end,
+        sliderDraw=function(g,sz)
+            gc.setColor(.5,.5,.5,.8)
+            gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
+            gc.setColor(1,1,1)
+            local v=bb.txt.clearFactor
+            gc.draw(v.txt,-sz[1]/2-20,-24,0,v.s,v.s,0,v.h)
+            v.numTxt:clear()
+            v.numTxt:add(string.format(":%5.2f",bb.boardBounce.clearFactor))
+            gc.draw(v.numTxt,-sz[1]/2-20+v.ow,-24,0,.3125,.3125,0,v.h)
+        end,
+        buttonDraw=function(pos,sz)
+            gc.setColor(1,1,1)
+            gc.circle('fill',sz[1]*(pos-.5),0,20,4)
+        end,
+        always=function(pos)
+            bb.boardBounce.clearFactor=pos*10
+        end
+    },
+
+    spinAngvel={
+        x=480,y=-80,type='hori',sz={800,32},button={32,32},
+        gear=0,pos=0,
+        setPosWithValue=function (v)
+            return (v/50)^.5
+        end,
+        sliderDraw=function(g,sz)
+            gc.setColor(.5,.5,.5,.8)
+            gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
+            gc.setColor(1,1,1)
+            local v=bb.txt.spinAngvel
+            gc.draw(v.txt,-sz[1]/2-20,-24,0,v.s,v.s,0,v.h)
+            v.numTxt:clear()
+            v.numTxt:add(string.format(":%5.2f",bb.boardBounce.spinAngvel))
+            gc.draw(v.numTxt,-sz[1]/2-20+v.ow,-24,0,.3125,.3125,0,v.h)
+        end,
+        buttonDraw=function(pos,sz)
+            gc.setColor(1,1,1)
+            gc.circle('fill',sz[1]*(pos-.5),0,20,4)
+        end,
+        always=function(pos)
+            bb.boardBounce.spinAngvel=50*pos^2
+        end
+    },
+    angDamping={
+        x=480,y=80,type='hori',sz={800,32},button={32,32},
+        gear=0,pos=0,
+        setPosWithValue=function (v)
+            return v<1e-2 and 0 or (math.log(v,10)+2)/5
+        end,
+        sliderDraw=function(g,sz)
+            gc.setColor(.5,.5,.5,.8)
+            gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
+            gc.setColor(1,1,1)
+            local v=bb.txt.angDamping
+            gc.draw(v.txt,-sz[1]/2-20,-24,0,v.s,v.s,0,v.h)
+            v.numTxt:clear()
+            v.numTxt:add(string.format(":%3.2e",bb.boardBounce.angDamping))
+            gc.draw(v.numTxt,-sz[1]/2-20+v.ow,-24,0,.3125,.3125,0,v.h)
+        end,
+        buttonDraw=function(pos,sz)
+            gc.setColor(1,1,1)
+            gc.circle('fill',sz[1]*(pos-.5),0,20,4)
+        end,
+        always=function(pos)
+            bb.boardBounce.angDamping=pos==0 and 0 or 10^(pos*5-2)
+        end
+    },
+    spinFactor={
+        x=480,y=240,type='hori',sz={800,32},button={32,32},
+        gear=0,pos=0,
+        setPosWithValue=function (v)
+            return v<1e-1 and 0 or (math.log(v,10)+1)/5
+        end,
+        sliderDraw=function(g,sz)
+            gc.setColor(.5,.5,.5,.8)
+            gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
+            gc.setColor(1,1,1)
+            local v=bb.txt.spinFactor
+            gc.draw(v.txt,-sz[1]/2-20,-24,0,v.s,v.s,0,v.h)
+            v.numTxt:clear()
+            v.numTxt:add(string.format(":%3.2e",bb.boardBounce.spinFactor))
+            gc.draw(v.numTxt,-sz[1]/2-20+v.ow,-24,0,.3125,.3125,0,v.h)
+        end,
+        buttonDraw=function(pos,sz)
+            gc.setColor(1,1,1)
+            gc.circle('fill',sz[1]*(pos-.5),0,20,4)
+        end,
+        always=function(pos)
+            bb.boardBounce.spinFactor=10^(pos*5-1)
+        end
+    }
+}
 local tt
 function bb.init()
     sfx.add({
@@ -105,175 +301,9 @@ function bb.init()
         end
     },.2)
 
-    SLIDER.create('moveForce',{
-        x=-480,y=-240,type='hori',sz={800,32},button={32,32},
-        gear=0,pos=bb.boardBounce.moveForce/100,
-        sliderDraw=function(g,sz)
-            gc.setColor(.5,.5,.5,.8)
-            gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
-            gc.setColor(1,1,1)
-            local v=bb.txt.moveForce
-            gc.draw(v.txt,-sz[1]/2-20,-24,0,v.s,v.s,0,v.h)
-            v.numTxt:clear()
-            v.numTxt:add(string.format(":%6.2f",bb.boardBounce.moveForce))
-            gc.draw(v.numTxt,-sz[1]/2-20+v.ow,-24,0,.3125,.3125,0,v.h)
-        end,
-        buttonDraw=function(pos,sz)
-            gc.setColor(1,1,1)
-            gc.circle('fill',sz[1]*(pos-.5),0,20,4)
-        end,
-        always=function(pos)
-            bb.boardBounce.moveForce=100*pos
-        end
-    })
-    SLIDER.create('dropVel',{
-        x=-480,y=-80,type='hori',sz={800,32},button={32,32},
-        gear=0,pos=(bb.boardBounce.dropVel/20)^.5,
-        sliderDraw=function(g,sz)
-            gc.setColor(.5,.5,.5,.8)
-            gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
-            gc.setColor(1,1,1)
-            local v=bb.txt.dropVel
-            gc.draw(v.txt,-sz[1]/2-20,-24,0,v.s,v.s,0,v.h)
-            v.numTxt:clear()
-            v.numTxt:add(string.format(":%5.2f",bb.boardBounce.dropVel))
-            gc.draw(v.numTxt,-sz[1]/2-20+v.ow,-24,0,.3125,.3125,0,v.h)
-        end,
-        buttonDraw=function(pos,sz)
-            gc.setColor(1,1,1)
-            gc.circle('fill',sz[1]*(pos-.5),0,20,4)
-        end,
-        always=function(pos)
-            bb.boardBounce.dropVel=20*pos^2
-        end
-    })
-    SLIDER.create('velDamping',{
-        x=-480,y=80,type='hori',sz={800,32},button={32,32},
-        gear=0,pos=bb.boardBounce.velDamping<1e-2 and 0 or (math.log(bb.boardBounce.velDamping,10)+2)/5,
-        sliderDraw=function(g,sz)
-            gc.setColor(.5,.5,.5,.8)
-            gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
-            gc.setColor(1,1,1)
-            local v=bb.txt.velDamping
-            gc.draw(v.txt,-sz[1]/2-20,-24,0,v.s,v.s,0,v.h)
-            v.numTxt:clear()
-            v.numTxt:add(string.format(":%3.2e",bb.boardBounce.velDamping))
-            gc.draw(v.numTxt,-sz[1]/2-20+v.ow,-24,0,.3125,.3125,0,v.h)
-        end,
-        buttonDraw=function(pos,sz)
-            gc.setColor(1,1,1)
-            gc.circle('fill',sz[1]*(pos-.5),0,20,4)
-        end,
-        always=function(pos)
-            bb.boardBounce.velDamping=pos==0 and 0 or 10^(pos*5-2)
-        end
-    })
-    SLIDER.create('elasticFactor',{
-        x=-480,y=240,type='hori',sz={800,32},button={32,32},
-        gear=0,pos=bb.boardBounce.elasticFactor<1e-1 and 0 or (math.log(bb.boardBounce.elasticFactor,10)+1)/5,
-        sliderDraw=function(g,sz)
-            gc.setColor(.5,.5,.5,.8)
-            gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
-            gc.setColor(1,1,1)
-            local v=bb.txt.elasticFactor
-            gc.draw(v.txt,-sz[1]/2-20,-24,0,v.s,v.s,0,v.h)
-            v.numTxt:clear()
-            v.numTxt:add(string.format(":%3.2e",bb.boardBounce.elasticFactor))
-            gc.draw(v.numTxt,-sz[1]/2-20+v.ow,-24,0,.3125,.3125,0,v.h)
-        end,
-        buttonDraw=function(pos,sz)
-            gc.setColor(1,1,1)
-            gc.circle('fill',sz[1]*(pos-.5),0,20,4)
-        end,
-        always=function(pos)
-            bb.boardBounce.elasticFactor=10^(pos*5-1)
-        end
-    })
-    SLIDER.create('clearFactor',{
-        x=480,y=-240,type='hori',sz={800,32},button={32,32},
-        gear=0,pos=bb.boardBounce.clearFactor/10,
-        sliderDraw=function(g,sz)
-            gc.setColor(.5,.5,.5,.8)
-            gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
-            gc.setColor(1,1,1)
-            local v=bb.txt.clearFactor
-            gc.draw(v.txt,-sz[1]/2-20,-24,0,v.s,v.s,0,v.h)
-            v.numTxt:clear()
-            v.numTxt:add(string.format(":%5.2f",bb.boardBounce.clearFactor))
-            gc.draw(v.numTxt,-sz[1]/2-20+v.ow,-24,0,.3125,.3125,0,v.h)
-        end,
-        buttonDraw=function(pos,sz)
-            gc.setColor(1,1,1)
-            gc.circle('fill',sz[1]*(pos-.5),0,20,4)
-        end,
-        always=function(pos)
-            bb.boardBounce.clearFactor=pos*10
-        end
-    })
-
-    SLIDER.create('spinAngvel',{
-        x=480,y=-80,type='hori',sz={800,32},button={32,32},
-        gear=0,pos=(bb.boardBounce.spinAngvel/50)^.5,
-        sliderDraw=function(g,sz)
-            gc.setColor(.5,.5,.5,.8)
-            gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
-            gc.setColor(1,1,1)
-            local v=bb.txt.spinAngvel
-            gc.draw(v.txt,-sz[1]/2-20,-24,0,v.s,v.s,0,v.h)
-            v.numTxt:clear()
-            v.numTxt:add(string.format(":%5.2f",bb.boardBounce.spinAngvel))
-            gc.draw(v.numTxt,-sz[1]/2-20+v.ow,-24,0,.3125,.3125,0,v.h)
-        end,
-        buttonDraw=function(pos,sz)
-            gc.setColor(1,1,1)
-            gc.circle('fill',sz[1]*(pos-.5),0,20,4)
-        end,
-        always=function(pos)
-            bb.boardBounce.spinAngvel=50*pos^2
-        end
-    })
-    SLIDER.create('angDamping',{
-        x=480,y=80,type='hori',sz={800,32},button={32,32},
-        gear=0,pos=bb.boardBounce.angDamping<1e-2 and 0 or (math.log(bb.boardBounce.angDamping,10)+2)/5,
-        sliderDraw=function(g,sz)
-            gc.setColor(.5,.5,.5,.8)
-            gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
-            gc.setColor(1,1,1)
-            local v=bb.txt.angDamping
-            gc.draw(v.txt,-sz[1]/2-20,-24,0,v.s,v.s,0,v.h)
-            v.numTxt:clear()
-            v.numTxt:add(string.format(":%3.2e",bb.boardBounce.angDamping))
-            gc.draw(v.numTxt,-sz[1]/2-20+v.ow,-24,0,.3125,.3125,0,v.h)
-        end,
-        buttonDraw=function(pos,sz)
-            gc.setColor(1,1,1)
-            gc.circle('fill',sz[1]*(pos-.5),0,20,4)
-        end,
-        always=function(pos)
-            bb.boardBounce.angDamping=pos==0 and 0 or 10^(pos*5-2)
-        end
-    })
-    SLIDER.create('spinFactor',{
-        x=480,y=240,type='hori',sz={800,32},button={32,32},
-        gear=0,pos=bb.boardBounce.spinFactor<1e-1 and 0 or (math.log(bb.boardBounce.spinFactor,10)+1)/5,
-        sliderDraw=function(g,sz)
-            gc.setColor(.5,.5,.5,.8)
-            gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
-            gc.setColor(1,1,1)
-            local v=bb.txt.spinFactor
-            gc.draw(v.txt,-sz[1]/2-20,-24,0,v.s,v.s,0,v.h)
-            v.numTxt:clear()
-            v.numTxt:add(string.format(":%3.2e",bb.boardBounce.spinFactor))
-            gc.draw(v.numTxt,-sz[1]/2-20+v.ow,-24,0,.3125,.3125,0,v.h)
-        end,
-        buttonDraw=function(pos,sz)
-            gc.setColor(1,1,1)
-            gc.circle('fill',sz[1]*(pos-.5),0,20,4)
-        end,
-        always=function(pos)
-            bb.boardBounce.spinFactor=10^(pos*5-1)
-        end
-    })
+    for k,v in pairs(sliderList) do SLIDER.create(k,v)
+        if bb.boardBounce[k] then SLIDER.setPosWithValue(k,bb.boardBounce[k]) end
+    end
 end
 function bb.keyP(k)
     if k=='escape' then

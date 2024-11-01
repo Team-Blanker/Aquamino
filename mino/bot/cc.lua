@@ -162,7 +162,8 @@ function ccWrap.newThread(channelIndex,P,index)
         require'love.system'
         local cc=require('mino/bot/cc')
         local channelIndex,option,weight=...
-        local bot=cc.newBot(option,weight) cc.requestMove(bot)
+        local bot=cc.newBot(option,weight)
+        local firstMoveRequested=false
         local th=love.thread
         local s,r,nr=th.getChannel("cc_send"..channelIndex),th.getChannel("cc_recv"..channelIndex),th.getChannel("cc_nextRecv"..channelIndex)
         local sCount,rCount=0,0
@@ -173,6 +174,8 @@ function ccWrap.newThread(channelIndex,P,index)
                     cc.addNextPiece(bot,next[i])
                 end
                 --print('added '..#next..' pieces')
+
+                --if not firstMoveRequested then cc.requestMove(bot) firstMoveRequested=true end
             end
             arg=r:demand()
             if arg then
@@ -206,6 +209,7 @@ function ccWrap.destroyThread(thread)
     while thread.thread:isRunning() do
         --nothing 
     end
+    --thread.thread:kill()
     thread.destroyed=true
     thread.thread:release()
 end

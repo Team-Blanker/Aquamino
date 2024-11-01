@@ -206,7 +206,7 @@ function rule.gameUpdate(P,dt,mino)
         rule.botThread.sendChannel:push({op='require'})
         msgSend=true
         end
-        local op=rule.botThread.recvChannel:demand()
+        local op=rule.botThread.recvChannel:pop()
         if op and msgSend then
         rule.expect=op.expect
         bot_cc.operate(P[2],op,false,mino)

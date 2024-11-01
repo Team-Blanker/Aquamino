@@ -32,10 +32,8 @@ function rule.init(P,mino)
         mino.rule.allowPush[v]=false
     end
 
-    mino.rule.loosen.fallTPL=.1
-
     for k,v in pairs(P) do
-        v.LDRInit=1e99 v.FDelay=5 v.LDelay=1e99 v.LDR=1e99
+        v.LDRInit=1e99 v.LDelay=1e99 v.LDR=1e99
 
         v.sqAnimList={}
 

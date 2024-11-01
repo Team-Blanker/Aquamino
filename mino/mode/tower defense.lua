@@ -209,7 +209,7 @@ function rule.gameUpdate(P,dt,mino)
         rule.botThread.sendChannel:push({op='require'})
         msgSend=true
         end
-        local op=rule.botThread.recvChannel:demand()
+        local op=rule.botThread.recvChannel:pop()
         if op and msgSend then
         rule.expect=op.expect
         bot_cc.operate(P[2],op,false,mino)
@@ -598,6 +598,16 @@ function rule.overFieldDraw(player,mino)
                 gc.circle('line',fdp.x,fdp.y,fdp.sz*pszt)
             end
         end
+    end
+
+    if player==mino.player[2] then
+    gc.setColor(1,1,1)
+    if rule.expect then
+        for i=1,#rule.expect,2 do
+            gc.setLineWidth(3)
+            gc.rectangle('line',36*(rule.expect[i]-player.w/2-1)+3,-36*(rule.expect[i+1]-player.h/2)+3,30,30)
+        end
+    end
     end
 end
 

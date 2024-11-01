@@ -14,16 +14,30 @@ function rule.init(P,mino)
     P[1].lastHole=0
     P[1].FDelay=4
     P[1].LDelay=4
+
+    P[1].checkboard=false
+    P[1].cbLineType=rand(1,2)
+
+    for i=1,#mino.bag do mino.rule.allowSpin[mino.bag[i]]=true end
     for i=1,10 do rule.newGarbageLine(P[1]) end
 end
+local cbLine={
+    {{'g1',' ','g1',' ','g1',' ','g1',' ','g1',' ',}},
+    {{' ','g1',' ','g1',' ','g1',' ','g1',' ','g1',}}
+}
 local h
 function rule.newGarbageLine(player)
-    if player.lastHole==0 then h=rand(player.w)
-    else h=rand(player.w-1)
-        if h>=player.lastHole then h=h+1 end
+    if player.checkboard then
+        fLib.insertField(player,cbLine[player.cbLineType])
+        player.cbLineType=player.cbLineType%2+1
+    else
+        if player.lastHole==0 then h=rand(player.w)
+        else h=rand(player.w-1)
+            if h>=player.lastHole then h=h+1 end
+        end
+        player.lastHole=h
+        fLib.garbage(player,'g2',1,h)
     end
-    player.lastHole=h
-    fLib.garbage(player,'g2',1,h)
     player.field[1].type='gbg'
     player.summonLine=player.summonLine-1
 end
@@ -40,6 +54,12 @@ function rule.onLineClear(player,mino)
 end
 function rule.onPieceDrop(player)
     player.pieceCount=player.pieceCount+1
+
+    if (not player.checkboard) and player.remainLine==40 then
+        if player.field[player.h-2] then player.checkboard=true
+            player.summonLine,player.remainLine=player.summonLine-20,player.remainLine-20
+        end
+    end
 end
 function rule.underFieldDraw(player)
     local x=-18*player.w-110
@@ -51,7 +71,7 @@ function rule.underFieldDraw(player)
 end
 
 function rule.scoreSave(P,mino)
-    if mino.stacker.winState~=1 then return false end
+    if mino.stacker.winState~=1 or P[1].checkboard then return false end
     local pb=file.read('player/best score')
     local ispb=pb['dig 40'] and P[1].pieceCount<pb['dig 40'].piece or false
     if not pb['dig 40'] or P[1].pieceCount<pb['dig 40'].piece then
