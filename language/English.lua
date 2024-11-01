@@ -114,7 +114,7 @@ return {
             texture="Block texture",color="Color adjust...",
             RS="Rotation system",
             smooth="Smooth move",
-            boardBounce="Board Bounce...",
+            boardBounce="Board bounce...",
             smoothTime="Time",
             theme="Board theme",
             scale="Board scale",scaleTxt="Cell size",
@@ -151,13 +151,13 @@ return {
         virtualKey={
             enable="Enable virtual keys",enableTxtScale=.2,
             anim="Key animations",animTxtScale=.2,
-            preset="presets...",
+            preset="Presets...",
             btsz="Size",
             tolerance="Margin",
             attach="Alignment"
         },
         handling={
-            ASD="Auto Shift Delay(ASD)",ASP="Auto Shift Preiod(ASP)",
+            ASD="Auto shift delay(ASD)",ASP="Auto shift period(ASP)",
             SD_ASD="Soft drop ASD",SD_ASP="Soft drop ASP"
         },
         other={title="Other",nothing="Nothing yet..."},
@@ -183,7 +183,7 @@ return {
         "This is Kairan, neither capable nor cute, only making nonsense in tips",
         "I'm not the first one who add tips into a block game, anyway",
         "A Project by TEAM BLANKER",
-        "August 14th is the game's birthday, also Kairan's birthday.",
+        "Aug 14th is the game's birthday, also Kairan's birthday.",
         "Block skin \"Carbon Fibre\" is inspired by Rubik's cubes that use carbon fibre stickers.",
         "Try Aquamino's Push mechanic in Sandbox mode!",
         "Not every modes are related to water, although the game was named \"Aqua\".",
