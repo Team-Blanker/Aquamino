@@ -28,6 +28,42 @@ end
 AqRS：增加大量实用踢墙，对于I、T、O，会根据周围砖格选择踢墙表
 ]]
 local AqRS={}--Aqua(mino) Rotation System
+
+AqRS.checkPoint={--对于一些特殊的检测，会检测场上特定位置的坐标点。
+    L={
+        R={
+            {{-1, 1,-1, 2},},--0->R
+            {},--R->2
+            {},--2->L
+            {} --L->0
+        },
+    },
+    J={
+        L={
+            {{ 1, 1, 1, 2},},--0->L
+            {},--R->0
+            {},--2->R
+            {} --L->2
+        },
+    },
+    T={
+        R={
+            {{-1, 1,-1, 2},},--0->R
+            {},--R->2
+            {},--2->L
+            {} --L->0
+        },
+        L={
+            {{ 1, 1, 1, 2},},--0->L
+            {},--R->0
+            {},--2->R
+            {} --L->2
+        },
+    },
+}
+AqRS.checkPoint.S=AqRS.checkPoint.L
+AqRS.checkPoint.Z=AqRS.checkPoint.J
+
 AqRS.kickTable={
     L={
         R={
@@ -145,16 +181,27 @@ AqRS.kickTable.S.F={
 }
 AqRS.kickTable.Z.F={
     {{0,0},{ 1, 0},{-1, 0},{ 1,-1},{ 0,-2},{ 2, 0},{ 0, 1}},
-    {{0,0},{ 0,-1},{ 0, 1},{ 1,-1},{ 2, 0},{ 0, 2},{ 1, 0}},
+    {{0,0},{ 0,-1},{ 0, 1},{-1,-1},{-2, 0},{ 0, 2},{ 1, 0}},
     {{0,0},{-1, 0},{ 1, 0},{-1, 1},{ 0, 2},{-2, 0},{ 0,-1}},
-    {{0,0},{ 0, 1},{ 0,-1},{-1, 1},{-2, 0},{ 0,-2},{-1, 0}}
+    {{0,0},{ 0, 1},{ 0,-1},{ 1, 1},{ 2, 0},{ 0,-2},{-1, 0}}
 }
 
-function AqRS.getData(data,player,fLib)
+function AqRS.getData(data,player,fLib,ori,mode)
     data.uWall=fLib.coincide(player, 0, 1)
     data.dWall=fLib.coincide(player, 0,-1)
     data.lWall=fLib.coincide(player,-1, 0)
     data.rWall=fLib.coincide(player, 1, 0)
+
+    data.checkPointOrder=nil
+    local c,cn=player.cur,player.cur.name
+    if AqRS.checkPoint[cn] and AqRS.checkPoint[cn][mode] then
+        local cps=AqRS.checkPoint[cn][mode][ori]
+        for i=1,#cps do
+            for j=1,#cps[i],2 do
+                if not fLib.isAir(player,c.x+cps[i][j],c.y+cps[i][j+1]) then data.checkPointOrder=i return end
+            end
+        end
+    end
 end
 function AqRS.getKickTable(data,name,ori,mode)
     if name=='O' or name=='X' then

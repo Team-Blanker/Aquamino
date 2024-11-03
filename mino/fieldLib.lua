@@ -133,7 +133,7 @@ function fieldLib.kick(player,mode)
     local originO=cur.O
     local RS=fieldLib.coincide(player) and IRS_RS or player.RS
 
-    if RS.getData then RS.getData(data,player,fieldLib) end
+    if RS.getData then RS.getData(data,player,fieldLib,originO+1,mode) end
 
     cur.O=B.rotate(cur.piece,cur.O,mode)
     if RS.kick then
