@@ -322,7 +322,18 @@ function menu.update(dt)
             scene.sendArg={mode='core destruction',arg=menu.option[hv]}
             menu.send=menu.gameSend
         end
-    end
+    elseif hv=='40 lines' and not menu.CDEnter then menu.CDTimer=menu.CDTimer+dt
+        if menu.CDTimer>=10 then menu.CDEnter=true
+            sfx.play('gameEnter')
+            scene.switch({
+                dest='game',destScene=require'mino/game',
+                swapT=1.6,outT=.2,
+                anim=function() anim.enterGame(.4,1.2,.2) end
+            })
+            scene.sendArg={mode='pento 40'}
+            menu.send=menu.gameSend
+        end
+    else menu.CDTimer=0 end
 
     if menu.pAnim then menu.pAnimTimer=menu.pAnimTimer+dt end
     menu.sAnimTimer=menu.lvl==2 and min(menu.sAnimTimer+dt,menu.sAnimTMax) or max(menu.sAnimTimer-dt,0)
