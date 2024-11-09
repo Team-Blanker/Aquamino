@@ -131,6 +131,8 @@ return {
             boardSet={
                 title="Board bounce",
 
+                presetLevel="Preset level",
+
                 moveForce="Move force",
                 dropVel="Drop momentum",
                 clearFactor="Clear momentom factor",

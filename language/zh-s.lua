@@ -129,6 +129,8 @@ return {
             boardSet={
                 title="版面晃动",
 
+                presetLevel="预设等级",
+
                 moveForce="移动推力",
                 dropVel="硬降动量",
                 clearFactor="消除动量倍率",

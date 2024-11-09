@@ -131,6 +131,8 @@ return {
             boardSet={
                 title="Rimbalzo della griglia",
 
+                presetLevel="Preset level",
+
                 moveForce="Move force",
                 dropVel="Drop momentum",
                 clearFactor="Clear momentum factor",

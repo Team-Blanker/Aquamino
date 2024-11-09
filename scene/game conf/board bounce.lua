@@ -26,6 +26,8 @@ function bb.save()
     file.save('conf/board bounce',bb.boardBounce)
 end
 bb.txt={
+presetLevel={},
+
 moveForce={},
 dropVel={},
 clearFactor={},
@@ -38,7 +40,118 @@ spinFactor={},
 }
 bb.titleTxt={txt=gc.newText(font.Bender)}
 
+local preset={
+    [0]={
+        moveForce=0,
+        dropVel=0,
+
+        spinAngvel=0,
+
+        velDamping=40,
+        angDamping=30,
+
+        elasticFactor=500,
+        spinFactor=1000,
+        clearFactor=.8,
+    },
+    [1]={
+        moveForce=3,
+        dropVel=.2,
+
+        spinAngvel=4,
+
+        velDamping=30,
+        angDamping=200,
+
+        elasticFactor=500,
+        spinFactor=1000,
+        clearFactor=.8,
+    },
+    [2]={
+        moveForce=10,
+        dropVel=.5,
+
+        spinAngvel=10,
+
+        velDamping=30,
+        angDamping=200,
+
+        elasticFactor=500,
+        spinFactor=1000,
+        clearFactor=.8,
+    },
+    [3]={
+        moveForce=12.5,
+        dropVel=.8,
+
+        spinAngvel=10,
+
+        velDamping=30,
+        angDamping=100,
+
+        elasticFactor=500,
+        spinFactor=750,
+        clearFactor=.8,
+    },
+    [4]={
+        moveForce=15,
+        dropVel=1.25,
+
+        spinAngvel=12,
+
+        velDamping=30,
+        angDamping=80,
+
+        elasticFactor=400,
+        spinFactor=750,
+        clearFactor=.9,
+    },
+    [5]={
+        moveForce=20,
+        dropVel=1.6,
+
+        spinAngvel=15,
+
+        velDamping=30,
+        angDamping=80,
+
+        elasticFactor=300,
+        spinFactor=750,
+        clearFactor=1,
+    },
+}
 local sliderList={
+    overallPreset={
+        x=400,y=-400,type='hori',sz={960,32},button={32,32},
+        gear=6,pos=0,
+        setPosWithValue=function (v)
+            return v
+        end,
+        sliderDraw=function(g,sz,sl)
+            gc.setColor(.24,.48,.42,.8)
+            gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
+            gc.setColor(1,1,1)
+            local v=bb.txt.presetLevel
+            gc.draw(v.txt,-sz[1]/2-20,-24,0,v.s,v.s,0,v.h)
+            v.numTxt:clear()
+            v.numTxt:add(bb.boardBounce.custom and ":-" or string.format(":%d",sl.pos))
+            gc.draw(v.numTxt,-sz[1]/2-20+v.ow,-24,0,.3125,.3125,0,v.h)
+        end,
+        buttonDraw=function(pos,sz)
+            gc.setColor(1,1,1)
+            gc.circle('fill',sz[1]*(pos-.5),0,20,4)
+        end,
+        release=function(pos)
+            bb.boardBounce.level=pos
+            for k,v in pairs(preset[pos]) do
+                bb.boardBounce[k]=v
+                SLIDER.setPosWithValue(k,bb.boardBounce[k])
+            end
+        end,
+        click=function ()
+            bb.boardBounce.custom=false
+        end
+    },
     moveForce={
         x=-480,y=-240,type='hori',sz={800,32},button={32,32},
         gear=0,pos=0,
@@ -61,6 +174,9 @@ local sliderList={
         end,
         always=function(pos)
             bb.boardBounce.moveForce=100*pos
+        end,
+        click=function ()
+            bb.boardBounce.custom=true
         end
     },
     dropVel={
@@ -85,6 +201,9 @@ local sliderList={
         end,
         always=function(pos)
             bb.boardBounce.dropVel=20*pos^2
+        end,
+        click=function ()
+            bb.boardBounce.custom=true
         end
     },
     velDamping={
@@ -109,6 +228,9 @@ local sliderList={
         end,
         always=function(pos)
             bb.boardBounce.velDamping=pos==0 and 0 or 10^(pos*5-2)
+        end,
+        click=function ()
+            bb.boardBounce.custom=true
         end
     },
     elasticFactor={
@@ -133,6 +255,9 @@ local sliderList={
         end,
         always=function(pos)
             bb.boardBounce.elasticFactor=10^(pos*5-1)
+        end,
+        click=function ()
+            bb.boardBounce.custom=true
         end
     },
     clearFactor={
@@ -157,6 +282,9 @@ local sliderList={
         end,
         always=function(pos)
             bb.boardBounce.clearFactor=pos*10
+        end,
+        click=function ()
+            bb.boardBounce.custom=true
         end
     },
 
@@ -182,6 +310,9 @@ local sliderList={
         end,
         always=function(pos)
             bb.boardBounce.spinAngvel=50*pos^2
+        end,
+        click=function ()
+            bb.boardBounce.custom=true
         end
     },
     angDamping={
@@ -206,6 +337,9 @@ local sliderList={
         end,
         always=function(pos)
             bb.boardBounce.angDamping=pos==0 and 0 or 10^(pos*5-2)
+        end,
+        click=function ()
+            bb.boardBounce.custom=true
         end
     },
     spinFactor={
@@ -230,6 +364,9 @@ local sliderList={
         end,
         always=function(pos)
             bb.boardBounce.spinFactor=10^(pos*5-1)
+        end,
+        click=function ()
+            bb.boardBounce.custom=true
         end
     }
 }
