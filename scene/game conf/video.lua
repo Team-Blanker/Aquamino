@@ -29,6 +29,8 @@ local dsf=function() gc.rectangle('fill',dir/2-635,dir+3,645,(video.dth*.25+10)*
 video.titleTxt={txt=gc.newText(font.Bender)}
 local tt
 function video.init()
+    scene.BG=require'BG/settings'
+
     sfx.add({
         cOn='sfx/general/checkerOn.wav',
         cOff='sfx/general/checkerOff.wav',

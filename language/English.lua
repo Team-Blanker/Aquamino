@@ -21,7 +21,9 @@ return {
         ['tower defense']="Tower Defense",
         backfire="Boomerang",
         conf_test="conf_test",
-        idea_test="idea_test"
+        idea_test="idea_test",
+
+        ['core destruction']='[Deprecated mode]'
     },
     modeDescription={
         ['40 lines']="Clear 40 lines as fast as you can!",

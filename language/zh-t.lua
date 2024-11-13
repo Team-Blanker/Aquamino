@@ -21,7 +21,9 @@ return {
         battle="對戰",
         ['tower defense']="塔防",
         conf_test="設定 - 測試介面",
-        idea_test="idea_test"
+        idea_test="idea_test",
+
+        ['core destruction']="[已廢棄模式]"
     },
     modeDescription={
         ['40 lines']="以最快速度消除40行",

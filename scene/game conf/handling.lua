@@ -17,6 +17,8 @@ hand.txt={
 hand.titleTxt={txt=gc.newText(font.Bender)}
 local tt
 function hand.init()
+    scene.BG=require'BG/settings'
+
     sfx.add({
         click='sfx/general/buttonClick.wav',
         quit='sfx/general/confSwitch.wav',

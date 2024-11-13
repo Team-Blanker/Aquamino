@@ -21,7 +21,9 @@ return {
         ['tower defense']="Difesa della torre",
         backfire="Boomerang",
         conf_test="conf_test",
-        idea_test="idea_test"
+        idea_test="idea_test",
+
+        ['core destruction']='[Deprecated mode]'
     },
     modeDescription={
         ['40 lines']="Completa 40 righe\nil più velocemente possibile!",

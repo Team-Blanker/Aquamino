@@ -119,17 +119,30 @@ local preset={
         spinFactor=750,
         clearFactor=1,
     },
+    [6]={
+        moveForce=40,
+        dropVel=1.25,
+
+        spinAngvel=25,
+
+        velDamping=8,
+        angDamping=50,
+
+        elasticFactor=24,
+        spinFactor=50,
+        clearFactor=1.5,
+    },
 }
 local sliderList={
-    overallPreset={
-        x=400,y=-400,type='hori',sz={960,32},button={32,32},
-        gear=6,pos=0,
+    level={
+        x=200,y=-400,type='hori',sz={960,32},button={32,32},
+        gear=7,pos=0,
         setPosWithValue=function (v)
             return v
         end,
         sliderDraw=function(g,sz,sl)
             gc.setColor(.24,.48,.42,.8)
-            gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
+            gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/3,-8,sz[1]/3+8,0,sz[1]/3,8,-sz[1]/2,8)
             gc.setColor(1,1,1)
             local v=bb.txt.presetLevel
             gc.draw(v.txt,-sz[1]/2-20,-24,0,v.s,v.s,0,v.h)
@@ -372,6 +385,8 @@ local sliderList={
 }
 local tt
 function bb.init()
+    scene.BG=require'BG/settings'
+
     sfx.add({
         click='sfx/general/buttonClick.wav',
         quit='sfx/general/confSwitch.wav',

@@ -11,6 +11,8 @@ function lang.save()
     file.save('conf/lang',lang.uage)
 end
 function lang.init()
+    scene.BG=require'BG/settings'
+
     sfx.add({
         click='sfx/general/buttonChoose.wav',
         quit='sfx/general/confSwitch.wav',

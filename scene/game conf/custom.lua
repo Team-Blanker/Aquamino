@@ -27,6 +27,8 @@ custom.sTxt={}--版面缩放说明文本
 custom.titleTxt={txt=gc.newText(font.Bender)}
 local tt
 function custom.init()
+    scene.BG=require'BG/settings'
+
     sfx.add({
         cOn='sfx/general/checkerOn.wav',
         cOff='sfx/general/checkerOff.wav',

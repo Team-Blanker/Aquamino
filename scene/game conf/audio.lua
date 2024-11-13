@@ -24,6 +24,8 @@ audio.titleTxt={txt=gc.newText(font.Bender)}
 local tt
 audio.distractTxt={}
 function audio.init()
+    scene.BG=require'BG/settings'
+
     sfx.add({
         cOn='sfx/general/checkerOn.wav',
         cOff='sfx/general/checkerOff.wav',

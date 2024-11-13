@@ -48,6 +48,8 @@ local keySheet=ceil(keyAmount/2)
 key.titleTxt={txt=gc.newText(font.Bender)}
 local tt
 function key.init()
+    scene.BG=require'BG/settings'
+
     sfx.add({
         keyAdd='sfx/general/checkerOn.wav',
         keyRem='sfx/general/checkerOff.wav',

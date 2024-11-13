@@ -19,6 +19,8 @@ function bc.save()
 end
 bc.txt={rAll={},rCur={}}
 function bc.init()
+    scene.BG=require'BG/settings'
+
     sfx.add({
         swap='sfx/general/optionSwitch.wav',
         click='sfx/general/buttonChoose.wav',

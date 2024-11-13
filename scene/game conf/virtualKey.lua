@@ -109,6 +109,8 @@ end
 VKey.txt={preset={},vkEnable={},animEnable={}}
 VKey.sliderTxt={btsz={},tolerance={},attach={}}
 function VKey.init()
+    scene.BG=require'BG/settings'
+
     sfx.add({
         cOn='sfx/general/checkerOn.wav',
         cOff='sfx/general/checkerOff.wav',
