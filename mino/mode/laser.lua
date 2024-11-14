@@ -32,7 +32,7 @@ local progressAct={
     {180,4,function(player)
         local list={}
         for i=1,4 do
-            list[i]={'s','mayhem',i-min(max(abs(floor(rule.laserIndex%12)-6)-1,0),4)<=0 and i or player.w-4+i}
+            list[i]={'s','mayhem',i-min(max(abs(floor(rule.laserIndex1%12)-6)-1,0),4)<=0 and i or player.w-4+i}
         end
         rule.laserIndex1=rule.laserIndex1+1
         list.beat=4
