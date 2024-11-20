@@ -32,21 +32,21 @@ gc.translate(-60,-60)
 
 menu.modeList={
     --xy都是绘制坐标
-    ['40 lines']={x=-300,y=0,borderColor={0,1,.75}},
-    marathon={x=-150,y=150,borderColor={0,1,.75}},
-    ['dig 40']={x=-150,y=-150,borderColor={0,1,.75}},
-    backfire={x=300,y=0,borderColor={0,1,.75}},
-    battle={x=150,y=-150,borderColor={0,1,.75}},
-    ['ice storm']={x=450,y=150,borderColor={0,1,1}},
+    ['40 lines']={x=-300,y=0,borderColor={.1,.9,.7}},
+    marathon={x=-150,y=150,borderColor={.1,.9,.7}},
+    ['dig 40']={x=-150,y=-150,borderColor={.1,.9,.7}},
+    backfire={x=300,y=0,borderColor={.1,.9,.7}},
+    battle={x=150,y=-150,borderColor={.1,.9,.7}},
+    ['ice storm']={x=450,y=150,borderColor={.2,.9,.9}},
     sandbox={x=150,y=150,borderColor={.6,.6,.6}},
-    thunder={x=-300,y=-300,borderColor={0,1,1}},
-    smooth={x=-450,y=150,borderColor={0,1,1}},
-    levitate={x=-450,y=-150,borderColor={0,1,1}},
-    master={x=-300,y=300,borderColor={1,.25,.25}},
-    square={x=300,y=300,borderColor={0,1,1}},
-    multitasking={x=0,y=300,borderColor={1,.25,.25}},
-    laser={x=450,y=-150,borderColor={0,1,1}},
-    ['tower defense']={x=300,y=-300,borderColor={0,1,1}},
+    thunder={x=-300,y=-300,borderColor={.2,.9,.9}},
+    smooth={x=-450,y=150,borderColor={.2,.9,.9}},
+    levitate={x=-450,y=-150,borderColor={.2,.9,.9}},
+    master={x=-300,y=300,borderColor={.96,.24,.24}},
+    square={x=300,y=300,borderColor={.2,.9,.9}},
+    multitasking={x=0,y=300,borderColor={.96,.24,.24}},
+    laser={x=450,y=-150,borderColor={.2,.9,.9}},
+    ['tower defense']={x=300,y=-300,borderColor={.2,.9,.9}},
 }
 menu.notRecordScore={sandbox=true,battle=true,['tower defense']=true}
 menu.icon={}

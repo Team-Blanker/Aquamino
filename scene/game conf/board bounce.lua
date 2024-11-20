@@ -120,7 +120,7 @@ local preset={
         clearFactor=1,
     },
     [6]={
-        moveForce=40,
+        moveForce=45,
         dropVel=1.25,
 
         spinAngvel=25,

@@ -55,7 +55,7 @@ function bg.draw()
         gc.setCanvas()
         gc.setScissor()
     gc.pop()
-    gc.clear(0,0,0)
+    gc.clear(.05,.05,.05)
     gc.setColor(pr*sf+nr*(1-sf),pg*sf+ng*(1-sf),pb*sf+nb*(1-sf),.25)
     gc.draw(pcv,0,0,0,1.75,1.75,500,500)
 end

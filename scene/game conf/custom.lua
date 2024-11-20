@@ -178,7 +178,7 @@ function custom.init()
                 else gc.line((w-h)/2+off,h/2,w/2+off,0,(w-h)/2+off,-h/2)
                 end
             end
-            gc.setColor(.5,1,.875)
+            gc.setColor(.44,.88,.77)
             local tt=custom.seTxt.texture
             gc.draw(tt.txt,0,-h/2-10,0,tt.s,tt.s,tt.w/2,tt.h)
             gc.setLineWidth(3)
@@ -213,7 +213,7 @@ function custom.init()
                 else gc.line((w-h)/2+off,h/2,w/2+off,0,(w-h)/2+off,-h/2)
                 end
             end
-            gc.setColor(1,.75,.5)
+            gc.setColor(.88,.66,.44)
             local tt=custom.seTxt.RS
             gc.draw(tt.txt,0,-h/2-10,0,tt.s,tt.s,tt.w/2,tt.h)
             gc.setLineWidth(3)
@@ -248,7 +248,7 @@ function custom.init()
                 else gc.line((w-h)/2+off,h/2,w/2+off,0,(w-h)/2+off,-h/2)
                 end
             end
-            gc.setColor(1,.5,.5)
+            gc.setColor(.88,.44,.44)
             local tt=custom.seTxt.theme
             gc.draw(tt.txt,0,-h/2-10,0,tt.s,tt.s,tt.w/2,tt.h)
             gc.setLineWidth(3)
@@ -282,7 +282,7 @@ function custom.init()
                 else gc.line((w-h)/2+off,h/2,w/2+off,0,(w-h)/2+off,-h/2)
                 end
             end
-            gc.setColor(1,.25,.75)
+            gc.setColor(.88,.22,.66)
             local tt=custom.seTxt.sfx
             gc.draw(tt.txt,0,-h/2-10,0,tt.s,tt.s,tt.w/2,tt.h)
             gc.setLineWidth(3)
@@ -312,7 +312,7 @@ function custom.init()
         draw=function(bt,t,ct,cp)
             local sz=custom.info.fieldScale
             local w,h=bt.w,bt.h
-            gc.setColor(.3,.65,1)
+            gc.setColor(.3,.6,.9)
             local tt=custom.seTxt.scale
             gc.draw(tt.txt,0,-h/2-10,0,tt.s,tt.s,tt.w/2,tt.h)
 

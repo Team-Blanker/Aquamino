@@ -13,7 +13,7 @@ function bg.update(dt)
     bg.time=bg.time+dt
 end
 function bg.draw()
-    gc.clear(.04,.04,.04)
+    gc.clear(.05,.05,.05)
     gc.setColor(1,1,1,.16)
     for i=0,15 do
         local p=sin((bg.time%8/4+i/16)*math.pi)
