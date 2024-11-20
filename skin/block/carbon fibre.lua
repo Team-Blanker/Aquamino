@@ -109,7 +109,7 @@ function skin.loosenDraw(player,mino)
     for i=1,#ls do
         local clr=mino.color[ls[i].info.name]
         setColor(clr[1],clr[2],clr[3],.5)
-        rect('fill',-18+36*ls[i].x,-18-36*(ls[i].y+N),36,36)
+        rect('fill',-18+36*ls[i].x,-18-36*(ls[i].y+N),36,36,4)
     end
 end
 function skin.overFieldDraw(player)
