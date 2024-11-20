@@ -23,6 +23,8 @@ return {
         conf_test="設定 - 測試介面",
         idea_test="idea_test",
 
+        ['pento 40']="五連塊競速",
+
         ['core destruction']="[已廢棄模式]"
     },
     modeDescription={
@@ -88,6 +90,7 @@ return {
     },
     game={
         nowPlaying="目前播放 : ",
+        curMode="目前模式 : ",
         paused="暫停",result="遊戲結束",
         theme={
             simple={win="勝利",lose="失敗",newRecord="打破紀錄"}

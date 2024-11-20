@@ -626,7 +626,8 @@ end
 
 
 --初始化
-local curPlayTxt
+local curPlayTxt--={txt=gc.newText(font.Bender),w=0,h=0}
+local curModeTxt--={txt=gc.newText(font.Bender),w=0,h=0}
 function mino.init(isReset)
     sfx.add({
         pauseButtonClick='sfx/general/buttonClick.wav',
@@ -680,14 +681,14 @@ function mino.init(isReset)
             Z={.96,.16,.32},S={.48,.96,0},J={0,.64,.96},L={.96,.64,.32},T={.8,.2,.96},O={.96,.96,0},I={.16,.96,.72},
             g1={.5,.5,.5},g2={.75,.75,.75},
 
-            Z5={.84,.07,.14},S5={.42,.84,0},J5={0,.56,.84},L5={.84,.56,.28},T5={.7,.175,.84},I5={.9,.9,.9},
+            Z5={.84,.07,.14},S5={.42,.84,0},J5={0,.56,.84},L5={.84,.56,.28},T5={.7,.175,.84},I5={.9,.9,.96},
             N ={.84,.42,.56},H ={.14,.84,.63},F ={0,.84,.14},E ={.84,.14,.49},R ={.49,.14,.84},Y ={0,.35,.84},
             P ={.28,.28,.84},Q ={.84,.35,.14},X ={.84,.84,0},W ={.84,0,.84},V ={0,.84,.84},U ={.7,.84,0},
 
-            I6={.9,.9,.9},U6={.84,.96,.72},T6={.6,.48,.96},O6={.48,.72,.96},wT={.6,.48,.96},Ht={.96,.96,.48},A={.48,.96,.84},
-            XT={.96,.48,.48},Tr={.48,.84,.96},Pl={.96,.48,.84},
-            OZ={.96,.72,.48},OS={.84,.96,.48},bZ={.96,.6,.48},bS={.6,.6,.96},TZ={.96,.48,.96},TS={.48,.96,.48},
-            lSt={.96,.48,.6},rSt={.48,.96,.48},lHk={.36,.96,.96},rHk={.48,.96,.72},
+            --I6={.9,.9,.9},U6={.84,.96,.72},T6={.6,.48,.96},O6={.48,.72,.96},wT={.6,.48,.96},Ht={.96,.96,.48},A={.48,.96,.84},
+            --XT={.96,.48,.48},Tr={.48,.84,.96},Pl={.96,.48,.84},
+            --OZ={.96,.72,.48},OS={.84,.96,.48},bZ={.96,.6,.48},bS={.6,.6,.96},TZ={.96,.48,.96},TS={.48,.96,.48},
+            --lSt={.96,.48,.6},rSt={.48,.96,.48},lHk={.36,.96,.96},rHk={.48,.96,.72},
         }
         if fs.getInfo('conf/mino color') then T.combine(mino.color,file.read('conf/mino color')) end
 
@@ -743,6 +744,7 @@ function mino.init(isReset)
         if mino.theme.init then mino.theme.init(P[i]) end
     end
     curPlayTxt=user.lang.game.nowPlaying..mino.musInfo
+    curModeTxt=user.lang.game.curMode..(user.lang.modeName[mino.mode] or mino.mode)
 
     --禁用背景就不画背景了，节省性能
     if mino.unableBG then scene.BG=require('BG/blank') end
@@ -1338,10 +1340,10 @@ function mino.draw()
     if mino.paused then
         BUTTON.draw()
         gc.setColor(1,1,1)
-        gc.printf(user.lang.modeName[mino.mode] or mino.mode,font.Bender,400,-320,4096,'right',0,.4,.4,4096,72)
+        gc.printf(curModeTxt,font.Bender,0,-300,65536,'center',0,.4,.4,32768,font.height.Bender/2)
         gc.printf(S.winState==0 and user.lang.game.paused or user.lang.game.result,
-            font.Bender_B,0,-440,4096,'center',0,.9,.9,2048,72)
-        gc.printf(curPlayTxt,font.Bender,0,330,65536,'center',0,.4,.4,32768,72)
+            font.Bender_B,0,-440,4096,'center',0,.9,.9,2048,font.height.Bender_B/2)
+        gc.printf(curPlayTxt,font.Bender,0,330,65536,'center',0,.4,.4,32768,font.height.Bender/2)
     end
 end
 function mino.exit()

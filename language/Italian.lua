@@ -23,6 +23,8 @@ return {
         conf_test="conf_test",
         idea_test="idea_test",
 
+        ['pento 40']="Pentomino sprint",
+
         ['core destruction']='[Deprecated mode]'
     },
     modeDescription={
@@ -88,6 +90,7 @@ return {
     },
     game={
         nowPlaying="In riproduzione: ",
+        curMode="Current mode: ",
         paused="In pausa",result="Partita Finita",
         theme={
             simple={win="Vittoria!",lose="Sconfitta",newRecord="Nuovo record!"}
