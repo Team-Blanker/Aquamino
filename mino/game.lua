@@ -1081,12 +1081,28 @@ function mino.gameUpdate(dt)
         end
 
         --移动、软降版面晃动
-        boa,bof=mino.boardBounce,OP.boardOffset.force
+        boa,bof,bbt=mino.boardBounce,OP.boardOffset.force,OP.boardOffset.triggered
+
+        local animCheck=true
+        if mino.smoothAnimAct then animCheck=A.timer==0 end
+
+        bof.move[1],bof.move[2]=0,0
         if C.name then
-            if S.keyDown.ML and OP.moveDir=='L' and coincide(OP,-1,0) then bof.move[1]=-boa.moveForce
-            elseif S.keyDown.MR and OP.moveDir=='R' and coincide(OP, 1,0) then bof.move[1]= boa.moveForce
-            else bof.move[1]=0 end
-            if S.keyDown.SD and coincide(OP,0,-1) then bof.move[2]=boa.moveForce else bof.move[2]=0 end
+            if S.keyDown.ML and OP.moveDir=='L' and coincide(OP,-1,0) then
+                if animCheck or bbt.l then
+                    bof.move[1]=-boa.moveForce bbt.l=true
+                end
+            else bbt.l=false end
+            if S.keyDown.MR and OP.moveDir=='R' and coincide(OP, 1,0) then
+                if animCheck or bbt.r then
+                    bof.move[1]= boa.moveForce bbt.r=true
+                end
+            else bbt.r=false end
+            if S.keyDown.SD and coincide(OP,0,-1) then
+                if animCheck or bbt.r then
+                    bof.move[2]= boa.moveForce bbt.d=true
+                end
+            else bbt.d=false end
         else bof.move[1],bof.move[2]=0,0 end
     end
 

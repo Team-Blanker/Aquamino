@@ -34,7 +34,8 @@ function fieldLib.newPlayer(arg)
             angacc=0,--角加速度
             force={--各种受力/力矩
                 move={0,0},
-            }
+            },
+            triggered={l=false,r=false,d=false}--长按触发的版面晃动
         },
         posOffset={},--其它的坐标偏移列表，由规则包定义
         finalPosX=0,finalPosY=0,
@@ -71,7 +72,7 @@ function fieldLib.newPlayer(arg)
 
         nWideDetect={},--空n列检测，仅消行时使用，不消就清空
         fallAfterClear=true,
-        smoothAnimAct=false,
+
         smoothAnim={prepiece={},drawPiece={},timer=0},
         dropAnim={}
         --e.g. dropAnim[1]={x=0,ys=0,yf=0,TMax=0.5,TTL=0.5}
