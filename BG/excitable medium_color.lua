@@ -16,6 +16,10 @@ for k,v in pairs(medium) do
     end
 end
 
+function bg.setBPM(bpm)
+    updateT=60/bpm
+end
+
 local cList={{0,1},{1,0},{0,-1},{-1,0}}
 
 function bg.update(dt)
@@ -53,5 +57,11 @@ function bg.draw()
             rect('fill',-960+cellSize*(x-1),-540+cellSize*(y-1),cellSize,cellSize)
         end
     end
+end
+
+function bg.discard()
+    updateT,updateTimer=1/8,0
+    time=0
+    medium={R={},G={},B={}}
 end
 return bg

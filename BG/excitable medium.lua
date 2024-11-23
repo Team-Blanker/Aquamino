@@ -7,7 +7,7 @@ local medium={}--“介质”
 local w,h=64,36
 local CDTick=9--介质冷却刻数
 local cellSize=1920/w
-local actChance=.8--介质被完全激活的概率
+local actChance=.75--介质被完全激活的概率
 for y=1,h do
     medium[y]={}
     for x=1,w do
@@ -18,6 +18,10 @@ end
 for i=1,2 do medium[rand(h)][rand(w)].value=CDTick end
 
 local cList={{0,1},{1,0},{0,-1},{-1,0}}
+
+function bg.setBPM(bpm)
+    updateT=60/bpm
+end
 
 function bg.update(dt)
     time=time+dt
@@ -56,5 +60,11 @@ function bg.draw()
             rect('fill',-960+cellSize*(x-1),-540+cellSize*(y-1),cellSize,cellSize)
         end
     end
+end
+
+function bg.discard()
+    updateT,updateTimer=1/8,0
+    time=0
+    medium={}
 end
 return bg

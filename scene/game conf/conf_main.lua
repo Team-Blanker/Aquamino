@@ -4,6 +4,7 @@ local sfxList={
     click='sfx/general/buttonClick.wav',
     quit='sfx/general/buttonQuit.wav',
 }
+
 local config={}
 config.txt={title={},audio={},video={},custom={},handling={},keys={},test={}}
 local tt

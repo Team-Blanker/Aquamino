@@ -1,3 +1,4 @@
+--暂时搁置的法线贴图测试
 local nmp={}
 function nmp.init()
     nmp.img=gc.newImage('pic/assets/nmp1.png')

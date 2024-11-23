@@ -197,6 +197,7 @@ scene={
 
 --scene.cur=require('minigame/tracks/tracks')
 --scene.cur=require('scene/test/BG_Test')
+--scene.cur=require('scene/test/clock')
 --scene.cur=require('mino/game') scene.cur.mode='pento 40'
 
 win.x,win.y=love.window.getPosition()
