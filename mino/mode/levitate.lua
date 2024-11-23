@@ -8,7 +8,7 @@ function rule.init(P,mino)
     mino.musInfo="Naoki Hirai - flex"
     mus.add('music/Hurt Record/flex','whole','ogg',.443,196*60/117.5)
     mus.start()
-    P[1].line=0 P[1].LDRInit=32 P[1].LDR=32 P[1].fallAfterClear=false
+    P[1].line=0 P[1].LDRInit=80 P[1].LDR=80 P[1].fallAfterClear=false
 end
 function rule.onLineClear(player,mino)
     player.line=player.line+player.history.line

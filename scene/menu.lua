@@ -48,6 +48,11 @@ menu.modeList={
     laser={x=450,y=-150,borderColor={.2,.9,.9}},
     ['tower defense']={x=300,y=-300,borderColor={.2,.9,.9}},
 }
+menu.secretMode={
+    ['40 lines']={mode='pento 40'},
+    ['tower defense']={mode='core destruction',arg='tower defense'},
+    sandbox={mode='square'}
+}
 menu.notRecordScore={sandbox=true,battle=true,['tower defense']=true}
 menu.icon={}
 menu.option={

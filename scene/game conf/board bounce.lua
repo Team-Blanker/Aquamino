@@ -69,7 +69,7 @@ local preset={
     },
     [2]={
         moveForce=10,
-        dropVel=.5,
+        dropVel=.4,
 
         spinAngvel=10,
 
@@ -82,7 +82,7 @@ local preset={
     },
     [3]={
         moveForce=12.5,
-        dropVel=.8,
+        dropVel=.5,
 
         spinAngvel=10,
 
@@ -91,11 +91,11 @@ local preset={
 
         elasticFactor=500,
         spinFactor=750,
-        clearFactor=.8,
+        clearFactor=1,
     },
     [4]={
         moveForce=15,
-        dropVel=1.25,
+        dropVel=.625,
 
         spinAngvel=12,
 
@@ -104,7 +104,7 @@ local preset={
 
         elasticFactor=400,
         spinFactor=750,
-        clearFactor=.9,
+        clearFactor=1.25,
     },
     [5]={
         moveForce=20,
