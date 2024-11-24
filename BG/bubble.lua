@@ -70,7 +70,13 @@ local bgShader=gc.newShader[[
     extern vec4 clru;
     extern vec4 clrd;
     vec4 effect( vec4 color, Image texture, vec2 texCoord, vec2 scrCoord ){
-        return mix(clru,clrd,scrCoord.y/love_ScreenSize.y+0.);
+        float rd=9./16.;
+        float ad=step(rd,love_ScreenSize.y/love_ScreenSize.x);
+
+        //highp float x=(scrCoord.x/love_ScreenSize.x*2.-1.)*(ad+(1.-ad)*love_ScreenSize.x/(love_ScreenSize.y/rd))*16.;
+        highp float y=(scrCoord.y/love_ScreenSize.y*2.-1.)*((1.-ad)+ad*love_ScreenSize.y/(love_ScreenSize.x*rd))*9.;
+
+        return mix(clru,clrd,y/18.+.5);
     }
 ]]
 bgShader:send('clru',{.04,.08,.20,1.})

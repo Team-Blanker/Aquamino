@@ -184,6 +184,12 @@ scene={
     outT=0,
     anim=nil,--过场动画
     latest=nil,
+
+    shader=nil,
+    setShader=function (shader)
+        scene.shader=shader
+    end,
+
     path={'intro'},
     switch=function(arg)
         for k,v in pairs(arg) do scene[k]=v end
@@ -198,7 +204,7 @@ scene={
 --scene.cur=require('minigame/tracks/tracks')
 --scene.cur=require('scene/test/BG_Test')
 --scene.cur=require('scene/test/clock')
---scene.cur=require('mino/game') scene.cur.mode='pento 40'
+--scene.cur=require('mino/game') scene.cur.mode='hollow pento'
 
 win.x,win.y=love.window.getPosition()
 win.x_win,win.y_win=love.window.getPosition()
@@ -333,6 +339,7 @@ function love.draw()
     gc.setColor(1,1,1)--若未说明，图像绘制统一为白色，下同
     if scene.BG.draw then scene.BG.draw() end
     gc.setColor(1,1,1)
+    if scene.shader then gc.setShader(scene.shader) end
     if scene.cur.draw then scene.cur.draw() end
     if scene.watermark and not fs.isFused() then
         gc.setColor(.5,1,.875,.15+.0*sin(scene.totalTime*5*math.pi))
@@ -340,6 +347,7 @@ function love.draw()
         gc.printf("作者：Aqua6623",font.JB_B,-480*sin(scene.totalTime/2*math.pi), 440,5000,'center',0,.5,.5,2500,84)
         --gc.printf("未经授权禁止转载",Consolas_B,-480*sin(scene.totalTime/2*math.pi),440,5000,'center',0,.5,.5,2500,84)
     end
+    gc.setShader()
     gc.setColor(1,1,1)
     if scene.anim then scene.anim() end
     gc.setColor(1,1,1,.5)
