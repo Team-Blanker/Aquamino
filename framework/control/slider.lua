@@ -2,8 +2,7 @@ local slider={list={},acting=nil}
 local gc=love.graphics
 local M,T=mymath,mytable
 function slider.create(name,arg)
-    if name and arg then slider.list[name]=arg
-    else slider.list={} end
+    if name and arg then slider.list[name]=arg end
 end
 --[[e.g.
 arg={
@@ -16,6 +15,9 @@ arg={
     event=function() end
 }
 ]]
+function slider.discard()
+    slider.list={}
+end
 function slider.draw()
     for k,v in pairs(slider.list) do gc.push()
         gc.translate(v.x,v.y)

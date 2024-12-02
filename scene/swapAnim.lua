@@ -1,4 +1,4 @@
-local anim={}--animation的缩写
+local anim={}
 
 local goTxt
 function anim.init()--第一帧不能用来画图，会出问题

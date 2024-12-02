@@ -83,7 +83,7 @@ function skin.overFieldDraw(player)
         gc.setColor(1,1,1)
         gc.rectangle('fill',(-.5+1.5*(player.laTimer/player.laTMax))*36,0,18,36)
         --gc.rectangle('fill',0,0,36,36)
-        gc.setCanvas()
+        gc.setDefaultCanvas()
         gc.pop()
 
         for i=1,#p do

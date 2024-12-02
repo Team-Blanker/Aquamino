@@ -55,23 +55,20 @@ local block={
     lHk={{ 1.5,.5},{ .5,.5},{-.5,.5},{ 1.5,-.5},{-.5,-.5},{-1.5,-.5}},
 }
 
---Z 酱 锐 评：压得过于离谱，你一个月不看都不敢动的那种
 function block.rotate(b,o,mode)--旋转，mode='R'是顺时针 'L'是逆时针 'F'是180
     for i=1,#b do
-        if mode=='F' then b[i][1],b[i][2]=b[i][1]*-1,b[i][2]*-1
-        else b[i][1],b[i][2]=b[i][2],b[i][1]
-            if mode=='R' then b[i][2]=b[i][2]*-1
-            else b[i][1]=b[i][1]*-1 end
+        if     mode=='F' then  b[i][1],b[i][2]=b[i][1]*-1,b[i][2]*-1
+        elseif mode=='R' then  b[i][1],b[i][2]=b[i][2]   ,b[i][1]*-1
+        elseif mode=='L' then  b[i][1],b[i][2]=b[i][2]*-1,b[i][1]
         end
     end
     o=(o+(mode=='R' and 1 or mode=='L' and -1 or 2))%4 return o
 end
 function block.antiRotate(b,o,mode)--反方向旋转
     for i=1,#b do
-        if mode=='F' then b[i][1],b[i][2]=b[i][1]*(-1),b[i][2]*(-1)
-        else b[i][1],b[i][2]=b[i][2],b[i][1]
-            if mode=='L' then b[i][2]=b[i][2]*(-1)
-            else b[i][1]=b[i][1]*(-1) end
+        if     mode=='F' then  b[i][1],b[i][2]=b[i][1]*-1,b[i][2]*-1
+        elseif mode=='R' then  b[i][1],b[i][2]=b[i][2]*-1,b[i][1]
+        elseif mode=='L' then  b[i][1],b[i][2]=b[i][2]   ,b[i][1]*-1
         end
     end
     o=(o+(mode=='R' and -1 or mode=='L' and 1 or 2))%4 return o

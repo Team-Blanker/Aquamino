@@ -131,16 +131,17 @@ local x,y,s,c
 function bg.draw()
     bgsd:send('phase',scene.time*pi/12)
     setShader(bgsd)
+    --gc.setColor(1,1,1)
     rect('fill',-960,-540,1920,1080)
     setShader()
 
     gc.push()
     gc.translate(-mapW/2,-mapH/2)
-    setColor(1,1,1)
+    --[[setColor(1,1,1)
     gc.setLineWidth(2)
     gc.rectangle('line',0,0,mapW,mapH)
     setColor(1,1,1,1/3)
-    --[[for i=0,mapW,attach do
+    for i=0,mapW,attach do
         line(i,0,i,mapH)
     end
     for i=0,mapH,attach do

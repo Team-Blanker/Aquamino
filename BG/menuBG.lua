@@ -52,7 +52,7 @@ function bg.draw()
             x2,y2=420*newDot[edge[i+1]][1],-420*newDot[edge[i+1]][3]
             gc.line(x1,y1,x2,y2)
         end
-        gc.setCanvas()
+        gc.setDefaultCanvas()
         gc.setScissor()
     gc.pop()
     gc.clear(.05,.05,.05)

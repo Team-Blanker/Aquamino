@@ -26,5 +26,5 @@ function warn.draw()
     gc.setColor(.5,1,.875,2*scene.time-.5)
     gc.printf(w.txt,font.Bender,0,-160,w.txtWidth,'center',0,w.txtScale,w.txtScale,w.txtWidth*.5,72)
 end
---function intro.send() scene.cur.modename[1]="40行" end
+
 return warn

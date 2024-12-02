@@ -55,7 +55,14 @@ end
 
 mainLoop=love.run()
 
-gc=love.graphics
+gc={}
+for k,v in pairs(love.graphics) do
+    gc[k]=v
+end
+function gc.setDefaultCanvas()
+    gc.setCanvas(scene.canvas)
+end
+
 fs=love.filesystem
 kb=love.keyboard
 ms=love.mouse
@@ -185,9 +192,10 @@ scene={
     anim=nil,--过场动画
     latest=nil,
 
+    canvas=gc.newCanvas(1920,1080),
     shader=nil,
     setShader=function (shader)
-        scene.shader=shader
+        scene.shader=gc.newShader(shader)
     end,
 
     path={'intro'},
@@ -280,10 +288,11 @@ function mainUpdate(dt)
             local sendArg,recvArg=scene.sendArg,scene.recvArg
             local tosend=scene.cur.send
             if scene.cur.exit then scene.cur.exit() end
-            scene.button.create() scene.slider.create()
+            scene.button.discard() scene.slider.discard()
             scene.pos=scene.dest
             if scene.destScene then scene.cur=scene.destScene scene.destScene=nil
             else scene.cur=require('scene/'..scene.dest) end
+            scene.shader=nil
             sfx.clear()
             if tosend then tosend(scene.cur,sendArg) end scene.sendArg=nil
             if scene.nextBG then scene.BG=require('BG/'..scene.nextBG)
@@ -328,30 +337,40 @@ function love.update(dt)
     mus.update(dt)
     mus.distract(mus.distractCut and win.distractTime/.75 or 0)
 end
+
+local dfcv={scene.canvas,stencil=true}
+
 function love.draw()
-    local dpiS=love.window.getDPIScale()
-    local rw,rh=dpiS*win.W,dpiS*win.H
+    --local dpiS=love.window.getDPIScale()
+    --local rw,rh=dpiS*win.W,dpiS*win.H
+
+    local rx,ry=gc.inverseTransformPoint(ms.getX()+.5,ms.getY()+.5)
+
+    gc.setCanvas(dfcv)
+    gc.translate(960,540)
+
+    gc.clear(0,0,0)
+
+    gc.setColor(1,1,1)--若未说明，图像绘制统一为白色，下同
+    if scene.BG.draw then scene.BG.draw() end
+    gc.setColor(1,1,1)
+    if scene.cur.draw then scene.cur.draw() end
+
+    gc.translate(-960,-540)
+    gc.setCanvas()
 
     --[[画面显示：找到最大的16:9的矩形，居中，以该矩形的中心为原点，向右为x轴正方向，向下为y轴正方向，
     矩形长边为1920单位，短边为1080单位，以此为基准进行绘制]]
     gc.applyTransform(adaptWindow)
-    local rx,ry=gc.inverseTransformPoint(ms.getX()+.5,ms.getY()+.5)
-    gc.setColor(1,1,1)--若未说明，图像绘制统一为白色，下同
-    if scene.BG.draw then scene.BG.draw() end
-    gc.setColor(1,1,1)
     if scene.shader then gc.setShader(scene.shader) end
-    if scene.cur.draw then scene.cur.draw() end
-    if scene.watermark and not fs.isFused() then
-        gc.setColor(.5,1,.875,.15+.0*sin(scene.totalTime*5*math.pi))
-        gc.printf("作者：Aqua6623",font.JB_B,480*sin(scene.totalTime/2*math.pi),-440,5000,'center',0,.5,.5,2500,84)
-        gc.printf("作者：Aqua6623",font.JB_B,-480*sin(scene.totalTime/2*math.pi), 440,5000,'center',0,.5,.5,2500,84)
-        --gc.printf("未经授权禁止转载",Consolas_B,-480*sin(scene.totalTime/2*math.pi),440,5000,'center',0,.5,.5,2500,84)
-    end
-    gc.setShader()
+    gc.setScissor(0,0,1920,1080)
     gc.setColor(1,1,1)
+    gc.draw(scene.canvas,0,0,0,1,1,960,540)
+    gc.setScissor()
+    gc.setShader()
+
+    gc.setColor(1,1,1)--过场动画
     if scene.anim then scene.anim() end
-    gc.setColor(1,1,1,.5)
-    gc.print("TPS: "..love.timer.getFPS()..", FPS: "..drawCtrl.FPS..", gcinfo: "..gcinfo(),font.Bender_B,-950,510,0,.2,.2)
 
     gc.setColor(1,1,1)
     if win.showInfo then
@@ -363,7 +382,13 @@ function love.draw()
         gc.printf(infoR,font.Bender,win.W-10-114514*.15,25,114514,'right',0,.15,.15)]]
         gc.printf(("%.2f,%.2f"):format(rx,ry),font.Bender,rx,ry-16,2000,'center',0,.15,.15,1000,72)
     end
-
+    gc.setColor(1,1,1,.5)
+    gc.print("TPS: "..love.timer.getFPS()..", FPS: "..drawCtrl.FPS..", gcinfo: "..gcinfo(),font.Bender_B,-950,510,0,.2,.2)
+    if scene.watermark and not fs.isFused() then
+        gc.setColor(.5,1,.875,.15+.0*sin(scene.totalTime*5*math.pi))
+        gc.printf("作者：Aqua6623",font.JB_B,480*sin(scene.totalTime/2*math.pi),-440,5000,'center',0,.5,.5,2500,84)
+        gc.printf("作者：Aqua6623",font.JB_B,-480*sin(scene.totalTime/2*math.pi), 440,5000,'center',0,.5,.5,2500,84)
+    end
     gc.origin()
 
     local aw,ah=win.H/win.W<9/16 and win.H*16/9 or win.W,win.H/win.W<9/16 and win.H or win.W*9/16

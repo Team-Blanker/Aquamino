@@ -13,14 +13,7 @@ function BUTTON.create(name,arg,aboveTLimit)
     BUTTON.list[layer][name].aboveTLimit=aboveTLimit and aboveTLimit or 1
     BUTTON.list[layer][name].clickPos={0,0}
     BUTTON.list[layer][name].hoverPos={0,0}
-    else BUTTON.list={} layer=0 end
-    BUTTON.active=nil
-end
-function BUTTON.setLayer(l)
-    layer=l or 0
-end
-function BUTTON.getLayer()
-    return layer
+    end
 end
 --[[e.g.
 arg={
@@ -42,6 +35,16 @@ arg={
     event=function() end
 }
 ]]
+function BUTTON.discard()
+    BUTTON.list={} layer=0
+    BUTTON.active=nil
+end
+function BUTTON.setLayer(l)
+    layer=l or 0
+end
+function BUTTON.getLayer()
+    return layer
+end
 function BUTTON.remove(name)
     if type(name)=='table' then for k,v in pairs(name) do BUTTON.list[v]=nil end
     else BUTTON.list[name]=nil end

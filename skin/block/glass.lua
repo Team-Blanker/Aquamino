@@ -100,7 +100,7 @@ function skin.fieldDraw(player,mino)
         end
     end
     gc.setScissor()
-    gc.setCanvas()
+    gc.setDefaultCanvas()
     gc.pop()
 
     setColor(1,1,1,.036)
