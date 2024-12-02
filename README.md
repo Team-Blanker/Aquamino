@@ -12,7 +12,7 @@ The ONLY Official Repository of Aquamino (Team-Blanker/Aquamino)
 
 A modern block game with all of my odd ideas.
 
-现在使用的是LOVE 11.4，LOVE 11.5也可以正常运行。
+现在使用的是 LOVE 11.4，LOVE 11.5 也可以正常运行。
 
 Currently powered by LOVE 11.4, also can be ran at LOVE 11.5.
 
@@ -20,7 +20,7 @@ Currently powered by LOVE 11.4, also can be ran at LOVE 11.5.
 
 Note that the game path must be in English.
 
-## Download the latest version (最新版下载)
+## 最新版下载 Download the latest version
 
 GitHub: https://github.com/Team-Blanker/Aquamino/releases/latest
 
