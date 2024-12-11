@@ -4,12 +4,12 @@ local sddl=gc.newImage('pic/assets/sddl.png')--540*540
 function BGTest.init()
     scene.BG=require('BG/celebration')
     if scene.BG.init then scene.BG.init() end
-    scene.setShader('shader/sine.glsl')
-    scene.shader:send('phase',t)
+    scene.setShader('shader/mosaic.glsl')
+    --scene.shader:send('phase',t)
 end
 function BGTest.update(dt)
     t=t+dt
-    scene.shader:send('phase',t)
+    --scene.shader:send('phase',t)
 end
 function BGTest.draw()
     gc.draw(sddl,0,0,0,1.25,1.25,270,270)

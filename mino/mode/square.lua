@@ -18,7 +18,7 @@ function rule.init(P,mino)
     })
 
     mino.bag={'Z','S','J','J','L','L','O','O','I','I','T','T','T','T'}
-    mino.seqGenType='bagp1FromBag'
+    mino.seqGenType='bag'
 
     mino.color.plum={.96,.48,.84}
     mino.color.gold={.9,.81,.045}

@@ -87,7 +87,7 @@ function war.init()
         rCool={0,0,0,0},rCoolT=1/64--子弹发射速度频率为1/rCoolT，cool意为冷却
     }
     war.teamBelong={}
-    war.bulletLimit=512
+    war.bulletLimit=1024
 
     war.sim=false
     war.angle=1--炮台角度参数
@@ -193,7 +193,7 @@ function war.init()
     end
     for i=1,4 do--创建炮台
         war.cannon[i]={
-            body=LP.newBody(war.world,(-32+(i-1)%2*64)*11,(-32+floor((i-1)/2)*64)*11,'static'),
+            body=LP.newBody(war.world,(-16+(i-1)%2*32)*21.5,(-16+floor((i-1)/2)*32)*21.5,'static'),
             shape=LP.newCircleShape(16),
         }
         war.cannon[i].fixture=LP.newFixture(war.cannon[i].body,war.cannon[i].shape,1)
@@ -265,7 +265,7 @@ function war.gameUpdate(dt)
             war.team.rCool[i]=war.team.rCool[i]+war.team.rCoolT
             war.team.bulletR[i]=war.team.bulletR[i]-1
             local r=((i==1 and 0 or i==2 and .5 or i==3 and 1.5 or i==4 and 1)+war.angle*.5)*math.pi
-            war.shoot(a*11*32+30*cos(r),b*11*32+30*sin(r),256*cos(r),256*sin(r),i)
+            war.shoot(a*21.5*16+30*cos(r),b*21.5*16+30*sin(r),256*cos(r),256*sin(r),i)
         end
     end
     end
