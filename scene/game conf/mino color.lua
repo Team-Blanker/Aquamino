@@ -4,7 +4,7 @@ local cfcc=user.lang.conf.custom.colorSet
 
 local bc={blockIndex=1}
 local defaultColor={
-    Z={.96,.16,.32},S={.48,.96,0},J={0,.64,.96},L={.96,.64,.32},T={.8,.2,.96},O={.96,.96,0},I={.16,.96,.72},
+    Z={.9,.15,.3},S={.45,.9,0},J={0,.6,.9},L={.9,.6,.3},T={.75,.18,.9},O={.9,.9,0},I={.15,.9,.67},
 }
 local canAdjustColor={glossy=true,glass=true,metal=true,pure=true,bubble=true,['carbon fibre']=true,wheelchair=true}
 local bList={'Z','S','J','L','T','O','I'}
