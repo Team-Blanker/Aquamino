@@ -44,7 +44,7 @@ local function newBall(m,n,t)
         shape=LP.newCircleShape(16),
     }
     local b=war.ctrl.ball[t][#war.ctrl.ball[t]]
-    b.body:setLinearVelocity(rand()<.5 and 3 or -3,0)
+    b.body:setLinearVelocity(rand()*6-.3,0)
     b.fixture=LP.newFixture(b.body,b.shape,1)
     b.fixture:setCategory(t)
     b.fixture:setMask(t)
@@ -82,15 +82,16 @@ function war.init()
     supplyT,supplyTLimit=60,60
     war.team={
         alive={true,true,true,true},
+        dieTimer={0,0,0,0},--死亡计时，动画用
         bulletS={1,1,1,1},--储存多少子弹
         bulletR={0,0,0,0},--要射出多少子弹
         rCool={0,0,0,0},rCoolT=1/64--子弹发射速度频率为1/rCoolT，cool意为冷却
     }
     war.teamBelong={}
-    war.bulletLimit=1024
+    war.bulletLimit=512
 
     war.sim=false
-    war.angle=1--炮台角度参数
+    war.angle=0--炮台角度参数
     war.time=0 war.updateTimer=0
 
     war.world=LP.newWorld(0,0) war.world:setSleepingAllowed(false)
@@ -117,6 +118,28 @@ function war.init()
                 shape=LP.newRectangleShape(16,32*25),
             }
         end
+        war.edge[i].fixture=LP.newFixture(war.edge[i].body,war.edge[i].shape,1)
+        war.edge[i].fixture:setCategory(5)
+        war.edge[i].fixture:setFriction(0)
+        war.edge[i].fixture:setRestitution(1)
+        war.type[war.edge[i].fixture]='edge'
+    end
+    for i=5,8 do--边界的角
+        war.edge[i]={
+            body=LP.newBody(war.world,16*24*(i%2*2-1),16*24*(i<7 and -1 or 1),'static'),
+            shape=LP.newPolygonShape(0,-24*(i<7 and -1 or 1),12,0,-12,0),
+        }
+        war.edge[i].fixture=LP.newFixture(war.edge[i].body,war.edge[i].shape,1)
+        war.edge[i].fixture:setCategory(5)
+        war.edge[i].fixture:setFriction(0)
+        war.edge[i].fixture:setRestitution(1)
+        war.type[war.edge[i].fixture]='edge'
+    end
+    for i=9,12 do--边界的角
+        war.edge[i]={
+            body=LP.newBody(war.world,16*24*(i%2*2-1),16*24*(i<11 and -1 or 1),'static'),
+            shape=LP.newPolygonShape(0,12,-24*(i%2*2-1),0,0,-12),
+        }
         war.edge[i].fixture=LP.newFixture(war.edge[i].body,war.edge[i].shape,1)
         war.edge[i].fixture:setCategory(5)
         war.edge[i].fixture:setFriction(0)
@@ -204,8 +227,13 @@ function war.init()
         war.teamBelong[war.cannon[i].fixture]=i
 
         war.onCollide[war.cannon[i].fixture]=function(this,other)
-            war.team.alive[war.teamBelong[this]]=false
+            local team=war.teamBelong[this]
+            war.team.alive[team]=false
             --this:getBody():destroy()
+            for j=1,#war.ctrl.ball[team] do
+                war.ctrl.ball[team][j].body:destroy()
+                war.ctrl.ball[team][j]=nil
+            end
         end
     end
 
@@ -256,7 +284,7 @@ end
 local vx,vy
 function war.gameUpdate(dt)
     war.world:update(dt,1,1) war.time=war.time+dt
-    war.angle=abs((war.time-war.time%(1/64))%2-1)
+    war.angle=(war.time-war.time%(1/64))*.5
 
     for i=1,4 do
     local a,b=(i-1)%2*2-1,i>2 and 1 or -1
@@ -264,10 +292,13 @@ function war.gameUpdate(dt)
         if war.team.rCool[i]<0 then
             war.team.rCool[i]=war.team.rCool[i]+war.team.rCoolT
             war.team.bulletR[i]=war.team.bulletR[i]-1
-            local r=((i==1 and 0 or i==2 and .5 or i==3 and 1.5 or i==4 and 1)+war.angle*.5)*math.pi
-            war.shoot(a*21.5*16+30*cos(r),b*21.5*16+30*sin(r),256*cos(r),256*sin(r),i)
+            local r=((i==1 and 0 or i==2 and .5 or i==3 and 1.5 or i==4 and 1)+war.angle)*math.pi
+            local vr=r+math.pi*(rand()*.08-.04)
+            war.shoot(a*21.5*16+30*cos(r),b*21.5*16+30*sin(r),256*cos(vr),256*sin(vr),i)
         end
     end
+
+    if not war.team.alive[i] then war.team.dieTimer[i]=war.team.dieTimer[i]+dt end
     end
 
     --[[local cList=war.world:getContacts()
@@ -294,9 +325,11 @@ function war.gameUpdate(dt)
     end  end
 
     supplyT=supplyT-dt
-    if supplyT<=0 and supplyRemain>0 then
+    if supplyT<=0 and supplyRemain>0 then--添加新的小球
         for t=1,4 do
+            if war.team.alive[t] then
             newBall((25+10)*((t-1)%2*2-1)*16,12.5*(floor((t-1)/2)*2-1)*16,t)
+            end
         end
         supplyT=supplyT+supplyTLimit
         supplyRemain=supplyRemain-1
@@ -315,11 +348,6 @@ function war.draw()
     gc.scale(1.25)
     --gc.setColor(1,1,1)
     --for i=-50,50 do circle('fill',64*i,0,8,4) circle('fill',0,64*i,8,4) end
-    setColor(.8,.8,.8)
-    for i=1,#war.edge do
-        u=war.edge[i]
-        poly('fill',u.body:getWorldPoints(u.shape:getPoints()))
-    end
     for i=1,#war.field do
         for j=1,#war.field[i] do
             u=war.field[i][j]
@@ -379,11 +407,19 @@ function war.draw()
         gc.translate(x,y)
         setColor(teamColor[m])
         circle('fill',0,0,16)
-        gc.rotate(((m==1 and 0 or m==2 and .5 or m==3 and 1.5 or m==4 and 1)+war.angle*.5)*math.pi)
+        gc.rotate(((m==1 and 0 or m==2 and .5 or m==3 and 1.5 or m==4 and 1)+war.angle)*math.pi)
         gc.setLineWidth(8)
         gc.line(18,12,30,0,18,-12)
         gc.pop()
+        else
+            setColor(1,1,1,1-2*war.team.dieTimer[i])
+            circle('fill',(-16+(i-1)%2*32)*21.5,(-16+floor((i-1)/2)*32)*21.5,16+64*war.team.dieTimer[i])
         end
+    end
+    setColor(.8,.8,.8)
+    for i=1,#war.edge do
+        u=war.edge[i]
+        poly('fill',u.body:getWorldPoints(u.shape:getPoints()))
     end
 
     setColor(1,1,1,.3)
