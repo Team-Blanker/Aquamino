@@ -98,7 +98,7 @@ return {
     },
     conf={
         test="測試",
-        main={title="設定 - 首頁",audio="音頻設定",video="畫面設定",custom="主题設定",handling="控制設定",keys="鍵位設定"},
+        main={title="設定 - 首頁",audio="音頻設定",video="畫面設定",custom="偏好設定",handling="控制設定",keys="鍵位設定"},
         audio={mus="音樂音量",distract="失去焦點自動靜音",DOX=0,
             sfx="音效音量",stereo="立体声"
         },
@@ -181,7 +181,7 @@ return {
         "c4w，爽！",
         "Lua天下第一！",
         "海蘭就是個彩筆打塊的，懂什麼代碼",
-        "Bad argument #6623Attempt to compare number with nil",
+        "Bad argument #6623: Attempt to compare number with nil",
         "Aquad = Aqua + Quad",
         "我是一條湊數tip",
         "你說得對，但是…",
@@ -191,7 +191,7 @@ return {
         "A Project 由 TEAM BLANKER",
         "遊戲的生日？2023年暑假的時候開發的，就定在8月14日吧",
         "Z醬銳評：「抄鐵殼抄的挺到位的」",
-        "Carbon Fibre方塊皮膚的靈感來自於碳纖維貼紙魔術方塊",
+        "Carbon Fibre 方塊材質的靈感來自於碳纖維貼紙",
         "Aquamino特色推箱",
         "雖然名字是水，但海蘭可不保證每個模式都和水有關係",
         "本遊戲的SRS經過修改，I旋對稱，並且加入了180°踢牆",
@@ -200,6 +200,7 @@ return {
         "唉，weak table",
         "腦袋空空…",
         "少打方塊多讀書",
+        {{1,0,0},"游戲名不是等長條，這不是什麽好笑的玩笑。"},
         "遠離現充。",
         "a and b or c and d or e and f or g",
 
