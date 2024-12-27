@@ -344,7 +344,7 @@ function love.draw()
     --local dpiS=love.window.getDPIScale()
     --local rw,rh=dpiS*win.W,dpiS*win.H
 
-    local rx,ry=gc.inverseTransformPoint(ms.getX()+.5,ms.getY()+.5)
+    local rx,ry=adaptWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5)
 
     gc.setCanvas(dfcv)
     gc.translate(960,540)
