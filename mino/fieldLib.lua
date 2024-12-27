@@ -129,10 +129,61 @@ local gOffu={--大方块附加的踢墙偏移（向上）
 
 local data={}
 function fieldLib.kick(player,mode)
+
+    if fieldLib.coincide(player) then --如果重叠，先检测IRS_RS的踢
+        local ko=fieldLib.coincideKick(player,mode)
+        if ko then return ko end
+    end
+
     local cur=player.cur
     --local originPiece,originO=T.copy(cur.piece),cur.O--先存一个，万一你没踢成功呢
     local originO=cur.O
-    local RS=fieldLib.coincide(player) and IRS_RS or player.RS
+    local RS=player.RS
+
+    if RS.getData then RS.getData(data,player,fieldLib,originO+1,mode) end
+
+    cur.O=B.rotate(cur.piece,cur.O,mode)
+    if RS.kick then
+        local kickOrder=RS.kick(player,mode)
+        if kickOrder then return kickOrder end
+    else
+        local ukick=RS.getKickTable and RS.getKickTable(data,cur.name,originO+1,mode) or RS.kickTable[cur.name] and RS.kickTable[cur.name][mode][originO+1]
+        if ukick and player.LDR>0 then
+            local x,y
+            if cur.piece.sz=='giant' then
+                for i=1,#ukick do
+                    for j=1,#gOffd[mode] do
+                        x,y=ukick[i][1]*2+gOffd[mode][j][1],ukick[i][2]*2+gOffd[mode][j][2]
+                        if not fieldLib.coincide(player,x,y) then cur.x,cur.y=cur.x+x,cur.y+y
+                        return i end
+                    end
+                    for j=1,#gOffu[mode] do
+                        x,y=ukick[i][1]*2+gOffu[mode][j][1],ukick[i][2]*2+gOffu[mode][j][2]
+                        if not fieldLib.coincide(player,x,y) then cur.x,cur.y=cur.x+x,cur.y+y
+                        return i end
+                    end
+                end
+            else
+                for i=1,#ukick do
+                    x,y=ukick[i][1],ukick[i][2]
+                    if not fieldLib.coincide(player,x,y) then cur.x,cur.y=cur.x+x,cur.y+y
+                    return i end
+                end
+            end
+        else
+            if not fieldLib.coincide(player,x,y) then return 1 end
+        end
+    end
+    --cur.piece,cur.O=T.copy(originPiece),originO
+    cur.O=B.antiRotate(cur.piece,cur.O,mode)
+
+    for k,v in pairs(data) do v=nil end
+end
+function fieldLib.coincideKick(player,mode)
+    local cur=player.cur
+    --local originPiece,originO=T.copy(cur.piece),cur.O--先存一个，万一你没踢成功呢
+    local originO=cur.O
+    local RS=IRS_RS
 
     if RS.getData then RS.getData(data,player,fieldLib,originO+1,mode) end
 
