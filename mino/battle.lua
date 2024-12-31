@@ -1,5 +1,8 @@
 local fLib=require'mino/fieldLib'
 local block=require'mino/blocks'
+
+local max,min=math.max,math.min
+
 local battle={}
 function battle.init(player)
     player.garbage={} player.atkAnimList={} player.defAnimList={}
@@ -74,11 +77,12 @@ end
 local l,s,m,w,b,c
 function battle.stdAtkCalculate(player)
     local his=player.history
-    l,s,m,w,b,c=his.line,his.spin,his.mini,his.wide,his.B2B,his.combo
+    l,s,m,b=his.line,his.spin,his.mini,his.B2B
+    w,c=(his.wide>4 and 1 or his.wide),min(his.combo,12)
 
-    local bl=(s and not m) and 2*l-1 or l>=4 and 1.5*l-1.5 or l-.5
-    local ba=b>0 and min((3+b)/4,2.5) or 0
-    local ca=max(min((c-(l>=4 and 1 or 2))/2,w<=4 and 4.5-w or 3.5),0)
+    local bl=(s and not m) and 2*l-1 or l>=4 and 1.5*l-1.5 or l-.5 --基础攻击
+    local ba=b>0 and min((3+b)/4,2.5) or 0 --B2B加成
+    local ca=max((c-3)/(2+w)+(l>=4 and 1.5 or .5),0) --连消加成
     if his.PC then return 4+l else
     return l==0 and 0 or floor(bl+ba+ca)
     end

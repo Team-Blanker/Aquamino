@@ -18,8 +18,8 @@ function otto.addSFX()
         touch='sfx/game/otto/touch.wav',
 
         ['1']='sfx/game/otto/1.wav',
-        ['2']='sfx/game/otto/2.wav',
-        ['3']='sfx/game/otto/3.wav',
+        ['2']='sfx/game/otto/1.wav',
+        ['3']='sfx/game/otto/1.wav',
         ['4']='sfx/game/otto/4.wav',
         mini='sfx/game/otto/mini.wav',
         spin0='sfx/game/otto/spin0.wav',
