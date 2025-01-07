@@ -1,13 +1,7 @@
 local bg={}
 function bg.init()
-    bg.pic=gc.newImage('BG/res/snow peak/BG.png')
-    bg.pic:setFilter('nearest')
-    bg.s1=gc.newImage('BG/res/snow peak/snow1.png')
-    bg.s1:setFilter('nearest')
-    bg.s2=gc.newImage('BG/res/snow peak/snow2.png')
-    bg.s2:setFilter('nearest')
-    bg.s3=gc.newImage('BG/res/snow peak/snow3.png')
-    bg.s3:setFilter('nearest')
+    bg.pic=gc.newImage('BG/res/snow/BG.png')
+    bg.pic:setFilter('linear')
     bg.danger=false
     bg.dangerT=0
     bg.snowParList={}--[1]={x,y,a,as,sz,type,t}
@@ -15,7 +9,7 @@ end
 function bg.update(dt)
     for i=#bg.snowParList,1,-1 do
         local pt=bg.snowParList[i]
-        local v=1200*pt.sz^2
+        local v=4800/pt.dis
         pt.x,pt.y=pt.x+v*dt,pt.y+v*dt
         pt.a=pt.a+pt.as*dt
         pt.TTL=pt.TTL-dt
@@ -26,26 +20,14 @@ end
 function bg.dangerUpdate(dt)
     bg.dangerT=bg.danger and min(2,bg.dangerT+dt) or max(0,bg.dangerT-2*dt)
     if bg.danger then
-        if dt*32>rand() then
+        if dt*48>rand() then
         table.insert(bg.snowParList,{
             x=3000*rand()-180-2040,y=-600,
             a=2*math.pi*rand(),as=.1*math.pi*(rand()-.5),
-            sz=1,type=3,TTL=4
+            dis=1+rand()*2,
+            type=rand(3),TTL=4
         })
-        end
-        if dt*24>rand() then
-        table.insert(bg.snowParList,{
-            x=3000*rand()-180-2040,y=-600,
-            a=2*math.pi*rand(),as=.1*math.pi*(rand()-.5),
-            sz=1.5,type=3,TTL=4
-        })
-        end
-        if dt*16>rand() then
-        table.insert(bg.snowParList,{
-            x=3000*rand()-180-2040,y=-600,
-            a=2*math.pi*rand(),as=.1*math.pi*(rand()-.5),
-            sz=2,type=3,TTL=4
-        })
+        bg.snowParList[#bg.snowParList].sz=(2+rand())/bg.snowParList[#bg.snowParList].dis
         end
     end
 end
@@ -62,7 +44,7 @@ function bg.draw()
     gc.setColor(1,1,1)
     for i=1,#bg.snowParList do
         local pt=bg.snowParList[i]
-        gc.draw(bg.s3,pt.x,pt.y,pt.a,3*pt.sz,3*pt.sz,3,3)
+        gc.arc('fill',pt.x,pt.y,12*pt.sz,pt.a,pt.a+2*math.pi,3+pt.type)
     end
 end
 return bg

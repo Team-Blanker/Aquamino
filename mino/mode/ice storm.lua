@@ -5,7 +5,7 @@ local floor=math.floor
 
 local rule={spinType='default'}
 function rule.init(P,mino)
-    scene.BG=require('BG/snow peak') scene.BG.init()
+    scene.BG=require('BG/snow') scene.BG.init()
     mino.musInfo="カモキング - 大氷河時代"
     mus.add('music/Hurt Record/The Great Ice Age','whole','ogg',14.884,63)
     mus.start()
