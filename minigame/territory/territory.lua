@@ -31,6 +31,7 @@ local function bulletCollide(this,other)
     if other:isDestroyed() or war.type[other]=='edge' then return end
         if war.type[other]=='cannon' then
             other:getBody():destroy()
+            this:getBody():destroy()
             print(war.team[war.teamBelong[other]])
         return end
         other:setCategory(this:getCategory())

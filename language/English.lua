@@ -20,6 +20,7 @@ return {
         battle="Battle",
         ['tower defense']="Tower Defense",
         backfire="Boomerang",
+        overdose="Overdose",
         conf_test="conf_test",
         idea_test="idea_test",
 
@@ -42,7 +43,8 @@ return {
         laser={{1,1,1},"U  N  D-E-R  G  R  O-U-N\nU  N  D-E-R  G  R  O-U-N-D\n",{1,1,0},"This is a rhythmical mode.\nTurning on music is strongly recommended."},
         backfire="Receive the attack sent by yourself!",
         battle={{1,1,1},"Let's battle!\n",{1,1,0},"This mode does not record any score"},
-        ['tower defense']={{1,1,0},"This mode does not record any score\n",{1,.2,.2},"This mode is unstable. (Re)starting this mode\nmay cause the game to freeze."}
+        ['tower defense']={{1,1,0},"This mode does not record any score\n",{1,.2,.2},"This mode is unstable. (Re)starting this mode\nmay cause the game to freeze."},
+        overdose={{1,1,1},"",{1,.2,.2},"Treasure your life, reject overdose."},
     },
     intro={
         start="Press any key to start",

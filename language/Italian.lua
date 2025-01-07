@@ -20,6 +20,7 @@ return {
         battle="Battaglia",
         ['tower defense']="Difesa della torre",
         backfire="Boomerang",
+        overdose="Overdose",
         conf_test="conf_test",
         idea_test="idea_test",
 
@@ -42,7 +43,8 @@ return {
         laser={{1,1,1},"U  N  D-E-R  G  R  O-U-N\nU  N  D-E-R  G  R  O-U-N-D\n",{1,1,0},"Questa è una modalità ritmica.\nSi consiglia vivamente di attivare la musica."},
         backfire="Ricevi l'attacco inviato da te stesso!",
         battle={{1,1,1},"Combattiamo!\n",{1,1,0},"Questa modalità non registra\nalcun punteggio."},
-        ['tower defense']={{1,1,0},"Questa modalità non registra\nalcun punteggio.\n",{1,.2,.2},"L'avvio/riavvio di questa modalità potrebbe\ncausare il blocco del gioco per motivi sconosciuti"}
+        ['tower defense']={{1,1,0},"Questa modalità non registra\nalcun punteggio.\n",{1,.2,.2},"L'avvio/riavvio di questa modalità potrebbe\ncausare il blocco del gioco per motivi sconosciuti"},
+        overdose={{1,1,1},"",{1,.2,.2},"Treasure your life, reject overdose."},
     },
     intro={
         start="Premi un tasto qualsiasi per iniziare",

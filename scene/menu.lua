@@ -35,7 +35,7 @@ menu.modeList={
     smooth={x=-450,y=150,borderColor={.2,.9,.9}},
     levitate={x=-450,y=-150,borderColor={.2,.9,.9}},
     master={x=-300,y=300,borderColor={.96,.24,.24}},
-    square={x=300,y=300,borderColor={.2,.9,.9}},
+    overdose={x=300,y=300,borderColor={.96,.24,.24}},
     multitasking={x=0,y=300,borderColor={.96,.24,.24}},
     laser={x=450,y=-150,borderColor={.2,.9,.9}},
     ['tower defense']={x=300,y=-300,borderColor={.2,.9,.9}},
