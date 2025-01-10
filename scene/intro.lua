@@ -23,7 +23,7 @@ function intro.init()
 
     birthday=win.date.month==8 and win.date.day==14--Aquamino的生日！也是海兰的生日！
     mzk=win.date.month==3 and win.date.day==22--水月生日
-    gg=win.date.month==1 and win.date.day==10--澄闪生日
+    gg=win.date.month==1 and win.date.day==7--澄闪生日
 
     if birthday then
     scene.BG=require('BG/celebration') scene.BG.init()
