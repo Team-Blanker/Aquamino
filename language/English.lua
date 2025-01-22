@@ -32,7 +32,7 @@ return {
         ['40 lines']="Clear 40 lines as fast as you can!",
         marathon={{1,1,1},"Clear 150 lines with increasing speed.\n",{1,1,0},"Handling Restriction:\nASD=150ms ASP=30ms SD ASP=30ms\nGravity increases with level"},
         ['ice storm']="Use All-spin mechanics to stop rising icicles!",
-        thunder="Please do your best to avoid\ndestruction from lightning.",
+        thunder="Do your best to avoid destruction\nfrom lightning.",
         smooth={{1,1,1},"Is it really that smooth?\n",{1,1,0},"Fall delay is 0, Lock delay is increased to 3s"},
         levitate={{1,1,0},"Blocks don't fall after clearing"},
         square={{1,1,1}," How many 4*4 squares can you biuld \nin 3 minutes?"},
@@ -44,7 +44,7 @@ return {
         backfire="Receive the attack sent by yourself!",
         battle={{1,1,1},"Let's battle!\n",{1,1,0},"This mode does not record any score"},
         ['tower defense']={{1,1,0},"This mode does not record any score\n",{1,.2,.2},"This mode is unstable. (Re)starting this mode\nmay cause the game to freeze."},
-        overdose={{1,1,1},"",{1,.2,.2},"Treasure your life, reject overdose."},
+        overdose={{1,1,1},"\"Maybe I was just high on drugs.\"\n",{1,.2,.2},"If experience any discomfort,\nclose the game immediately."},
     },
     intro={
         start="Press any key to start",
@@ -131,9 +131,7 @@ return {
 
             colorSet={
                 title="Color adjust",
-                rAll="Reset all",rCur="Reset this",
-                adjY="This texture can freely adjust color.",
-                adjN="This texture cannot adjust color."
+                rAll="Reset all",rCur="Reset cur.",
             },
             boardSet={
                 title="Board bounce",

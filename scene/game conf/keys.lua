@@ -12,7 +12,7 @@ local key={
         'printscreen'
     }
 }
-local M,T=mymath,mytable
+local M,T=myMath,myTable
 function key.read()
     key.keySet={
         ML={'left'},MR={'right'},

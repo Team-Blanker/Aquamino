@@ -2,7 +2,7 @@ local cfcs=user.lang.conf.boardSet
 
 local bb={}
 local BUTTON,SLIDER=scene.button,scene.slider
-local T=mytable
+local T=myTable
 function bb.read()
     bb.boardBounce={
         moveForce=0,

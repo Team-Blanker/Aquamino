@@ -47,7 +47,7 @@ function skin.holdDraw(player,piece,x,y,color,canHold)
         rect('fill',-18+36*(x+piece[i][1]),-18-36*(y+piece[i][2]),36,36)
     end
 end
-function skin.nextDraw(player,piece,x,y,color,order)
+function skin.nextDraw(player,piece,x,y,color)
     for i=1,#piece do
         setColor(color)
         rect('fill',-18+36*(x+piece[i][1]),-18-36*(y+piece[i][2]),36,36)

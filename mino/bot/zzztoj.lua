@@ -2,7 +2,7 @@
 --已丢弃，仅供参考
 
 local B,SC=require('mino/blocks'),require('mino/spinCheck')
-local M,T=mymath,mytable
+local M,T=myMath,myTable
 require'zzz'
 local fLib=require('mino/fieldLib')
 

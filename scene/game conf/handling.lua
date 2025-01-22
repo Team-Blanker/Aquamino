@@ -2,7 +2,7 @@ local cfh=user.lang.conf.boardSet
 
 local hand={}
 local BUTTON,SLIDER=scene.button,scene.slider
-local T=mytable
+local T=myTable
 function hand.read()
     hand.ctrl={ASD=.15,ASP=.03,SD_ASD=0,SD_ASP=.05}
     local info=file.read('conf/ctrl')

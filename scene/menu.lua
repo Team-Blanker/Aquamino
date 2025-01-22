@@ -349,7 +349,7 @@ gc.setCanvas()
 local mt
 local ts=.4
 local w,h,c
-local lerp=mymath.lerp
+local lerp=myMath.lerp
 function menu.draw()
     mt=menu.modeTxt
     for k,v in pairs(menu.modeList) do

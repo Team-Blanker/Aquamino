@@ -48,7 +48,7 @@ end
 local tchar='territory' local cnum=1
 function intro.keyP(k)
     if k=='escape' then love.event.quit()
-    elseif not mytable.include(banned,k) then
+    elseif not myTable.include(banned,k) then
         if win.stat.launch==1 and introCount==1 then
             scene.switch({
             dest='game conf',destScene=require('scene/game conf/conf_main'),swapT=.6,outT=.2,

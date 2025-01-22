@@ -1,4 +1,4 @@
-local M,T=mymath,mytable
+local M,T=myMath,myTable
 local BUTTON,SLIDER=scene.button,scene.slider
 local cf=user.lang.conf
 

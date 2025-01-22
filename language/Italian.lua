@@ -44,7 +44,7 @@ return {
         backfire="Ricevi l'attacco inviato da te stesso!",
         battle={{1,1,1},"Combattiamo!\n",{1,1,0},"Questa modalità non registra\nalcun punteggio."},
         ['tower defense']={{1,1,0},"Questa modalità non registra\nalcun punteggio.\n",{1,.2,.2},"L'avvio/riavvio di questa modalità potrebbe\ncausare il blocco del gioco per motivi sconosciuti"},
-        overdose={{1,1,1},"",{1,.2,.2},"Treasure your life, reject overdose."},
+        overdose={{1,1,1},"\"Maybe I was just high on drugs.\"\n",{1,.2,.2},"If experience any discomfort,\nclose the game immediately."},
     },
     intro={
         start="Premi un tasto qualsiasi per iniziare",
@@ -132,8 +132,6 @@ return {
             colorSet={
                 title="Regolazione del colore",
                 rAll="Ripristina tutto",rCur="Ripristina",
-                adjY="Questa texture supporta la regolazione libera del colore.",
-                adjN="Questa texture non supporta la regolazione libera del colore."
             },
             boardSet={
                 title="Rimbalzo della griglia",

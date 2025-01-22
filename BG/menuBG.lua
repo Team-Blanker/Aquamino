@@ -11,11 +11,11 @@ local edge={
     5,1, 5,2, 8,1, 8,2, 6,3, 6,4, 7,3, 7,4,
     9,5, 9,6, 12,5, 12,6, 10,7, 10,8, 11,7, 11,8,
 }
-local r3d=mymath.rotate3D
+local r3d=myMath.rotate3D
 local op={'x',math.atan(1/phi),'z',0,
     'x',.2,'z',0,'x',math.pi/2
 }
-local newDot=mytable.copy(dot)
+local newDot=myTable.copy(dot)
 
 local x1,y1,x2,y2
 local pcv=gc.newCanvas(1000,1000)

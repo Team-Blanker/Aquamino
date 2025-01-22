@@ -1,6 +1,6 @@
 local spinCheck={}
 local fLib=require('mino/fieldLib')
-local M,T=mymath,mytable
+local M,T=myMath,myTable
 --return spin,mini
 function spinCheck.default(player)
     local C=player.cur

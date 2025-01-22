@@ -1,6 +1,6 @@
 local slider={list={},acting=nil}
 local gc=love.graphics
-local M,T=mymath,mytable
+local M,T=myMath,myTable
 function slider.create(name,arg)
     if name and arg then slider.list[name]=arg end
 end

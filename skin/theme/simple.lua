@@ -1,5 +1,5 @@
 local simple={}
-local T,M=mytable,mymath
+local T,M=myTable,myMath
 local setColor,rect,line,circle,printf,draw=gc.setColor,gc.rectangle,gc.line,gc.circle,gc.printf,gc.draw
 
 local atkAnimTMax=.5

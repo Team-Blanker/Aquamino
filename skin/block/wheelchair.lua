@@ -1,6 +1,6 @@
 local skin={}
 local COLOR=require('framework/color')
-local M=mymath
+local M=myMath
 local setColor,draw,setShader,rect=gc.setColor,gc.draw,gc.setShader,gc.rectangle
 
 skin.pic=gc.newImage('skin/block/wheelchair/wheelchair.png')
@@ -64,7 +64,7 @@ function skin.previewDraw(piece,x,y,color)--设置内预览方块材质用
     end
     setShader()
 end
-function skin.nextDraw(player,piece,x,y,color,order)
+function skin.nextDraw(player,piece,x,y,color)
     setShader(skin.sd)
     for i=1,#piece do
         setColor(color)

@@ -1,4 +1,4 @@
-local M,T=mymath,mytable
+local M,T=myMath,myTable
 
 local bot_cc=require'mino/bot/cc'
 

@@ -1,6 +1,6 @@
 local BUTTON={list={},active=nil}
 local gc=love.graphics
-local M,T=mymath,mytable
+local M,T=myMath,myTable
 
 local layer=0
 function BUTTON.create(name,arg,aboveTLimit)

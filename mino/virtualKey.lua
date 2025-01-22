@@ -15,7 +15,7 @@ gc.circle('line',225,225,200,4)
 gc.setCanvas()
 gc.setScissor()
 
-local T=mytable
+local T=myTable
 local ins,rem=table.insert,table.remove
 local abs=math.abs
 local tau=2*math.pi

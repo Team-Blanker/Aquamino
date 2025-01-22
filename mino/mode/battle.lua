@@ -11,7 +11,7 @@ function rule.init(P,mino,modeInfo)
     mino.seqGenType='bagp1FromBag' mino.seqSync=true
     P[1].atk=0
     P[1].line=0
-    P[2]=mytable.copy(P[1])
+    P[2]=myTable.copy(P[1])
     print(modeInfo.arg.playerPos)
     if modeInfo.arg.playerPos=='left' then P[1].posX=-400 P[2].posX=400
     else P[1].posX=400 P[2].posX=-400 end

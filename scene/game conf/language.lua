@@ -3,7 +3,7 @@ local BUTTON,SLIDER=scene.button,scene.slider
 local langList={'English','zh-s','zh-t','Italian'}
 function lang.read()
     lang.uage=file.read('conf/lang')
-    if not mytable.include(langList,lang.uage[1]) then lang.uage[1]='English' end
+    if not myTable.include(langList,lang.uage[1]) then lang.uage[1]='English' end
     user.langName=lang.uage[1]
     user.lang=require('language/'..user.langName)
 end

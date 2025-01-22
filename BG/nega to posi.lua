@@ -7,7 +7,7 @@ local offset=0.922
 local loopStartBeat=136
 local loopBeatLen=224
 
-local M=mymath
+local M=myMath
 local bg={}
 
 local nCanvas,pCanvas=gc.newCanvas(100,100),gc.newCanvas(100,100)

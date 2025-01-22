@@ -1,6 +1,6 @@
 --旧模式，在menu界面把鼠标停留在塔防模式按钮上10秒进入
 
-local M,T=mymath,mytable
+local M,T=myMath,myTable
 
 local bot_cc=require'mino/bot/cc'
 

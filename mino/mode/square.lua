@@ -1,4 +1,4 @@
-local T=mytable
+local T=myTable
 local ins,rem=table.insert,table.remove
 
 local rule={}

@@ -8,7 +8,7 @@ local BUTTON,SLIDER=scene.button,scene.slider
 local gc=love.graphics
 local fs=love.filesystem
 
-local T,M=mytable,mymath
+local T,M=myTable,myMath
 
 local vKey=require'mino/virtualKey'
 
@@ -690,7 +690,18 @@ function mino.init(isReset)
             --OZ={.96,.72,.48},OS={.84,.96,.48},bZ={.96,.6,.48},bS={.6,.6,.96},TZ={.96,.48,.96},TS={.48,.96,.48},
             --lSt={.96,.48,.6},rSt={.48,.96,.48},lHk={.36,.96,.96},rHk={.48,.96,.72},
         }
+        mino.texType={
+            Z=1,S=1,J=1,L=1,T=1,O=1,I=1,
+            g1=1,g2=1,
+
+            Z5=1,S5=1,J5=1,L5=1,T5=1,I5=1,
+            N =1,H =1,F =1,E =1,R =1,Y =1,
+            P =1,Q =1,X =1,W =1,V =1,U =1,
+        }
         if fs.getInfo('conf/mino color') then T.combine(mino.color,file.read('conf/mino color')) end
+        if fs.getInfo('conf/mino textype') then T.combine(mino.texType,file.read('conf/mino textype')[pf.block])
+        else T.combine(mino.texType,mino.blockSkin.defaultTexType)
+        end
 
         mino.boardBounce=file.read('conf/board bounce')
     end
@@ -1289,12 +1300,12 @@ function mino.draw()
 
             if C.piece and #C.piece~=0 then
                 --投影
-                mino.blockSkin.ghostDraw(P[i],C.piece,C.x,P[i].cur.ghostY,mino.color[C.name])
+                mino.blockSkin.ghostDraw(P[i],C.piece,C.x,P[i].cur.ghostY,mino.color[C.name],mino.texType[C.name])
                 --手上拿的
                 if mino.smoothAnimAct then
                     mino.setAnimDrawPiece(P[i])
-                    mino.blockSkin.curDraw(P[i],A.drawPiece,0,0,mino.color[C.name])
-                else mino.blockSkin.curDraw(P[i],C.piece,C.x,C.y,mino.color[C.name]) end
+                    mino.blockSkin.curDraw(P[i],A.drawPiece,0,0,mino.color[C.name],mino.texType[C.name])
+                else mino.blockSkin.curDraw(P[i],C.piece,C.x,C.y,mino.color[C.name],mino.texType[C.name]) end
             end
 
             --暂存块（浮空）
@@ -1316,7 +1327,7 @@ function mino.draw()
                 s=min((w/h>2 and 4/w or 2.5/h),1)
                 gc.translate(-18*P[i].w-90-20,-310)
                 gc.scale(s)
-                mino.blockSkin.holdDraw(P[i],H.piece,x,y,mino.color[H.name],P[i].canHold)
+                mino.blockSkin.holdDraw(P[i],H.piece,x,y,mino.color[H.name],P[i].canHold,mino.texType[H.name])
             gc.pop() end
 
             --预览
@@ -1326,7 +1337,7 @@ function mino.draw()
                 gc.push('transform')
                     gc.translate(18*P[i].w+90+20,-410+100*j)
                     gc.scale(s)
-                    mino.blockSkin.nextDraw(P[i],P[i].NP[j],x,y,mino.color[P[i].next[j]])
+                    mino.blockSkin.nextDraw(P[i],P[i].NP[j],x,y,mino.color[P[i].next[j]],mino.texType[P[i].next[j]])
                 gc.pop()
             end
 

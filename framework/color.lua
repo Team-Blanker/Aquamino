@@ -1,4 +1,4 @@
-local M=mymath
+local M=myMath
 local max,min=math.max,math.min
 local color={
 	red='ff0000',

@@ -36,7 +36,7 @@ function rule.onLineClear(player,mino)
         player.FDelay=2^(-(player.speedLv-1)/14*8)
         mino.stacker.ctrl.SD_AMP=2^(-(player.speedLv-1)/14*8)*.03
         sfx.play('lvup')
-        if not mino.unableBG then scene.BG.baseColor=mymath.lerp({.4,.4,.4},rule.finalColor,(player.speedLv-1)/14) end
+        if not mino.unableBG then scene.BG.baseColor=myMath.lerp({.4,.4,.4},rule.finalColor,(player.speedLv-1)/14) end
     end
 end
 function rule.underFieldDraw(player)

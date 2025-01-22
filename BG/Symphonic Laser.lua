@@ -12,7 +12,7 @@ local flore,ceil,max,min=math.floor,math.ceil,math.max,math.min
 
 local rect,setColor=gc.rectangle,gc.setColor
 
-local M=mymath
+local M=myMath
 local bg={}
 function bg.init()
     bg.time=0

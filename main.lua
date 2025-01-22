@@ -68,7 +68,7 @@ kb=love.keyboard
 ms=love.mouse
 touch=love.touch
 
-mymath=require'framework/mathExtend' mytable=require'framework/tableExtend'
+myMath=require'framework/mathExtend' myTable=require'framework/tableExtend'
 anim=require'scene/swapAnim'
 COLOR=require'framework/color'
 

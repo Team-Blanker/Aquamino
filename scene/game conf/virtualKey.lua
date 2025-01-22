@@ -1,5 +1,5 @@
 local BUTTON,SLIDER=scene.button,scene.slider
-local M,T=mymath,mytable
+local M,T=myMath,myTable
 
 local cfv
 

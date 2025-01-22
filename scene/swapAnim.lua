@@ -35,7 +35,7 @@ function anim.enterMenu(inT,keepT,outT)
             gc.arc('line','open',0,0,max(150,1920-sz),-math.pi/2,3*math.pi/2,4)
             end
         else
-            local s=mymath.clamp((scene.swapT/keepT-1/2)*2,0,1)^3
+            local s=myMath.clamp((scene.swapT/keepT-1/2)*2,0,1)^3
             gc.rectangle('fill',-960,-540,1920,1080)
             gc.setColor(1,1,1)
             gc.arc('fill','closed',0,0,160,-math.pi/2,math.pi,3)

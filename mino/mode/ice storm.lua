@@ -1,5 +1,5 @@
 local gc=love.graphics
-local M,T=mymath,mytable
+local M,T=myMath,myTable
 local B=require'mino/blocks'
 local floor=math.floor
 
