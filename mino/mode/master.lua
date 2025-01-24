@@ -8,14 +8,14 @@ local LDelayList={
 local ASDList={
     .15,.15,.15,.15,.15,
     .15,.15,.15,.15,.15,
-    .14,.14,.13,.13,.12,
-    .10,.10,.09,.09,.08
+    .14,.14,.14,.14,.14,
+    .13,.13,.12,.10,.09
 }
 local ASPList={
     .030,.030,.030,.030,.030,
     .030,.030,.030,.030,.030,
-    .028,.027,.026,.025,.024,
-    .020,.020,.018,.018,.016
+    .028,.028,.028,.028,.028,
+    .026,.026,.024,.020,.018
 }
 function rule.init(P,mino)
 
@@ -39,6 +39,7 @@ function rule.init(P,mino)
         v.FDelay=0
         v.speedLv=1
         v.totalLine=0
+        v.LDRInit=20 v.LDR=20
     end
 end
 function rule.onLineClear(player,mino)
