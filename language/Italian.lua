@@ -5,17 +5,17 @@ return {
         txtScale=40/128,txtWidth=4500
     },
     modeName={
-        ['40 lines']="Sprint",
+        ['40 lines']="Corsa",
         marathon="Maratona",
         ['ice storm']="Tempesta di ghiaccio",
         thunder="Temporale",
-        smooth="Sprint Liscio",
+        smooth="Corsa Liscia",
         levitate="Levitazione",
         square="Quadrati",
         master="Maestro",
         multitasking="Multitasking",
         sandbox="Sandbox",
-        ['dig 40']="Cheese",
+        ['dig 40']="Scava",
         laser="Laser",
         battle="Battaglia",
         ['tower defense']="Difesa della torre",
@@ -24,7 +24,7 @@ return {
         conf_test="conf_test",
         idea_test="idea_test",
 
-        ['pento 40']="Pentomino sprint",
+        ['pento 40']="Corsa con Pentomini",
 
         ['core destruction']='[Deprecated mode]'
     },
@@ -44,7 +44,7 @@ return {
         backfire="Ricevi l'attacco inviato da te stesso!",
         battle={{1,1,1},"Combattiamo!\n",{1,1,0},"Questa modalità non registra\nalcun punteggio."},
         ['tower defense']={{1,1,0},"Questa modalità non registra\nalcun punteggio.\n",{1,.2,.2},"L'avvio/riavvio di questa modalità potrebbe\ncausare il blocco del gioco per motivi sconosciuti"},
-        overdose={{1,1,1},"\"Maybe I was just high on drugs.\"\n",{1,.2,.2},"If experience any discomfort,\nclose the game immediately."},
+        overdose={{1,1,1},"\"Probabilmente ero sotto effetto di droga....\"\n",{1,.2,.2},"Se provi disagio,\nchiudi immediatamente il gioco."},
     },
     intro={
         start="Premi un tasto qualsiasi per iniziare",
@@ -64,7 +64,7 @@ return {
             ['tower defense']={
                 bot_PPS="Bot PPS",
                 player={
-                    pos="Player's place",
+                    pos="Posto del giocatore",
                     left="Sinistra",
                     right="Destra"
                 }
@@ -72,7 +72,7 @@ return {
         }
     },
     about={
-        engineText="Alimentato da LÖVE",
+        engineText="Sviluppato con LÖVE",
         tool="Strumenti utilizzati:",
         repo="Repositori Utilizzati:",
         time="Avviato %d volte\nTempo totale giocato: %ds",
@@ -92,7 +92,7 @@ return {
     },
     game={
         nowPlaying="In riproduzione: ",
-        curMode="Current mode: ",
+        curMode="Modalità corrente: ",
         paused="In pausa",result="Partita Finita",
         theme={
             simple={win="Vittoria!",lose="Sconfitta",newRecord="Nuovo record!"}
@@ -108,7 +108,7 @@ return {
         },
         video={
             unableBG="Disabilita Sfondi",
-            BGset="Manage BGs...",
+            BGset="Gestione sfondi...",
             fullScr="Schermo Intero",fullScrTxt="Premi F11 per andare a schermo intero.",
             vsync="VSync",
             vsyncTxt="Sincronizza la frequenza dei fotogrammi con la frequenza di aggiornamento del monitor.",
@@ -126,27 +126,28 @@ return {
             theme="Tema della griglia",
             scale="Scala della griglia",scaleTxt="Dimensione della cella",
             sfx="Effetti Sonori",sfxWarning={
-                otto="LOUD SOUND WARNING. TAKE AT YOUR OWN RISK."
+                otto="ATTENZIONE: SUONI ALTI. USA A TUO RISCHIO."
             },
 
             colorSet={
                 title="Regolazione del colore",
                 rAll="Ripristina tutto",rCur="Ripristina",
+                texType="Texture",
             },
             boardSet={
                 title="Rimbalzo della griglia",
 
-                presetLevel="Preset level",
+                presetLevel="Preimpostazione",
 
-                moveForce="Move force",
-                dropVel="Drop momentum",
-                clearFactor="Clear momentum factor",
-                velDamping="Velocity damping",
-                elasticFactor="Elastic factor",
+                moveForce="Forza di movimento",
+                dropVel="Slancio in caduta",
+                clearFactor="Fattore di slancio (completamento linee)",
+                velDamping="Smorzamento velocità",
+                elasticFactor="Fattore elastico",
 
-                spinAngvel="Spin angular momentum",
-                angDamping="Spin damping",
-                spinFactor="Spin elastic factor",
+                spinAngvel="Slancio angolare all-spin",
+                angDamping="Smorzamento all-spin",
+                spinFactor="Fattore elastico all-spin",
             }
         },
         keys={
@@ -172,7 +173,7 @@ return {
     },
 
     rule={
-        dig={remain="Da scavare",piece="Tetrimini"},
+        dig={remain="Da scavare",piece="Tetramini"},
         backfire={remain="Da ricevere",eff="Efficienza"},
         square={time="Tempo",amount="Quadrati",remainTime={"2 minuti","1 minuto","30 SECONDI"}}
     },
