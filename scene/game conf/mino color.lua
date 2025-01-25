@@ -21,16 +21,19 @@ function bc.read()
     local c=file.read('conf/mino color')
     myTable.combine(bc.color,c)
 
-    bc.texType={}
+    bc.texType=T.copy(bc.blockSkin.defaultTexType or {})
     if fs.getInfo('conf/mino textype') then T.combine(bc.texType,file.read('conf/mino textype')[skinName])
-    else T.combine(bc.texType,bc.blockSkin.defaultTexType)
     end
     --print(next(bc.texType))
 end
 function bc.save()
     file.save('conf/mino color',bc.color)
+
+    local ttp=file.read('conf/mino textype')
+    ttp[skinName]=bc.texType
+    file.save('conf/mino textype',ttp)
 end
-bc.txt={rAll={},rCur={}}
+bc.txt={rAll={},rCur={},texType={}}
 function bc.init()
     scene.BG=require'BG/settings'
 
@@ -50,6 +53,11 @@ function bc.init()
     rc.txt=gc.newText(font.Bender,cfcc.rCur)
     rc.w,rc.h=rc.txt:getDimensions()
     rc.s=min(315/rc.w,.5)
+
+    local tt=bc.txt.texType
+    tt.txt=gc.newText(font.Bender,cfcc.texType)
+    tt.w,tt.h=tt.txt:getDimensions()
+    tt.s=min(360/tt.w,.4)
 
     bc.read()
 
@@ -74,6 +82,41 @@ function bc.init()
         end
     })
 
+    BUTTON.create('textureChoose',{
+        x=0,y=120,type='rect',w=450,h=80,success=false,
+        draw=function(bt,t,ct,cp)
+            local o,l=bc.texType[bList[bc.blockIndex]] or 1,texTypeRange[skinName] or 1
+            local w,h=bt.w,bt.h
+            if bt.success then local a=1-6*ct
+                gc.setColor(1,1,1,a)
+                gc.setLineWidth(3)
+                local off=h/2*(1-a)
+                if cp[1]<0 then gc.line(-(w-h)/2-off,h/2,-w/2-off,0,-(w-h)/2-off,-h/2)
+                else gc.line((w-h)/2+off,h/2,w/2+off,0,(w-h)/2+off,-h/2)
+                end
+            end
+            gc.setColor(.44,.88,.77)
+            gc.draw(tt.txt,0,-h/2-10,0,tt.s,tt.s,tt.w/2,tt.h)
+            gc.setLineWidth(3)
+            gc.polygon('line',-w/2,0,-(w-h)/2,h/2,(w-h)/2,h/2,w/2,0,(w-h)/2,-h/2,-(w-h)/2,-h/2)
+            if o>1 then gc.line(-(w-h)/2,h/2-16,-w/2+16,0,-(w-h)/2,-h/2+16) end
+            if o<l then gc.line( (w-h)/2,h/2-16, w/2-16,0, (w-h)/2,-h/2+16) end
+            gc.setColor(1,1,1)
+            gc.printf(o,font.Bender,0,0,1280,'center',0,.4,.4,640,font.height.Bender/2)
+        end,
+        event=function(x,y,bt)
+            local o,l=bc.texType[bList[bc.blockIndex]],texTypeRange[skinName]
+            if not l then return end
+            local success=false
+            if x<0 then
+                if o>1 then o=o-1 success=true end
+            elseif o<l then o=o+1 success=true
+            end
+            bc.texType[bList[bc.blockIndex]]=o
+            bt.success=success
+            if success then sfx.play('swap') end
+        end
+    },.2)
     BUTTON.create('resetAllColor',{
         x=0,y=400,type='rect',w=350,h=100,
         draw=function(bt,t,ct)
@@ -123,18 +166,21 @@ function bc.init()
     },.2)
 
     BUTTON.create('switchL',{
-        x=-660,y=-250,type='rect',w=250,h=500,
+        x=-660,y=-250,type='rect',w=250,h=500,ec=false,
         draw=function(bt,t,ct)
             if bc.blockIndex~=1 then
-            gc.setLineWidth(25)
-            gc.setColor(1,1,1,.5+1.5*t)
-            gc.line(50,-100,-50,0,50,100)
-            gc.setColor(1,1,1,.8-ct*4)
-            gc.line(50-ct*600,-100,-50-ct*600,0,50-ct*600,100)
+                gc.setLineWidth(20)
+                gc.setColor(1,1,1,.5+1.5*t)
+                gc.line(50,-100,-50,0,50,100)
+            end
+            if bt.ec and ct<.2 then
+                gc.setLineWidth(16-ct*128)
+                gc.setColor(1,1,1,.8-ct*6.4)
+                gc.line(50-ct*600,-100,-50-ct*600,0,50-ct*600,100)
             end
         end,
-        event=function()
-            if bc.blockIndex~=1 then sfx.play('swap') end
+        event=function(x,y,bt)
+            if bc.blockIndex~=1 then sfx.play('swap') bt.ec=true else bt.ec=false end
             bc.blockIndex=max(1,bc.blockIndex-1)
             SLIDER.setPos('colorR',bc.color[bList[bc.blockIndex]][1])
             SLIDER.setPos('colorG',bc.color[bList[bc.blockIndex]][2])
@@ -142,18 +188,21 @@ function bc.init()
         end
     },.2)
     BUTTON.create('switchR',{
-        x=660,y=-250,type='rect',w=150,h=300,
+        x=660,y=-250,type='rect',w=150,h=300,ec=false,
         draw=function(bt,t,ct)
             if bc.blockIndex~=#bList then
-            gc.setLineWidth(25)
-            gc.setColor(1,1,1,.5+1.5*t)
-            gc.line(-50,-100,50,0,-50,100)
-            gc.setColor(1,1,1,.8-ct*4)
-            gc.line(-50+ct*600,-100,50+ct*600,0,-50+ct*600,100)
+                gc.setLineWidth(20)
+                gc.setColor(1,1,1,.5+1.5*t)
+                gc.line(-50,-100,50,0,-50,100)
+            end
+            if bt.ec and ct<.2 then
+                gc.setLineWidth(16-ct*128)
+                gc.setColor(1,1,1,.8-ct*6.4)
+                gc.line(-50+ct*600,-100,50+ct*600,0,-50+ct*600,100)
             end
         end,
-        event=function()
-            if bc.blockIndex~=#bList then sfx.play('swap') end
+        event=function(x,y,bt)
+            if bc.blockIndex~=#bList then sfx.play('swap') bt.ec=true else bt.ec=false end
             bc.blockIndex=min(bc.blockIndex+1,#bList)
             SLIDER.setPos('colorR',bc.color[bList[bc.blockIndex]][1])
             SLIDER.setPos('colorG',bc.color[bList[bc.blockIndex]][2])

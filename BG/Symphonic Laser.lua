@@ -114,7 +114,7 @@ function bg.draw()
                 end
             end
             if loopBeat>=16 and loopBeat<40 then --local sz=flore(loopBeat%8)+1
-                setColor(1,1,1,.025*(intLoopBeat%8+1)*(1-loopBeat%1))
+                setColor(1,1,1,.1+.025*(intLoopBeat%8+1)*(1-loopBeat%1))
                 --rect('fill',-sz*120,-540,sz*240,1080)
                 rect('fill',-960,-540,1920,1080)
             end

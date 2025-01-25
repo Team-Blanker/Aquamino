@@ -129,6 +129,7 @@ return {
             colorSet={
                 title="調整方塊顏色",
                 rAll="重置所有",rCur="重置目前",
+                texType="材質樣式",
             },
             boardSet={
                 title="版面晃动",

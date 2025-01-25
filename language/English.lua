@@ -132,6 +132,7 @@ return {
             colorSet={
                 title="Color adjust",
                 rAll="Reset all",rCur="Reset cur.",
+                texType="Texture",
             },
             boardSet={
                 title="Board bounce",
