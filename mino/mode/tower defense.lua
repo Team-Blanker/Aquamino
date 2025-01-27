@@ -41,7 +41,8 @@ function rule.init(P,mino,modeInfo)
     mino.seqSync=true
     mino.rule.allowSpin={Z=true,S=true,J=true,L=true,T=true,O=true,I=true,}
     mino.rule.enableMiniSpin=false
-    P[1].preview=3 P[1].posOffset.failDrop={x=0,y=0} P[1].failDrop=false P[1].failDropTimer=0
+    P[1].preview=3
+    P[1].posOffset.failDrop={x=0,y=0} P[1].failDrop=false P[1].failDropTimer=0
     P[1].failDropParList={}
     for i=1,100 do
         P[1].failDropParList[i]={x=-300+600*rand(),y=-300+600*rand(),t=i/40+4*(rand()-.5),sz=120+240*rand()}
@@ -72,6 +73,7 @@ function rule.init(P,mino,modeInfo)
     B2B=P[2].history.B2B>0,
     combo=P[2].history.combo,
     })
+
     rule.expect={}
     rule.opDelay=modeInfo.arg.bot_DropDelay
     rule.opTimer=0

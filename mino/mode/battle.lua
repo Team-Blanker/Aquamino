@@ -28,8 +28,8 @@ function rule.init(P,mino,modeInfo)
     B2B=P[2].history.B2B>0,
     combo=P[2].history.combo,
     })
-    rule.expect={}
 
+    rule.expect={}
     rule.opDelay=modeInfo.arg.bot_DropDelay
     rule.opTimer=0
 end
