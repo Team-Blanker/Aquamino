@@ -154,6 +154,8 @@ function ccWrap.newThread(channelIndex,P,index)
     thread.channelIndex=channelIndex
     thread.sendChannel=th.getChannel("cc_recv"..channelIndex)
     thread.sendChannel:clear()
+    thread.nextSendChannel=th.getChannel("cc_nextRecv"..channelIndex)
+    thread.nextSendChannel:clear()
     thread.recvChannel=th.getChannel("cc_send"..channelIndex)
     thread.recvChannel:clear()
     thread.thread=th.newThread([[
@@ -166,17 +168,19 @@ function ccWrap.newThread(channelIndex,P,index)
         local s,r,nr=th.getChannel("cc_send"..channelIndex),th.getChannel("cc_recv"..channelIndex),th.getChannel("cc_nextRecv"..channelIndex)
         local sCount,rCount=0,0
         while true do
+            next=nr:pop()
+            if next then
+                for i=1,#next do
+                    cc.addNextPiece(bot,next[i])
+                end
+                --print('added '..#next..' pieces')
+
+                --if not firstMoveRequested then cc.requestMove(bot) firstMoveRequested=true end
+            end
             arg=r:demand()
             if arg then
             --print(arg.op)
-                if arg.op=='next' then
-                    for i=1,#arg.next do
-                        cc.addNextPiece(bot,arg.next[i])
-                    end
-                    --print('added '..#arg.next..' pieces')
-
-                    if not firstMoveRequested then cc.requestMove(bot) firstMoveRequested=true end
-                elseif arg.op=='send' then
+                if arg.op=='send' then
                     sCount=sCount+1
                     cc.updateBot(bot,cc.fieldToC(arg.boolField),arg.B2B,arg.combo)
                     cc.requestMove(bot,arg.garbage)
@@ -206,15 +210,15 @@ function ccWrap.destroyThread(thread)
         --nothing 
     end
     --thread.thread:kill()
-    thread.thread:release()
     thread.destroyed=true
+    thread.thread:release()
 end
 function ccWrap.sendNext(thread,player,nextStart)
-    local arg={next={},op='next'}
+    local n={}
     for i=nextStart,#player.next do
-        arg.next[#arg.next+1]=player.next[i]
+        n[#n+1]=player.next[i]
     end
-    thread.sendChannel:push(arg)
+    thread.nextSendChannel:push(n)
 end
 function ccWrap.renderField(player)
     assert(player.w==10,'Field width must be 10')
