@@ -10,6 +10,14 @@ function battle.init(player)
     player.defAmount=0
     player.atkScale=1 player.defScale=1
     player.atkMinusByDef=true
+
+    player.spikeTimer=0
+    player.spikeCount=0
+    player.defSpikeCount=0
+
+    player.spikeAnimTimer=0 player.spikeAnimTMax=.75
+    player.spikeAnimCount=0
+    player.defSpikeAnimCount=0
 end
 function battle.sendAtk(player,dest,atk)
     if not atk then return end
@@ -72,6 +80,10 @@ function battle.update(player,dt)
     for i=1,#player.garbage do
         player.garbage[i].time=player.garbage[i].time-dt
     end
+    player.spikeTimer=max(player.spikeTimer-dt,0)
+    if player.spikeTimer==0 then player.spikeCount=0 player.defSpikeCount=0 end
+
+    player.spikeAnimTimer=max(player.spikeAnimTimer-dt,0)
 end
 
 local l,s,m,w,b,c
@@ -91,14 +103,28 @@ function battle.stdAtkGen(player,time)
     local his=player.history
     l,s,m,w,b,c=his.line,his.spin,his.mini,his.wide,his.B2B,his.combo
 
-    local atk=(battle.stdAtkCalculate(player)-(player.atkMinusByDef and player.defAmount or 0))*player.atkScale
+    local atk=battle.stdAtkCalculate(player)
+    local def=(player.atkMinusByDef and player.defAmount or 0)
+    local totalatk=(atk-def)*player.atkScale
     player.defAmount=0
-    if atk<=0 then return end
+
+    if atk>0 then
+        player.spikeCount=player.spikeCount+atk
+        player.defSpikeCount=player.defSpikeCount+def
+        player.spikeTimer=1
+
+        player.spikeAnimCount=player.spikeCount
+        player.defSpikeAnimCount=player.defSpikeCount
+        player.spikeAnimTimer=player.spikeAnimTMax
+    end
+
+    if totalatk<=0 then return end
+
     return {
-        amount=atk,
+        amount=totalatk,
         block='g1',
-        cut=(w==4 or his.PC) and 1e99 or s and atk/2+b or 1e99,
-        M_OC=(w>=2 and w<=4) and (4-w)*.025 or his.PC and 0 or max(1/(b+atk-0.1*(c-3)),.2),
+        cut=(w==4 or his.PC) and 1e99 or s and totalatk/2+b or 1e99,
+        M_OC=(w>=2 and w<=4) and (4-w)*.025 or his.PC and 0 or max(1/(b+totalatk-0.1*(c-3)),.2),
         appearT=0,
         time=time or .5,
     }

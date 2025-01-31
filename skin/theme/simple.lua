@@ -122,8 +122,9 @@ function simple.garbageDraw(player,mino)
         gc.setColor(1,1,1,1-t)
         rect('fill',-W/2-18-8*t,H/2-36*(dal[i].amount+dal[i].pos)-12*t,16+16*t,36*dal[i].amount+24*t)
     end
-
 end
+
+local spikeColor={[0]={.625,.625,.625},{.96,.96,.96},{.5,1,.875},{.6,.8,1},{.8,.6,1}}
 function simple.overFieldDraw(player)
     local aal=player.atkAnimList
     if aal then
@@ -132,8 +133,24 @@ function simple.overFieldDraw(player)
         local bv=min(max(aal[i].B2B,0)*.2,1)
         local s=min((aal[i].amount-1+6)/24,.625)
         gc.setColor(1,1-.2*bv,1-bv,1.5-1.5*t)
-        gc.printf(aal[i].amount,font.Bender,-W/2+36*aal[i].x-18,H/2-36*(aal[i].y+(2-t)*t),200,'center',0,s,s,100,72)
+        gc.printf(aal[i].amount,font.Bender,-W/2+36*aal[i].x-18,H/2-36*(aal[i].y+(2-t)*t),2000,'center',0,s,s,1000,font.height.Bender/2)
     end
+    end
+
+    local spk,dspk=player.spikeAnimCount,player.defSpikeAnimCount
+    if spk and spk>=8 then
+
+        local sc=spikeColor[min(floor((spk-dspk)/8),4)]
+
+        local ts=.3+.05*min(floor((spk-dspk)/8),4)
+
+        gc.setColor(sc[1],sc[2],sc[3],(player.spikeAnimTimer/player.spikeAnimTMax*2)^.5)
+        local ah=(spk-dspk>=8 and 80*ts/.35 or 0)*max( (player.spikeAnimTMax-player.spikeAnimTimer)/.2*(1-(player.spikeAnimTMax-player.spikeAnimTimer)/.2),0 )
+        if dspk>0 then
+            gc.printf(string.format("%d SPIKE (-%d)",spk,dspk),font.Bender,0,-H/5-ah,4000,'center',0,ts,ts,2000,font.height.Bender/2)
+        else
+            gc.printf(string.format("%d SPIKE",spk),font.Bender,0,-H/5-ah,4000,'center',0,ts,ts,2000,font.height.Bender/2)
+        end
     end
 end
 
@@ -277,6 +294,7 @@ function simple.update(player,dt)
     for i=#PCInfo,1,-1 do PCInfo[i]=PCInfo[i]-dt
         if PCInfo[i]<=0 then rem(PCInfo,i) end
     end
+
     player.clearTxtTimer=max(player.clearTxtTimer-dt,0)
 
     if checkDanger(player) then player.dangerAnimTimer=min(dangerAnimTMax,player.dangerAnimTimer+dt)
