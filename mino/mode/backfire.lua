@@ -35,8 +35,8 @@ function rule.afterPieceDrop(player,mino)
     if player.recvLine>=80 then mino.win(player) end
 end
 
-function rule.gameUpdate(P,dt,mino)
-    for i=1,#P do battle.update(P[1],dt) end
+function rule.always(player,dt)
+    battle.update(player,dt)
 end
 
 local efftxt

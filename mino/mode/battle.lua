@@ -8,6 +8,8 @@ function rule.init(P,mino,modeInfo)
     mus.add('music/Hurt Record/burning heart','whole','ogg',5.4,256*60/200)
     mus.start()
 
+    mino.resetStopMusic=false
+
     mino.seqGenType='bagp1FromBag' mino.seqSync=true
     P[1].atk=0
     P[1].line=0
@@ -51,8 +53,10 @@ function rule.gameUpdate(P,dt,mino)
         end
     end
     if P[2].deadTimer>=0 then mino.win(P[1]) end
+end
 
-    for i=1,#P do battle.update(P[i],dt) end
+function rule.always(player,dt)
+    battle.update(player,dt)
 end
 function rule.afterCheckClear(player,mino)
     if player.history.line==0 then
