@@ -1367,10 +1367,10 @@ function mino.draw()
     if mino.paused then
         BUTTON.draw()
         gc.setColor(1,1,1)
-        gc.printf(curModeTxt,font.Bender,0,-300,65536,'center',0,.4,.4,32768,font.height.Bender/2)
+        gc.printf(curModeTxt,font.Bender,0,-320,10000,'center',0,.4,.4,5000,font.height.Bender/2)
         gc.printf(S.winState==0 and user.lang.game.paused or user.lang.game.result,
             font.Bender_B,0,-440,4096,'center',0,.9,.9,2048,font.height.Bender_B/2)
-        gc.printf(curPlayTxt,font.Bender,0,330,65536,'center',0,.4,.4,32768,font.height.Bender/2)
+        gc.printf(curPlayTxt,font.Bender,0,320,10000,'center',0,.4,.4,5000,font.height.Bender/2)
     end
 end
 function mino.exit()

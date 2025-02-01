@@ -28,7 +28,7 @@ option={
 ]]
 local defaultOption={
     mode=0,
-    spawn_rule=1,
+    spawn_rule=0,
     pcloop=0,
     min_nodes=2000,
     max_nodes=100000,
