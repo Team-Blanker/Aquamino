@@ -4,18 +4,39 @@ local fLib=require'mino/fieldLib'
 local bot_cc=require'mino/bot/cc'
 
 local musTag={'battle'}
+
+local songList={
+    function ()
+        mus.add('music/Hurt Record/burning heart','whole','ogg',5.4,256*60/200)
+    end,
+    function ()
+        mus.add('music/Hurt Record/SAMURAI SWORD','whole','ogg',16.8,67.2)
+    end,
+    function ()
+        mus.add('music/Hurt Record/Ice-eyes','whole','ogg',99/7,576/7)
+    end,
+}
+local songInfoList={
+    "カモキング - burning heart",
+    "カモキング - SAMURAI SWORD",
+    "カモキング - アイス・アイズ (Ice-eyes)"
+}
+local songCs=math.random(#songList)
 function rule.init(P,mino,modeInfo)
     mino.resetStopMusic=false
 
     scene.BG=require('BG/galaxy') scene.BG.init()
 
-    if not mus.checkTag('battle') then
-        mus.add('music/Hurt Record/burning heart','whole','ogg',5.4,256*60/200)
+    local hasbgm=mus.checkTag('battle')
+
+    if not hasbgm then
+        songCs=math.random(#songList)
+        songList[songCs]()
         mus.start()
         mus.setTag(musTag)
     end
 
-    mino.musInfo="カモキング - burning heart"
+    mino.musInfo=songInfoList[songCs]
 
     mino.seqGenType='bagp1FromBag' mino.seqSync=true
     P[1].atk=0
