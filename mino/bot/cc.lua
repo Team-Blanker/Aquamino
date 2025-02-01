@@ -28,7 +28,7 @@ option={
 ]]
 local defaultOption={
     mode=0,
-    spawn_rule=0,
+    spawn_rule=1,
     pcloop=0,
     min_nodes=2000,
     max_nodes=100000,
@@ -198,6 +198,7 @@ function ccWrap.newThread(channelIndex,P,index)
     return thread
 end
 function ccWrap.startThread(thread,option,weight)
+    if not option then option=defaultOption end
     thread.thread:start(thread.channelIndex,option,weight)
 end
 function ccWrap.destroyThread(thread)
