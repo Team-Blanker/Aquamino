@@ -2,13 +2,20 @@ local rule={}
 local battle=require'mino/battle'
 local fLib=require'mino/fieldLib'
 local bot_cc=require'mino/bot/cc'
-function rule.init(P,mino,modeInfo)
-    mino.musInfo="カモキング - burning heart"
-    scene.BG=require('BG/galaxy') scene.BG.init()
-    mus.add('music/Hurt Record/burning heart','whole','ogg',5.4,256*60/200)
-    mus.start()
 
+local musTag={'battle'}
+function rule.init(P,mino,modeInfo)
     mino.resetStopMusic=false
+
+    scene.BG=require('BG/galaxy') scene.BG.init()
+
+    if not mus.checkTag('battle') then
+        mus.add('music/Hurt Record/burning heart','whole','ogg',5.4,256*60/200)
+        mus.start()
+        mus.setTag(musTag)
+    end
+
+    mino.musInfo="カモキング - burning heart"
 
     mino.seqGenType='bagp1FromBag' mino.seqSync=true
     P[1].atk=0
