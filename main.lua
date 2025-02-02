@@ -293,7 +293,7 @@ function mainUpdate(dt)
             if scene.destScene then scene.cur=scene.destScene scene.destScene=nil
             else scene.cur=require('scene/'..scene.dest) end
             scene.shader=nil
-            sfx.clear()
+            sfx.clear() mus.setVolume(1)
             if tosend then tosend(scene.cur,sendArg) end scene.sendArg=nil
             if scene.nextBG then scene.BG=require('BG/'..scene.nextBG)
                 if scene.BG.init then scene.BG.init() end

@@ -1,4 +1,4 @@
-local fLib=require'mino/fieldLib'
+local fLib,block=require'mino/fieldLib',require'mino/blocks'
 local rule={}
 local tAnimTTL=.25 --local wind=-2*rand(2)-3
 local event={
@@ -142,8 +142,10 @@ function rule.onLineClear(player,mino)
     local his=player.history
     local point=2^player.history.line-1+player.history.combo-1
     player.point=player.point+point
+
+    local x,y,ox,oy=block.size(player.history.piece)
     table.insert(player.scoreTxt,{
-        x=36*his.x-18-18*player.w,y=-36*his.y+18*player.h,v={0,-90},g=90,TTL=.4,tMax=.4,
+        x=36*(his.x-ox)-18-18*player.w,y=-36*(his.y-oy)+18*player.h,v={0,-90},g=90,TTL=.4,tMax=.4,
         size=40,color={1,1,1,.8},score=point
     })
     if player.point>=player.stormLv*100 then

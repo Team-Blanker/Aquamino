@@ -1,4 +1,4 @@
-local fLib=require('mino/fieldLib')
+local fLib,block=require'mino/fieldLib',require'mino/blocks'
 
 local rule={}
 local setColor,rect,draw,clear=gc.setColor,gc.rectangle,gc.draw,gc.clear
@@ -174,8 +174,10 @@ function rule.onLineClear(player,mino)
     local l,c=player.history.line,player.history.combo
     local point=min(floor((c-1)/2),3)+ceil(l/8)*l
     player.point=player.point+point
+
+    local x,y,ox,oy=block.size(player.history.piece)
     table.insert(player.scoreTxt,{
-        x=36*player.history.x-18-18*player.w,y=-36*player.history.y+18*player.h,
+        x=36*(player.history.x-ox)-18-18*player.w,y=-36*(player.history.y-oy)+18*player.h,
         v={0,-90},g=90,TTL=.4,tMax=.4,
         size=40,color={1,1,1,.8},score=point
     })
