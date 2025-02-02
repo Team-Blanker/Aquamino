@@ -124,7 +124,7 @@ function simple.garbageDraw(player,mino)
     end
 end
 
-local spikeColor={[0]={.625,.625,.625},{.96,.96,.96},{.5,1,.875},{.6,.8,1},{.8,.6,1}}
+local spikeColor={[0]={1,1,1,.5},{.96,.96,.96,1},{.5,1,.875,1},{.6,.8,1,1},{.8,.6,1,1}}
 function simple.overFieldDraw(player)
     local aal=player.atkAnimList
     if aal then
@@ -144,7 +144,7 @@ function simple.overFieldDraw(player)
 
         local ts=.3+.05*min(floor((spk-dspk)/8),4)
 
-        gc.setColor(sc[1],sc[2],sc[3],(player.spikeAnimTimer/player.spikeAnimTMax*2)^.5)
+        gc.setColor(sc[1],sc[2],sc[3],sc[4]*(player.spikeAnimTimer/player.spikeAnimTMax*2)^.5)
         local ah=(spk-dspk>=8 and 80*ts/.35 or 0)*max( (player.spikeAnimTMax-player.spikeAnimTimer)/.2*(1-(player.spikeAnimTMax-player.spikeAnimTimer)/.2),0 )
         if dspk>0 then
             gc.printf(string.format("%d SPIKE (-%d)",spk,dspk),font.Bender,0,-H/5-ah,4000,'center',0,ts,ts,2000,font.height.Bender/2)
