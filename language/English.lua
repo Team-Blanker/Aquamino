@@ -52,6 +52,7 @@ return {
     menu={
         bestScore="Best score",
         noBestScore="No score",
+        notPlayable="Coming s∞n",
         arg={
             battle={
                 bot_PPS="Bot PPS",

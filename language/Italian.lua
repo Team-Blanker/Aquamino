@@ -52,6 +52,7 @@ return {
     menu={
         bestScore="Miglior Punteggio",
         noBestScore="Nessun Punteggio",
+        notPlayable="Arriverà presto",
         arg={
             battle={
                 bot_PPS="Bot PPS",

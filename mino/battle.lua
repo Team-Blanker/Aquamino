@@ -30,8 +30,6 @@ function battle.sendAtk(player,dest,atk)
     time=垃圾缓冲时间
     cut=1e99 M_OC=1即标准对战垃圾
     }]]
-    local x,y,ox,oy=block.size(player.history.piece)
-    ins(player.atkAnimList,{x=player.history.x-ox,y=player.history.y-oy,t=0,amount=atk.amount,B2B=player.history.B2B})
     ins(dest.garbage,atk)
 end
 function battle.atkRecv(player,atk)
@@ -116,6 +114,9 @@ function battle.stdAtkGen(player,time)
         player.spikeAnimCount=player.spikeCount
         player.defSpikeAnimCount=player.defSpikeCount
         player.spikeAnimTimer=player.spikeAnimTMax
+
+        local x,y,ox,oy=block.size(player.history.piece)
+        ins(player.atkAnimList,{x=player.history.x-ox,y=player.history.y-oy,t=0,amount=atk,defAmount=def,B2B=player.history.B2B})
     end
 
     if totalatk<=0 then return end

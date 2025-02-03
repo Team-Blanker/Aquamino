@@ -52,6 +52,7 @@ return {
     menu={
         bestScore="最佳成績",
         noBestScore="暫無成績",
+        notPlayable="即將到來",
         arg={
             battle={
                 bot_PPS="機器人PPS",

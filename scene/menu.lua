@@ -24,21 +24,21 @@ gc.translate(-60,-60)
 
 menu.modeList={
     --xy都是绘制坐标
-    ['40 lines']={x=-300,y=0,borderColor={.1,.9,.7}},
-    marathon={x=-150,y=150,borderColor={.1,.9,.7}},
-    ['dig 40']={x=-150,y=-150,borderColor={.1,.9,.7}},
-    backfire={x=300,y=0,borderColor={.1,.9,.7}},
-    battle={x=150,y=-150,borderColor={.1,.9,.7}},
-    ['ice storm']={x=450,y=150,borderColor={.2,.9,.9}},
-    sandbox={x=150,y=150,borderColor={.6,.6,.6}},
-    thunder={x=-300,y=-300,borderColor={.2,.9,.9}},
-    smooth={x=-450,y=150,borderColor={.2,.9,.9}},
-    levitate={x=-450,y=-150,borderColor={.2,.9,.9}},
-    master={x=-300,y=300,borderColor={.96,.24,.24}},
-    overdose={x=300,y=300,borderColor={.96,.24,.24}},
-    multitasking={x=0,y=300,borderColor={.96,.24,.24}},
-    laser={x=450,y=-150,borderColor={.2,.9,.9}},
-    ['tower defense']={x=300,y=-300,borderColor={.2,.9,.9}},
+    ['40 lines']={x=-300,y=0,borderColor={.1,.9,.7},playable=true},
+    marathon={x=-150,y=150,borderColor={.1,.9,.7},playable=true},
+    ['dig 40']={x=-150,y=-150,borderColor={.1,.9,.7},playable=true},
+    backfire={x=300,y=0,borderColor={.1,.9,.7},playable=true},
+    battle={x=150,y=-150,borderColor={.1,.9,.7},playable=true},
+    ['ice storm']={x=450,y=150,borderColor={.2,.9,.9},playable=true},
+    sandbox={x=150,y=150,borderColor={.6,.6,.6},playable=true},
+    thunder={x=-300,y=-300,borderColor={.2,.9,.9},playable=true},
+    smooth={x=-450,y=150,borderColor={.2,.9,.9},playable=true},
+    levitate={x=-450,y=-150,borderColor={.2,.9,.9},playable=true},
+    master={x=-300,y=300,borderColor={.96,.24,.24},playable=true},
+    overdose={x=300,y=300,borderColor={.96,.24,.24},playable=false},
+    multitasking={x=0,y=300,borderColor={.96,.24,.24},playable=true},
+    laser={x=450,y=-150,borderColor={.2,.9,.9},playable=true},
+    ['tower defense']={x=300,y=-300,borderColor={.2,.9,.9},playable=true},
 }
 menu.secretMode={
     ['40 lines']={mode='pento 40'},
@@ -71,6 +71,7 @@ function menu.init()
     menu.modeName=user.lang.modeName
     scene.BG=require('BG/menuBG')
     if scene.BG.init then scene.BG.init() end
+
     if not mus.checkTag('menu') then
         if win.date.month==8 and win.date.day==14 then
         mus.add('music/Hurt Record/Winter Story','whole','ogg',7.579,96)
@@ -81,6 +82,7 @@ function menu.init()
         end
         mus.setTag({'menu'})
     end
+    mus.setVolume(1)
 
     menu.modeTxt={}
     for k,v in pairs(user.lang.modeName) do
@@ -104,7 +106,7 @@ function menu.init()
     menu.lvl=1 menu.sAnimTimer=0
     menu.pAnim=false menu.pAnimTimer=0
     menu.rCount=0
-    menu.selectedMode=''
+    menu.selectedMode=nil
 
     menu.pbString={}
     menu.pb=file.read('player/best score')
@@ -214,6 +216,11 @@ function menu.init()
     BUTTON.create('play',{
         x=0,y=390,type='rect',w=450,h=100,
         draw=function(bt,t)
+            if not menu.selectedMode then return end
+            if not menu.modeList[menu.selectedMode].playable then
+                gc.printf(user.lang.menu.notPlayable,font.Bender,0,0,2000,'center',0,.625,.625,1000,font.height.Bender/2)
+                return
+            end
             local a=menu.sAnimTimer/menu.sAnimTMax*2-1
             if menu.pAnim then
                 local s=menu.pAnimTimer>.2 and 1 or menu.pAnimTimer%.1<.05 and 1 or 0
@@ -228,6 +235,7 @@ function menu.init()
             gc.circle('fill',-5,0,40,3)
         end,
         event=function()
+            if not menu.modeList[menu.selectedMode].playable then return end
             menu.pAnim=true
             sfx.play('click',1,2^(2/3))
             sfx.play('gameEnter')
@@ -376,7 +384,7 @@ function menu.draw()
     end
     BUTTON.draw(1)
 
-    if menu.selectedMode~='' then
+    if menu.selectedMode then
     c=menu.modeList[menu.selectedMode].borderColor
     local a=menu.sAnimTimer/menu.sAnimTMax
     gc.setColor(.05,.05,.05,a*.75)

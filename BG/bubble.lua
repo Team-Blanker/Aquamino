@@ -10,7 +10,7 @@ end
 
 local  pi,tau=math.pi,2*math.pi
 function bg.newBubble()
-    local nb={x=4000*(rand()-.5),t=0,distance=.5+rand()*1.5,phase=rand()*tau,sz=.25+.5*rand()}
+    local nb={x=4000*(rand()-.5),t=0,distance=.5+rand()*1.5,phase=rand()*tau,sz=.125+.25*rand()}
     if #bbList==0 then ins(bbList,nb)
     else local s=false
         for i=1,#bbList do
@@ -34,16 +34,16 @@ function bg.update(dt)
     end
 end
 
-local wp=gc.newCanvas(128,128)
+local wp=gc.newCanvas(256,256)
 gc.setCanvas(wp)
 
 gc.setColor(1,1,1)
-gc.rectangle('fill',0,0,128,128)
+gc.rectangle('fill',0,0,256,256)
 
 gc.setCanvas()
 
 local bbShader=gc.newShader('BG/res/bubble/bubble.glsl')
-local bb=gc.newCanvas(128,128)
+local bb=gc.newCanvas(256,256)
 gc.setCanvas(bb)
 --[[gc.setLineWidth(2)
 for i=1,32,2 do
