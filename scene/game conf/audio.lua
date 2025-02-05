@@ -30,7 +30,7 @@ function audio.init()
         cOn='sfx/general/checkerOn.wav',
         cOff='sfx/general/checkerOff.wav',
         quit='sfx/general/confSwitch.wav',
-        test='sfx/other/metal pipe.wav'
+        test='sfx/mode/general/sq.wav'
     })
 
     tt=audio.titleTxt

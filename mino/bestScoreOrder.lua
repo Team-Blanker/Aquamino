@@ -6,7 +6,11 @@ return {
         return string.format('Lv.%d  %d lines  %d\'%.3f"',t.level,t.line,t.time/60,t.time%60)
     end,
     ['ice storm']=function(t)
-        return string.format('Lv.%d  %d/%d  %d\'%.3f"',t.level,t.score,t.lvlscore,t.time/60,t.time%60)
+        if t.complete then
+            return string.format('COMPLETED %d\'%.3f"',t.time/60,t.time%60)
+        else
+            return string.format('Lv.%d  %d/%d  %d\'%.3f"',t.level,t.score,t.lvlscore,t.time/60,t.time%60)
+        end
     end,
     thunder=function(t)
         return string.format('%d points  %d\'%.3f"',t.point,t.time/60,t.time%60)

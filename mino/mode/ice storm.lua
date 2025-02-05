@@ -338,9 +338,10 @@ end
 function rule.scoreSave(P,mino)
     local pb=file.read('player/best score')
     local isHighScore=pb['ice storm'] and (P[1].stormLv>pb['ice storm'].level or (P[1].stormLv==pb['ice storm'].level and P[1].iceScore>pb['ice storm'].score))
-    local ispb=pb['ice storm'] and (mino.stacker.winState>0 and P[1].gameTimer<pb['ice storm'].time or isHighScore)
+    local ispb=pb['ice storm'] and (mino.stacker.winState>0 and (not pb['ice storm'].complete or P[1].gameTimer<pb['ice storm'].time) or isHighScore)
     if not pb['ice storm'] or ispb then
     pb['ice storm']={
+        complete=mino.stacker.winState>0,
         level=P[1].stormLv,score=P[1].iceScore,lvlscore=getsl(P[1]),
         time=P[1].gameTimer,date=os.date("%Y/%m/%d  %H:%M:%S")
     }

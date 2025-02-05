@@ -36,7 +36,7 @@ function btest.update(player,dt,mino)
         if op and msgSend then
         btest.expect=op.expect
         bot_cc.operate(player,op,false,mino)
-        btest.opTimer=btest.opTimer-.25
+        btest.opTimer=btest.opTimer-1/6
         msgSend=false
         end
     end

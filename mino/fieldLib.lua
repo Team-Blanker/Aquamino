@@ -48,6 +48,8 @@ function fieldLib.newPlayer(arg)
         hold={mode='S'},canHold=true,
         canInitMove=true,canInitRotate=true,canInitHold=true,
 
+        summonHeightAlign=0, --方块生成高度修正
+
         CDelay=0,EDelay=0,
         MTimer=0,DTimer=0,
         FDelay=1,FTimer=0,
@@ -260,7 +262,7 @@ function fieldLib.entryPlace(player)--方块进场时使用，决定方块出块
     local dx,dy=ceil(player.w/2),player.h+1
     c.x=dx+ox+(x%2==0 and .5 or 0)
     local d=y/2+oy-0.5--旋转中心距离下底的高度
-    c.y=dy+d
+    c.y=dy+d+player.summonHeightAlign
 end
 function fieldLib.coincide(player,offX,offY)
     local c,ls=player.cur,player.loosen
