@@ -10,8 +10,8 @@ local sfx={
     TTL=1,
     cloneLim=16
 }
-function sfx.add(arg)
-    for k,v in pairs(arg) do
+function sfx.add(sfxTable)
+    for k,v in pairs(sfxTable) do
         sfx.key[k]=v
         if not sfx.pack[v] and love.filesystem.getInfo(v) then sfx.pack[v]=love.audio.newSource(v,'static') end
         sfx.buffer[v]={}
@@ -42,7 +42,7 @@ function sfx.play(key,volume,pitch,pos)--音频名，音量，音高，位置（
         if buffer[#buffer].sfx:getChannelCount()==1 then buffer[#buffer].sfx:setPosition(x,y) end
         buffer[#buffer].sfx:play()
         else--否则，找快放完的那个重新放一遍
-            local k,t=0,0
+            local k,t=0,-1
             for i=1,#buffer do
                 local tell=buffer[i].sfx:tell()
                 if tell>t then k=i t=tell end
