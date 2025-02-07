@@ -33,6 +33,9 @@ return {
     ['dig 40']=function(t)
         return string.format('%d pieces  %.3f"',t.piece,t.time)
     end,
+    ['dig bomb']=function(t)
+        return string.format('%d pieces  %.3f"',t.piece,t.time)
+    end,
     laser=function(t)
         return string.format('%d points  %d\'%.3f"',t.point,t.time/60,t.time%60)
     end,

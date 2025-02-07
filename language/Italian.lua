@@ -11,7 +11,6 @@ return {
         thunder="Temporale",
         smooth="Corsa Liscia",
         levitate="Levitazione",
-        square="Quadrati",
         master="Maestro",
         multitasking="Multitasking",
         sandbox="Sandbox",
@@ -25,8 +24,9 @@ return {
         idea_test="idea_test",
 
         ['pento 40']="Corsa con Pentomini",
-
-        ['core destruction']='[Deprecated mode]'
+        square="Quadrati",
+        ['core destruction']='[Deprecated mode]',
+        ['dig bomb']="Scavo di bombe"
     },
     modeDescription={
         ['40 lines']="Completa 40 righe\nil più velocemente possibile!",

@@ -1,9 +1,13 @@
 local gc=love.graphics
 local M,T=myMath,myTable
 local B=require'mino/blocks'
+local fLib=require'mino/fieldLib'
 local floor=math.floor
 
 local rule={spinType='default'}
+
+local gameStereo=1
+
 function rule.init(P,mino)
     scene.BG=require('BG/snow') scene.BG.init()
     mino.musInfo="カモキング - 大氷河時代"
@@ -44,6 +48,7 @@ function rule.init(P,mino)
     end
     rule.rise(P[1],rand(2,P[1].w-1))
 
+    --gameStereo=mino.stereo
 end
 function rule.addScore(player,score)
     local A=player.ruleAnim.score
@@ -74,6 +79,7 @@ function rule.destroy(player,col,scoring,mtp,sfxPlay)
                 })
             end
         end
+
         if sfxPlay then sfx.play('smash') end
         smash=true
 
@@ -129,7 +135,7 @@ function rule.lvup(player,mino)
     local A=player.ruleAnim
     if player.iceScore>=getsl(player) then
         for i=1,player.w do
-            local d=rule.destroy(player,i,false,0,false)
+            rule.destroy(player,i,false,0,true)
         end
         if 12==player.stormLv then mino.win(player) return end
         rule.rise(player,rand(2,player.w-1))

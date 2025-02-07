@@ -7,6 +7,7 @@ function skin.setDropAnimTTL(player)
     return .25
 end
 skin.pic=gc.newImage('skin/block/metal/metal.png')
+skin.bombpic=gc.newImage('skin/block/metal/bomb.png')
 skin.sd=gc.newShader('shader/grayscale stain.glsl')
 
 local bb=gc.newCanvas(36,36)
@@ -49,12 +50,12 @@ function skin.fieldDraw(player,mino)
     local h=0 local n=player.event[1] and player.event[1]/player.history.CDelay
 
     setShader(skin.sd)
-    for y=1,#player.field do
-        if player.field[y][1] then h=h+1
+    local F=player.field
+    for y=1,#F do
+        if F[y][1] then h=h+1
             for x=1,player.w do
-                local F=player.field
                 if F[y][x] and next(F[y][x]) then
-                    gc.setColor(mino.color[F[y][x].name])
+                    setColor(mino.color[F[y][x].name])
                     draw(skin.pic,36*x,-36*h,0,1,1,18,18)
                 end
             end
@@ -62,8 +63,14 @@ function skin.fieldDraw(player,mino)
     end
     setShader()
     h=0
-    for y=1,#player.field do
-        if player.field[y][1] then h=h+1
+    for y=1,#F do
+        if F[y][1] then h=h+1
+            setColor(1,1,1)
+            for x=1,player.w do
+                if F[y][x] and F[y][x].bomb then
+                    draw(skin.bombpic,36*x,-36*h,0,.5,.5,36,36)
+                end
+            end
         else h=h+1
             setColor(1,1,1,n)
             rect('fill',18,-36*h-18,36*player.w,36)

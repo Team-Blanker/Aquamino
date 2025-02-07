@@ -11,7 +11,6 @@ return {
         thunder="雷暴",
         smooth="丝滑 40 行",
         levitate="悬浮 40 行",
-        square="正方拼合",
         master="大师",
         multitasking="双线程",
         sandbox="无尽 - 沙盒",
@@ -25,8 +24,9 @@ return {
         idea_test="idea_test",
 
         ['pento 40']="五连块竞速",
-
-        ['core destruction']="[已废弃模式]"
+        square="正方拼合",
+        ['core destruction']="[已废弃模式]",
+        ['dig bomb']="炸弹挖掘"
     },
     modeDescription={
         ['40 lines']="以最快速度消除40行",

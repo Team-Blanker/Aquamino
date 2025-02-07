@@ -4,6 +4,7 @@ local skin={}
 local COLOR=require('framework/color')
 local setColor,rect,draw=gc.setColor,gc.rectangle,gc.draw
 local pic=gc.newImage('skin/block/glass/glass.png')
+local bombpic=gc.newImage('skin/block/glass/bomb.png')
 pic:setFilter('nearest')
 function skin.unitDraw(player,x,y,color,alpha)
     setColor(color[1],color[2],color[3],.25)
@@ -109,6 +110,7 @@ function skin.fieldDraw(player,mino)
         local a,b=i*3*bo[j],i*3*bo[j+1]
         draw(player.fieldCanvas,18+a,-18+b,0,1,-1)
     end  end
+
     setColor(1,1,1,.15)
     draw(player.fieldCanvas,18,-18,0,1,-1)
 
@@ -120,6 +122,11 @@ function skin.fieldDraw(player,mino)
             if F[y][x] and next(F[y][x]) and C then
                 setColor(C)
                 draw(pic,-18+36*x,-18-36*h)
+
+                if F[y][x].bomb then
+                setColor(1,1,1,.75)
+                draw(bombpic,-18+36*x,-18-36*h)
+                end
             end
         end
         else h=h+1

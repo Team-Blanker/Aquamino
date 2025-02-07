@@ -288,6 +288,15 @@ function fieldLib.lock(player)
         local y=C.y+C.piece[i][2]
         while not player.field[y] do fieldLib.addLine(player)  end
         player.field[y][x]={name=C.name,loosen=false,id=player.stat.block}
+
+        for i=y-1,1,-1 do
+        if fieldLib.isBlock(player,x,i) then
+            if player.field[i][x].bomb then
+                player.field[i].triggered=true
+                player.field[i].triggerPos=x
+            else break end
+        else break end
+        end
     end
     his.piece,his.name,his.o,his.x,his.y=C.piece,C.name,C.o,C.x,C.y
     C.piece,C.name,C.o={},nil,nil
@@ -302,6 +311,7 @@ function fieldLib.lineClear(player)
         local pass=true
         for x=1,player.w do
             if not next(field[y][x]) then pass=false break end
+            if field[y].bombGarbage and not field[y].triggered then pass=false break end
         end
         if pass then cLine[y]=field[y] field[y]={} cunt=cunt+1 end
     end
@@ -346,7 +356,23 @@ function fieldLib.garbage(player,block,atk,hole)
     local h=#field
     local gb={}
     for i=1,player.w do gb[i]=(type(block)=='table' and T.copy(block) or {name=block}) end
-    if type(hole)=='number' then gb[hole or math.random(1,player.w)]={}
+    if type(hole)=='number' then gb[hole]={}
+    else for i=1,#hole do gb[hole[i]]={} end end
+    for i=1,atk do
+        for j=h,1,-1 do field[j+1]=field[j] end
+        field[1]=T.copy(gb)
+        if player.cur.piece and #player.cur.piece~=0 and fieldLib.coincide(player) then player.cur.y=player.cur.y+1 end
+    end
+    if h+atk>3*player.h then for i=3*player.h,(h+atk) do field[i]=nil end end
+
+    player.cur.ghostY=fieldLib.getGhostY(player)
+end
+function fieldLib.bombGarbage(player,block,atk,hole)
+    local field=player.field
+    local h=#field
+    local gb={bombGarbage=true,triggered=false}
+    for i=1,player.w do gb[i]=(type(block)=='table' and T.copy(block) or {name=block}) end
+    if type(hole)=='number' then gb[hole]={name='bomb',bomb=true}
     else for i=1,#hole do gb[hole[i]]={} end end
     for i=1,atk do
         for j=h,1,-1 do field[j+1]=field[j] end
@@ -366,6 +392,8 @@ function fieldLib.insertField(player,field)--导入场地/涨入特定垃圾，f
         end
     end
 end
+
+--？
 function fieldLib.freefall(piece,name,px,py,field)
     for i=1,#field do  for j=#piece,1,-1 do
         if piece[j][2]+py==i then
@@ -378,7 +406,7 @@ function fieldLib.freefall(piece,name,px,py,field)
     return px,py-1
 end
 
---for Push
+--Push机制
 function fieldLib.isLoosen(player,x,y)
     local ls=player.loosen
     for i=1,#ls do if x==ls[i].x and y==ls[i].y then return i end end
@@ -468,7 +496,7 @@ function fieldLib.pushField(player,mode) --loosen[1]={x=1,y=1,name='Z'}
     return looseBlock,canMove
 end
 
---玩家，立体声参数，哪个地方的数据（cur/history）
+--玩家，立体声参数，哪个地方的数据（cur/history）(如果是数字直接输入)
 function fieldLib.getSourcePos(player,stereo,bdata)--获取音频播放位置
     stereo=stereo or 0
     local x

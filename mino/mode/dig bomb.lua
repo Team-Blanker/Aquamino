@@ -17,8 +17,8 @@ function rule.init(P,mino)
 
     P[1].LDRInit=32 P[1].LDR=32
 
-    P[1].checkboard=false
-    P[1].cbLineType=rand(1,2)
+    --P[1].checkboard=false
+    --P[1].cbLineType=rand(1,2)
 
     for i=1,#mino.bag do mino.rule.allowSpin[mino.bag[i]]=true end
     for i=1,10 do rule.newGarbageLine(P[1]) end
@@ -29,17 +29,17 @@ local cbLine={
 }
 local h
 function rule.newGarbageLine(player)
-    if player.checkboard then
-        fLib.insertField(player,cbLine[player.cbLineType])
-        player.cbLineType=player.cbLineType%2+1
-    else
+    --if player.checkboard then
+        --fLib.insertField(player,cbLine[player.cbLineType])
+        --player.cbLineType=player.cbLineType%2+1
+    --else
         if player.lastHole==0 then h=rand(player.w)
         else h=rand(player.w-1)
             if h>=player.lastHole then h=h+1 end
         end
         player.lastHole=h
-        fLib.garbage(player,'g2',1,h)
-    end
+        fLib.bombGarbage(player,'gb',1,h)
+    --end
     player.field[1].type='gbg'
     player.summonLine=player.summonLine-1
 end
@@ -57,11 +57,11 @@ end
 function rule.onPieceDrop(player)
     player.pieceCount=player.pieceCount+1
 
-    if (not player.checkboard) and player.remainLine==40 then
+    --[[if (not player.checkboard) and player.remainLine==40 then
         if player.field[player.h-2] then player.checkboard=true
             player.summonLine,player.remainLine=player.summonLine-20,player.remainLine-20
         end
-    end
+    end]]
 end
 function rule.underFieldDraw(player)
     local x=-18*player.w-110
@@ -75,9 +75,9 @@ end
 function rule.scoreSave(P,mino)
     if mino.stacker.winState~=1 or P[1].checkboard then return false end
     local pb=file.read('player/best score')
-    local ispb=pb['dig 40'] and P[1].pieceCount<pb['dig 40'].piece or false
-    if not pb['dig 40'] or P[1].pieceCount<pb['dig 40'].piece then
-        pb['dig 40']={time=P[1].gameTimer,piece=P[1].pieceCount,date=os.date("%Y/%m/%d  %H:%M:%S")}
+    local ispb=pb['dig bomb'] and P[1].pieceCount<pb['dig bomb'].piece or false
+    if not pb['dig bomb'] or P[1].pieceCount<pb['dig bomb'].piece then
+        pb['dig bomb']={time=P[1].gameTimer,piece=P[1].pieceCount,date=os.date("%Y/%m/%d  %H:%M:%S")}
         file.save('player/best score',pb)
     end
     return ispb

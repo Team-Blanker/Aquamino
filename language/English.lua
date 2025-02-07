@@ -11,7 +11,6 @@ return {
         thunder="Thunderstorm",
         smooth="Sprint Smooth",
         levitate="Levitation",
-        square="Square",
         master="Master",
         multitasking="Multitasking",
         sandbox="Sandbox",
@@ -25,8 +24,9 @@ return {
         idea_test="idea_test",
 
         ['pento 40']="Pentomino sprint",
-
-        ['core destruction']='[Deprecated mode]'
+        square="Square",
+        ['core destruction']='[Deprecated mode]',
+        ['dig bomb']="Bomb Dig"
     },
     modeDescription={
         ['40 lines']="Clear 40 lines as fast as you can!",

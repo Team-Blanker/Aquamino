@@ -43,7 +43,8 @@ menu.modeList={
 menu.secretMode={
     ['40 lines']={mode='pento 40'},
     ['tower defense']={mode='core destruction',arg='tower defense'},
-    sandbox={mode='square'}
+    sandbox={mode='square'},
+    ['dig 40']={mode='dig bomb'}
 }
 menu.notRecordScore={sandbox=true,battle=true,['tower defense']=true}
 menu.icon={}
@@ -319,27 +320,21 @@ function menu.update(dt)
         else v.hoverT=max(v.hoverT-dt,0) end
     end
     if (not n) and hv~='' then scene.BG.setPolyColor(1,1,1) hv='' end
-    if hv=='tower defense' and not menu.CDEnter then menu.CDTimer=menu.CDTimer+dt
-        if menu.CDTimer>=10 then menu.CDEnter=true
-            sfx.play('gameEnter')
-            scene.switch({
-                dest='game',destScene=require'mino/game',
-                swapT=1.6,outT=.2,
-                anim=function() anim.enterGame(.4,1.2,.2) end
-            })
-            scene.sendArg={mode='core destruction',arg=menu.option[hv]}
-            menu.send=menu.gameSend
-        end
-    elseif hv=='40 lines' and not menu.CDEnter then menu.CDTimer=menu.CDTimer+dt
-        if menu.CDTimer>=10 then menu.CDEnter=true
-            sfx.play('gameEnter')
-            scene.switch({
-                dest='game',destScene=require'mino/game',
-                swapT=1.6,outT=.2,
-                anim=function() anim.enterGame(.4,1.2,.2) end
-            })
-            scene.sendArg={mode='pento 40'}
-            menu.send=menu.gameSend
+
+    if love.mouse.isDown(1) then
+        for k,v in pairs(menu.secretMode) do
+            if hv==k and not menu.CDEnter then menu.CDTimer=menu.CDTimer+dt
+                if menu.CDTimer>=5 then menu.CDEnter=true
+                    sfx.play('gameEnter')
+                    scene.switch({
+                        dest='game',destScene=require'mino/game',
+                        swapT=1.6,outT=.2,
+                        anim=function() anim.enterGame(.4,1.2,.2) end
+                    })
+                    scene.sendArg={mode=v.mode,arg=menu.option[v.arg]}
+                    menu.send=menu.gameSend
+                end
+            end
         end
     else menu.CDTimer=0 end
 
