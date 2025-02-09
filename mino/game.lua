@@ -387,7 +387,10 @@ mino.operate={
             C.x=C.x-1 C.moveSuccess=true C.spin=false
             if landed and OP.LDR>0 then OP.LTimer=0 OP.LDR=OP.LDR-1 end
             OP.cur.ghostY=fLib.getGhostY(OP)
-        else  end
+        else
+            OP.MTimer=S.ctrl.ASD
+        end
+
         OP.moveDir='L'
         if S.keyDown.MR then OP.MTimer=0 end
 
@@ -401,7 +404,10 @@ mino.operate={
             C.x=C.x+1 C.moveSuccess=true C.spin=false
             if landed and OP.LDR>0 then OP.LTimer=0 OP.LDR=OP.LDR-1 end
             OP.cur.ghostY=fLib.getGhostY(OP)
-        else  end
+        else
+            OP.MTimer=S.ctrl.ASD
+        end
+
         OP.moveDir='R'
         if S.keyDown.ML then OP.MTimer=0 end
 
