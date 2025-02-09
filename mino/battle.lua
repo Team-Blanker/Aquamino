@@ -47,6 +47,21 @@ function battle.atkRecv(player,atk)
         fLib.garbage(player,atk.block,1,h)
     end
 end
+function battle.bombAtkRecv(player,atk)
+    if atk.amount==0 then return end
+    player.lastHole=rand()<atk.M_OC and rand(player.w) or player.lastHole
+    local h
+    local l=0
+    --print(atk.cut)
+    for i=1,atk.amount do
+        l=l+1
+        local sw=rand()<(l-atk.cut)
+        h=sw and rand(player.w) or player.lastHole
+        player.lastHole=h
+        if sw then l=0 end
+        fLib.bombGarbage(player,atk.block,1,h)
+    end
+end
 function battle.getGarbageAmount(player)
     local n=0
     for i=1,#player.garbage do
@@ -136,6 +151,18 @@ function battle.stdAtkRecv(player)
     while i<=#player.garbage do
         if player.garbage[i].time<=0 then
             battle.atkRecv(player,player.garbage[i])
+            amount=amount+player.garbage[i].amount
+            rem(player.garbage,i)
+        else i=i+1 end
+    end
+    return amount
+end
+function battle.stdBombAtkRecv(player)
+    local amount=0
+    local i=1
+    while i<=#player.garbage do
+        if player.garbage[i].time<=0 then
+            battle.bombAtkRecv(player,player.garbage[i])
             amount=amount+player.garbage[i].amount
             rem(player.garbage,i)
         else i=i+1 end

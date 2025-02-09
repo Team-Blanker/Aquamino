@@ -44,7 +44,8 @@ menu.secretMode={
     ['40 lines']={mode='pento 40'},
     ['tower defense']={mode='core destruction',arg='tower defense'},
     sandbox={mode='square'},
-    ['dig 40']={mode='dig bomb'}
+    ['dig 40']={mode='dig bomb'},
+    battle={mode='bomb battle',arg='battle'}
 }
 menu.notRecordScore={sandbox=true,battle=true,['tower defense']=true}
 menu.icon={}

@@ -222,7 +222,7 @@ function ccWrap.renderField(player)
     local boolField={}
     for y=1,min(#player.field,40) do
         for x=1,10 do
-            boolField[10*(y-1)+x]=next(player.field[y][x]) and true or false
+        boolField[10*(y-1)+x]=(next(player.field[y][x]) and not player.field[y][x].bomb) and true or false
         end
     end
     for i=#boolField+1,400 do
