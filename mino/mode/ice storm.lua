@@ -1,12 +1,12 @@
 local gc=love.graphics
+local setColor,rect,printf=gc.setColor,gc.rectangle,gc.printf
+
 local M,T=myMath,myTable
 local B=require'mino/blocks'
 local fLib=require'mino/fieldLib'
 local floor=math.floor
 
 local rule={spinType='default'}
-
-local gameStereo=1
 
 function rule.init(P,mino)
     scene.BG=require('BG/snow') scene.BG.init()
@@ -19,7 +19,7 @@ function rule.init(P,mino)
     mino.rule.enableMiniSpin=false
     sfx.add({
         smash='sfx/mode/ice storm/smash.wav',
-        lvup='sfx/mode/ice storm/level up.wav'
+        --lvup='sfx/mode/ice storm/level up.wav'
     })
     mino.seqGenType='bagp1FromBag'
     rule.allowPush={}
@@ -47,8 +47,6 @@ function rule.init(P,mino)
         P[1].iceColumn[j]={H=-1,topTimer=0,speed=0,speedmax=0,dvps=0,appearT=0}
     end
     rule.rise(P[1],rand(2,P[1].w-1))
-
-    --gameStereo=mino.stereo
 end
 function rule.addScore(player,score)
     local A=player.ruleAnim.score
@@ -142,7 +140,7 @@ function rule.lvup(player,mino)
         A.preScore=rule.scoreUp*(player.stormLv-1)+rule.scoreBase
         player.iceScore=0 A.t=A.tMax
         player.stormLv=player.stormLv+1
-        sfx.play('lvup')
+        --sfx.play('lvup')
         A.lvupT=0
     end
 end
@@ -260,24 +258,24 @@ function rule.underFieldDraw(player)
     local sz=M.lerp(score,A.preScore,(A.t/A.tMax)^2)/tar
     gc.push()
         gc.translate(-18*player.w-110,36)
-        gc.setColor(.1,.1,.1,.8)
-        gc.rectangle('fill',-90,-210,180,420)
-        gc.setColor(1,1,1)
+        setColor(.1,.1,.1,.8)
+        rect('fill',-90,-210,180,420)
+        setColor(1,1,1)
         gc.setLineWidth(4)
-        gc.rectangle('line',-47,-152,94,304)
+        rect('line',-47,-152,94,304)
         if player.stormLv<12 then
-            gc.setColor(.4,.8,1,.8)
-            gc.rectangle('fill',-45,150-300*sz,90,300*sz)
+            setColor(.4,.8,1,.8)
+            rect('fill',-45,150-300*sz,90,300*sz)
         end
-        gc.setColor(1,1,1,.1)
-        gc.rectangle('fill',-45,-150,90,300)
-        gc.setColor(1,1,1)
-        gc.printf("Lv."..player.stormLv,font.JB_B,0,-180,1000,'center',0,1/3,1/3,500,font.height.JB_B/2)
-        gc.printf(player.stormLv<12 and ("%d/%d"):format(score,tar) or "???/???",
+        setColor(1,1,1,.1)
+        rect('fill',-45,-150,90,300)
+        setColor(1,1,1)
+        printf("Lv."..player.stormLv,font.JB_B,0,-180,1000,'center',0,1/3,1/3,500,font.height.JB_B/2)
+        printf(player.stormLv<12 and ("%d/%d"):format(score,tar) or "???/???",
         font.JB,0,180,1000,'center',0,.25,.25,500,font.height.JB_B/2)
         if player.smashCombo>1 then
-            gc.setColor(1,1,1,.25+.25*max(player.smashCombo-2,1)/8*(1-player.scAnimTimer%.25/.25))
-            gc.printf(player.smashCombo>16 and "MAX" or "x"..player.smashCombo,font.JB,0,0,5000,'center',0,1/3,1/3,2500,font.height.JB_B/2)
+            setColor(1,1,1,.25+.25*max(player.smashCombo-2,1)/8*(1-player.scAnimTimer%.25/.25))
+            printf(player.smashCombo>16 and "MAX" or "x"..player.smashCombo,font.JB,0,0,5000,'center',0,1/3,1/3,2500,font.height.JB_B/2)
         end
     gc.pop()
 end
@@ -285,7 +283,7 @@ end
 local ict=gc.newCanvas(18,1)
 gc.setCanvas(ict)
 for i=1,9 do
-    gc.setColor(1,1,1,(10-i)/9)
+    setColor(1,1,1,(10-i)/9)
     gc.points(i-.5,.5,18-i+.5,.5)
 end
 gc.setCanvas()
@@ -305,39 +303,39 @@ function rule.overFieldDraw(player)
             --冰柱显示的高度
             local H=M.lerp(min(ice.H,1),A.ice[i].preH,(A.ice[i].t/A.iceTMax)^2)
             --“底座”
-            gc.setColor(.6,.9,1,2.5*ice.appearT)
-            gc.rectangle('fill',36*i,-2,36,2)
-            gc.setColor(r,g,b,.4)
+            setColor(.6,.9,1,2.5*ice.appearT)
+            rect('fill',36*i,-2,36,2)
+            setColor(r,g,b,.4)
             --“柱体”
-            --gc.rectangle('fill',36*i,-FH*H,36,FH*H)
+            --rect('fill',36*i,-FH*H,36,FH*H)
             gc.draw(ict,36*i,-FH*H,0,2,FH*H)
-            gc.setColor(r,g,b,.3)
+            setColor(r,g,b,.3)
             if ice.H>=1 then
-            gc.rectangle('fill',36*i,-FH*(ice.H-1),36,FH*(ice.H-1))
+            rect('fill',36*i,-FH*(ice.H-1),36,FH*(ice.H-1))
             end
-            gc.setColor(r,g,b,1)
-            gc.rectangle('fill',36*i,-FH*H,4,FH*H)
-            gc.rectangle('fill',36*i+32,-FH*H,4,FH*H)
+            setColor(r,g,b,1)
+            rect('fill',36*i,-FH*H,4,FH*H)
+            rect('fill',36*i+32,-FH*H,4,FH*H)
         end
     end
-    gc.setColor(.6,.9,1,min(player.deadTimer*2,0.8))
-    gc.rectangle('fill',36,-FH,FW,FH)
+    setColor(.6,.9,1,min(player.deadTimer*2,0.8))
+    rect('fill',36,-FH,FW,FH)
 
-    gc.setColor(.6,.84,1,.8)
+    setColor(.6,.84,1,.8)
     local PL=player.ruleAnim.smashParList
     for i=1,#PL do
-        gc.rectangle('fill',PL[i].x-12,PL[i].y-12,24,24)
+        rect('fill',PL[i].x-12,PL[i].y-12,24,24)
     end
     local txt=A.scoreTxt
     for i=1,#txt do
         local clr=txt[i].color
-        gc.setColor(clr[1],clr[2],clr[3],clr[4]*txt[i].TTL/txt[i].tMax)
-        gc.printf(""..txt[i].score,font.JB_B,txt[i].x,txt[i].y,5000,'center',0,txt[i].size/128,txt[i].size/128,2500,84)
+        setColor(clr[1],clr[2],clr[3],clr[4]*txt[i].TTL/txt[i].tMax)
+        printf(""..txt[i].score,font.JB_B,txt[i].x,txt[i].y,5000,'center',0,txt[i].size/128,txt[i].size/128,2500,font.height.JB_B/2)
     end
     gc.translate(18*player.w+36,-18*player.h)
     local t=A.lvupT
-    gc.setColor(1,1,1,1.8-t/.3)
-    gc.printf("LEVEL UP",font.JB_B,0,-1200*(t-.16)*t,5000,'center',0,.8,.8,2500,84)
+    setColor(1,1,1,1.8-t/.3)
+    printf("LEVEL UP",font.Bender_B,0,-1200*(t-.16)*t+FH*.05,5000,'center',0,.8,.8,2500,font.height.Bender_B/2)
 
     gc.pop()
 end
