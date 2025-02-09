@@ -184,7 +184,7 @@ local clearClr={
     {.8,1,0},{.8,.8,.8},{.64,.6,1},{.5,.75,1},
     {.5,1,.5},{1,.9,.5},{1,1,.2},{1,1,1},
     {1,1,1},{1,1,1},{1,0,0},{.64,.6,1},
-    {.75,1,.5},{1,.5,.96},{.7,.6,1},{1,.5,.4},{1,1,1}
+    {.75,1,.5},{1,.5,.96},{.7,.6,1},{1,.5,.4},
 }
 local ctxt
 function simple.updateClearInfo(player,mino)
@@ -223,7 +223,6 @@ function simple.clearTextDraw(player,mino)
         end
         if scene.time%.2<.1 then setColor(1,1,1) else local k=min((CInfo.combo-8)/8,1)
         setColor(1-.5*k,1,1-.125*k) end
-        --setColor(scene.time%.2<.1 and {1,1,1} or M.lerp({1,1,1},{.5,1,.75},min((CInfo.combo-8)/8,1)))
         printf(ctxt,font.Bender_B,-16,12,1200,'right',0,.25,.25,1200,72)
     end
     gc.translate(W/2+20,250)
@@ -231,7 +230,14 @@ function simple.clearTextDraw(player,mino)
     local alpha=min(player.clearTxtTimer*1.5/player.clearTxtTMax,1)*.9
     local s=(CInfo.line>=4 and 1-.05*player.clearTxtTimer or .5)
     local r,g,b
-    if CInfo.spin and not CInfo.mini then
+
+    if CInfo.line>20 then
+        if player.clearTxtTimer%.12<.06 then
+            r,g,b=1,1,1
+        else
+            r,g,b=1,.9,.6
+        end
+    elseif CInfo.spin and not CInfo.mini then
         local c=mino.color[CInfo.name]
         r,g,b=c[1]+.3*(1-c[1]),c[2]+.3*(1-c[2]),c[3]+.3*(1-c[3])
     else
