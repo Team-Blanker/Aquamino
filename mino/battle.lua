@@ -164,7 +164,7 @@ function battle.stdBombAtkCalculate(player)
     w,c=(his.wide>4 and 1 or his.wide),min(his.combo,12)
     if his.PC then return 4+l else
 
-    local bl=(s and not m) and l+min(l-1,3) or l>=4 and 1.5*l-1.5 or l-.5 --基础攻击
+    local bl=max(((s and not m) and l+min(l-1,3) or 0),(l>=4 and 1.5*l-1.5 or l-.5)) --基础攻击
     local ba=b>0 and min((3+b)/4,2.5) or 0 --B2B加成
     local ca=max((c-3)/(2+2^(w-1))+(l>=4 and 1.5 or .5),0) --连消加成
     return l==0 and 0 or floor(bl+ba+ca)
