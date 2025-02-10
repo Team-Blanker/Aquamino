@@ -49,6 +49,12 @@ function skin.onLineClear(player,mino)
                     vel=.5+1*rand() angle=2*math.pi*rand()
                     ins(player.pList,{name=v[i].name,x=i+rand()-.5,y=k+rand()-.5,vx=vel*cos(angle),vy=vel*sin(angle),timer=0})
                 end
+                --[[if v[i].bomb then
+                    for j=1,20 do
+                        vel=4+2*rand() angle=2*math.pi*rand()
+                        ins(player.pList,{name=v[i].name,x=i+cos(angle),y=k+sin(angle),vx=vel*cos(angle),vy=vel*sin(angle),timer=0})
+                    end
+                end]]
             end
         end
     end

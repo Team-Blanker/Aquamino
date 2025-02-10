@@ -76,9 +76,12 @@ function otto.clear(player)
     if his.PC then sfx.play('PC') end
     if his.B2B>0 and his.line>0 then sfx.play('B2B',1,2^(min(his.B2B-1,18)/12)) end
     if his.combo>=18 then sfx.play('megacombo') end
+
+    local bomb=false
     for k,v in pairs(his.clearLine) do
-        if v.bombGarbage then sfx.play('bomb',1,pitch) end
+        if v.bombGarbage then bomb=true break end
     end
+    if bomb then sfx.play('bomb',1,pitch) end
 end
 function otto.B2BBreak()
     sfx.play('B2BBreak')

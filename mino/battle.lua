@@ -47,21 +47,6 @@ function battle.atkRecv(player,atk)
         fLib.garbage(player,atk.block,1,h)
     end
 end
-function battle.bombAtkRecv(player,atk)
-    if atk.amount==0 then return end
-    player.lastHole=rand()<atk.M_OC and rand(player.w) or player.lastHole
-    local h
-    local l=0
-    --print(atk.cut)
-    for i=1,atk.amount do
-        l=l+1
-        local sw=rand()<(l-atk.cut)
-        h=sw and rand(player.w) or player.lastHole
-        player.lastHole=h
-        if sw then l=0 end
-        fLib.bombGarbage(player,atk.block,1,h)
-    end
-end
 function battle.getGarbageAmount(player)
     local n=0
     for i=1,#player.garbage do
@@ -156,6 +141,67 @@ function battle.stdAtkRecv(player)
         else i=i+1 end
     end
     return amount
+end
+--炸弹垃圾行
+function battle.bombAtkRecv(player,atk)
+    if atk.amount==0 then return end
+    player.lastHole=rand()<atk.M_OC and rand(player.w) or player.lastHole
+    local h
+    local l=0
+    --print(atk.cut)
+    for i=1,atk.amount do
+        l=l+1
+        local sw=rand()<(l-atk.cut)
+        h=sw and rand(player.w) or player.lastHole
+        player.lastHole=h
+        if sw then l=0 end
+        fLib.bombGarbage(player,atk.block,1,h)
+    end
+end
+function battle.stdBombAtkCalculate(player)
+    local his=player.history
+    l,s,m,b=his.line,his.spin,his.mini,his.B2B
+    w,c=(his.wide>4 and 1 or his.wide),min(his.combo,12)
+    if his.PC then return 4+l else
+
+    local bl=(s and not m) and l+min(l-1,3) or l>=4 and 1.5*l-1.5 or l-.5 --基础攻击
+    local ba=b>0 and min((3+b)/4,2.5) or 0 --B2B加成
+    local ca=max((c-3)/(2+2^(w-1))+(l>=4 and 1.5 or .5),0) --连消加成
+    return l==0 and 0 or floor(bl+ba+ca)
+    end
+end
+function battle.stdBombAtkGen(player,time)
+    local his=player.history
+    l,s,m,w,b,c=his.line,his.spin,his.mini,his.wide,his.B2B,his.combo
+
+    local atk=battle.stdBombAtkCalculate(player)
+    local def=(player.atkMinusByDef and player.defAmount or 0)
+    local totalatk=(atk-def)*player.atkScale
+    player.defAmount=0
+
+    if atk>0 then
+        player.spikeCount=player.spikeCount+atk
+        player.defSpikeCount=player.defSpikeCount+def
+        player.spikeTimer=1
+
+        player.spikeAnimCount=player.spikeCount
+        player.defSpikeAnimCount=player.defSpikeCount
+        player.spikeAnimTimer=player.spikeAnimTMax
+
+        local x,y,ox,oy=block.size(player.history.piece)
+        ins(player.atkAnimList,{x=player.history.x-ox,y=player.history.y-oy,t=0,amount=atk,defAmount=def,B2B=player.history.B2B})
+    end
+
+    if totalatk<=0 then return end
+
+    return {
+        amount=totalatk,
+        block='g1',
+        cut=(w==4 or his.PC) and 1e99 or 2.5,
+        M_OC=(w>=2 and w<=4) and (4-w)*.025 or his.PC and 0 or max(1/(b+totalatk-0.1*(c-3)),.2),
+        appearT=0,
+        time=time or .5,
+    }
 end
 function battle.stdBombAtkRecv(player)
     local amount=0

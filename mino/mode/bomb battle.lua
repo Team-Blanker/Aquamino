@@ -95,7 +95,7 @@ function rule.onLineClear(player,mino)
     local his=player.history
     player.line=player.line+his.line
     player.atk=player.atk+battle.stdAtkCalculate(player)
-    battle.sendAtk(player,mino.player[player.target],battle.stdAtkGen(player))
+    battle.sendAtk(player,mino.player[player.target],battle.stdBombAtkGen(player))
 end
 function rule.afterPieceDrop(player,mino)
     if player==mino.player[2] then
