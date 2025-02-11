@@ -43,7 +43,7 @@ function battle.atkRecv(player,atk)
         local sw=rand()<(l-atk.cut)
         h=sw and rand(player.w) or player.lastHole
         player.lastHole=h
-        if sw then l=0 end
+        if sw then l=1 end
         fLib.garbage(player,atk.block,1,h)
     end
 end
@@ -124,8 +124,8 @@ function battle.stdAtkGen(player,time)
     return {
         amount=totalatk,
         block='g1',
-        cut=(w==4 or his.PC) and 1e99 or s and totalatk/2+b or 1e99,
-        M_OC=(w>=2 and w<=4) and (4-w)*.025 or his.PC and 0 or max(1/(b+totalatk-0.1*(c-3)),.2),
+        cut=(w==4 or his.PC) and 1e99 or s and totalatk/2+b+.25 or 1e99,
+        M_OC=(w>=2 and w<=4) and (4-w)*.025 or his.PC and 0 or max(1/(max(b,1)-0.1*(c-3)),.2),
         appearT=0,
         time=time or .5,
     }
@@ -154,7 +154,7 @@ function battle.bombAtkRecv(player,atk)
         local sw=rand()<(l-atk.cut)
         h=sw and rand(player.w) or player.lastHole
         player.lastHole=h
-        if sw then l=0 end
+        if sw then l=1 end
         fLib.bombGarbage(player,atk.block,1,h)
     end
 end
@@ -197,8 +197,8 @@ function battle.stdBombAtkGen(player,time)
     return {
         amount=totalatk,
         block='g1',
-        cut=(w==4 or his.PC) and 1e99 or 2.5,
-        M_OC=(w>=2 and w<=4) and (4-w)*.025 or his.PC and 0 or max(1/(b+totalatk-0.1*(c-3)),.2),
+        cut=(w==4 or his.PC) and 1e99 or 1,
+        M_OC=(w>=2 and w<=4) and (4-w)*.025 or his.PC and 0 or max(1/(max(b,1)-0.1*(c-3)),.2),
         appearT=0,
         time=time or .5,
     }
