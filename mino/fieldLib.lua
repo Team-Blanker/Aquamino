@@ -287,7 +287,7 @@ function fieldLib.lock(player)
         local x=C.x+C.piece[i][1]
         local y=C.y+C.piece[i][2]
         while not player.field[y] do fieldLib.addLine(player)  end
-        player.field[y][x]={name=C.name,loosen=false,id=player.stat.block}
+        if not player.field[y][x].bomb then player.field[y][x]={name=C.name,loosen=false,id=player.stat.block} end
 
         for i=y-1,1,-1 do
         if fieldLib.isBlock(player,x,i) then

@@ -32,6 +32,12 @@ function simple.init(player)
 end
 local W,H,timeTxt
 function simple.fieldDraw(player,mino)
+    --[[
+    setColor(1,1,1)
+    gc.setLineWidth(4)
+    rect('line',-400,-400,800,800)
+    ]]
+
     local darg=player.dangerAnimTimer/dangerAnimTMax
 
     W,H=36*player.w,36*player.h
