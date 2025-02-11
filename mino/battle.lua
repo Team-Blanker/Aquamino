@@ -197,7 +197,7 @@ function battle.stdBombAtkGen(player,time)
     return {
         amount=totalatk,
         block='g1',
-        cut=(w==4 or his.PC) and 1e99 or 2.5,
+        cut=(w==4 or his.PC) and s and 1.5 or 2.5,
         M_OC=(w>=2 and w<=4) and (4-w)*.025 or his.PC and 0 or max(1/(max(b,1)-0.1*(c-3)),.2),
         appearT=0,
         time=time or .5,
