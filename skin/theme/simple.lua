@@ -297,11 +297,18 @@ function simple.clearTextDraw(player,mino)
 end
 
 local function checkDanger(player)
+    local gbamount=0
+    if player.garbage then
+        for i=1,#player.garbage do
+            gbamount=gbamount+player.garbage[i].amount
+        end
+    end
+
     local c=ceil(player.w/2)
     for x=c-1,c+2 do
         for y=#player.field,1,-1 do
             if player.field[y][x] then
-            if next(player.field[y][x]) and y>=player.h-3 then return true end
+            if next(player.field[y][x]) and y+gbamount>=player.h-3 then return true end
             end
         end
     end
@@ -319,7 +326,9 @@ function simple.update(player,dt)
     else player.dangerAnimTimer=max(0,player.dangerAnimTimer-dt) end
 
     if player.garbage then
-        for i=1,#player.garbage do player.garbage[i].appearT=player.garbage[i].appearT+dt end
+        for i=1,#player.garbage do
+            player.garbage[i].appearT=player.garbage[i].appearT+dt
+        end
     end
 
     if player.defAnimList then
