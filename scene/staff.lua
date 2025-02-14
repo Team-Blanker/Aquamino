@@ -20,9 +20,10 @@ local devList={
     translate={'Aqua6623','DJ Asriel'},
     specialThanks={
         {'MrZ_26'},
-        {'XMiao小渺 (XM1ao)','User670','MianSoft','沙盒子','Sunday'},
-        {'T427 默默颗','風洛霊flore','farter','xb2002b','大叔Rex'},
-        {'DJ Asriel','Not-A-Robot','SweetSea','nekonaomii (MelloBoo44)'}
+        {'XMiao小渺 (XM1ao)','User670','MianSoft','沙盒子','Sunday',},
+        {'滑稽2369 (lol2369)','沙丁子 (5sdac)','T427 默默颗',},
+        {'風洛霊flore','farter','xb2002b','大叔Rex',},
+        {'DJ Asriel','Not-A-Robot','SweetSea','nekonaomii (MelloBoo44)',}
     }
 }
 
