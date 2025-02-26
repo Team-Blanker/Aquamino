@@ -327,10 +327,10 @@ AqRS.kickTable.J=getSymTable(AqRS.kickTable.L)
 
 AqRS.kickTable.Q,AqRS.kickTable.P=AqRS.kickTable.L,AqRS.kickTable.J
 
-AqRS.kickTable.J5=getSymTable(AqRS.kickTable.L5)
+--AqRS.kickTable.J5=getSymTable(AqRS.kickTable.L5)
 
-AqRS.kickTable.H,AqRS.kickTable.Y=AqRS.kickTable.L5,AqRS.kickTable.L5
-AqRS.kickTable.N,AqRS.kickTable.R=AqRS.kickTable.J5,AqRS.kickTable.J5
+--AqRS.kickTable.H,AqRS.kickTable.Y=AqRS.kickTable.L5,AqRS.kickTable.L5
+--AqRS.kickTable.N,AqRS.kickTable.R=AqRS.kickTable.J5,AqRS.kickTable.J5
 
 function AqRS.getData(data,player,fLib,ori,mode)
     data.uWall=fLib.coincide(player, 0, 1)
