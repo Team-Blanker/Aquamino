@@ -69,6 +69,9 @@ return {
                     left="左侧",
                     right="右侧"
                 }
+            },
+            ['ice storm']={
+                iceOpacity="冰柱不透明度"
             }
         }
     },

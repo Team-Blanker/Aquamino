@@ -90,5 +90,32 @@ function lst.slider(menu)
             end
         end
     })
+    SLIDER.create('IceStorm_iceOpacity',{
+        x=0,y=-64,type='hori',sz={800,32},button={32,32},
+        gear=0,pos=(opt['ice storm'].iceOpacity-.5)*2,
+        act=function ()
+            return menu.lvl==2 and menu.selectedMode=='ice storm'
+        end,
+        sliderDraw=function(g,sz)
+            if menu.lvl==2 and menu.selectedMode=='ice storm' then
+            gc.setColor(.5,.5,.5,.8)
+            gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
+            gc.setColor(1,1,1)
+            gc.printf(string.format(argTxt['ice storm'].iceOpacity..":%3d%%",opt['ice storm'].iceOpacity*100),
+                font.JB,-416,-48,114514,'left',0,.3125,.3125,0,84)
+            end
+        end,
+        buttonDraw=function(pos,sz)
+            if menu.lvl==2 and menu.selectedMode=='ice storm' then
+            gc.setColor(1,1,1)
+            gc.circle('fill',sz[1]*(pos-.5),0,20,4)
+            end
+        end,
+        always=function(pos)
+            if menu.lvl==2 and menu.selectedMode=='ice storm' then
+            opt['ice storm'].iceOpacity=pos/2+.5
+            end
+        end
+    })
 end
 return lst

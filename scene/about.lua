@@ -1,5 +1,7 @@
 local BUTTON=scene.button
 
+local ins,rem=table.insert,table.remove
+
 local logo=gc.newImage('pic/assets/title.png')
 local loveLogo=gc.newImage('pic/assets/love-logo.png')
 local w,h=logo:getPixelDimensions()
@@ -11,8 +13,11 @@ local repo={
 }
 local tool={'beepbox.co','GoldWave','REAPER','Malody','VS Code','vecta.io','GFIE (Greenfish Icon Editor)','Photoshop CC 2019'}
 
+local simdt=0
 local about={}
 function about.init()
+    simdt=0
+
     sfx.add({
         click='sfx/general/buttonClick.wav',
         quit='sfx/general/buttonQuit.wav',
@@ -121,6 +126,8 @@ function about.init()
         shape=LP.newRectangleShape(250,100)
     }
     about.obs2.fixture=LP.newFixture(about.obs2.body,about.obs2.shape,1)
+
+    about.loveBallTrail={}
 end
 function about.keyP(k)
     if k=='escape' then
@@ -144,11 +151,24 @@ end
 
 local timeTxt=gc.newText(font.Bender)
 function about.update(dt)
-    about.world:update(dt)
     local mx,my=adaptWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5)
     BUTTON.update(dt,mx,my)
-    if ms.isDown(1) and drag then
-        about.loveBall.body:applyForce(400*(mx-about.loveBall.body:getX()),400*(my-about.loveBall.body:getY()))
+
+    simdt=simdt+dt
+    if simdt>1/256 then
+        about.world:update(1/256)
+        simdt=simdt-1/256
+
+        if ms.isDown(1) and drag then
+            about.loveBall.body:applyForce(400*(mx-about.loveBall.body:getX()),400*(my-about.loveBall.body:getY()))
+        end
+
+        if about.loveBall.body:isAwake(true) then
+            ins(about.loveBallTrail,{x=about.loveBall.body:getX(),y=about.loveBall.body:getY(),r=about.loveBall.body:getAngle()})
+            if #about.loveBallTrail>128 then
+                rem(about.loveBallTrail,1)
+            end
+        end
     end
 end
 function about.draw()
@@ -165,6 +185,17 @@ function about.draw()
     --gc.printf(user.lang.about.time:format(win.stat.launch,win.stat.totalTime+scene.totalTime),
         --font.Bender,-700,400,10000,'center',0,1/3,1/3,5000,144)
     BUTTON.draw()
+
+    local t=#about.loveBallTrail
+    local lbt=about.loveBallTrail
+    local s
+    for i=1,t do
+        s=(128-t+i)/128
+        gc.setColor(1,1,1,.25*s^.5)
+        gc.draw(loveLogo,lbt[i].x,lbt[i].y,lbt[i].r,ballR*2/lw*s,ballR*2/lh*s,lw/2,lh/2)
+    end
+
+    gc.setColor(1,1,1)
     gc.draw(loveLogo,about.loveBall.body:getX(),about.loveBall.body:getY(),about.loveBall.body:getAngle(),ballR*2/lw,ballR*2/lh,lw/2,lh/2)
 end
 return about

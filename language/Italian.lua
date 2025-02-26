@@ -69,6 +69,9 @@ return {
                     left="Sinistra",
                     right="Destra"
                 }
+            },
+            ['ice storm']={
+                iceOpacity="Ice opacity"
             }
         }
     },

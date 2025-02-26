@@ -52,6 +52,7 @@ menu.icon={}
 menu.option={
     battle={bot_DropDelay=1,playerPos='left'},
     ['tower defense']={bot_DropDelay=1,playerPos='left'},
+    ['ice storm']={iceOpacity=1}
 }
 
 for k,v in pairs(menu.modeList) do

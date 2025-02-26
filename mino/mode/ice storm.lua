@@ -1,5 +1,5 @@
 local gc=love.graphics
-local setColor,rect,printf=gc.setColor,gc.rectangle,gc.printf
+local setColor,rect,arc,printf=gc.setColor,gc.rectangle,gc.arc,gc.printf
 
 local M,T=myMath,myTable
 local B=require'mino/blocks'
@@ -8,7 +8,7 @@ local floor=math.floor
 
 local rule={spinType='default'}
 
-function rule.init(P,mino)
+function rule.init(P,mino,modeInfo)
     scene.BG=require('BG/snow') scene.BG.init()
     mino.musInfo="カモキング - 大氷河時代"
     mus.add('music/Hurt Record/The Great Ice Age','whole','ogg',14.884,63)
@@ -25,6 +25,8 @@ function rule.init(P,mino)
     rule.allowPush={}
     rule.scoreUp=480
     rule.scoreBase=960
+
+    P[1].iceOpacity=modeInfo.arg.iceOpacity
 
     P[1].stormLv=1
     P[1].iceScore=0
@@ -44,7 +46,11 @@ function rule.init(P,mino)
     end
     P[1].iceColumn={}
     for j=1,P[1].w do
-        P[1].iceColumn[j]={H=-1,topTimer=0,speed=0,speedmax=0,dvps=0,appearT=0}
+        P[1].iceColumn[j]={H=-1,topTimer=0,speed=0,speedmax=0,dvps=0,appearT=0,topDeco={}}
+        for i=1,10,2 do
+            P[1].iceColumn[j].topDeco[i]=5+2*rand()--大小
+            P[1].iceColumn[j].topDeco[i+1]=rand()*2*math.pi--角度
+        end
     end
     rule.rise(P[1],rand(2,P[1].w-1))
 end
@@ -75,6 +81,11 @@ function rule.destroy(player,col,scoring,mtp,sfxPlay)
                     size=72,color=(ice.H<=h1 and {1,.7,.4,1} or ice.H<=h2 and {1,.9,.1,1} or {.6,.8,1,1}),
                     score=score
                 })
+            end
+
+            for i=1,10,2 do
+                player.iceColumn[col].topDeco[i]=5+2*rand()--大小
+                player.iceColumn[col].topDeco[i+1]=rand()*2*math.pi--角度
             end
         end
 
@@ -280,11 +291,11 @@ function rule.underFieldDraw(player)
     gc.pop()
 end
 
-local ict=gc.newCanvas(18,1)
+local ict=gc.newCanvas(14,1)
 gc.setCanvas(ict)
-for i=1,9 do
-    setColor(1,1,1,(10-i)/9)
-    gc.points(i-.5,.5,18-i+.5,.5)
+for i=1,7 do
+    setColor(1,1,1,(8-i)/7)
+    gc.points(i-.5,.5,14-i+.5,.5)
 end
 gc.setCanvas()
 local r,g,b,larg
@@ -294,7 +305,7 @@ function rule.overFieldDraw(player)
     gc.translate(-FW/2-36,FH/2)
     local A=player.ruleAnim
     for i=1,player.w do
-        local ice=player.iceColumn[i]
+        local ice,deco=player.iceColumn[i],player.iceColumn[i].topDeco
         if ice.H>=0 then
             larg=ice.H>=1.5 and abs(player.gameTimer%.25-.125)*8 or 0
             r=ice.H==2 and .8 or ice.H>=1 and M.lerp(.6, 1,larg) or .4
@@ -303,19 +314,23 @@ function rule.overFieldDraw(player)
             --冰柱显示的高度
             local H=M.lerp(min(ice.H,1),A.ice[i].preH,(A.ice[i].t/A.iceTMax)^2)
             --“底座”
-            setColor(.6,.9,1,2.5*ice.appearT)
-            rect('fill',36*i,-2,36,2)
-            setColor(r,g,b,.4)
+            --setColor(.6,.9,1,2.5*ice.appearT)
+            --rect('fill',36*i,-2,36,2)
             --“柱体”
-            --rect('fill',36*i,-FH*H,36,FH*H)
-            gc.draw(ict,36*i,-FH*H,0,2,FH*H)
-            setColor(r,g,b,.3)
+            setColor(r,g,b,.4*player.iceOpacity)
+            rect('fill',36*i+4,-FH*H,28,FH*H)
+            gc.draw(ict,36*(i+.5),-FH*H,0,2,FH*H,7,0)
+            setColor(r,g,b,.3*player.iceOpacity)
             if ice.H>=1 then
-            rect('fill',36*i,-FH*(ice.H-1),36,FH*(ice.H-1))
+            rect('fill',36*i+4,-FH*(ice.H-1),28,FH*(ice.H-1))
             end
-            setColor(r,g,b,1)
-            rect('fill',36*i,-FH*H,4,FH*H)
-            rect('fill',36*i+32,-FH*H,4,FH*H)
+            setColor(.6,.9,1,1)
+            --rect('fill',36*i,-FH*H,4,FH*H)
+            --rect('fill',36*i+32,-FH*H,4,FH*H)
+            for j=1,5 do
+                arc('fill','closed',36*(i+.5)+6*(j-3),-FH*H,deco[2*j-1]*min((2*ice.appearT)^.5,1)     ,deco[2*j],deco[2*j]+3/2*math.pi,3)
+                arc('fill','closed',36*(i+.5)+6*(j-3),0    ,deco[2*j-1]*min((4*ice.appearT)^.5,1)*1.25,deco[2*j],deco[2*j]+3/2*math.pi,3)
+            end
         end
     end
     setColor(.6,.9,1,min(player.deadTimer*2,0.8))
