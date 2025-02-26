@@ -4,8 +4,20 @@ local skin={}
 local COLOR=require('framework/color')
 local setColor,rect,draw=gc.setColor,gc.rectangle,gc.draw
 local pic=gc.newImage('skin/block/glass/glass.png')
+local glowpic=gc.newImage('skin/block/glass/glow.png')
 local bombpic=gc.newImage('skin/block/glass/bomb.png')
 pic:setFilter('nearest')
+
+skin.defaultTexType={
+    Z=1,S=1,J=1,L=1,T=1,O=1,I=1,
+    g1=1,g2=1,
+    gb=1,bomb=1,
+
+    Z5=1,S5=1,J5=1,L5=1,T5=1,I5=1,
+    N =1,H =1,F =1,E =1,R =1,Y =1,
+    P =1,Q =1,X =1,W =1,V =1,U =1,
+}
+
 function skin.unitDraw(player,x,y,color,alpha)
     setColor(color[1],color[2],color[3],.25)
     rect('fill',-18+36*x,-18-36*y,36,36)
@@ -13,8 +25,6 @@ function skin.unitDraw(player,x,y,color,alpha)
     draw(pic,-18+36*x,-18-36*y)
 end
 function skin.init(player)
-    player.fieldCanvas=gc.newCanvas(player.w*36,3*player.h*36)
-    player.fieldCanvas:setFilter('nearest')
     player.skinSpinTimer=0
     player.spinAct=false
 
@@ -82,43 +92,24 @@ function skin.update(player,dt)
     end
 end
 
-local bo={--泛光偏移值
-    1,0, 0,1, -1,0, 0,-1,
-    --.7,.7, -.7,.7, -.7,-.7, .7,-.7
-}
 function skin.fieldDraw(player,mino)
     local h=0 local n=player.event[1] and player.event[1]/player.history.CDelay
     local F=player.field
 
-    gc.push()
-    gc.origin()
-    gc.setCanvas(player.fieldCanvas)
-    gc.setScissor(0,0,50*36,100*36)
-    gc.clear(0,0,0,0)
+    gc.setBlendMode('add','alphamultiply')
     for y=1,#player.field do
-        if player.field[y][1] then
+        if player.field[y][1] then h=h+1
         for x=1,player.w do
             local C=mino.color[F[y][x].name]
-            if F[y][x] and next(F[y][x]) and C then
-                setColor(C[1],C[2],C[3],1)
-                gc.rectangle('fill',36*x-36,36*y-36,36,36)
+            if F[y][x] and next(F[y][x]) and C and mino.texType[F[y][x].name]==1 then
+                setColor(C)
+                draw(glowpic,36*x,-36*h,0,1,1,36,36)
             end
         end
+        else h=h+1
         end
     end
-    gc.setScissor()
-    gc.setDefaultCanvas()
-    gc.pop()
-
-    setColor(1,1,1,.036)
-    draw(player.fieldCanvas,18,-18,0,1,-1)
-    for i=1,6 do  for j=1,#bo,2 do
-        local a,b=i*3*bo[j],i*3*bo[j+1]
-        draw(player.fieldCanvas,18+a,-18+b,0,1,-1)
-    end  end
-
-    setColor(1,1,1,.15)
-    draw(player.fieldCanvas,18,-18,0,1,-1)
+    gc.setBlendMode('alpha','alphamultiply')
 
     h=0
     for y=1,#player.field do
@@ -126,6 +117,9 @@ function skin.fieldDraw(player,mino)
         for x=1,player.w do
             local C=mino.color[F[y][x].name]
             if F[y][x] and next(F[y][x]) and C then
+
+                setColor(C[1],C[2],C[3],.15)
+                rect('fill',-18+36*x,-18-36*h,36,36)
                 setColor(C)
                 draw(pic,-18+36*x,-18-36*h)
 
@@ -175,8 +169,12 @@ function skin.holdDraw(player,piece,x,y,color,canHold)
         draw(pic,-18+36*(x+piece[i][1]),-18-36*(y+piece[i][2]))
     end
 end
-function skin.previewDraw(piece,x,y,color)--设置内预览方块材质用
+function skin.previewDraw(piece,x,y,color,tex)--设置内预览方块材质用
     for i=1,#piece do
+        if tex==1 then
+            setColor(color)
+            draw(glowpic,36*(x+piece[i][1]),-36*(y+piece[i][2]),0,1,1,36,36)
+        end
         setColor(color[1],color[2],color[3],.25)
         rect('fill',-18+36*(x+piece[i][1]),-18-36*(y+piece[i][2]),36,36)
         setColor(color)

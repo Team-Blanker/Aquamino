@@ -8,7 +8,7 @@ local bc={blockIndex=1}
 local defaultColor={
     Z={.9,.15,.3},S={.45,.9,0},J={0,.6,.9},L={.9,.6,.3},T={.75,.18,.9},O={.9,.9,0},I={.15,.9,.67},
 }
-local texTypeRange={classic=2}
+local texTypeRange={classic=2,glass=2}
 local bList={'Z','S','J','L','T','O','I'}
 local skinName
 function bc.read()
