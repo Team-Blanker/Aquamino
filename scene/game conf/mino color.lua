@@ -7,9 +7,15 @@ local cfcc=user.lang.conf.custom.colorSet
 local bc={blockIndex=1}
 local defaultColor={
     Z={.9,.15,.3},S={.45,.9,0},J={0,.6,.9},L={.9,.6,.3},T={.75,.18,.9},O={.9,.9,0},I={.15,.9,.67},
+    g1={.5,.5,.5},g2={.75,.75,.75}
 }
+local extraBlockList={
+    g1={{ 1, 0},{-1, 0},{ 0, 1},{ 0,-1}},
+    g2={{ 0, 0},{ 1, 1},{-1, 1},{ 1,-1},{-1,-1}}
+}
+
 local texTypeRange={classic=2,glass=2}
-local bList={'Z','S','J','L','T','O','I'}
+local bList={'Z','S','J','L','T','O','I','g1','g2'}
 local skinName
 function bc.read()
     local pf={block='pure',theme='simple',sfx='Dr Ocelot',smoothAnimAct=false,fieldScale=1}
@@ -288,7 +294,7 @@ end
 local w,h,x,y
 function bc.draw()
     gc.setColor(1,1,1)
-    gc.printf(cfcc.title,font.Bender,0,-510,1280,'center',0,1,1,640,0)
+    gc.printf(cfcc.title,font.Bender,0,-460,1280,'center',0,.8,.8,640,font.height.Bender/2)
 
     BUTTON.draw() SLIDER.draw()
 
@@ -296,16 +302,16 @@ function bc.draw()
         gc.push('transform')
         gc.translate(0,-250)
         gc.scale(2.5)
-        w,h,x,y=blocks.size(blocks[bList[bc.blockIndex]])
-        bc.blockSkin.previewDraw(blocks[bList[bc.blockIndex]],x,y,bc.color[bList[bc.blockIndex]],bc.texType[bList[bc.blockIndex]])
+        w,h,x,y=blocks.size(blocks[bList[bc.blockIndex]] or extraBlockList[bList[bc.blockIndex]])
+        bc.blockSkin.previewDraw(blocks[bList[bc.blockIndex]] or extraBlockList[bList[bc.blockIndex]],x,y,bc.color[bList[bc.blockIndex]],bc.texType[bList[bc.blockIndex]])
         gc.pop()
 
         gc.push('transform')
         gc.translate(-400,-250)
         gc.scale(1.5)
         if bc.blockIndex-1>0 then
-            w,h,x,y=blocks.size(blocks[bList[bc.blockIndex-1]])
-            bc.blockSkin.previewDraw(blocks[bList[bc.blockIndex-1]],x,y,bc.color[bList[bc.blockIndex-1]],bc.texType[bList[bc.blockIndex-1]])
+            w,h,x,y=blocks.size(blocks[bList[bc.blockIndex-1]] or extraBlockList[bList[bc.blockIndex-1]])
+            bc.blockSkin.previewDraw(blocks[bList[bc.blockIndex-1]] or extraBlockList[bList[bc.blockIndex-1]],x,y,bc.color[bList[bc.blockIndex-1]],bc.texType[bList[bc.blockIndex-1]])
         end
         gc.pop()
 
@@ -313,8 +319,8 @@ function bc.draw()
         gc.translate(400,-250)
         gc.scale(1.5)
         if bc.blockIndex+1<=#bList then
-            w,h,x,y=blocks.size(blocks[bList[bc.blockIndex+1]])
-            bc.blockSkin.previewDraw(blocks[bList[bc.blockIndex+1]],x,y,bc.color[bList[bc.blockIndex+1]],bc.texType[bList[bc.blockIndex+1]])
+            w,h,x,y=blocks.size(blocks[bList[bc.blockIndex+1]] or extraBlockList[bList[bc.blockIndex+1]])
+            bc.blockSkin.previewDraw(blocks[bList[bc.blockIndex+1]] or extraBlockList[bList[bc.blockIndex+1]],x,y,bc.color[bList[bc.blockIndex+1]],bc.texType[bList[bc.blockIndex+1]])
         end
         gc.pop()
     end
