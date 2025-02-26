@@ -60,7 +60,7 @@ for k,v in pairs(love.graphics) do
     gc[k]=v
 end
 function gc.setDefaultCanvas()
-    gc.setCanvas(scene.canvas)
+    if scene.shader then gc.setCanvas(scene.canvas) else gc.setCanvas() end
 end
 
 fs=love.filesystem
@@ -346,28 +346,39 @@ function love.draw()
 
     local rx,ry=adaptWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5)
 
-    gc.setCanvas(dfcv)
-    gc.translate(960,540)
-
-    gc.clear(0,0,0)
-
-    gc.setColor(1,1,1)--若未说明，图像绘制统一为白色，下同
-    if scene.BG.draw then scene.BG.draw() end
-    gc.setColor(1,1,1)
-    if scene.cur.draw then scene.cur.draw() end
-
-    gc.translate(-960,-540)
-    gc.setCanvas()
-
     --[[画面显示：找到最大的16:9的矩形，居中，以该矩形的中心为原点，向右为x轴正方向，向下为y轴正方向，
     矩形长边为1920单位，短边为1080单位，以此为基准进行绘制]]
-    gc.applyTransform(adaptWindow)
-    if scene.shader then gc.setShader(scene.shader) end
-    gc.setScissor(0,0,1920,1080)
-    gc.setColor(1,1,1)
-    gc.draw(scene.canvas,0,0,0,1,1,960,540)
-    gc.setScissor()
-    gc.setShader()
+    if scene.shader then--有着色器时经过一层画布，没有就直接画
+        gc.setCanvas(dfcv)
+        gc.translate(960,540)
+
+        gc.clear(0,0,0)
+
+        gc.setColor(1,1,1)--若未说明，图像绘制统一为白色，下同
+        if scene.BG.draw then scene.BG.draw() end
+        gc.setColor(1,1,1)
+        if scene.cur.draw then scene.cur.draw() end
+
+        gc.translate(-960,-540)
+        gc.setCanvas()
+
+        gc.applyTransform(adaptWindow)
+        gc.setShader(scene.shader)
+        gc.setScissor(0,0,1920,1080)
+        gc.setColor(1,1,1)
+        gc.draw(scene.canvas,0,0,0,1,1,960,540)
+        gc.setScissor()
+        gc.setShader()
+    else
+        gc.applyTransform(adaptWindow)
+
+        gc.clear(0,0,0)
+
+        gc.setColor(1,1,1)--若未说明，图像绘制统一为白色，下同
+        if scene.BG.draw then scene.BG.draw() end
+        gc.setColor(1,1,1)
+        if scene.cur.draw then scene.cur.draw() end
+    end
 
     gc.setColor(1,1,1)--过场动画
     if scene.anim then scene.anim() end
