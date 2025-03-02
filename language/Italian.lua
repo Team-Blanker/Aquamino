@@ -71,7 +71,7 @@ return {
                 }
             },
             ['ice storm']={
-                iceOpacity="Ice opacity"
+                iceOpacity="Opacità della Colonna di Ghiaccio"
             }
         }
     },

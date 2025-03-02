@@ -20,7 +20,7 @@ function lst.slider(menu)
             gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
             gc.setColor(1,1,1)
             gc.printf(string.format(argTxt.battle.bot_PPS..":%.2f",1/opt.battle.bot_DropDelay),
-                font.JB,-416,-48,114514,'left',0,.3125,.3125,0,84)
+                font.JB,-416,-48,10000,'left',0,.3125,.3125,0,84)
             end
         end,
         buttonDraw=function(pos,sz)
@@ -75,7 +75,7 @@ function lst.slider(menu)
             gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
             gc.setColor(1,1,1)
             gc.printf(string.format(argTxt.battle.bot_PPS..":%.2f",1/opt['tower defense'].bot_DropDelay),
-                font.JB,-416,-48,114514,'left',0,.3125,.3125,0,84)
+                font.JB,-416,-48,10000,'left',0,.3125,.3125,0,84)
             end
         end,
         buttonDraw=function(pos,sz)
@@ -101,8 +101,12 @@ function lst.slider(menu)
             gc.setColor(.5,.5,.5,.8)
             gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
             gc.setColor(1,1,1)
-            gc.printf(string.format(argTxt['ice storm'].iceOpacity..":%3d%%",opt['ice storm'].iceOpacity*100),
-                font.JB,-416,-48,114514,'left',0,.3125,.3125,0,84)
+            local tw=font.JB:getWidth(argTxt['ice storm'].iceOpacity)
+            local aw=692
+            gc.printf(argTxt['ice storm'].iceOpacity,
+                font.JB,-400,-48,10000,'left',0,min(aw/tw,.3125),min(aw/tw,.3125),16,84)
+            gc.printf(string.format(":%3d%%",opt['ice storm'].iceOpacity*100+.5),
+                font.JB,-400+min(tw*.3125,aw),-48,10000,'left',0,.3125,.3125,16,84)
             end
         end,
         buttonDraw=function(pos,sz)

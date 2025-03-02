@@ -300,15 +300,15 @@ function bc.draw()
 
     if bc.blockSkin.previewDraw then
         gc.push('transform')
-        gc.translate(0,-250)
-        gc.scale(2.5)
         w,h,x,y=blocks.size(blocks[bList[bc.blockIndex]] or extraBlockList[bList[bc.blockIndex]])
+        gc.translate(0,-250)
+        gc.scale(2.5/max(h/2.4,1))
         bc.blockSkin.previewDraw(blocks[bList[bc.blockIndex]] or extraBlockList[bList[bc.blockIndex]],x,y,bc.color[bList[bc.blockIndex]],bc.texType[bList[bc.blockIndex]])
         gc.pop()
 
         gc.push('transform')
         gc.translate(-400,-250)
-        gc.scale(1.5)
+        gc.scale(1.5/max(h/2.4,1))
         if bc.blockIndex-1>0 then
             w,h,x,y=blocks.size(blocks[bList[bc.blockIndex-1]] or extraBlockList[bList[bc.blockIndex-1]])
             bc.blockSkin.previewDraw(blocks[bList[bc.blockIndex-1]] or extraBlockList[bList[bc.blockIndex-1]],x,y,bc.color[bList[bc.blockIndex-1]],bc.texType[bList[bc.blockIndex-1]])
@@ -317,13 +317,16 @@ function bc.draw()
 
         gc.push('transform')
         gc.translate(400,-250)
-        gc.scale(1.5)
+        gc.scale(1.5/max(h/2.4,1))
         if bc.blockIndex+1<=#bList then
             w,h,x,y=blocks.size(blocks[bList[bc.blockIndex+1]] or extraBlockList[bList[bc.blockIndex+1]])
             bc.blockSkin.previewDraw(blocks[bList[bc.blockIndex+1]] or extraBlockList[bList[bc.blockIndex+1]],x,y,bc.color[bList[bc.blockIndex+1]],bc.texType[bList[bc.blockIndex+1]])
         end
         gc.pop()
     end
+
+    gc.setColor(1,1,1)
+    gc.printf(bList[bc.blockIndex],font.Bender,0,-80,1280,'center',0,.6,.6,640,font.height.Bender/2)
 end
 function bc.exit()
     bc.save()

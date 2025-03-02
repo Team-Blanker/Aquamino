@@ -61,8 +61,8 @@ function skin.onLineClear(player,mino)
                 end
                 --[[if v[i].bomb then
                     for j=1,20 do
-                        vel=4+2*rand() angle=2*math.pi*rand()
-                        ins(player.pList,{name=v[i].name,x=i+cos(angle),y=k+sin(angle),vx=vel*cos(angle),vy=vel*sin(angle),timer=0})
+                        vel=1+1*rand() angle=2*math.pi*rand()
+                        ins(player.pList,{name='spin',x=i+.5*cos(angle),y=k+rand()-.5,vx=10*vel*cos(angle),vy=0,timer=0})
                     end
                 end]]
             end
@@ -140,10 +140,13 @@ function skin.overFieldDraw(player,mino)
     local pList=player.pList
     for i=1,#pList do
         arg=min(1-pList[i].timer/fadeTime,1)
-        c=mino.color[pList[i].name]
+
         local sx=pList[i].x+pList[i].vx*pList[i].timer
         local sy=pList[i].y+pList[i].vy*pList[i].timer
-        if pList[i].name=='spin' then setColor(1,1,1) else setColor(.25+.75*c[1],.25+.75*c[2],.25+.75*c[3]) end
+        if pList[i].color then setColor(pList[i].color)
+        elseif pList[i].name=='spin' then setColor(1,1,1)
+        else c=mino.color[pList[i].name] setColor(.25+.75*c[1],.25+.75*c[2],.25+.75*c[3])
+        end
         rect('fill',36*sx-3*arg,-36*sy-3*arg,6*arg,6*arg)
     end
 end
