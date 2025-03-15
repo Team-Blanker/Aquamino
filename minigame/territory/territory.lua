@@ -316,6 +316,7 @@ function war.gameUpdate(dt)
         end
         table.remove(contactList,i)
     end
+    --print(#contactList)
     for i=#war.bullet,1,-1 do--移除已销毁炮弹
         if war.bullet[i].body:isDestroyed() then table.remove(war.bullet,i) end
     end

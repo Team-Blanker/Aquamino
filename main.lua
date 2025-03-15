@@ -212,7 +212,7 @@ scene={
 --scene.cur=require('minigame/tracks/tracks')
 --scene.cur=require('scene/test/BG_Test')
 --scene.cur=require('scene/test/clock')
---scene.cur=require('mino/game') scene.cur.mode='dig bomb'
+--scene.cur=require('mino/game') scene.cur.mode='map_test'
 
 win.x,win.y=love.window.getPosition()
 win.x_win,win.y_win=love.window.getPosition()
@@ -367,7 +367,7 @@ function love.draw()
         gc.setScissor(0,0,1920,1080)
         gc.setColor(1,1,1)
         gc.draw(scene.canvas,0,0,0,1,1,960,540)
-        gc.setScissor()
+        gc.setScissor(0,0,win.W,win.H)
         gc.setShader()
     else
         gc.applyTransform(adaptWindow)
@@ -392,6 +392,7 @@ function love.draw()
         gc.print(infoL,font.Bender,10,25,0,.15,.15)
         gc.printf(infoR,font.Bender,win.W-10-114514*.15,25,114514,'right',0,.15,.15)]]
         gc.printf(("%.2f,%.2f"):format(rx,ry),font.Bender,rx,ry-16,2000,'center',0,.15,.15,1000,72)
+        gc.printf(("%d × %d"):format(win.W,win.H),font.Bender,-950,-520,2000,'left',0,.25,.25,0,72)
     end
     gc.setColor(1,1,1,.5)
     gc.print("TPS: "..love.timer.getFPS()..", FPS: "..drawCtrl.FPS..", gcinfo: "..gcinfo(),font.Bender_B,-950,510,0,.2,.2)

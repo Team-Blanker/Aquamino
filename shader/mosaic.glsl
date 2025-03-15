@@ -1,4 +1,3 @@
-#define pi 3.1415926535898
 extern highp float phase;
 vec4 effect(vec4 color,sampler2D tex,vec2 texCoord,vec2 scrCoord){
 

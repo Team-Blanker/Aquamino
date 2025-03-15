@@ -163,12 +163,12 @@ function about.update(dt)
             about.loveBall.body:applyForce(400*(mx-about.loveBall.body:getX()),400*(my-about.loveBall.body:getY()))
         end
 
-        if about.loveBall.body:isAwake(true) then
+        --[[if about.loveBall.body:isAwake(true) then
             ins(about.loveBallTrail,{x=about.loveBall.body:getX(),y=about.loveBall.body:getY(),r=about.loveBall.body:getAngle()})
             if #about.loveBallTrail>128 then
                 rem(about.loveBallTrail,1)
             end
-        end
+        end]]
     end
 end
 function about.draw()
