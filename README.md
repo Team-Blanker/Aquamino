@@ -2,6 +2,24 @@
 
 ***[唯一官方仓库](https://github.com/Team-Blanker/Aquamino)***
 
+## 重要事项 Important issue
+
+收到许多玩家反馈 Aquamino 卡顿严重且严重影响操作，常会突然卡死，甚至出现帧率不到 1 的情况。
+
+开发者本人在自家的旧电脑上测试未发现此类问题，游戏可以流畅运行，不知道这种情况是不是和电脑型号有关。
+
+理想情况下，游戏左下角的的 TPS 数值应稳定在一个三位数且没有较大波动，FPS 数值应几乎等于用户设置。
+
+开发者会尽力优化代码直到游戏不会再卡顿为止。
+
+The developer have received feedback from many players that Aquamino has serious lags and seriously affects the operation. It often freezes suddenly and even has a FPS of less than 1.
+
+The developer himself did not find such problems when testing on his old computer at home. The game can run smoothly， don’t know if this situation is related to the computer model.
+
+Ideally, the TPS value in the lower left corner of the game should be stable at a number bigger than 100 without large fluctuations, and the FPS value should be almost equal to the user setting.
+
+The developer will try his best to optimize the code until the game no longer lags.
+
 ## 游戏简介
 
 **Aquamino** 是由 **Team Blanker** 开发的一款开源**现代**方块游戏！本游戏使用**LOVE2D**开发，理论上可以在任何 LOVE2D 支持的设备下游玩。
