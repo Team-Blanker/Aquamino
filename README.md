@@ -10,7 +10,7 @@
 
 理想情况下，游戏左下角的的 TPS 数值应稳定在一个三位数且没有较大波动，FPS 数值应几乎等于用户设置。
 
-开发者会尽力优化代码直到游戏不会再卡顿为止。
+开发者会尽力优化代码直到游戏不会再卡顿为止。若游戏出现严重卡顿，请开 issue 描述详细情况或联系开发者。
 
 The developer have received feedback from many players that Aquamino has serious lags and seriously affects the operation. It often freezes suddenly and even has a FPS of less than 1.
 
@@ -18,7 +18,7 @@ The developer himself did not find such problems when testing on his old compute
 
 Ideally, the TPS value in the lower left corner of the game should be stable at a number bigger than 100 without large fluctuations, and the FPS value should be almost equal to the user setting.
 
-The developer will try his best to optimize the code until the game no longer lags.
+The developer will try his best to optimize the code until the game no longer lags. If serious lag happened, please open an issue and describe the details, or contact to the developer.
 
 ## 游戏简介
 
