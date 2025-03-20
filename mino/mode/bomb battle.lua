@@ -41,7 +41,8 @@ function rule.init(P,mino,modeInfo)
     mino.rule.allowSpin={Z=true,S=true,J=true,L=true,T=true,O=true,I=true,}
     mino.rule.spinType='AllMini'
 
-    mino.seqGenType='bagp1FromBag' mino.seqSync=true
+    mino.seqGenType='bagp1FromBag'
+    mino.seqSync=true
     P[1].atk=0
     P[1].line=0
     P[2]=myTable.copy(P[1])
