@@ -93,7 +93,7 @@ end
 font={
     height={},
 
-    SYHT=gc.newFont('font/SourceHanSans-Regular.otf',128),
+    ALBBPHT=gc.newFont('font/AlibabaPuHuiTi-Regular.otf',128),
     Bender=gc.newFont('font/Bender.otf',128),
     Bender_B=gc.newFont('font/Bender-Bold.otf',128),
     Bender_L=gc.newFont('font/Bender-Light.otf',128),
@@ -109,8 +109,8 @@ for k,v in pairs(font) do
         print(k,font.height[k])
     end
 end
-font.Bender:setFallbacks(font.SYHT) font.Bender_B:setFallbacks(font.SYHT) font.Bender_L:setFallbacks(font.SYHT)
-font.JB:setFallbacks(font.SYHT) font.JB_B:setFallbacks(font.SYHT)
+font.Bender:setFallbacks(font.ALBBPHT) font.Bender_B:setFallbacks(font.ALBBPHT) font.Bender_L:setFallbacks(font.ALBBPHT)
+font.JB:setFallbacks(font.ALBBPHT) font.JB_B:setFallbacks(font.ALBBPHT)
 
 canop=true--=can operate，是决定玩家是否能操作的变量
 
@@ -209,7 +209,7 @@ scene={
     slider=require'framework/control/slider'
 }
 
---scene.cur=require('minigame/tracks/tracks')
+scene.cur=require('minigame/tracks/tracks')
 --scene.cur=require('scene/test/BG_Test')
 --scene.cur=require('scene/test/clock')
 --scene.cur=require('mino/game') scene.cur.mode='map_test'
