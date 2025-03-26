@@ -130,7 +130,7 @@ function track.init()
     track.scoreAnim={}
     for i=1,6 do track.scoreAnim[i]={} end
     function track.addScoreAnim(trk,pos,team,type,defused)
-        ins(track.scoreAnim[trk],{type=type,pos=pos,team=team,defused=defused,time=.4,tMax=.4})
+        ins(track.scoreAnim[trk],{type=type,pos=pos,team=team,defused=defused,time=.5,tMax=.5})
     end
 
     track.trackState={'','','','','',''}
@@ -305,6 +305,16 @@ function track.init()
     o.fixture=LP.newFixture(o.body,o.shape,1)
     o.fixture:setFriction(0)
     o.fixture:setRestitution(.5)
+    track.bonusCtrl.obs[9]={
+        body=LP.newBody(track.world,-330,360,'static'),
+        shape=LP.newPolygonShape(15,0,0,15,-15,0),
+        color={.8,.8,.8}
+    }
+    o=track.bonusCtrl.obs[9]
+    o.fixture=LP.newFixture(o.body,o.shape,1)
+    o.fixture:setFriction(0)
+    o.fixture:setRestitution(.5)
+    o.fixture:setCategory(16)
 
     for i=0,8 do--9个分隔障碍
         track.bonusCtrl.obs[#track.bonusCtrl.obs+1]={
@@ -320,7 +330,7 @@ function track.init()
 
     track.bonusCtrl.obs[#track.bonusCtrl.obs+1]={
         body=LP.newBody(track.world,-510,360,'static'),
-        shape=LP.newPolygonShape(0,0,0,-51,30,-30),
+        shape=LP.newPolygonShape(0,0,0,-45,30,-30),
         color={.8,.8,.8}
     }
     o=track.bonusCtrl.obs[#track.bonusCtrl.obs]
@@ -391,7 +401,7 @@ function track.init()
     --奖励区指令
     local bcmdFunc={
         [1]=function (this,other)
-            for i=1,(track.gameTime>0 and 3 or 3) do summonBonusMarble(other:getUserData().team) end
+            for i=1,(track.gameTime>0 and 3 or 2) do summonBonusMarble(other:getUserData().team) end
             other:getBody():destroy()
         end,
         [2]=function (this,other)
@@ -421,17 +431,17 @@ function track.init()
             other:getBody():destroy()
         end,
         [6]=function (this,other)
-            if track.gameTime>0 then summonTempMarble(other:getUserData().team,8)
+            if track.gameTime>0 then summonTempMarble(other:getUserData().team,12)
             else summonBonusMarble(other:getUserData().team) end
             other:getBody():destroy()
         end,
         [7]=function (this,other)
-            if track.gameTime>0 then summonTempMarble(other:getUserData().team,12)
+            if track.gameTime>0 then summonTempMarble(other:getUserData().team,18)
             else summonBonusMarble(other:getUserData().team)end
             other:getBody():destroy()
         end,
         [8]=function (this,other)
-            for i=1,(track.gameTime>0 and 5 or 5) do summonBonusMarble(other:getUserData().team) end
+            for i=1,(track.gameTime>0 and 5 or 1) do summonBonusMarble(other:getUserData().team) end
             other:getBody():destroy()
         end,
     }
@@ -630,19 +640,19 @@ local bonusTxt={
     "+5 marble*2\nreward",.25,
     "-12 marble\nto your\nopponent",.25,
     "Clear\nyour\ntracks",.3,
-    "8s marble",.3,
     "12s marble",.3,
+    "18s marble",.3,
     "x5",.6,
 }
 local bonusTimeUpTxt={
-    "x3",.6,
+    "x2",.6,
     "+3 marble*2\nreward",.25,
     "+5 marble*2\nreward",.25,
     "-12 marble\nto your\nopponent",.25,
     "clear\nyour\ntracks",.3,
     "x1",.6,
     "x1",.6,
-    "x5",.6,
+    "x1",.6,
 }
 
 local scoreTxt={
@@ -838,15 +848,15 @@ function track.draw()
     for i=1,6 do
         t=track.scoreAnim[i]
         for j=1,#t do
-            if t[j].time/t[j].tMax>.5 then
-                local a=(t[j].time/t[j].tMax-.5)*2
+            if t[j].time/t[j].tMax>.6 then
+                local a=(t[j].time/t[j].tMax-.6)*2
                 setColor(marbleColor[t[j].type])
                 setLineW(7.5*a)
                 circle('line',-480+1350*t[j].pos,(-15.25+2.5*i)*30,7.5+17.5*(1-a))
             end
             if t[j].team~='' then
                 c=teamColor[t[j].team]
-                setColor(c[1],c[2],c[3],(t[j].time/t[j].tMax)^.5)
+                setColor(c[1],c[2],c[3],(t[j].time/t[j].tMax*1.25)^.5)
                 printf((t[j].defused and scoreTxt.def or scoreTxt[t[j].type]),font.JB_B,
                     -480+1350*t[j].pos,(-15.25+2.5*i)*30,1000,'center',0,.2,.2,500,font.height.JB_B/2)
             end
