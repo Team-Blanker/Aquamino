@@ -209,7 +209,7 @@ scene={
     slider=require'framework/control/slider'
 }
 
-scene.cur=require('minigame/tracks/tracks')
+--scene.cur=require('minigame/tracks/tracks')
 --scene.cur=require('scene/test/BG_Test')
 --scene.cur=require('scene/test/clock')
 --scene.cur=require('mino/game') scene.cur.mode='map_test'

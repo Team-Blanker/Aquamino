@@ -557,6 +557,9 @@ function track.keyP(k)
         })
     end
 end
+function track.touchP(id,x,y)
+    track.sim=not track.sim
+end
 local fa,fb
 function track.update(dt)
     if track.sim then track.updateTimer=track.updateTimer+dt
