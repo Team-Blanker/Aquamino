@@ -1,7 +1,7 @@
 ---@diagnostic disable: deprecated
 --[[
     stacker是你自己，player存储的是“玩家”的所有信息。
-    stacker是可以操控多个player的。stacker.opList存储着你所操控的player序号。
+    stacker是可以操控多个player的。stacker.opList存储你所操控的player序号，列表里的值均为true。
 ]]
 local BUTTON,SLIDER=scene.button,scene.slider
 
@@ -32,7 +32,7 @@ local mino={
     },
     started=false,paused=false,pauseTimer=0,
     stacker={
-        keySet={},ctrl={},opList={1},event={},
+        keySet={},ctrl={},opList={},event={},
         dieAnim=function() end,
         winState=0,started=false,
     },
@@ -173,8 +173,8 @@ function mino.nextIns(player)
     player.LDR=player.LDRInit player.LTimer=0
 
     local k=false
-    for i=1,#mino.stacker.opList do
-        if mino.player[mino.stacker.opList[i]]==player then k=true break end
+    for id,v in pairs(mino.stacker.opList) do
+        if mino.player[id]==player then k=true break end
     end
 
     if k then
@@ -186,7 +186,8 @@ function mino.nextIns(player)
                 player.initOpQueue[#player.initOpQueue+1]='initML'
             elseif S.keyDown.MR and player.canInitMove then
                 player.initOpQueue[#player.initOpQueue+1]='initMR'
-            elseif S.keyDown.CW and player.canInitRotate then
+            end
+            if S.keyDown.CW and player.canInitRotate then
                 player.initOpQueue[#player.initOpQueue+1]='initRotateCW'
             elseif S.keyDown.CCW and player.canInitRotate then
                 player.initOpQueue[#player.initOpQueue+1]='initRotateCCW'
@@ -629,7 +630,14 @@ function mino.insertNextQueue(player)
     player.seqGen.count=player.seqGen.count+1
 end
 
-
+function mino.setStackerOperate(id)
+    mino.stacker.opList[id]=true
+    P[id].setStackerOperate=true
+end
+function mino.removeStackerOperate(id)
+    mino.stacker.opList[id]=nil
+    P[id].setStackerOperate=nil
+end
 
 --初始化
 local curPlayTxt--={txt=gc.newText(font.Bender),w=0,h=0}
@@ -713,7 +721,8 @@ function mino.init(isReset)
 
         mino.boardBounce=file.read('conf/board bounce')
     end
-    S.opList={1}
+    S.opList={}
+    mino.setStackerOperate(1)
 
     S.ctrl={ASD=.15,ASP=.03,SD_ASD=0,SD_ASP=.05}
     T.combine(S.ctrl,file.read('conf/ctrl'))
@@ -865,15 +874,15 @@ function mino.inputPress(k)
     end
     if mino.paused then --nothing
     elseif mino.waitTime>0 then
-        for i=1,#S.opList do
-            local OP=P[S.opList[i]]--Player Operated by you
+        for id,v in pairs(S.opList) do
+            local OP=P[id]--Player Operated by you
             if k=='ML' then OP.moveDir='L'
             elseif k=='MR' then OP.moveDir='R'
             end
         end
     else
-    for i=1,#S.opList do
-        local OP=P[S.opList[i]]
+    for id,v in pairs(S.opList) do
+        local OP=P[id]
         C,A=OP.cur,OP.smoothAnim
         if OP.deadTimer<0 and S.winState==0 then
             if OP.event[1] then--提前操作
@@ -957,8 +966,8 @@ function mino.inputPress(k)
                     if k==key then keyAct=key break end
                 end
                 if keyAct then
-                    if mino.theme.keyP then mino.theme.keyP(P[i],keyAct,mino) end
-                    if mino.blockSkin.keyP then mino.blockSkin.keyP(P[i],keyAct,mino) end
+                    if mino.theme.keyP then mino.theme.keyP(P[id],keyAct,mino) end
+                    if mino.blockSkin.keyP then mino.blockSkin.keyP(P[id],keyAct,mino) end
                 end
             end
         end
@@ -969,8 +978,8 @@ end
 
 function mino.inputRelease(k)
     local key=S.keySet
-    for i=1,#S.opList do
-        local OP=P[S.opList[i]]
+    for id,v in pairs(S.opList) do
+        local OP=P[id]
         if k=='ML' then
             if S.keyDown.MR then OP.MTimer=0 OP.moveDir='R' end
         elseif k=='MR' then
@@ -1015,8 +1024,8 @@ function mino.gameUpdate(dt)
     ctrl=S.ctrl
     remainTime=0
 
-    for i=1,#S.opList do
-        local OP=P[S.opList[i]]
+    for id,v in pairs(S.opList) do
+        local OP=P[id]
         C,A=OP.cur,OP.smoothAnim
 
         if OP.event[1] then OP.MTimer=min(OP.MTimer+dt,ctrl.ASD)
@@ -1158,7 +1167,7 @@ function mino.gameUpdate(dt)
                     his.dropHeight=0
                     local die=mino.checkDie(P[i])
                     mino.blockLock(P[i],mino)
-                    if die then mino.die(P[i],T.include(S.opList,i)) end
+                    if die then mino.die(P[i],S.opList[i]) end
                 end
 
                 if S.winState==0 then
@@ -1243,7 +1252,8 @@ function mino.update(dt)
                 if mino.rule.start then mino.rule.start(P,mino) end
             end
         else
-            for i=1,#S.opList do local OP=P[S.opList[i]]
+            for id,v in pairs(S.opList) do
+                local OP=P[id]
                 if S.keyDown.ML or S.keyDown.MR then
                     OP.MTimer=min(OP.MTimer+dt,S.ctrl.ASD)
                 else OP.MTimer=0 end
