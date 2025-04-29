@@ -7,10 +7,10 @@ local BUTTON,SLIDER=scene.button,scene.slider
 
 local blockSkinList={'glossy','glass','metal','pure','carbon fibre','classic','wheelchair'}
 local themeList={'simple'}
-local sfxList={'plastic_v2','plastic','krystal','meme','otto'}
+local sfxList={'plastic_v2','plastic','krystal','meme','otto',--[['LexNinja']]}
 local RSList={'SRS','AqRS'}
 function custom.read()
-    custom.info={block='glossy',theme='simple',sfx='plastic',RS='SRS',smoothAnimAct=false,smoothTime=.05,fieldScale=1}
+    custom.info={block='glossy',theme='simple',sfx='plastic',RS='SRS',smoothAnimAct=false,rotationCenter=false,smoothTime=.05,fieldScale=1}
     custom.color={}
     local info=file.read('conf/custom')
     T.combine(custom.info,info)
@@ -21,6 +21,7 @@ end
 custom.seTxt={texture={},RS={},theme={},sfx={},scale={}}
 custom.smslTxt={}--平滑运动滑块文本
 custom.smTxt={}--平滑运动勾选框文本
+custom.rcTxt={}--旋转中心勾选框文本
 custom.csTxt={}--方块颜色按钮文本
 custom.bbTxt={}--版面晃动按钮文本
 custom.sTxt={}--版面缩放说明文本
@@ -64,6 +65,11 @@ function custom.init()
     sm.txt=gc.newText(font.Bender_B,cfc.smooth)
     sm.w,sm.h=sm.txt:getDimensions()
     sm.s=min(288/sm.w,1/3)
+
+    local rc=custom.rcTxt
+    rc.txt=gc.newText(font.Bender_B,cfc.rotationCenter)
+    rc.w,rc.h=rc.txt:getDimensions()
+    rc.s=min(288/rc.w,1/3)
 
     local st=custom.smslTxt
     st.txt=gc.newText(font.JB,cfc.smoothTime)
@@ -355,6 +361,34 @@ function custom.init()
         end
     },.2)
 
+    BUTTON.create('rotationCenter',{
+        x=-160,y=320,type='rect',w=80,h=80,
+        draw=function(bt,t,ct)
+            local animArg=custom.info.rotationCenter and min(ct/.2,1) or max(1-ct/.2,0)
+            local w,h=bt.w,bt.h
+            local r=M.lerp(1,.5,animArg)
+            local g=1
+            local b=M.lerp(1,.875,animArg)
+            gc.setColor(.5,1,.875,.4)
+            gc.rectangle('fill',w/2,-h/2,320*animArg,h)
+            gc.setColor(1,1,1,.4)
+            gc.rectangle('fill',w/2+320*animArg,-h/2,320*(1-animArg),h)
+            gc.setColor(r,g,b)
+            gc.setLineWidth(6)
+            gc.rectangle('line',-w/2+3,-h/2+3,w-6,h-6)
+            if custom.info.rotationCenter then
+                gc.line(-w*3/8,0,-w/8,h/4,w*3/8,-h/4)
+            end
+            gc.setColor(r,g,b,2*t)
+            gc.rectangle('fill',-w/2,-h/2,h,h)
+            gc.setColor(1,1,1)
+            gc.draw(rc.txt,w/2+16,0,0,rc.s,rc.s,0,rc.h/2)
+        end,
+        event=function()
+            custom.info.rotationCenter=not custom.info.rotationCenter
+            sfx.play(custom.info.rotationCenter and 'cOn' or 'cOff')
+        end
+    },.2)
     BUTTON.create('smoothAnim',{
         x=-160,y=-160,type='rect',w=80,h=80,
         draw=function(bt,t,ct)

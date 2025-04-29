@@ -112,7 +112,7 @@ return {
         },
         video={
             unableBG="Disabilita Sfondi",
-            BGset="Gestione sfondi...",
+            BGBrightness="Luminosità",
             fullScr="Schermo Intero",fullScrTxt="Premi F11 per andare a schermo intero.",
             vsync="VSync",
             vsyncTxt="Sincronizza la frequenza dei fotogrammi con la frequenza di aggiornamento del monitor.",
@@ -126,6 +126,7 @@ return {
             RS="Sistema di rotazione",
             smooth="Movimento Liscio",
             smoothTime="Tempo di movimento",
+            rotationCenter="Asse di rotazione",
             boardBounce="Rimbalzo della griglia...",
             theme="Tema della griglia",
             scale="Scala della griglia",scaleTxt="Dimensione della cella",
@@ -170,7 +171,10 @@ return {
         },
         handling={
             ASD="Ritardo spostamento automatico (ASD)",ASP="Periodo di spostamento automatico(ASP)",
-            SD_ASD="Soft drop ASD",SD_ASP="Soft drop ASP"
+            SD_ASD="Soft drop ASD",SD_ASP="Soft drop ASP",
+
+            IM="Initial Move",IR="Initial Rotate",IH="Initial Hold",
+            tap="Tap",hold="Hold",
         },
         other={title="Other",nothing="Ancora nulla qua..."},
         lang={cur="Lingua attuale: Italiano"}

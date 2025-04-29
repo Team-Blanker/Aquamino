@@ -110,7 +110,7 @@ return {
         },
         video={
             unableBG="禁用遊戲背景",
-            BGset="游戲背景設定...",
+            BGBrightness="背景亮度",
             fullScr="全螢幕",fullScrTxt="按F11可一鍵切換視窗狀態。",
             vsync="垂直同步",
             vsyncTxt="本程式繪製代碼與運算代碼形式上分離，稱繪製幀率為FPS，運算幀率為TPS。\n若設定的最高FPS小於等於垂直同步限制的FPS，則TPS不受限。\n本程式主要考慮PC端運行情況，該選項預設為關閉。\n低性能設備可開啟此選項優化運算代碼運行。",
@@ -124,6 +124,7 @@ return {
             RS="旋轉系統",
             smooth="平滑運動",
             smoothTime="動畫時長",
+            rotationCenter="顯示旋轉中心",
             boardBounce="版面晃动...",
             theme="版面風格",
             scale="版面縮放",scaleTxt="單元方塊大小：",
@@ -152,8 +153,8 @@ return {
             }
         },
         keys={
-            keyName={'左移','右移','順轉','逆轉','180°轉','軟降','硬降','暫存','重開','暫停'} ,
-            kScale=.5,
+            keyName={'左移','右移','順轉','逆轉','180°轉','軟降','硬降','保留','重開','暫停'} ,
+            kScale=.4,
             info="點選新增鍵位綁定 (最多3個)\nBackspace清空選定鍵位\n按下已綁定鍵位以刪除該綁定",
             virtualKey="觸控設定..."
         },
@@ -167,7 +168,10 @@ return {
         },
         handling={
             ASD="自動移動延遲(ASD,舊稱DAS)",ASP="自動移動週期(ASP,舊稱ARR)",
-            SD_ASD="軟降ASD",SD_ASP="軟降ASP"
+            SD_ASD="軟降ASD",SD_ASP="軟降ASP",
+
+            IM="预移動",IR="预旋轉",IH="预保留",
+            tap="單點",hold="長按",
         },
         other={title="其它設定",nothing="暫無內容"},
         lang={cur="當前語言：繁體中文"}

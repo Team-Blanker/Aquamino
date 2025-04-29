@@ -20,29 +20,8 @@ local SC=require'mino/spinCheck'
 
 --math.randomseed(os.time())
 
-local mino={
-    endPaused=false,
-    exitScene=nil,resetStopMusic=true,unableBG=false,
-    mode='',musInfo="",
-    sfxPlay=nil,
-    rule={
-        timer=0,
-        allowPush={},allowSpin={T=true},spinType='default',enableMiniSpin=true,
-        loosen={fallTPL=0}--TPL=Time Per Line
-    },
-    started=false,paused=false,pauseTimer=0,
-    stacker={
-        keySet={},ctrl={},opList={},event={},
-        dieAnim=function() end,
-        winState=0,started=false,
-    },
-    seqGenType='bag',seqSync=false,
-    bag={'Z','S','J','L','T','O','I'},orient={Z=0,S=0,J=0,L=0,T=0,O=0,I=0},
-    player={},
-    fieldScale=1,
+local mino={}
 
-    stereo=0
-}
 local P,S=mino.player,mino.stacker
 
 function mino.start(player)
@@ -89,7 +68,7 @@ function mino.win(player)
     local w=S.winState
     local delay=mino.theme.getResultShowDelay
     S.winState=1 player.winTimer=0 if mino.sfxPlay.win then mino.sfxPlay.win() end
-    if mino.rule.scoreSave then
+    if w==0 and mino.rule.scoreSave then--规避掉赢好几次导致的问题，保证scoreSave只被执行一次
         S.newRecord=mino.rule.scoreSave(mino.player,mino)
     end
     if w~=1 then mino.addStackerEvent(delay and delay(S) or 1.5,'pause') end
@@ -178,21 +157,30 @@ function mino.nextIns(player)
     end
 
     if k then
-        if S.keyDown.hold and player.canInitHold then
+        if S.ctrl.IHS.hold and S.keyDown.hold and player.canInitHold then
             player.initOpQueue[#player.initOpQueue+1]='initHold'
         end
         if player.EDelay+player.CDelay~=0 then --对消行延迟与出块延迟均=0的情况特判，不应用提前移动、提前旋转
-            if S.keyDown.ML and player.canInitMove then
-                player.initOpQueue[#player.initOpQueue+1]='initML'
-            elseif S.keyDown.MR and player.canInitMove then
-                player.initOpQueue[#player.initOpQueue+1]='initMR'
+            if S.ctrl.IMS.hold and player.canInitMove then
+                if S.keyDown.ML and S.keyDown.MR then --两个移动键都按着是要几把干啥
+                    --啥都不执行
+                elseif S.keyDown.ML then
+                    player.initOpQueue[#player.initOpQueue+1]='initML'
+                elseif S.keyDown.MR then
+                    player.initOpQueue[#player.initOpQueue+1]='initMR'
+                end
             end
-            if S.keyDown.CW and player.canInitRotate then
-                player.initOpQueue[#player.initOpQueue+1]='initRotateCW'
-            elseif S.keyDown.CCW and player.canInitRotate then
-                player.initOpQueue[#player.initOpQueue+1]='initRotateCCW'
-            elseif S.keyDown.flip and player.canInitRotate then
-                player.initOpQueue[#player.initOpQueue+1]='initRotate180'
+            if S.ctrl.IRS.hold and player.canInitRotate then
+                local a=(S.keyDown.CW and 1 or 0)+(S.keyDown.CCW and 1 or 0)+(S.keyDown.flip and 1 or 0)
+                if a>1 then --按着好几个旋转键是要几把干啥
+                    --啥都不执行
+                elseif S.keyDown.CW then
+                    player.initOpQueue[#player.initOpQueue+1]='initRotateCW'
+                elseif S.keyDown.CCW then
+                    player.initOpQueue[#player.initOpQueue+1]='initRotateCCW'
+                elseif S.keyDown.flip then
+                    player.initOpQueue[#player.initOpQueue+1]='initRotate180'
+                end
             end
         end
         for i=1,#player.initOpQueue do mino.operate[player.initOpQueue[i]](player) end
@@ -600,6 +588,8 @@ function mino.setAnimPrePiece(player)
         A.prePiece[i][1]=M.lerp(C.piece[i][1]+C.x,A.prePiece[i][1],A.timer/mino.smoothTime)
         A.prePiece[i][2]=M.lerp(C.piece[i][2]+C.y-(player.FDelay==0 and 0 or player.FTimer/player.FDelay),A.prePiece[i][2],A.timer/mino.smoothTime)
     end
+    A.preCenter[1]=M.lerp(C.x,A.preCenter[1],A.timer/mino.smoothTime)
+    A.preCenter[2]=M.lerp(C.y-(player.FDelay==0 and 0 or player.FTimer/player.FDelay),A.preCenter[2],A.timer/mino.smoothTime)
 end
 function mino.setAnimDrawPiece(player)
     if not mino.smoothAnimAct then return end
@@ -608,6 +598,8 @@ function mino.setAnimDrawPiece(player)
         A.drawPiece[i][1]=M.lerp(C.piece[i][1]+C.x,A.prePiece[i][1],A.timer/mino.smoothTime)
         A.drawPiece[i][2]=M.lerp(C.piece[i][2]+C.y-(player.FDelay==0 and 0 or player.FTimer/player.FDelay),A.prePiece[i][2],A.timer/mino.smoothTime)
     end
+    A.drawCenter[1]=M.lerp(C.x,A.preCenter[1],A.timer/mino.smoothTime)
+    A.drawCenter[2]=M.lerp(C.y-(player.FDelay==0 and 0 or player.FTimer/player.FDelay),A.preCenter[2],A.timer/mino.smoothTime)
 end
 function mino.insertNextQueue(player)
     local n--这个值表示新的next从第几个预览块开始
@@ -652,14 +644,14 @@ function mino.init(isReset)
     mino.endPaused=false
     mino.waitTime=2
     scene.BG=require('BG/blank')
-    S.winState=0 S.started=false
     mino.resetStopMusic=true
     mino.started=false mino.paused=false mino.pauseTimer=0 mino.pauseAnimTimer=0
 
-    mino.player={}
+    mino.player={} mino.stacker={}
     P,S=mino.player,mino.stacker
+    S.winState=0 S.started=false
     S.event={} S.newRecord=false S.endTimer=0 S.NRSFXPlayed=false
-    S.keyDown={ML=false,MR=false,SD=false,CW=false,CCW=false,flip=false}
+    S.keyDown={ML=false,MR=false,SD=false,CW=false,CCW=false,flip=false,hold=false}
     P[1]=fLib.newPlayer()
 
     do
@@ -674,13 +666,14 @@ function mino.init(isReset)
         }
 
 
-        local pf={block='pure',theme='simple',sfx='Dr Ocelot',smoothAnimAct=false,smoothTime=.05,fieldScale=1}
+        local pf={block='pure',theme='simple',sfx='plastic',smoothAnimAct=false,smoothTime=.05,fieldScale=1}
         T.combine(pf,file.read('conf/custom'))
         mino.fieldScale=pf.fieldScale
         mino.blockSkin=require('skin/block/'..pf.block)
         mino.theme=require('skin/theme/'..pf.theme)
         mino.smoothAnimAct=pf.smoothAnimAct
         mino.smoothTime=pf.smoothTime
+        mino.showRotationCenter=pf.rotationCenter
         mino.sfxPlay=require('sfx/game/'..pf.sfx)
         mino.sfxPlay.addSFX()
 
@@ -689,6 +682,7 @@ function mino.init(isReset)
         local vi={unableBG=false,moreParticle=false}
         T.combine(vi,file.read('conf/video'))
         mino.unableBG=vi.unableBG
+        mino.BGBrightness=vi.BGBrightness
         mino.moreParticle=vi.moreParticle
 
         mino.color={
@@ -724,7 +718,12 @@ function mino.init(isReset)
     S.opList={}
     mino.setStackerOperate(1)
 
-    S.ctrl={ASD=.15,ASP=.03,SD_ASD=0,SD_ASP=.05}
+    S.ctrl={
+        ASD=.15,ASP=.03,SD_ASD=0,SD_ASP=.05,
+        IMS={tap=true,hold=true},
+        IRS={tap=true,hold=true},
+        IHS={tap=true,hold=true},
+    }
     T.combine(S.ctrl,file.read('conf/ctrl'))
 
     local ks=file.read('conf/keySet')
@@ -876,7 +875,7 @@ function mino.inputPress(k)
     elseif mino.waitTime>0 then
         for id,v in pairs(S.opList) do
             local OP=P[id]--Player Operated by you
-            if k=='ML' then OP.moveDir='L'
+            if     k=='ML' then OP.moveDir='L'
             elseif k=='MR' then OP.moveDir='R'
             end
         end
@@ -886,25 +885,37 @@ function mino.inputPress(k)
         C,A=OP.cur,OP.smoothAnim
         if OP.deadTimer<0 and S.winState==0 then
             if OP.event[1] then--提前操作
-                if k=='hold' and OP.canInitHold then
+                print(S.ctrl.IHS)
+                if S.ctrl.IHS.tap and k=='hold' and OP.canInitHold then
                     OP.initOpQueue[#OP.initOpQueue+1]='initHold'
                     OP.canInitHold=false
-                elseif k=='ML' and OP.canInitMove then
-                    OP.initOpQueue[#OP.initOpQueue+1]='initML'
-                    OP.canInitMove=false
-                elseif k=='MR' and OP.canInitMove then
-                    OP.initOpQueue[#OP.initOpQueue+1]='initMR'
-                    OP.canInitMove=false
+                end
 
-                elseif k=='CW' and OP.canInitRotate then
-                    OP.initOpQueue[#OP.initOpQueue+1]='initRotateCW'
-                    OP.canInitRotate=false
-                elseif k=='CCW' and OP.canInitRotate then
-                    OP.initOpQueue[#OP.initOpQueue+1]='initRotateCCW'
-                    OP.canInitRotate=false
-                elseif k=='flip' and OP.canInitRotate then
-                    OP.initOpQueue[#OP.initOpQueue+1]='initRotate180'
-                    OP.canInitRotate=false
+                if S.ctrl.IMS.tap and OP.canInitMove then
+                    if k=='ML' then
+                        OP.initOpQueue[#OP.initOpQueue+1]='initML'
+                        OP.canInitMove=false
+                    elseif k=='MR' then
+                        OP.initOpQueue[#OP.initOpQueue+1]='initMR'
+                        OP.canInitMove=false
+                    end
+                else
+                    if     k=='ML' then OP.moveDir='L'
+                    elseif k=='MR' then OP.moveDir='R'
+                    end
+                end
+
+                if S.ctrl.IRS.tap and OP.canInitRotate then
+                    if k=='CW' then
+                        OP.initOpQueue[#OP.initOpQueue+1]='initRotateCW'
+                        OP.canInitRotate=false
+                    elseif k=='CCW' then
+                        OP.initOpQueue[#OP.initOpQueue+1]='initRotateCCW'
+                        OP.canInitRotate=false
+                    elseif k=='flip' then
+                        OP.initOpQueue[#OP.initOpQueue+1]='initRotate180'
+                        OP.canInitRotate=false
+                    end
                 end
 
             else
@@ -977,7 +988,6 @@ function mino.inputPress(k)
 end
 
 function mino.inputRelease(k)
-    local key=S.keySet
     for id,v in pairs(S.opList) do
         local OP=P[id]
         if k=='ML' then
@@ -1286,7 +1296,10 @@ end
 local x,y
 function mino.draw()
     if mino.unableBG then gc.setColor(.06,.06,.06)
-    gc.rectangle('fill',-1000,-600,2000,1200) end
+    gc.rectangle('fill',-1000,-600,2000,1200)
+    else gc.setColor(.06,.06,.06,1-mino.BGBrightness)
+        gc.rectangle('fill',-1000,-600,2000,1200)
+    end
 
     if mino.rule.underAllDraw then mino.rule.underAllDraw(P,mino) end
 
@@ -1324,6 +1337,14 @@ function mino.draw()
                     mino.setAnimDrawPiece(P[i])
                     mino.blockSkin.curDraw(P[i],A.drawPiece,0,0,mino.color[C.name],mino.texType[C.name])
                 else mino.blockSkin.curDraw(P[i],C.piece,C.x,C.y,mino.color[C.name],mino.texType[C.name]) end
+                if mino.showRotationCenter then
+                    gc.setColor(1,1,1)
+                    if mino.smoothAnimAct then
+                        gc.rectangle('fill',36*A.drawCenter[1]-3,-36*A.drawCenter[2]-3,6,6)
+                        --gc.setColor(1,1,1,.4)
+                        --gc.rectangle('fill',36*C.x-3,-36*C.y-3,6,6)
+                    else gc.rectangle('fill',36*C.x-3,-36*C.y-3,6,6) end
+                end
             end
 
             --暂存块（浮空）
@@ -1342,7 +1363,7 @@ function mino.draw()
             --暂存块（标准）
             if H.name and H.mode=='S' then gc.push()
                 w,h,x,y=B.size(H.piece)
-                s=min((w/h>2 and 4/w or 2.5/h),1)
+                s=min((w/h>1.6 and 4/w or 2.5/h),1)
                 gc.translate(-18*P[i].w-90-20,-310)
                 gc.scale(s)
                 mino.blockSkin.holdDraw(P[i],H.piece,x,y,mino.color[H.name],P[i].canHold,mino.texType[H.name])

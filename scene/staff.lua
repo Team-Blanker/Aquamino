@@ -17,11 +17,11 @@ local devList={
             {'ミレラ','周藤三日月','DiscreetDragon'}
         }
     },
-    translate={'Aqua6623','DJ Asriel'},
+    translate={'Aqua6623 (简中/繁中/English)','DJ Asriel (Italiano)'},
     specialThanks={
         {'MrZ_26'},
-        {'XMiao小渺 (XM1ao)','User670','MianSoft','沙盒子','Sunday',},
-        {'滑稽2369 (lol2369)','沙丁子 (5sdac)','T427 默默颗',},
+        {'XMiao小渺 (Hoshizuki Kasuka)','User670','MianSoft','沙盒子',},
+        {'Sunday','滑稽2369 (lol2369)','沙丁子 (5sdac)','T427 默默颗',},
         {'風洛霊flore','farter','xb2002b','大叔Rex',},
         {'DJ Asriel','Not-A-Robot','SweetSea','nekonaomii (MelloBoo44)',}
     }

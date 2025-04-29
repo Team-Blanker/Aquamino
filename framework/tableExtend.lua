@@ -36,6 +36,13 @@ function T.isEqual(a,b)--两列表是否相等
     return true
 end
 function T.shuffle(list)
+    local mess=T.copy(list)
+    for i=#list,1,-1 do
+        table.insert(mess,table.remove(mess,math.random(i)))
+    end
+    return mess
+end
+function T.shuffleForNonIntTable(list)--WIP
     local key,mess={},{}
     for k,v in pairs(list) do key[#key+1]=k end
     for i=#key,1,-1 do

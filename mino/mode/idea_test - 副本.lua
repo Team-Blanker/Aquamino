@@ -15,7 +15,13 @@ function rule.init(P,mino)
 
     --mino.seqGenType='pairs'
     mino.bag={
-        'Z','S','J','L','X','O','I'
+        --'I','J','L','O'
+        --'Z','S','J','L','T','O','I', --'Z','S','J','L','T','O','I',
+        'Z5','S5','J5','L5','T5','I5','P','Q','N','H','R','Y','E','F','V','W','X','U',
+        --'I6','U6','T6','O6','wT','Ht','XT','Tr','A','Pl',
+        --'Pl','Pl','Tr','Tr',
+        --'OZ','OS','bZ','bS','TZ','TS',
+        --'lSt','rSt','lHk','rHk'
     }
     mino.color.gold={.9,.81,.045}
     mino.color.silver={.8,.8,.88}
@@ -35,7 +41,7 @@ function rule.init(P,mino)
 end
 
 local b=require'mino/blocks'
---[[function rule.onPieceSummon(player)
+function rule.onPieceSummon(player)
     local c=player.cur
     if rand()<1/2 then
         table.remove(c.piece,rand(#c.piece))
@@ -43,7 +49,7 @@ local b=require'mino/blocks'
     if c.name~='I6' and rand()<1/14 then
         c.piece=b.giant(c.piece)
     end
-end]]
+end
 
 --[[
 local idList,nameList={},{}

@@ -75,7 +75,7 @@ function fieldLib.newPlayer(arg)
         nWideDetect={},--空n列检测，仅消行时使用，不消就清空
         fallAfterClear=true,
 
-        smoothAnim={prepiece={},drawPiece={},timer=0},
+        smoothAnim={prepiece={},drawPiece={},timer=0,preCenter={0,0},drawCenter={0,0}},
         dropAnim={}
         --e.g. dropAnim[1]={x=0,ys=0,yf=0,TMax=0.5,TTL=0.5}
     }

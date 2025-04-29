@@ -111,7 +111,7 @@ return {
         },
         video={
             unableBG="禁用游戏背景",
-            BGset="游戏背景设置...",
+            BGBrightness="背景亮度",
             fullScr="全屏",fullScrTxt="按F11可一键切换窗口状态。",
             vsync="垂直同步",
             vsyncTxt="本程序绘制代码与运算代码形式上分离，称绘制帧率为FPS，运算帧率为TPS。\n若设定的最高FPS小于等于垂直同步限制的FPS，则TPS不受限。\n本程序主要考虑PC端运行情况，该选项默认关闭。\n低性能设备可开启此选项优化运算代码运行。",
@@ -125,6 +125,7 @@ return {
             RS="旋转系统",
             smooth="平滑运动",
             smoothTime="动画时长",
+            rotationCenter="显示旋转中心",
             boardBounce="版面晃动...",
             theme="版面风格",
             scale="版面缩放",scaleTxt="单格方块大小",
@@ -168,7 +169,10 @@ return {
         },
         handling={
             ASD="自动移动延迟(ASD,旧称DAS)",ASP="自动移动周期(ASP,旧称ARR)",
-            SD_ASD="软降ASD",SD_ASP="软降ASP"
+            SD_ASD="软降ASD",SD_ASP="软降ASP",
+
+            IM="预移动",IR="预旋转",IH="预暂存",
+            tap="单点",hold="长按",
         },
         other={title="其它设置",nothing="暂无内容"},
         lang={cur="当前语言：简体中文"}

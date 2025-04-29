@@ -6,7 +6,8 @@ local BUTTON,SLIDER=scene.button,scene.slider
 function video.read()
     local isMobile=win.OS=='Android' or win.OS=='iOS'
     video.info={
-        unableBG=false,vsync=false,fullscr=false,frameLim=isMobile and 60 or 120,
+        unableBG=false,BGBrightness=1,
+        vsync=false,fullscr=false,frameLim=isMobile and 60 or 120,
         discardAfterDraw=false,moreParticle=false
     }
     local info=file.read('conf/video')
@@ -272,9 +273,9 @@ function video.init()
             gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
             gc.setColor(1,1,1)
             gc.printf(string.format(cf.video.frameLim..":%3d",video.info.frameLim),
-                font.JB,-419,-48,114514,'left',0,.3125,.3125,0,84)
+                font.JB,-410,-48,10000,'left',0,.3125,.3125,0,84)
             gc.setColor(1,1,1,.75)
-            gc.printf(cf.video.frameTxt,font.Bender_B,-419,48,800/.25,'left',0,.25,.25,0,72)
+            gc.printf(cf.video.frameTxt,font.Bender_B,-410,48,800/.25,'left',0,.25,.25,0,72)
         end,
         buttonDraw=function(pos,sz)
             gc.setColor(1,1,1)
@@ -286,6 +287,27 @@ function video.init()
         release=function(pos)
             video.info.frameLim=math.floor(30.5+pos*270)
             drawCtrl.dtRestrict=1/video.info.frameLim
+        end
+    })
+    SLIDER.create('BGBrightness',{
+        x=-600,y=-40,type='hori',sz={440,32},button={32,32},
+        gear=0,pos=video.info.BGBrightness,
+        sliderDraw=function(g,sz)
+            gc.setColor(.5,.5,.5,.8)
+            gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
+            gc.setColor(1,1,1)
+            gc.printf(string.format(cf.video.BGBrightness..":%3d%%",video.info.BGBrightness*100),
+                font.JB,-230,-48,2000,'left',0,.3125,.3125,0,84)
+        end,
+        buttonDraw=function(pos,sz)
+            gc.setColor(1,1,1)
+            gc.circle('fill',sz[1]*(pos-.5),0,20,4)
+        end,
+        always=function(pos)
+            video.info.BGBrightness=pos
+        end,
+        release=function(pos)
+            video.info.BGBrightness=pos
         end
     })
 end

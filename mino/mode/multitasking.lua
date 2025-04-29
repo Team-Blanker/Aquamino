@@ -8,9 +8,9 @@ function rule.init(P,mino)
     mus.add('music/Hurt Record/nega to posi','whole','ogg',61.847,224*60/130)
     mus.start()
 
-    mino.stacker.ctrl={
-       ASD=.15,ASP=.03,SDType='D',SD_ASD=0,SD_ASP=.03
-    }
+    local c=mino.stacker.ctrl
+    c.ASD=.15 c.ASP=.03 c.SD_ASD=0 c.SD_ASP=.03
+
     P[1].FDelay=1e99
     P[1].posX=-400 P[2]=myTable.copy(P[1]) P[2].posX=400 mino.setStackerOperate(2)
     --P[1].posX=-6666 P[2].posX=6666

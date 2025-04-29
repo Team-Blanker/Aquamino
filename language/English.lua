@@ -112,7 +112,7 @@ return {
         },
         video={
             unableBG="Disable BGs",
-            BGset="Manage BGs...",
+            BGBrightness="BG Brightness",
             fullScr="Fullscreen",fullScrTxt="Press F11 to switch window mode immediately.",
             vsync="Vertical Sync",
             vsyncTxt="The drawing code and computing code of this program are separated in form. How many times The drawing code executed in 1 second is FPS, so as TPS.\nIf the maximum FPS is lower than or equal to the vertical sync limit FPS, the TPS is not limited.\nThis program mainly considers PC performance, and this option is turned off by default.\nLow-performance devices can turn on this option to optimize the execution of the computing code.",
@@ -125,8 +125,9 @@ return {
             texture="Block texture",color="Color adjust...",
             RS="Rotation system",
             smooth="Smooth move",
-            boardBounce="Board bounce...",
             smoothTime="Time",
+            rotationCenter="Rotation center",
+            boardBounce="Board bounce...",
             theme="Board theme",
             scale="Board scale",scaleTxt="Cell size",
             sfx="SFX pack",sfxWarning={
@@ -170,7 +171,10 @@ return {
         },
         handling={
             ASD="Auto shift delay(ASD)",ASP="Auto shift period(ASP)",
-            SD_ASD="Soft drop ASD",SD_ASP="Soft drop ASP"
+            SD_ASD="Soft drop ASD",SD_ASP="Soft drop ASP",
+
+            IM="Initial Move",IR="Initial Rotate",IH="Initial Hold",
+            tap="Tap",hold="Hold",
         },
         other={title="Other",nothing="Nothing yet..."},
         lang={cur="Current Language: English"}

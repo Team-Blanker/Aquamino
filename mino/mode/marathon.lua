@@ -14,9 +14,10 @@ function rule.init(P,mino)
     sfx.add({
         lvup='sfx/mode/general/level up.wav'
     })
-    mino.stacker.ctrl={
-       ASD=.15,ASP=.03,SD_ASD=0,SD_ASP=.03
-    }
+
+    local c=mino.stacker.ctrl
+    c.ASD=.15 c.ASP=.03 c.SD_ASD=0 c.SD_ASP=.03
+
     P[1].LDelay=.5
     for k,v in pairs(P) do
         v.CDelay=.25

@@ -2,11 +2,16 @@ local cfh=user.lang.conf.boardSet
 
 local hand={}
 local BUTTON,SLIDER=scene.button,scene.slider
-local T=myTable
+local M,T=myMath,myTable
 function hand.read()
-    hand.ctrl={ASD=.15,ASP=.03,SD_ASD=0,SD_ASP=.05}
+    hand.ctrl={
+        ASD=.15,ASP=.03,SD_ASD=0,SD_ASP=.05,
+        IMS={tap=true,hold=true},
+        IRS={tap=true,hold=true},
+        IHS={tap=true,hold=true},
+    }
     local info=file.read('conf/ctrl')
-    T.combine(hand.ctrl,info)  
+    T.combine(hand.ctrl,info)
 end
 function hand.save()
     file.save('conf/ctrl',hand.ctrl)
@@ -22,6 +27,8 @@ function hand.init()
     sfx.add({
         click='sfx/general/buttonClick.wav',
         quit='sfx/general/confSwitch.wav',
+        cOn='sfx/general/checkerOn.wav',
+        cOff='sfx/general/checkerOff.wav',
     })
 
     tt=hand.titleTxt
@@ -61,7 +68,7 @@ function hand.init()
             })
         end
     },.2)
-    scene.button.create('test',{
+    BUTTON.create('test',{
         x=700,y=400,type='rect',w=200,h=100,
         draw=function(bt,t)
             local w,h=bt.w,bt.h
@@ -85,7 +92,7 @@ function hand.init()
     },.2)
 
     SLIDER.create('ASD',{
-        x=-380,y=-250,type='hori',sz={1000,32},button={32,32},
+        x=-360,y=-250,type='hori',sz={1000,32},button={32,32},
         gear=0,pos=hand.ctrl.ASD/.2,
         sliderDraw=function(g,sz)
             gc.setColor(.5,.5,.5,.8)
@@ -106,7 +113,7 @@ function hand.init()
         end
     })
     SLIDER.create('ASP',{
-        x=-380,y=-125,type='hori',sz={1000,32},button={32,32},
+        x=-360,y=-125,type='hori',sz={1000,32},button={32,32},
         gear=0,pos=hand.ctrl.ASP/.1,
         sliderDraw=function(g,sz)
             gc.setColor(.5,.5,.5,.8)
@@ -127,7 +134,7 @@ function hand.init()
         end
     })
     SLIDER.create('SD_ASD',{
-        x=-380,y=0,type='hori',sz={1000,32},button={32,32},
+        x=-360,y=0,type='hori',sz={1000,32},button={32,32},
         gear=0,pos=hand.ctrl.SD_ASD/.2,
         sliderDraw=function(g,sz)
             gc.setColor(.5,.5,.5,.8)
@@ -148,7 +155,7 @@ function hand.init()
         end
     })
     SLIDER.create('SD_ASP',{
-        x=-380,y=125,type='hori',sz={1000,32},button={32,32},
+        x=-360,y=125,type='hori',sz={1000,32},button={32,32},
         gear=0,pos=hand.ctrl.SD_ASP/.1,
         sliderDraw=function(g,sz)
             gc.setColor(.5,.5,.5,.8)
@@ -168,6 +175,173 @@ function hand.init()
             hand.ctrl.SD_ASP=.1*pos
         end
     })
+
+    BUTTON.create('IMStap',{
+        x=330,y=-250,type='rect',w=54,h=54,
+        draw=function(bt,t,ct)
+            local animArg=hand.ctrl.IMS.tap and min(ct/.2,1) or max(1-ct/.2,0)
+            local w,h=bt.w,bt.h
+            local r=M.lerp(1,.5,animArg)  local g=1  local b=M.lerp(1,.875,animArg)
+            gc.setColor(r,g,b)
+            gc.setLineWidth(4)
+            gc.rectangle('line',-w/2+3,-h/2+3,w-6,h-6)
+            if hand.ctrl.IMS.tap then gc.line(-w*3/8,0,-w/8,h/4,w*3/8,-h/4) end
+            gc.setColor(r,g,b,2*t)
+            gc.rectangle('fill',-w/2,-h/2,h,h)
+            gc.setColor(1,1,1)
+            gc.printf(cfh.tap,font.Bender,w/2+12,0,5000,'left',0,1/3,1/3,0,font.height.Bender/2)
+        end,
+        event=function()
+            hand.ctrl.IMS.tap=not hand.ctrl.IMS.tap
+            sfx.play(hand.ctrl.IMS.tap and 'cOn' or 'cOff')
+        end
+    },.2)
+    BUTTON.create('IMShold',{
+        x=600,y=-250,type='rect',w=54,h=54,
+        draw=function(bt,t,ct)
+            local animArg=hand.ctrl.IMS.hold and min(ct/.2,1) or max(1-ct/.2,0)
+            local w,h=bt.w,bt.h
+            local r=M.lerp(1,.5,animArg)  local g=1  local b=M.lerp(1,.875,animArg)
+            gc.setColor(r,g,b)
+            gc.setLineWidth(4)
+            gc.rectangle('line',-w/2+3,-h/2+3,w-6,h-6)
+            if hand.ctrl.IMS.hold then gc.line(-w*3/8,0,-w/8,h/4,w*3/8,-h/4) end
+            gc.setColor(r,g,b,2*t)
+            gc.rectangle('fill',-w/2,-h/2,h,h)
+            gc.setColor(1,1,1)
+            gc.printf(cfh.hold,font.Bender,w/2+12,0,5000,'left',0,1/3,1/3,0,font.height.Bender/2)
+        end,
+        event=function()
+            hand.ctrl.IMS.hold=not hand.ctrl.IMS.hold
+            sfx.play(hand.ctrl.IMS.hold and 'cOn' or 'cOff')
+        end
+    },.2)
+    BUTTON.create('IRStap',{
+        x=330,y=-125,type='rect',w=54,h=54,
+        draw=function(bt,t,ct)
+            local animArg=hand.ctrl.IRS.tap and min(ct/.2,1) or max(1-ct/.2,0)
+            local w,h=bt.w,bt.h
+            local r=M.lerp(1,.5,animArg)  local g=1  local b=M.lerp(1,.875,animArg)
+            gc.setColor(r,g,b)
+            gc.setLineWidth(4)
+            gc.rectangle('line',-w/2+3,-h/2+3,w-6,h-6)
+            if hand.ctrl.IRS.tap then gc.line(-w*3/8,0,-w/8,h/4,w*3/8,-h/4) end
+            gc.setColor(r,g,b,2*t)
+            gc.rectangle('fill',-w/2,-h/2,h,h)
+            gc.setColor(1,1,1)
+            gc.printf(cfh.tap,font.Bender,w/2+12,0,5000,'left',0,1/3,1/3,0,font.height.Bender/2)
+        end,
+        event=function()
+            hand.ctrl.IRS.tap=not hand.ctrl.IRS.tap
+            sfx.play(hand.ctrl.IRS.tap and 'cOn' or 'cOff')
+        end
+    },.2)
+    BUTTON.create('IRShold',{
+        x=600,y=-125,type='rect',w=54,h=54,
+        draw=function(bt,t,ct)
+            local animArg=hand.ctrl.IRS.hold and min(ct/.2,1) or max(1-ct/.2,0)
+            local w,h=bt.w,bt.h
+            local r=M.lerp(1,.5,animArg)  local g=1  local b=M.lerp(1,.875,animArg)
+            gc.setColor(r,g,b)
+            gc.setLineWidth(4)
+            gc.rectangle('line',-w/2+3,-h/2+3,w-6,h-6)
+            if hand.ctrl.IRS.hold then gc.line(-w*3/8,0,-w/8,h/4,w*3/8,-h/4) end
+            gc.setColor(r,g,b,2*t)
+            gc.rectangle('fill',-w/2,-h/2,h,h)
+            gc.setColor(1,1,1)
+            gc.printf(cfh.hold,font.Bender,w/2+12,0,5000,'left',0,1/3,1/3,0,font.height.Bender/2)
+        end,
+        event=function()
+            hand.ctrl.IRS.hold=not hand.ctrl.IRS.hold
+            sfx.play(hand.ctrl.IRS.hold and 'cOn' or 'cOff')
+        end
+    },.2)
+    BUTTON.create('IHStap',{
+        x=330,y=0,type='rect',w=54,h=54,
+        draw=function(bt,t,ct)
+            local animArg=hand.ctrl.IHS.tap and min(ct/.2,1) or max(1-ct/.2,0)
+            local w,h=bt.w,bt.h
+            local r=M.lerp(1,.5,animArg)  local g=1  local b=M.lerp(1,.875,animArg)
+            gc.setColor(r,g,b)
+            gc.setLineWidth(4)
+            gc.rectangle('line',-w/2+3,-h/2+3,w-6,h-6)
+            if hand.ctrl.IHS.tap then gc.line(-w*3/8,0,-w/8,h/4,w*3/8,-h/4) end
+            gc.setColor(r,g,b,2*t)
+            gc.rectangle('fill',-w/2,-h/2,h,h)
+            gc.setColor(1,1,1)
+            gc.printf(cfh.tap,font.Bender,w/2+12,0,5000,'left',0,1/3,1/3,0,font.height.Bender/2)
+        end,
+        event=function()
+            hand.ctrl.IHS.tap=not hand.ctrl.IHS.tap
+            sfx.play(hand.ctrl.IHS.tap and 'cOn' or 'cOff')
+        end
+    },.2)
+    BUTTON.create('IHShold',{
+        x=600,y=0,type='rect',w=54,h=54,
+        draw=function(bt,t,ct)
+            local animArg=hand.ctrl.IHS.hold and min(ct/.2,1) or max(1-ct/.2,0)
+            local w,h=bt.w,bt.h
+            local r=M.lerp(1,.5,animArg)  local g=1  local b=M.lerp(1,.875,animArg)
+            gc.setColor(r,g,b)
+            gc.setLineWidth(4)
+            gc.rectangle('line',-w/2+3,-h/2+3,w-6,h-6)
+            if hand.ctrl.IHS.hold then gc.line(-w*3/8,0,-w/8,h/4,w*3/8,-h/4) end
+            gc.setColor(r,g,b,2*t)
+            gc.rectangle('fill',-w/2,-h/2,h,h)
+            gc.setColor(1,1,1)
+            gc.printf(cfh.hold,font.Bender,w/2+12,0,5000,'left',0,1/3,1/3,0,font.height.Bender/2)
+        end,
+        event=function()
+            hand.ctrl.IHS.hold=not hand.ctrl.IHS.hold
+            sfx.play(hand.ctrl.IHS.hold and 'cOn' or 'cOff')
+        end
+    },.2)
+
+    BUTTON.create('IMSInfo',{
+        x=240,y=-250,type='rect',w=96,h=64,
+        draw=function(bt,t,ct)
+            gc.setColor(1,1,1)
+            gc.printf("IM",font.Bender_B,0,0,5000,'center',0,.4,.4,2500,font.height.Bender_B/2)
+
+            local w,h=font.Bender:getWidth(cfh.IM)*.25,font.Bender_B:getHeight(cfh.IM)*.25
+            gc.setColor(0,0,0,.5*t/.1)
+            gc.rectangle("fill",-w/2-5,-h/2-40-5,w+10,h+10)
+            gc.setColor(1,1,1,t/.1)
+            gc.printf(cfh.IM,font.Bender,0,-40,5000,'center',0,.25,.25,2500,font.height.Bender_B/2)
+        end,
+        event=function()
+        end
+    },.1)
+    BUTTON.create('IRSInfo',{
+        x=240,y=-125,type='rect',w=96,h=64,
+        draw=function(bt,t,ct)
+            gc.setColor(1,1,1)
+            gc.printf("IR",font.Bender_B,0,0,5000,'center',0,.4,.4,2500,font.height.Bender_B/2)
+
+            local w,h=font.Bender:getWidth(cfh.IR)*.25,font.Bender_B:getHeight(cfh.IR)*.25
+            gc.setColor(0,0,0,.5*t/.1)
+            gc.rectangle("fill",-w/2-5,-h/2-40-5,w+10,h+10)
+            gc.setColor(1,1,1,t/.1)
+            gc.printf(cfh.IR,font.Bender,0,-40,5000,'center',0,.25,.25,2500,font.height.Bender_B/2)
+        end,
+        event=function()
+        end
+    },.1)
+    BUTTON.create('IHSInfo',{
+        x=240,y=0,type='rect',w=96,h=64,
+        draw=function(bt,t,ct)
+            gc.setColor(1,1,1)
+            gc.printf("IH",font.Bender_B,0,0,5000,'center',0,.4,.4,2500,font.height.Bender_B/2)
+
+            local w,h=font.Bender:getWidth(cfh.IH)*.25,font.Bender_B:getHeight(cfh.IH)*.25
+            gc.setColor(0,0,0,.5*t/.1)
+            gc.rectangle("fill",-w/2-5,-h/2-40-5,w+10,h+10)
+            gc.setColor(1,1,1,t/.1)
+            gc.printf(cfh.IH,font.Bender,0,-40,5000,'center',0,.25,.25,2500,font.height.Bender_B/2)
+        end,
+        event=function()
+        end
+    },.1)
 end
 function hand.keyP(k)
     if k=='escape' then

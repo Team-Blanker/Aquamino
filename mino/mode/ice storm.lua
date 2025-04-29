@@ -6,7 +6,7 @@ local B=require'mino/blocks'
 local fLib=require'mino/fieldLib'
 local floor=math.floor
 
-local rule={spinType='default'}
+local rule={}
 
 function rule.init(P,mino,modeInfo)
     scene.BG=require('BG/snow') scene.BG.init()
@@ -294,8 +294,10 @@ end
 local ict=gc.newCanvas(14,1)
 gc.setCanvas(ict)
 for i=1,7 do
-    setColor(1,1,1,(8-i)/7)
+    setColor(1,1,1,(8-i)/10)
     gc.points(i-.5,.5,14-i+.5,.5)
+    --setColor(1,1,1,1/3)
+    --rect('fill',0,0,14,1)
 end
 gc.setCanvas()
 local r,g,b,larg

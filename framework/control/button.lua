@@ -10,7 +10,7 @@ function BUTTON.create(name,arg,aboveTLimit)
     BUTTON.list[layer][name].hover=false
     BUTTON.list[layer][name].aboveT=0
     BUTTON.list[layer][name].clickT=1e99--距离上一次点击的时间
-    BUTTON.list[layer][name].aboveTLimit=aboveTLimit and aboveTLimit or 1
+    if not BUTTON.list[layer][name].aboveTLimit then BUTTON.list[layer][name].aboveTLimit=aboveTLimit and aboveTLimit or 1 end
     BUTTON.list[layer][name].clickPos={0,0}
     BUTTON.list[layer][name].hoverPos={0,0}
     end

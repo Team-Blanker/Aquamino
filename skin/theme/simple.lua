@@ -201,7 +201,7 @@ function simple.updateClearInfo(player,mino)
 
         local CInfo=player.clearInfo
 
-        local t1=(CInfo.B2B>0 and CInfo.line>0 and "B2B " or "")..((CInfo.spin and CInfo.mini) and "weak " or "")
+        local t1=(CInfo.B2B>0 and CInfo.line>0 and "B2B " or "")
         local t2=CInfo.name
         local t3=(CInfo.spin and "-spin " or "")..(clearTxt[min(CInfo.line,#clearTxt)] or "")
 
@@ -218,7 +218,6 @@ end
 function simple.clearTextDraw(player,mino)
     W,H=36*player.w,36*player.h
     local CInfo=player.clearInfo
-    local r,g,b
     gc.translate(-W/2-20,-250)
     if CInfo.combo>1 then
         ctxt=""..CInfo.combo.." chain"..(CInfo.combo>19 and "?!?!" or CInfo.combo>15 and "!!" or CInfo.combo>7 and "!" or "")..(CInfo.wide==4 and "\n4-wide" or "")
@@ -234,7 +233,7 @@ function simple.clearTextDraw(player,mino)
     gc.translate(W/2+20,250)
 
     local alpha=min(player.clearTxtTimer*1.5/player.clearTxtTMax,1)*.9
-    local s=(CInfo.line>=4 and 1-.05*player.clearTxtTimer or .5)
+    local s=(CInfo.spin and .5 or CInfo.line>=4 and 1-.05*player.clearTxtTimer or .5)
     local r,g,b
 
     if CInfo.line>20 then
@@ -261,7 +260,10 @@ function simple.clearTextDraw(player,mino)
     end
     local beta=alpha*(player.clearTxtTimer%.2>=.1 and .4 or .6)
     setColor(r,g,b,beta)
-    if CInfo.wide==4 and CInfo.line==1 then printf("4-wide",font.Bender,0,-64*s-20,4000,'center',0,1/3,1/3,2000,72) end
+    local t=""
+    if CInfo.wide==4 and CInfo.line==1 then t=t.."4-wide" end
+    if (CInfo.spin and CInfo.mini) then t=t..(t=="" and "weak" or " weak") end
+    if t~="" then printf(t,font.Bender,0,-64*s-20,4000,'center',0,1/3,1/3,2000,72) end
 
     setColor(r,g,b,alpha)
     gc.draw(player.clearTxt,0,0,0,s,s,player.clearTxt:getWidth()/2,player.clearTxt:getHeight()/2)
