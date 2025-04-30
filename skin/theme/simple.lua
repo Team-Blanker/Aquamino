@@ -203,7 +203,7 @@ function simple.updateClearInfo(player,mino)
 
         local t1=(CInfo.B2B>0 and CInfo.line>0 and "B2B " or "")
         local t2=CInfo.name
-        local t3=(CInfo.spin and "-spin " or "")..(clearTxt[min(CInfo.line,#clearTxt)] or "")
+        local t3=(CInfo.spin and "-spin" or "")..(CInfo.line>0 and " " or "")..(clearTxt[min(CInfo.line,#clearTxt)] or "")
 
         player.clearTxt:set({{1,1,1},t1,{0,0,0,0},(CInfo.spin and t2 or ""),{1,1,1},t3})
 
