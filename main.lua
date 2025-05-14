@@ -130,7 +130,7 @@ end
 
 win={
     stat={launch=0,version="Beta V0.3.2.2",totalTime=0},
-    versionTxt="Beta V0.3.2.2",
+    versionTxt="Beta V0.3.2.2 Icosahedron",
     OS=love.system.getOS(),
     showInfo=false,
     fullscr=false,discardAfterDraw=false,
