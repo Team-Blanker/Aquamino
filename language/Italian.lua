@@ -26,7 +26,9 @@ return {
         ['pento 40']="Corsa con Pentomini",
         square="Quadrati",
         ['core destruction']='[Deprecated mode]',
-        ['dig bomb']="Scavo di bombe"
+        ['dig bomb']="Scavo di bombe",
+
+        ['mech heart detector']="MH Detector",
     },
     modeDescription={
         ['40 lines']="Completa 40 righe\nil più velocemente possibile!",
@@ -45,6 +47,8 @@ return {
         battle={{1,1,1},"Combattiamo!\n",{1,1,0},"Questa modalità non registra\nalcun punteggio."},
         ['tower defense']={{1,1,0},"Questa modalità non registra\nalcun punteggio.\n",{1,.2,.2},"L'avvio/riavvio di questa modalità potrebbe\ncausare il blocco del gioco per motivi sconosciuti"},
         overdose={{1,1,1},"\"Probabilmente ero sotto effetto di droga....\"\n",{1,.2,.2},"Se provi disagio,\nchiudi immediatamente il gioco."},
+
+        ['mech heart detector']={{1,1,1},"I made a Mech Hearts detector.\n7-Bag, no any punishment.\n",{1,1,0},"Questa modalità non registra\nalcun punteggio."},
     },
     intro={
         start="Premi un tasto qualsiasi per iniziare",

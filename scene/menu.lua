@@ -39,6 +39,8 @@ menu.modeList={
     multitasking={x=0,y=300,borderColor={.96,.24,.24},playable=true},
     laser={x=450,y=-150,borderColor={.2,.9,.9},playable=true},
     ['tower defense']={x=300,y=-300,borderColor={.2,.9,.9},playable=true},
+
+    --['mech heart detector']={x=750,y=0,borderColor={.6,.6,.6},playable=true},
 }
 menu.secretMode={
     ['40 lines']={mode='pento 40'},

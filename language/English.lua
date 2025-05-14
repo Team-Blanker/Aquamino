@@ -26,7 +26,9 @@ return {
         ['pento 40']="Pentomino sprint",
         square="Square",
         ['core destruction']='[Deprecated mode]',
-        ['dig bomb']="Bomb Dig"
+        ['dig bomb']="Bomb Dig",
+
+        ['mech heart detector']="MH Detector",
     },
     modeDescription={
         ['40 lines']="Clear 40 lines as fast as you can!",
@@ -45,6 +47,8 @@ return {
         battle={{1,1,1},"Let's battle!\n",{1,1,0},"This mode does not record any score"},
         ['tower defense']={{1,1,0},"This mode does not record any score\n",{1,.2,.2},"This mode is unstable. (Re)starting this mode\nmay cause the game to freeze."},
         overdose={{1,1,1},"\"Maybe I was just high on drugs.\"\n",{1,.2,.2},"If experience any discomfort,\nclose the game immediately."},
+
+        ['mech heart detector']={{1,1,1},"I made a Mech Hearts detector.\n7-Bag, no any punishment.\n",{1,1,0},"This mode does not record any score"},
     },
     intro={
         start="Press any key to start",

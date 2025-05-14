@@ -26,7 +26,9 @@ return {
         ['pento 40']="五连块竞速",
         square="正方拼合",
         ['core destruction']="[已废弃模式]",
-        ['dig bomb']="炸弹挖掘"
+        ['dig bomb']="炸弹挖掘",
+
+        ['mech heart detector']="机心检测器",
     },
     modeDescription={
         ['40 lines']="以最快速度消除40行",
@@ -45,6 +47,8 @@ return {
         battle={{1,1,1}," 战斗，爽！\n",{1,1,0},"该模式不记录成绩"},
         ['tower defense']={{1,1,0},"该模式不记录成绩\n",{1,.2,.2}," 该模式不稳定。\n 启动/重开该模式可能会让程序卡死。"},
         overdose={{1,1,1},"“也许我只不过是溜大了”\n",{1,.2,.2}," 游玩过程中若出现任何不适，\n 请立刻关闭游戏。"},
+
+        ['mech heart detector']={{1,1,1},"写了一套检测机心的机制\n全程7-Bag没有任何惩罚\n",{1,1,0},"该模式不记录成绩"},
     },
     intro={
         start="按任意键进入游戏",
@@ -181,7 +185,7 @@ return {
     rule={
         dig={remain="剩余行数",piece="使用块数"},
         backfire={remain="剩余垃圾行数",eff="效率"},
-        square={time="剩余时间",amount="构造正方数",remainTime={"2 分钟","1 分钟","30 秒"}}
+        square={time="剩余时间",amount="构造正方数",remainTime={"2 分钟","1 分钟","30 秒"}},
     },
 
     tip={
