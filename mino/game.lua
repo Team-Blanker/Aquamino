@@ -709,8 +709,8 @@ function mino.init(isReset)
             P =1,Q =1,X =1,W =1,V =1,U =1,
         }
         if fs.getInfo('conf/mino color') then T.combine(mino.color,file.read('conf/mino color')) end
+        if mino.blockSkin.defaultTexType then T.combine(mino.texType,mino.blockSkin.defaultTexType) end
         if fs.getInfo('conf/mino textype') then T.combine(mino.texType,file.read('conf/mino textype')[pf.block])
-        else T.combine(mino.texType,mino.blockSkin.defaultTexType)
         end
 
         mino.boardBounce=file.read('conf/board bounce')

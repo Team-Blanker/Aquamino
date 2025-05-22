@@ -479,6 +479,7 @@ function bb.update(dt)
     end
 end
 function bb.draw()
+    tt=bb.titleTxt
     gc.setColor(1,1,1)
     gc.draw(tt.txt,-640,-480,0,tt.s,tt.s,tt.w/2,0)
     BUTTON.draw() SLIDER.draw()

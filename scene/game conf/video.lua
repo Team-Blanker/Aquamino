@@ -338,6 +338,7 @@ function video.update(dt)
     end
 end
 function video.draw()
+    tt=video.titleTxt
     gc.setColor(1,1,1)
     gc.draw(tt.txt,0,-510,0,tt.s,tt.s,tt.w/2,0)
     BUTTON.draw(1) BUTTON.draw(2) SLIDER.draw()

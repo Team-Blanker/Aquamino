@@ -16,6 +16,8 @@ skin.defaultTexType={
     Z5=1,S5=1,J5=1,L5=1,T5=1,I5=1,
     N =1,H =1,F =1,E =1,R =1,Y =1,
     P =1,Q =1,X =1,W =1,V =1,U =1,
+
+    plum=1,gold=1,silver=1
 }
 
 function skin.unitDraw(player,x,y,color,alpha)

@@ -185,6 +185,7 @@ function audio.update(dt)
         adaptWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5)) end
 end
 function audio.draw()
+    tt=audio.titleTxt
     gc.setColor(1,1,1)
     gc.draw(tt.txt,0,-510,0,tt.s,tt.s,tt.w/2,0)
     BUTTON.draw() SLIDER.draw()

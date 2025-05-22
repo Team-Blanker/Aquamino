@@ -466,6 +466,7 @@ function custom.update(dt)
     end
 end
 function custom.draw()
+    tt=custom.titleTxt
     gc.setColor(1,1,1)
     gc.draw(tt.txt,0,-510,0,tt.s,tt.s,tt.w/2,0)
     BUTTON.draw() SLIDER.draw()

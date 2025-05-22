@@ -184,9 +184,11 @@ function key.update(dt)
     BUTTON.update(dt,adaptWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5))
 end
 function key.draw()
+    tt=key.titleTxt
     gc.setColor(1,1,1)
     gc.draw(tt.txt,0,-510,0,tt.s,tt.s,tt.w/2,0)
     gc.draw(key.desTxt.txt,0,420,0,key.desTxt.s,key.desTxt.s,0,key.desTxt.h/2)
+
     gc.setColor(1,1,1,.25)
     for i=0,keySheet-1 do
         gc.rectangle('fill',-800,-300+keyBtWidth*i,200,keyBtWidth)
