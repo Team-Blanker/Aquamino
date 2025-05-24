@@ -17,12 +17,16 @@ function rule.init(P,mino)
         sq='sfx/mode/general/sq.wav',
     })
 
-    mino.bag={'Z','S','J','J','L','L','O','O','I','I','T','T','T','T'}
-    mino.seqGenType='bag'
+    mino.bag={'Z','Z','S','S','J','J','J','J','L','L','L','L','O','O','O','I','I','I','T','T','T','T'}
+    mino.seqGenType='mayhem'
 
     mino.color.plum={.96,.48,.84}
     mino.color.gold={.9,.81,.045}
     mino.color.silver={.8,.8,.88}
+
+    mino.texType.plum=1
+    mino.texType.gold=1
+    mino.texType.silver=1
 
     mino.rule.allowSpin={}
     mino.rule.allowPush={}
@@ -70,7 +74,7 @@ local checkFunc={
     end
 }
 local effectColor={plum={.96,.48,.84},gold={1,.9,.2},silver={.95,.95,.95}}
-local sqPoint={plum=3,gold=2,silver=1}
+local sqPoint={plum=4,gold=2,silver=1}
 
 function rule.postCheckClear(player,mino)--正方拼合，先检测金，再检测银
 local sq=player.sqAnimList

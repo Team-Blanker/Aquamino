@@ -12,8 +12,6 @@ skin.defaultTexType={
     Z5=1,S5=1,J5=1,L5=1,T5=2,I5=2,
     N =1,H =1,F =1,E =1,R =1,Y =1,
     P =1,Q =1,X =2,W =2,V =2,U =2,
-
-    plum=1,gold=1,silver=1
 }
 
 

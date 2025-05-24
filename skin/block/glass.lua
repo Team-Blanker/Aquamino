@@ -16,8 +16,6 @@ skin.defaultTexType={
     Z5=1,S5=1,J5=1,L5=1,T5=1,I5=1,
     N =1,H =1,F =1,E =1,R =1,Y =1,
     P =1,Q =1,X =1,W =1,V =1,U =1,
-
-    plum=1,gold=1,silver=1
 }
 
 function skin.unitDraw(player,x,y,color,alpha)
@@ -46,7 +44,7 @@ function skin.keyP(player,k,mino)
                 local my=k=='CW' and p[i][2]-p[i][1] or k=='CCW' and p[i][2]+p[i][1] or k=='flip' and p[i][2]*2^.5
                 for j=1,3 do
                     vel=.5+1*rand() angle=2*math.pi*rand()
-                    ins(player.pList,{name='spin',x=p[i][1]+c.x+rand()-.5,y=p[i][2]+c.y+rand()-.5,vx=vel*cos(angle)+4*mx,vy=vel*sin(angle)+4*my,timer=0})
+                    ins(player.pList,{name='spin',x=p[i][1]+c.x+rand()-.5,y=p[i][2]+c.y+rand()-.5,vx=vel*cos(angle)+4*mx,vy=vel*sin(angle)+4*my,t=0})
                 end
             end
         end
@@ -59,12 +57,12 @@ function skin.onLineClear(player,mino)
             for i=1,#v do
                 for j=1,4 do
                     vel=.5+1*rand() angle=2*math.pi*rand()
-                    ins(player.pList,{name=v[i].name,x=i+rand()-.5,y=k+rand()-.5,vx=vel*cos(angle),vy=vel*sin(angle),timer=0})
+                    ins(player.pList,{name=v[i].name,x=i+rand()-.5,y=k+rand()-.5,vx=vel*cos(angle),vy=vel*sin(angle),t=0})
                 end
                 --[[if v[i].bomb then
                     for j=1,20 do
                         vel=1+1*rand() angle=2*math.pi*rand()
-                        ins(player.pList,{name='spin',x=i+.5*cos(angle),y=k+rand()-.5,vx=10*vel*cos(angle),vy=0,timer=0})
+                        ins(player.pList,{name='spin',x=i+.5*cos(angle),y=k+rand()-.5,vx=10*vel*cos(angle),vy=0,t=0})
                     end
                 end]]
             end
@@ -78,7 +76,7 @@ function skin.onPieceDrop(player,mino)
         for i=1,#his.piece do
             for j=1,2 do
                 vel=.5+1*rand() angle=2*math.pi*rand()
-                ins(player.pList,{name=his.name,x=p[i][1]+his.x+rand()-.5,y=p[i][2]+his.y+rand()-.5,vx=vel*cos(angle),vy=vel*sin(angle),timer=0})
+                ins(player.pList,{name=his.name,x=p[i][1]+his.x+rand()-.5,y=p[i][2]+his.y+rand()-.5,vx=vel*cos(angle),vy=vel*sin(angle),t=0})
             end
         end
     end
@@ -89,8 +87,8 @@ function skin.update(player,dt)
 
     local pList=player.pList
     for i=#pList,1,-1 do
-        pList[i].timer=pList[i].timer+dt
-        if pList[i].timer>fadeTime then rem(pList,i) end
+        pList[i].t=pList[i].t+dt
+        if pList[i].t>fadeTime then rem(pList,i) end
     end
 end
 
@@ -141,10 +139,10 @@ local arg,c
 function skin.overFieldDraw(player,mino)
     local pList=player.pList
     for i=1,#pList do
-        arg=min(1-pList[i].timer/fadeTime,1)
+        arg=min(1-pList[i].t/fadeTime,1)
 
-        local sx=pList[i].x+pList[i].vx*pList[i].timer
-        local sy=pList[i].y+pList[i].vy*pList[i].timer
+        local sx=pList[i].x+pList[i].vx*pList[i].t
+        local sy=pList[i].y+pList[i].vy*pList[i].t
         if pList[i].color then setColor(pList[i].color)
         elseif pList[i].name=='spin' then setColor(1,1,1)
         else c=mino.color[pList[i].name] setColor(.25+.75*c[1],.25+.75*c[2],.25+.75*c[3])

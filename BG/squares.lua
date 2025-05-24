@@ -6,16 +6,23 @@ for i=1,16 do
     for j=1,9 do
         sq[i][j]={}
         for k=1,4 do--“象限”
-        sq[i][j][k]={light=.375+.25*rand(),phase=rand()}
+        sq[i][j][k]={light=.375+.25*rand(),phase=rand(),freq=.95+.1*rand()}
         end
     end
 end
 
 local posScale={1,1,1,-1,-1,-1,-1,1}
 
-local t=0
+local t
 function bg.update(dt)
-    t=t+dt*.25
+    t=dt*.25
+    for i=1,16 do
+    for j=1,9 do
+        for k=1,4 do
+        sq[i][j][k].phase=(sq[i][j][k].phase+sq[i][j][k].freq*t)%1
+        end
+    end
+end
 end
 
 local sqr,sqg,sqb=1,1,1
@@ -30,7 +37,7 @@ function bg.draw()
         gc.push()
         gc.scale(posScale[k*2-1],posScale[k*2])
         for i=16,1,-1 do  for j=9,1,-1 do
-            a=abs((sq[i][j][k].phase+t)*2%2-1)
+            a=abs(sq[i][j][k].phase*2%2-1)
             s=1/(1-.04*(3*a^2-2*a^3))
             c=sq[i][j][k].light
 
