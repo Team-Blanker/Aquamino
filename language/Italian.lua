@@ -92,6 +92,7 @@ return {
         music="Musica composta da", hurtRecord="Of which from HURT RECORD (https://www.hurtrecord.com) :",
         sfx="Progettazione di effetti sonori",
         translate="Translation & Localization",
+        multiPlatform="Multipiattaforma",
         specialThanks="Ringraziamenti Speciali",
         tester="...e tutti gli altri testers"
     },

@@ -92,6 +92,7 @@ return {
         music="音樂来自", hurtRecord="来自 HURT RECORD (https://www.hurtrecord.com) :",
         sfx="音效",
         translate="翻譯 & 本地化",
+        multiPlatform="多平台兼容",
         specialThanks="特別感謝",
         tester="以及其他所有内測成員"
     },

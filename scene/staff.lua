@@ -18,11 +18,15 @@ local devList={
         }
     },
     translate={'Aqua6623 (简中/繁中/English)','DJ Asriel (Italiano)'},
+    multiPlatform={
+        {'Aqua6623 (Windows & Android)','Sennoma (MacOS & Linux)'},
+        {'滑稽2369 (Android)'}
+    },
     specialThanks={
         {'MrZ_26'},
         {'XMiao小渺 (Hoshizuki Kasuka)','User670','MianSoft','沙盒子',},
-        {'Sunday','滑稽2369 (lol2369)','沙丁子 (5sdac)','T427 默默颗',},
-        {'風洛霊flore','farter','xb2002b','大叔Rex',},
+        {'Sunday','滑稽2369 (huaji2369)','沙丁子 (5sdac)','T427 默默颗',},
+        {'風洛霊flore','farter','Sennoma','xb2002b','大叔Rex'},
         {'DJ Asriel','Not-A-Robot','SweetSea','nekonaomii (MelloBoo44)',}
     }
 }
@@ -124,7 +128,21 @@ function stf.init()
     stf.txt1[#stf.txt1+1]=t1
 
     stf.txt1[#stf.txt1+1]=c1
-    stf.txt1[#stf.txt1+1]='\n\n\n'..uls.specialThanks..'\n'
+    stf.txt1[#stf.txt1+1]='\n\n\n'..uls.multiPlatform
+    stf.txt1[#stf.txt1+1]=c2
+    t1='\n\n'
+    local mp=devList.multiPlatform
+    for i=1,#mp do
+        for j=1,#mp[i] do
+        t1=t1..mp[i][j]
+        if i~=#mp[i] then t1=t1..'    ' end
+        end
+        t1=t1..'\n'
+    end
+    stf.txt1[#stf.txt1+1]=t1
+
+    stf.txt1[#stf.txt1+1]=c1
+    stf.txt1[#stf.txt1+1]='\n\n'..uls.specialThanks..'\n'
 
     stf.stftxt1=gc.newText(font.Bender)
     stf.stftxt1:addf(stf.txt1,4000,'center')

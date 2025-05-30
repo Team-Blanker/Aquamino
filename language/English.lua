@@ -92,6 +92,7 @@ return {
         music="Music by", hurtRecord="Of which from HURT RECORD (https://www.hurtrecord.com) :",
         sfx="SFX Design",
         translate="Translation & Localization",
+        multiPlatform="Multiplatform",
         specialThanks="Special Thanks",
         tester="...and all other testers"
     },
