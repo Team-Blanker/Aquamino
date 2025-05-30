@@ -11,6 +11,8 @@ if os=='Windows' then
     CC=ffi.load(gamePath..'/cold_clear.dll')
 elseif os=='Linux' then
     CC=ffi.load(SBPath..'/Aquamino/cold_clear.so')
+elseif os=='OS X' then
+    CC=ffi.load(gamePath..'/cold_clear.dylib')
 end
 --CCAsyncBot *cc_launch_async(CCOptions *options, CCWeights *weights, CCBook *book, CCPiece *queue,
 --uint32_t count),
