@@ -1,4 +1,5 @@
 local ffi=require'ffi'
+local lib_util=require'bin/lib_util'
 local head=love.filesystem.newFile('mino/bot/coldclear.h'):read()
 ffi.cdef(head)
 local c=ffi.C
@@ -8,16 +9,10 @@ local SBPath=love.filesystem.getSourceBaseDirectory()
 -- print("gamePath", gamePath)
 -- print("SBPath  ", SBPath)
 -- print("------------\x1b[0m")
-local os_ext_map = {
-    Windows = 'dll',
-    Linux = 'so',
-    ['OS X'] = 'dylib'
-}
-local os = love.system.getOS()
-local ext = os_ext_map[os]
+local lib_name = lib_util.getCCLibName()
 local CC
-if ext then
-    local lib_path = gamePath .. '/bin/cold_clear.' .. ext
+if lib_name then
+    local lib_path = gamePath .. '/bin/' .. lib_name
     print("CC load path", lib_path)
     CC = ffi.load(lib_path)
 else

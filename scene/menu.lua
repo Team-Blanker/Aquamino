@@ -4,20 +4,11 @@ local SLIDER=scene.slider
 
 local menu={modeKey=1,sAnimTMax=.15}
 
--- 检查系统是否支持CC
+-- Check if the system supports CC
+local lib_util = require'bin/lib_util'
+
 local function isCCSupported()
-    local os_ext_map = {
-        Windows = 'dll',
-        Linux = 'so',
-        ['OS X'] = 'dylib'
-    }
-    local os = love.system.getOS()
-    local ext = os_ext_map[os]
-    if not ext then
-        return false
-    else
-        return true
-    end
+    return lib_util.getCCLibName() ~= nil
 end
 
 local bso=require'mino/bestScoreOrder'
