@@ -234,7 +234,7 @@ function menu.init()
             return
         end
         
-        -- 检查CC支持性
+        -- Check if the system supports CC
         local mode = menu.selectedMode
         if (mode == 'battle' or mode == 'tower defense') and not isCCSupported() then
             gc.printf(user.lang.menu.ccNotSupported or "System not supported",font.Bender,0,0,2000,'center',0,.625,.625,1000,font.height.Bender/2)
@@ -256,7 +256,7 @@ function menu.init()
         event=function()
             if not menu.modeList[menu.selectedMode].playable then return end
             
-            -- 检查CC支持性
+            -- Check if the system supports CC
             local mode = menu.selectedMode
             if (mode == 'battle' or mode == 'tower defense') and not isCCSupported() then
                 return

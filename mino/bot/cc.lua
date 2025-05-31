@@ -9,14 +9,14 @@ local SBPath=love.filesystem.getSourceBaseDirectory()
 -- print("gamePath", gamePath)
 -- print("SBPath  ", SBPath)
 -- print("------------\x1b[0m")
-local lib_name = lib_util.getCCLibName()
+local lib_name=lib_util.getCCLibName()
 local CC
 if lib_name then
-    local lib_path = gamePath .. '/bin/' .. lib_name
-    print("CC load path", lib_path)
+    local lib_path=gamePath..'/bin/'..lib_name
+    print("CC load path",lib_path)
     CC = ffi.load(lib_path)
 else
-    print("\x1b[31m" .. "Unknow System: " .. os .. "\x1b[0m")
+    print("\x1b[31m".."Unknow System: "..os.."\x1b[0m")
 end
 --CCAsyncBot *cc_launch_async(CCOptions *options, CCWeights *weights, CCBook *book, CCPiece *queue,
 --uint32_t count),
