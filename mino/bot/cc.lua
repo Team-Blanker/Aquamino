@@ -4,15 +4,24 @@ ffi.cdef(head)
 local c=ffi.C
 local gamePath=love.filesystem.getWorkingDirectory()
 local SBPath=love.filesystem.getSourceBaseDirectory()
-print(gamePath)
-local os=love.system.getOS()
+-- print("\x1b[33m------------")
+-- print("gamePath", gamePath)
+-- print("SBPath  ", SBPath)
+-- print("------------\x1b[0m")
+local os_ext_map = {
+    Windows = 'dll',
+    Linux = 'so',
+    ['OS X'] = 'dylib'
+}
+local os = love.system.getOS()
+local ext = os_ext_map[os]
 local CC
-if os=='Windows' then
-    CC=ffi.load(gamePath..'/cold_clear.dll')
-elseif os=='Linux' then
-    CC=ffi.load(SBPath..'/Aquamino/cold_clear.so')
-elseif os=='OS X' then
-    CC=ffi.load(gamePath..'/cold_clear.dylib')
+if ext then
+    local lib_path = gamePath .. '/bin/cold_clear.' .. ext
+    print("CC load path", lib_path)
+    CC = ffi.load(lib_path)
+else
+    print("\x1b[31m" .. "Unknow System: " .. os .. "\x1b[0m")
 end
 --CCAsyncBot *cc_launch_async(CCOptions *options, CCWeights *weights, CCBook *book, CCPiece *queue,
 --uint32_t count),

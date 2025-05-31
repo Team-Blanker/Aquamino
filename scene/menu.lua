@@ -4,6 +4,22 @@ local SLIDER=scene.slider
 
 local menu={modeKey=1,sAnimTMax=.15}
 
+-- 检查系统是否支持CC
+local function isCCSupported()
+    local os_ext_map = {
+        Windows = 'dll',
+        Linux = 'so',
+        ['OS X'] = 'dylib'
+    }
+    local os = love.system.getOS()
+    local ext = os_ext_map[os]
+    if not ext then
+        return false
+    else
+        return true
+    end
+end
+
 local bso=require'mino/bestScoreOrder'
 
 local setIcon1,setIcon2=gc.newCanvas(120,120),gc.newCanvas(120,120)
@@ -222,10 +238,17 @@ function menu.init()
         x=0,y=390,type='rect',w=450,h=100,
         draw=function(bt,t)
             if not menu.selectedMode then return end
-            if not menu.modeList[menu.selectedMode].playable then
-                gc.printf(user.lang.menu.notPlayable,font.Bender,0,0,2000,'center',0,.625,.625,1000,font.height.Bender/2)
-                return
-            end
+        if not menu.modeList[menu.selectedMode].playable then
+            gc.printf(user.lang.menu.notPlayable,font.Bender,0,0,2000,'center',0,.625,.625,1000,font.height.Bender/2)
+            return
+        end
+        
+        -- 检查CC支持性
+        local mode = menu.selectedMode
+        if (mode == 'battle' or mode == 'tower defense') and not isCCSupported() then
+            gc.printf(user.lang.menu.ccNotSupported or "System not supported",font.Bender,0,0,2000,'center',0,.625,.625,1000,font.height.Bender/2)
+            return
+        end
             local a=menu.sAnimTimer/menu.sAnimTMax*2-1
             if menu.pAnim then
                 local s=menu.pAnimTimer>.2 and 1 or menu.pAnimTimer%.1<.05 and 1 or 0
@@ -241,6 +264,12 @@ function menu.init()
         end,
         event=function()
             if not menu.modeList[menu.selectedMode].playable then return end
+            
+            -- 检查CC支持性
+            local mode = menu.selectedMode
+            if (mode == 'battle' or mode == 'tower defense') and not isCCSupported() then
+                return
+            end
             menu.pAnim=true
             sfx.play('click',1,2^(2/3))
             sfx.play('gameEnter')
