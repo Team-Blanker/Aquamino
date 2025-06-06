@@ -13,8 +13,14 @@ function rule.init(P,mino,modeInfo)
     mino.musInfo="カモキング - 大氷河時代"
     mus.add('music/Hurt Record/The Great Ice Age','whole','ogg',14.884,63)
     mus.start()
-    --mino.player[1].w=4
-    --mino.player[1].h=4
+    --P[1].w=4
+    --P[1].h=4
+    --[[fLib.insertField(P[1],{
+        {'g1','g1',' ',' '},
+        {'g1',' ',' ',' '},
+    })]]
+    --mino.bag={'I'}
+
     mino.rule.allowSpin={Z=true,S=true,J=true,L=true,T=true,O=true,I=true,}
     mino.rule.enableMiniSpin=false
     sfx.add({
@@ -359,7 +365,12 @@ end
 function rule.scoreSave(P,mino)
     local pb=file.read('player/best score')
     local isHighScore=pb['ice storm'] and (P[1].stormLv>pb['ice storm'].level or (P[1].stormLv==pb['ice storm'].level and P[1].iceScore>pb['ice storm'].score))
-    local ispb=pb['ice storm'] and (mino.stacker.winState>0 and (not pb['ice storm'].complete or P[1].gameTimer<pb['ice storm'].time) or isHighScore)
+    local ispb
+    if pb['ice storm'] then
+        if mino.stacker.winState>0 then
+            ispb=(not pb['ice storm'].complete or P[1].gameTimer<pb['ice storm'].time)
+        else ispb=isHighScore end
+    end
     if not pb['ice storm'] or ispb then
     pb['ice storm']={
         complete=mino.stacker.winState>0,
