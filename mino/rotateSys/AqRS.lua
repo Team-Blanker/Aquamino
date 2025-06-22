@@ -15,7 +15,7 @@ local function getSymTable(table)--生成对称的踢墙表给对称的块用
     if table.L.cp then newTable.R.cp={{},{},{},{}} end
     for i=1,4 do
         local k=1+(1-i)%4
-        for j=1,#table.R[i] do
+        for j=1,#table.R[k] do
             newTable.L[i][j]={-table.R[k][j][1],table.R[k][j][2]}
         end
         if table.R.cp then
@@ -24,7 +24,7 @@ local function getSymTable(table)--生成对称的踢墙表给对称的块用
             end
         end
 
-        for j=1,#table.L[i] do
+        for j=1,#table.L[k] do
             newTable.R[i][j]={-table.L[k][j][1],table.L[k][j][2]}
         end
         if table.L.cp then
