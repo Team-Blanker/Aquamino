@@ -267,7 +267,7 @@ function rule.onLineClear(player,mino)
     rule.lvup(player,mino)
 
     if iceSmash~=0 then player.smashCombo=player.smashCombo+iceSmash
-    elseif not (his.spin and his.line>0) then player.smashCombo=max(player.smashCombo-2,0) end
+    elseif not (his.B2B>=0 and his.line>0) then player.smashCombo=max(player.smashCombo-2,0) end
 end
 function rule.underFieldDraw(player)
     local A=player.ruleAnim.score
