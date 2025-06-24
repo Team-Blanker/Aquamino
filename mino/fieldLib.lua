@@ -304,7 +304,7 @@ function fieldLib.lock(player)
 end
 --消行操作与检测
 function fieldLib.lineClear(player)
-    local cunt=0 local field=player.field
+    local cnt=0 local field=player.field
     local PC=true
     local cLine={}
     for y=#field,1,-1 do
@@ -313,12 +313,12 @@ function fieldLib.lineClear(player)
             if not next(field[y][x]) then pass=false break end
             if field[y].bombGarbage and not field[y].triggered then pass=false break end
         end
-        if pass then cLine[y]=field[y] field[y]={} cunt=cunt+1 end
+        if pass then cLine[y]=field[y] field[y]={} cnt=cnt+1 end
     end
     for y=#field,1,-1 do for x=1,#field[y] do
         if next(field[y][x]) then PC=false break end
     end end
-    return cunt,PC,cLine
+    return cnt,PC,cLine
 end
 function fieldLib.eraseEmptyLine(player)
     for y=#player.field,1,-1 do

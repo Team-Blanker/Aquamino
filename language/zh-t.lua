@@ -41,7 +41,7 @@ return {
         master={{1,1,1}," 在最高下落速度下極限堆疊！\n",{1,.5,0},"降落延遲爲0，鎖定延遲隨等級提升縮短\n",{1,1,0},"參數限製：ASD=150ms ASP=30ms"},
         multitasking={{1,1,1},"*Galaxy Brain Meme*\n",{1,1,0},"參數限製：ASD=150ms ASP=30ms 軟降ASP=30ms\n重力隨等級提升而增大"},
         sandbox={{1,1,0},"該模式不記錄成績"},
-        ['dig 40']="靜心思考，高傚挖掘",
+        ['dig 40']="靜心思考，高效挖掘",
         laser={{1,1,1},"做人不要太攀比，踏踏實實做自己\n如果非要比一比，那就比比激光雨\n",{1,1,0},"節奏模式，强烈建議開啓音樂游玩"},
         backfire="吃下自己打出的攻擊",
         battle={{1,1,1}," 戰鬥，爽！\n",{1,1,0},"該模式不記錄成績"},
@@ -100,8 +100,8 @@ return {
         resume="繼續",back="返回",r="重開"
     },
     game={
-        nowPlaying="目前播放 : ",
-        curMode="目前模式 : ",
+        nowPlaying="當前播放 : ",
+        curMode="當前模式 : ",
         paused="暫停",result="遊戲結束",
         theme={
             simple={win="勝利",lose="失敗",newRecord="打破紀錄"}
@@ -193,7 +193,7 @@ return {
         "賣弱的一律當5pps處理",
         "c4w，爽！",
         "Lua天下第一！",
-        "海蘭就是個彩筆打塊的，懂什麼代碼",
+        "海蘭就是個菜比打塊的，懂什麼代碼",
         "Bad argument #6623: Attempt to compare number with nil",
         "Aquad = Aqua + Quad",
         "我是一條湊數tip",
