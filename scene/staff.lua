@@ -17,7 +17,7 @@ local devList={
             {'ミレラ','周藤三日月','DiscreetDragon'}
         }
     },
-    translate={'Aqua6623 (简中/繁中/English)','DJ Asriel (Italiano)'},
+    translate={'Aqua6623 (简中/繁中/English)','Sunday (繁中)','DJ Asriel (Italiano)'},
     multiPlatform={
         {'Aqua6623 (Windows & Android)','Sennoma (MacOS & Linux)'},
         {'滑稽2369 (Android)'}
