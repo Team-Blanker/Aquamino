@@ -235,7 +235,7 @@ function rule.onLineClear(player,mino)
     local x=B.size(his.piece)
 
     local iceSmash=0
-    for i=1,#r do for j=1,2 do
+    for i=1,#r do for j=1,1 do
         if his.combo-j>0 then
             rule.decrease(player,r[i]+j+his.x,(his.combo-1)*.05/j)
             rule.decrease(player,r[i]-j+his.x,(his.combo-1)*.05/j)
@@ -267,7 +267,7 @@ function rule.onLineClear(player,mino)
     rule.lvup(player,mino)
 
     if iceSmash~=0 then player.smashCombo=player.smashCombo+iceSmash
-    else player.smashCombo=max(player.smashCombo-2,0) end
+    elseif not (his.spin and his.line>0) then player.smashCombo=max(player.smashCombo-2,0) end
 end
 function rule.underFieldDraw(player)
     local A=player.ruleAnim.score
