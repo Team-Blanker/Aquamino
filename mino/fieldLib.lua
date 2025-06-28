@@ -256,6 +256,18 @@ function fieldLib.getGhostY(player)
 end
 
 --方块与场地相关
+function fieldLib.changeNext(player,order,piece,ori)--修改某个next块
+    if order>#player.next then error("cannot change this piece because it's out of next queue")
+    else player.next[order]=piece
+        if order<=player.preview then
+        player.NP[order]=T.copy(B[player.next[order]])
+        player.NO[order]=ori
+        for k=1,player.NO[order] do
+            B.rotate(player.NP[order],0,'R')
+        end
+        end
+    end
+end
 function fieldLib.entryPlace(player)--方块进场时使用，决定方块出块位置
     local c=player.cur
     local x,y,ox,oy=B.size(c.piece)

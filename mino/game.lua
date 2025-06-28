@@ -144,7 +144,7 @@ function mino.nextIns(player)
         player.NP[n]=T.copy(B[player.next[n]])
         player.NO[n]=mino.orient[player.next[n]] or mino.orient.default
         for k=1,player.NO[n] do
-            player.NP[n]=B.rotate(player.NP[n],0,'R')
+            B.rotate(player.NP[n],0,'R')
         end
     end
 
@@ -232,7 +232,7 @@ function mino.hold(player)
             player.NP[nxt]=T.copy(B[player.next[nxt]])
             player.NO[nxt]=mino.orient[player.next[nxt]] or mino.orient.default
             for k=1,player.NO[nxt] do
-                player.NP[nxt]=B.rotate(player.NP[nxt],0,'R')
+                B.rotate(player.NP[nxt],0,'R')
             end
         end
 
@@ -764,7 +764,7 @@ function mino.init(isReset)
             P[i].NP[j]=T.copy(B[P[i].next[j]])
             P[i].NO[j]=mino.orient[P[i].next[j]] or mino.orient.default
             for k=1,P[i].NO[j] do
-            P[i].NP[j]=B.rotate(P[i].NP[j],0,'R')
+            B.rotate(P[i].NP[j],0,'R')
             end
         end
         if mino.blockSkin.init then mino.blockSkin.init(P[i]) end
