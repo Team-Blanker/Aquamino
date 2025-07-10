@@ -77,10 +77,10 @@ function simple.fieldDraw(player,mino)
     rect('fill',-W/2,H/2+4,W*(1-player.LTimer/player.LDelay),20)
     setColor(0,0,0)
     printf(("%02d"):format(min(player.LDR,99)),font.Bender_B,-W/2+4,H/2+2+64*.2,400,'left',0,5/32,5/32,0,72)
+    --计时
     local t=player.gameTimer
     timeTxt=string.format("%d:%d%.3f",t/60,t/10%6,t%10)
     setColor(.2,.4,.3,.3)
-    --计时
     for i=0,3 do
         printf(timeTxt,font.JB_B,-W/2-30+i%2*4,H/2-18+4*floor(i/2),800,'right',0,.25,.25,800,84)
     end
