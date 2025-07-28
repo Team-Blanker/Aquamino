@@ -24,9 +24,11 @@ local function beginContact(fa,fb,coll)
     if track.onCollide[fa] or track.onCollide[fb] then table.insert(contactList,coll) end
 end
 
-local function summonBonusMarble(team)
+local function summonBonusMarble(team,vx,vy,ox,oy)
+    if not vx then vx=0 end if not vy then vy=0 end
+    if not ox then ox=0 end if not oy then oy=0 end
     track.bonusCtrl.marble[#track.bonusCtrl.marble+1]={
-        body=LP.newBody(track.world,track.bonusSummonX,track.bonusSummonY,'dynamic'),
+        body=LP.newBody(track.world,track.bonusSummonX+ox,track.bonusSummonY+oy,'dynamic'),
         shape=LP.newCircleShape(12),
     }
     o=track.bonusCtrl.marble[#track.bonusCtrl.marble]
@@ -35,7 +37,7 @@ local function summonBonusMarble(team)
     o.fixture:setRestitution(.75)
 
     local angle=math.pi*2*rand()
-    o.body:setLinearVelocity(120*cos(angle),120*sin(angle))
+    o.body:setLinearVelocity(120*cos(angle)+vx,120*sin(angle)+vy)
 
     o.fixture:setUserData({team=team})
     track.type[o.fixture]='bonusBall'
@@ -225,9 +227,9 @@ function track.init()
         end
     end
     --指令区弹珠
-    for i=1,4 do
+    for i=1,8 do
         track.ctrl1.marble[#track.ctrl1.marble+1]={
-            body=LP.newBody(track.world,-750+30*(i-2.5),-360,'dynamic'),
+            body=LP.newBody(track.world,-750+30*(i-4.5),-360,'dynamic'),
             shape=LP.newCircleShape(12),
         }
         o=track.ctrl1.marble[#track.ctrl1.marble]
@@ -319,7 +321,7 @@ function track.init()
     for i=0,8 do--9个分隔障碍
         track.bonusCtrl.obs[#track.bonusCtrl.obs+1]={
             body=LP.newBody(track.world,(-17+6*i)*30,510,'static'),
-            shape=i==0 and LP.newPolygonShape(-30,0,-30,-90,30,-30,30,0) or 1==8 and LP.newPolygonShape(-30,0,-30,-30,0,-60,30,30,-30,0) or sepShape,
+            shape=i==0 and LP.newPolygonShape(-30,0,-30,-90,30,-30,30,0) or sepShape,
             color={.8,.8,.8}
         }
         o=track.bonusCtrl.obs[#track.bonusCtrl.obs]
@@ -401,19 +403,19 @@ function track.init()
     --奖励区指令
     local bcmdFunc={
         [1]=function (this,other)
-            for i=1,(track.gameTime>0 and 3 or 2) do summonBonusMarble(other:getUserData().team) end
+            for i=1,(track.gameTime>0 and 5 or 1) do summonBonusMarble(other:getUserData().team) end
             other:getBody():destroy()
         end,
         [2]=function (this,other)
-            for i=1,2 do summonPointMarble(other:getUserData().team,'p3') end
+            for i=1,4 do summonPointMarble(other:getUserData().team,'p3') end
             other:getBody():destroy()
         end,
         [3]=function (this,other)
-            for i=1,2 do summonPointMarble(other:getUserData().team,'p5') end
+            for i=1,4 do summonPointMarble(other:getUserData().team,'p5') end
             other:getBody():destroy()
         end,
         [4]=function (this,other)
-            summonPointMarble(other:getUserData().team=='R' and 'B' or 'R','m12')
+            for i=1,2 do summonPointMarble(other:getUserData().team=='R' and 'B' or 'R','m12') end
             other:getBody():destroy()
         end,
         [5]=function (this,other)
@@ -431,17 +433,24 @@ function track.init()
             other:getBody():destroy()
         end,
         [6]=function (this,other)
-            if track.gameTime>0 then summonTempMarble(other:getUserData().team,12)
+            if track.gameTime>0 then summonTempMarble(other:getUserData().team,18)
             else summonBonusMarble(other:getUserData().team) end
             other:getBody():destroy()
         end,
         [7]=function (this,other)
-            if track.gameTime>0 then summonTempMarble(other:getUserData().team,18)
+            if track.gameTime>0 then summonTempMarble(other:getUserData().team,24)
             else summonBonusMarble(other:getUserData().team)end
             other:getBody():destroy()
         end,
         [8]=function (this,other)
-            for i=1,(track.gameTime>0 and 5 or 1) do summonBonusMarble(other:getUserData().team) end
+            if track.gameTime>0 then
+            for i=1,(track.gameTime>0 and 12 or 1) do
+                --summonBonusMarble(other:getUserData().team,0,0,0,0)
+                summonBonusMarble(other:getUserData().team=='R' and 'B' or 'R',0,0)
+            end
+            else
+                summonBonusMarble(other:getUserData().team,0,0)
+            end
             other:getBody():destroy()
         end,
     }
@@ -462,7 +471,7 @@ function track.init()
     end
     --被球撞向右移的屏障
     track.bonusCtrl.specialBarrier={
-        body=LP.newBody(track.world,-345,270,'static'),
+        body=LP.newBody(track.world,225,270,'static'),
         shape=LP.newRectangleShape(30,420),
         color=track.cbcmd[i]
     }
@@ -472,7 +481,7 @@ function track.init()
     o.fixture:setRestitution(.8)
     o.fixture:setCategory(16)
     track.onCollide[o.fixture]=function(this,other)
-        this:getBody():setX(this:getBody():getX()+(this:getBody():getX()>=920 and 90 or 15))
+        this:getBody():setX(this:getBody():getX()+(this:getBody():getX()>=920 and 90 or 10))
     end
 
     --轨道指令区障碍
@@ -533,10 +542,10 @@ function track.init()
         end
     end
 
-    --轨道指令区预设的5个+1球
-    for i=1,5 do
+    --轨道指令区预设的10个+1球
+    for i=1,10 do
         track.ctrl2.marble[i]={
-            body=LP.newBody(track.world,(-31+i*2)*30,300,'dynamic'),
+            body=LP.newBody(track.world,(-30.5+i)*30,300,'dynamic'),
             shape=LP.newCircleShape(12),
         }
         o=track.ctrl2.marble[i]
@@ -587,7 +596,7 @@ function track.gameUpdate(dt)
         for i=1,#track.ctrl1.tempMarble do
             track.ctrl1.tempMarble[i].body:destroy()
         end
-        for i=1,5 do
+        for i=1,10 do
             track.ctrl2.marble[i].body:destroy()
         end
         track.cmdMarbleDestroyed=true
@@ -639,20 +648,20 @@ function track.gameUpdate(dt)
 end
 
 local bonusTxt={
-    "x3",.6,
-    "+3 marble*2\nreward",.25,
-    "+5 marble*2\nreward",.25,
-    "-12 marble\nto your\nopponent",.25,
-    "Clear\nyour\ntracks",.3,
-    "12s marble",.3,
-    "18s marble",.3,
     "x5",.6,
+    "+3 marble*4\nreward",.25,
+    "+5 marble*4\nreward",.25,
+    "-12 marble*2\nto your\nopponent",.25,
+    "Clear\nyour\ntracks",.3,
+    "18s marble",.3,
+    "24s marble",.3,
+    "x12 for\nOPPONENT",.3,
 }
 local bonusTimeUpTxt={
-    "x2",.6,
+    "x1",.6,
     "+3 marble*2\nreward",.25,
     "+5 marble*2\nreward",.25,
-    "-12 marble\nto your\nopponent",.25,
+    "-12 marble*2\nto your\nopponent",.25,
     "clear\nyour\ntracks",.3,
     "x1",.6,
     "x1",.6,
