@@ -12,6 +12,10 @@ function spinCheck.default(player)
         else return false,false end
     end
 end
+function spinCheck.noMini(player)
+    if fLib.isImmobile(player) then return true,false
+    else return false,false end
+end
 function spinCheck.AllMini(player)
     local C=player.cur
     if C.name=='T' then

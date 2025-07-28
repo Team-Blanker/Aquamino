@@ -478,6 +478,7 @@ mino.operate={
         local smoothFall=(mino.smoothAnimAct and OP.FTimer/OP.FDelay or 0)
 
         his.dropHeight=0
+        local die
         if C.piece and #C.piece~=0 then
             for h=1,C.y do
                 if not coincide(OP,0,-1) then C.spin=false
@@ -485,22 +486,23 @@ mino.operate={
                 end
             end
 
-            local die=mino.checkDie(OP)
-            mino.blockLock(OP,mino)
-            if die then mino.die(OP,isStacker) end
+             die=mino.checkDie(OP)
+            if die then mino.die(OP,isStacker) else mino.blockLock(OP,mino) end
         end
 
         local animTTL=mino.blockSkin.setDropAnimTTL and mino.blockSkin.setDropAnimTTL(OP,mino) or .5
+        if not die then
         for j=1,#xlist do
-            local lmax=ymax
-            while not T.include(his.piece,{xlist[j],lmax}) do
-                lmax=lmax-1
+            local hmax=ymax
+            while not T.include(his.piece,{xlist[j],hmax}) do
+                hmax=hmax-1
             end
             OP.dropAnim[#OP.dropAnim+1]={
-                x=his.x+xlist[j],y=his.y+his.dropHeight-smoothFall+lmax,len=-smoothFall+his.dropHeight,
+                x=his.x+xlist[j],y=his.y+his.dropHeight-smoothFall+hmax,len=-smoothFall+his.dropHeight,
                 TMax=animTTL,TTL=animTTL, w=xmax-xmin+1,h=ymax-ymin+1,
                 color=mino.color[his.name]
             }
+        end
         end
 
         if S.winState==0 then
@@ -1172,12 +1174,12 @@ function mino.gameUpdate(dt)
                 end
             end
             if P[i].LTimer>P[i].LDelay then
-                P[i].LTimer=P[i].LTimer-P[i].LDelay
+                local die
                 if C.piece and #C.piece~=0 then
                     his.dropHeight=0
-                    local die=mino.checkDie(P[i])
-                    mino.blockLock(P[i],mino)
-                    if die then mino.die(P[i],S.opList[i]) end
+                    die=mino.checkDie(P[i])
+                    if die then mino.die(P[i],S.opList[i])
+                    else P[i].LTimer=P[i].LTimer-P[i].LDelay mino.blockLock(P[i],mino) end
                 end
 
                 if S.winState==0 then
@@ -1186,7 +1188,7 @@ function mino.gameUpdate(dt)
                         else mino.addEvent(P[i],P[i].EDelay,'nextIns') end
                     end
                 end
-                P[i].LTimer=0
+                if not die then P[i].LTimer=0 end
             end
         end
 

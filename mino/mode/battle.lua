@@ -49,6 +49,7 @@ function rule.init(P,mino,modeInfo)
     P[1].target=2 P[2].target=1
     mino.fieldScale=min(mino.fieldScale,1)
     battle.init(P[1]) battle.init(P[2]) fLib.setRS(P[2],'SRS_origin')
+    P[1].garbageCap=4 P[2].garbageCap=4
 
     rule.botThread=bot_cc.newThread(1,P,2)
     bot_cc.startThread(rule.botThread,nil)
@@ -87,7 +88,7 @@ function rule.always(player,dt)
 end
 function rule.afterCheckClear(player,mino)
     if player.history.line==0 then
-        battle.stdAtkRecv(player)
+        battle.stdAtkRecv(player,mino)
     else battle.defense(player,battle.stdAtkCalculate(player),mino)
     end
 end

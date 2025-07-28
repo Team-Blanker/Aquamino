@@ -39,7 +39,7 @@ function rule.init(P,mino,modeInfo)
     mino.musInfo=songInfoList[songCs]
 
     mino.rule.allowSpin={Z=true,S=true,J=true,L=true,T=true,O=true,I=true,}
-    mino.rule.spinType='AllMini'
+    mino.rule.spinType='noMini'
 
     mino.seqGenType='bagp1FromBag'
     mino.seqSync=true
@@ -53,6 +53,7 @@ function rule.init(P,mino,modeInfo)
     P[1].target=2 P[2].target=1
     mino.fieldScale=min(mino.fieldScale,1)
     battle.init(P[1]) battle.init(P[2]) fLib.setRS(P[2],'SRS_origin')
+    P[1].garbageCap=1 P[2].garbageCap=1
 
     rule.botThread=bot_cc.newThread(1,P,2)
     bot_cc.startThread(rule.botThread,nil)
@@ -84,6 +85,9 @@ function rule.gameUpdate(P,dt,mino)
         end
     end
     if P[2].deadTimer>=0 then mino.win(P[1]) end
+    for k,v in pairs(P) do
+        v.garbageCap=max(math.ceil(v.gameTimer/45)-1,1)
+    end
 end
 
 function rule.always(player,dt)
@@ -91,7 +95,7 @@ function rule.always(player,dt)
 end
 function rule.afterCheckClear(player,mino)
     if player.history.line==0 then
-        battle.stdBombAtkRecv(player)
+        battle.stdBombAtkRecv(player,mino)
     else battle.defense(player,battle.stdAtkCalculate(player),mino)
     end
 end
@@ -99,7 +103,7 @@ function rule.onLineClear(player,mino)
     local his=player.history
     player.line=player.line+his.line
     player.atk=player.atk+battle.stdAtkCalculate(player)
-    battle.sendAtk(player,mino.player[player.target],battle.stdBombAtkGen(player))
+    battle.sendAtk(player,mino.player[player.target],battle.stdAtkGen(player))
 end
 function rule.afterPieceDrop(player,mino)
     if player==mino.player[2] then

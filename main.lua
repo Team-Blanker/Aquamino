@@ -100,6 +100,9 @@ font={
     JB=gc.newFont('font/JetBrainsMono-Medium.ttf',128),
     JB_B=gc.newFont('font/JetBrainsMono-Bold.ttf',128),
     JB_L=gc.newFont('font/JetBrainsMono-Light.ttf',128),
+    DIN=gc.newFont('font/DINNextW1G-Regular.otf',128),
+    DIN_B=gc.newFont('font/DINNextW1G-Bold.otf',128),
+    DIN_L=gc.newFont('font/DINNextW1G-Light.otf',128),
 
     LED=gc.newFont('font/UniDreamLED.ttf',128)
 }
@@ -111,6 +114,7 @@ for k,v in pairs(font) do
 end
 font.Bender:setFallbacks(font.ALBBPHT) font.Bender_B:setFallbacks(font.ALBBPHT) font.Bender_L:setFallbacks(font.ALBBPHT)
 font.JB:setFallbacks(font.ALBBPHT) font.JB_B:setFallbacks(font.ALBBPHT)
+font.DIN:setFallbacks(font.ALBBPHT) font.DIN_B:setFallbacks(font.ALBBPHT)
 
 canop=true--=can operate，是决定玩家是否能操作的变量
 

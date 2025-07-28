@@ -21,7 +21,7 @@ function rule.BGUpdate()
 end
 function rule.afterCheckClear(player,mino)
     if player.history.line==0 then
-        player.recvLine=player.recvLine+battle.stdAtkRecv(player)
+        player.recvLine=player.recvLine+battle.stdAtkRecv(player,mino)
     else battle.defense(player,battle.stdAtkCalculate(player),mino)
     end
 end

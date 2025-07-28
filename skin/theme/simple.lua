@@ -4,7 +4,8 @@ local setColor,rect,line,circle,printf,draw=gc.setColor,gc.rectangle,gc.line,gc.
 
 local atkAnimTMax=.5
 local defAnimTMax=.2
-local recvAnimTMax=.25
+local recvAnimTMax=.2
+local cooldownAnimTMax=.25
 local dangerAnimTMax=.2
 local gts
 function simple.init(player)
@@ -95,20 +96,29 @@ function simple.updateDefenseAnim(player,defList)
         dal[#dal].t=0
     end
 end
+function simple.updateRecvAnim(player,atk)
+    local ral=player.recvAnimList
+    ral[#ral+1]={amount=atk.amount,t=0}
+end
 function simple.garbageDraw(player,mino)
     local W,H=36*player.w,36*player.h
     local t,rt
     local dal=player.defAnimList
+    local ral=player.recvAnimList
     local tga=0 --总垃圾数
     for i=1,#dal do
         t=max(1-dal[i].t/defAnimTMax*2,0)
         tga=tga+dal[i].amount*t
     end
+    for i=1,#ral do
+        t=max(1-ral[i].t/recvAnimTMax*2,0)
+        tga=tga+ral[i].amount*t
+    end
     for i=1,#player.garbage do
         local g=player.garbage[i]
         tga=tga+g.amount
-        if tga<=40 then
-            rt=-g.time/recvAnimTMax
+        if tga-g.amount<=40 then
+            rt=-g.time/cooldownAnimTMax
             t=(1-min(g.appearT,.075)/.075)^2
             gc.setColor(1,1,1,2-2*rt)
             gc.setLineWidth(2)
@@ -125,8 +135,15 @@ function simple.garbageDraw(player,mino)
 
     for i=1,#dal do
         t=dal[i].t/defAnimTMax
-        gc.setColor(1,1,1,1-t)
+        setColor(1,1,1,1-t)
         rect('fill',-W/2-18-8*t,H/2-36*(dal[i].amount+dal[i].pos)-12*t,16+16*t,36*dal[i].amount+24*t)
+    end
+
+    if player.garbageCap then
+        local darg=player.dangerAnimTimer/dangerAnimTMax
+        setColor(.5+.5*darg,1,.875+.125*darg)
+        gc.setLineWidth(1)
+        line(-W/2-18,H/2-36*player.garbageCap,-W/2-2,H/2-36*player.garbageCap)
     end
 end
 
@@ -345,6 +362,13 @@ function simple.update(player,dt)
         for i=#aal,1,-1 do
             aal[i].t=aal[i].t+dt
             if aal[i].t>=atkAnimTMax then rem(aal,i) end
+        end
+    end
+    if player.recvAnimList then
+        local ral=player.recvAnimList
+        for i=#ral,1,-1 do
+            ral[i].t=ral[i].t+dt
+            if ral[i].t>=recvAnimTMax then rem(ral,i) end
         end
     end
 end
