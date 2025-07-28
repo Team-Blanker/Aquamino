@@ -66,10 +66,10 @@ end
 function rule.underFieldDraw(player)
     local x=-18*player.w-110
     gc.setColor(1,1,1)
-    gc.printf(""..player.remainLine,font.JB,x,-48,6000,'center',0,.625,.625,3000,96)
-    gc.printf(rd.remain,font.JB_B,x,0,6000,'center',0,.2,.2,3000,96)
-    gc.printf(""..player.pieceCount,font.JB,x,56,6000,'center',0,.4,.4,3000,96)
-    gc.printf(rd.piece,font.JB_B,x,96,6000,'center',0,.2,.2,3000,96)
+    gc.printf(""..player.remainLine,font.JB,x,-48,6000,'center',0,.625,.625,3000,font.height.JB/2)
+    gc.printf(rd.remain,font.JB_B,x,0,6000,'center',0,.2,.2,3000,font.height.JB_B/2)
+    gc.printf(""..player.pieceCount,font.JB,x,56,6000,'center',0,.4,.4,3000,font.height.JB/2)
+    gc.printf(rd.piece,font.JB_B,x,96,6000,'center',0,.2,.2,3000,font.height.JB_B/2)
 end
 
 function rule.scoreSave(P,mino)

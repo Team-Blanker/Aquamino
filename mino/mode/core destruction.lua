@@ -563,7 +563,7 @@ function rule.underAllDraw()
     end
     --当前轮数
     setColor(1,1,1)
-    gc.printf(string.format("Round %d",rule.atk.round),font.Bender,0,360,20000,'center',0,.5,.5,10000,72)
+    gc.printf(string.format("Round %d",rule.atk.round),font.Bender,0,360,20000,'center',0,.5,.5,10000,font.height.Bender/2)
 end
 function rule.underFieldDraw(player,mino)
     w,h=player.w,player.h
@@ -580,10 +580,10 @@ function rule.underFieldDraw(player,mino)
         setColor(c)
         rect('fill',18*player.w+30,18*player.h-40*i-10,160*bb.bar,30)
         setColor(1-c[1],1-c[2],1-c[3])
-        gc.printf(string.format("%d",2^bb.lvl),font.Bender_B,18*player.w+35,18*player.h-40*i+5,2000,'left',0,.2,.2,0,72)
+        gc.printf(string.format("%d",2^bb.lvl),font.Bender_B,18*player.w+35,18*player.h-40*i+5,2000,'left',0,.2,.2,0,font.height.Bender_B/2)
     end
     setColor(1,1,1)
-    gc.printf(string.format("HP\n%d/%d",rule.HP[player.side],rule.HP.max),font.Bender_B,18*player.w+35,0,2000,'left',0,.33,.33,0,72)
+    gc.printf(string.format("HP\n%d/%d",rule.HP[player.side],rule.HP.max),font.Bender_B,18*player.w+35,0,2000,'left',0,.33,.33,0,font.height.Bender_B/2)
 end
 local fdt,fdp,pszt
 function rule.overFieldDraw(player,mino)

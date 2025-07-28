@@ -42,9 +42,9 @@ function rule.onLineClear(player,mino)
 end
 function rule.underFieldDraw(player)
     gc.setColor(1,1,1)
-    gc.printf(""..player.totalLine,font.JB_B,-player.w*18-110,-36,2048,'center',0,.5,.5,1024,84)
-    gc.printf(""..player.speedLv*10,font.JB_B,-player.w*18-110,36,2048,'center',0,.5,.5,1024,84)
-    gc.printf("Level "..player.speedLv,font.JB_B,-player.w*18-28,288,2048,'right',0,0.25,0.25,2048,84)
+    gc.printf(""..player.totalLine,font.JB_B,-player.w*18-110,-36,2048,'center',0,.5,.5,1024,font.height.JB_B/2)
+    gc.printf(""..player.speedLv*10,font.JB_B,-player.w*18-110,36,2048,'center',0,.5,.5,1024,font.height.JB_B/2)
+    gc.printf("Level "..player.speedLv,font.JB_B,-player.w*18-28,288,2048,'right',0,0.25,0.25,2048,font.height.JB_B/2)
     gc.setLineWidth(7)
     gc.line(-player.w*18-170,0,-player.w*18-50,0)
 end

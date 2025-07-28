@@ -117,10 +117,10 @@ local efftxt
 function rule.underFieldDraw(player)
     local x=-18*player.w-110
     gc.setColor(1,1,1)
-    gc.printf(""..player.atk,font.JB,x,-48,6000,'center',0,.625,.625,3000,96)
+    gc.printf(""..player.atk,font.JB,x,-54,6000,'center',0,.625,.625,3000,font.height.JB/2)
 
     efftxt=player.line==0 and "-" or string.format("%.2f",player.atk/player.line)
-    gc.printf(efftxt,font.JB,x,56,6000,'center',0,.4,.4,3000,96)
+    gc.printf(efftxt,font.JB,x,48,6000,'center',0,.4,.4,3000,font.height.JB/2)
 end
 function rule.overFieldDraw(player,mino)
     if player==mino.player[2] then

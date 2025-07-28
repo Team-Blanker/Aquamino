@@ -250,8 +250,8 @@ function rule.BGUpdate(stacker,dt)
 end
 function rule.underFieldDraw(player)
     if player.point>=300 then gc.setColor(1,.95,.05) else gc.setColor(1,1,1) end
-    gc.printf(""..player.point,font.JB_B,-player.w*18-110,-36,2048,'center',0,.5,.5,1024,84)
-    gc.printf(300,font.JB_B,-player.w*18-110,36,2048,'center',0,.5,.5,1024,84)
+    gc.printf(""..player.point,font.JB_B,-player.w*18-110,-36,2048,'center',0,.5,.5,1024,font.height.JB_B/2)
+    gc.printf(300,font.JB_B,-player.w*18-110,36,2048,'center',0,.5,.5,1024,font.height.JB_B/2)
     gc.setLineWidth(7)
     gc.line(-player.w*18-170,0,-player.w*18-50,0)
 
@@ -391,7 +391,7 @@ function rule.overFieldDraw(player,mino)
     for i=1,#txt do
         local clr=txt[i].color
         gc.setColor(clr[1],clr[2],clr[3],clr[4]*txt[i].TTL/txt[i].tMax)
-        gc.printf(txt[i].score,font.JB_B,txt[i].x,txt[i].y,5000,'center',0,txt[i].size/128,txt[i].size/128,2500,84)
+        gc.printf(txt[i].score,font.JB_B,txt[i].x,txt[i].y,5000,'center',0,txt[i].size/128,txt[i].size/128,2500,font.height.JB_B/2)
     end
 end
 
