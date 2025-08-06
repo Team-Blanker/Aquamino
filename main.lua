@@ -147,6 +147,7 @@ win={
     x=0,y=0,
     x_win=0,y_win=0,
     scale=1,
+    resizeTimer=0,resizeInterval=.1,
     changeFullscr=function()
         win.setFullscr(not win.fullscr)
     end,
@@ -213,7 +214,7 @@ scene={
     slider=require'framework/control/slider'
 }
 
---scene.cur=require('minigame/tracks/tracks')
+--scene.cur=require('minigame/tracks/tracks-crazy')
 --scene.cur=require('scene/test/BG_Test')
 --scene.cur=require('scene/test/clock')
 --scene.cur=require('mino/game') scene.cur.mode='map_test'
@@ -279,6 +280,17 @@ function love.touchreleased(id,x,y)
 end
 
 function mainUpdate(dt)
+    --重设屏幕大小 by Sennoma，Linux端问题，疑似是引擎问题，先拿这个代码补救一下
+    win.resizeTimer=win.resizeTimer+dt
+    if win.resizeTimer>=win.resizeInterval then
+        win.resizeTimer=win.resizeTimer-win.resizeInterval
+        local currentW,currentH=gc.getDimensions()
+        if currentW~=win.W or currentH~=win.H then
+            love.resize(currentW,currentH)
+            print('Window resized (Auto):',currentW,currentH)
+        end
+    end
+    --失焦时间
     if love.window.hasFocus() and not love.window.isMinimized() then win.distractTime=-1 else
         win.distractTime=max(win.distractTime,0)
         win.distractTime=win.distractTime+dt
