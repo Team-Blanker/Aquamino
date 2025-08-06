@@ -17,18 +17,19 @@ end
 
 local introCount=0
 local birthday
-local mzk,gg
+local mzk,gg,pp
 function intro.init()
     introCount=introCount+1
 
-    birthday=win.date.month==8 and win.date.day==14--Aquamino的生日！也是海兰的生日！
+    birthday=win.date.month==8 and win.date.day==14--Aquamino的生日
     mzk=win.date.month==3 and win.date.day==22--水月生日
     gg=win.date.month==1 and win.date.day==7--澄闪生日
+    pp=win.date.month==6 and win.date.day==12--佩佩生日
 
     if birthday then
     scene.BG=require('BG/celebration') scene.BG.init()
     else
-    scene.BG=require('BG/blank')
+    scene.BG=require('BG/introBG') scene.BG.init()
     end
 
     if not mus.checkTag('menu') then
@@ -87,19 +88,15 @@ local logo_gg=gc.newImage('pic/assets/title_Goldenglow.png')
 local lw,lh=logo:getPixelDimensions()
 
 function intro.draw()
-    if mzk then gc.clear(0,.03,.15)
-    elseif gg then gc.clear(.15,.12,.135)
-    end
-
     gc.setColor(1,1,1)
-    gc.draw(mzk and logo_mzk or gg and logo_gg or logo,0,-200+12*sin(scene.time/5%2*math.pi),0,1600/lw,1600/lw,lw/2,lh/2)
+    gc.draw(mzk and logo_mzk or gg and logo_gg or logo,0,-200,0,1600/lw,1600/lw,lw/2,lh/2)
 
     local r,g,b=1,1,1
     if birthday then r,g,b=COLOR.hsv(scene.time,.2,1) end
     gc.setColor(r,g,b)
-    gc.printf(user.lang.intro.start,font.Bender,0,300,4000,'center',0,.625,.625,2000,84)
+    gc.printf(user.lang.intro.start,font.Bender,0,360,4000,'center',0,.625,.625,2000,84)
 
-    gc.printf(intro.tip[intro.tipOrder],font.Bender,0,450,114514,'center',0,user.lang.tipScale,user.lang.tipScale,57257,84)
+    --gc.printf(intro.tip[intro.tipOrder],font.Bender,0,450,114514,'center',0,user.lang.tipScale,user.lang.tipScale,57257,84)
 
     gc.setColor(r,g,b,.3)
     gc.printf(win.versionTxt,font.Bender,950,540,10000,'right',0,.3,.3,10000,160)

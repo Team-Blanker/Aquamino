@@ -364,6 +364,8 @@ function track.init()
     local rotatorShape1=LP.newPolygonShape(-75,0,-60,15,60,15,75,0,60,-15,-60,-15)
     local rotatorShape2=LP.newPolygonShape(15,15,15,60,0,75,-15,60,-15,15)
     local rotatorShape3=LP.newPolygonShape(15,-15,15,-60,0,-75,-15,-60,-15,-15)
+    local rotatorShape4=LP.newPolygonShape(18,60,0,78,-18,60,0,42)
+    local rotatorShape5=LP.newPolygonShape(18,-60,0,-78,-18,-60,0,-42)
     track.cbcmd={
         {1,.04,.04},{1,.5,0},{.95,.95,0},{0,.9,0},{0,.95,.95},{.2,.2,1},{.55,.1,1},{1,0,.5},
     }
@@ -373,13 +375,23 @@ function track.init()
             body=LP.newBody(track.world,(-14.5+6*i)*30,375,'static'),
             shape=LP.newCircleShape(12),
         }
-        mo.wheel[i]={
-            body=LP.newBody(track.world,(-14.5+6*i)*30,375,'dynamic'),
-            shape1=rotatorShape1,
-            shape2=rotatorShape2,
-            shape3=rotatorShape3,
-            color=lerp(track.cbcmd[i+1],{.6,.6,.6},.5)
-        }
+        if i==4 then
+            mo.wheel[i]={
+                body=LP.newBody(track.world,(-14.5+6*i)*30,375,'dynamic'),
+                shape1=rotatorShape1,
+                shape2=rotatorShape2,
+                shape3=rotatorShape3,
+                color=lerp(track.cbcmd[i+1],{.6,.6,.6},.5)
+            }
+        else
+            mo.wheel[i]={
+                body=LP.newBody(track.world,(-14.5+6*i)*30,375,'dynamic'),
+                shape1=rotatorShape1,
+                shape2=rotatorShape2,
+                shape3=rotatorShape3,
+                color=lerp(track.cbcmd[i+1],{.6,.6,.6},.5)
+            }
+        end
         o=mo.wheel[i]
         o.fixture1=LP.newFixture(o.body,o.shape1,100)
         o.fixture2=LP.newFixture(o.body,o.shape2,100)
@@ -444,7 +456,7 @@ function track.init()
         end,
         [8]=function (this,other)
             if track.gameTime>0 then
-            for i=1,(track.gameTime>0 and 12 or 1) do
+            for i=1,(track.gameTime>0 and 16 or 1) do
                 --summonBonusMarble(other:getUserData().team,0,0,0,0)
                 summonBonusMarble(other:getUserData().team=='R' and 'B' or 'R',0,0)
             end
@@ -655,12 +667,12 @@ local bonusTxt={
     "Clear\nyour\ntracks",.3,
     "18s marble",.3,
     "24s marble",.3,
-    "x12 for\nOPPONENT",.3,
+    "x16 for\nOPPONENT",.3,
 }
 local bonusTimeUpTxt={
     "x1",.6,
-    "+3 marble*2\nreward",.25,
-    "+5 marble*2\nreward",.25,
+    "+3 marble*4\nreward",.25,
+    "+5 marble*4\nreward",.25,
     "-12 marble*2\nto your\nopponent",.25,
     "clear\nyour\ntracks",.3,
     "x1",.6,
