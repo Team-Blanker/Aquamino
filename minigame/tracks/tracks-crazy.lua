@@ -94,7 +94,7 @@ function track.init()
 
     track.sim=false
     track.time=0 track.updateTimer=0
-    track.gameTime=450 track.readyTime=5
+    track.gameTime=300 track.readyTime=5
 
     track.world=LP.newWorld(0,1500,false)
     track.world:setCallbacks(beginContact,nil,nil,nil)
@@ -415,7 +415,14 @@ function track.init()
     --奖励区指令
     local bcmdFunc={
         [1]=function (this,other)
-            for i=1,(track.gameTime>0 and 5 or 1) do summonBonusMarble(other:getUserData().team) end
+            if track.gameTime>0 then
+            for i=1,(track.gameTime>0 and 5 or 1) do
+                --summonBonusMarble(other:getUserData().team,0,0,0,0)
+                summonBonusMarble(other:getUserData().team=='R' and 'B' or 'R',0,0)
+            end
+            else
+                summonBonusMarble(other:getUserData().team,0,0)
+            end
             other:getBody():destroy()
         end,
         [2]=function (this,other)
@@ -455,14 +462,7 @@ function track.init()
             other:getBody():destroy()
         end,
         [8]=function (this,other)
-            if track.gameTime>0 then
-            for i=1,(track.gameTime>0 and 16 or 1) do
-                --summonBonusMarble(other:getUserData().team,0,0,0,0)
-                summonBonusMarble(other:getUserData().team=='R' and 'B' or 'R',0,0)
-            end
-            else
-                summonBonusMarble(other:getUserData().team,0,0)
-            end
+            for i=1,(track.gameTime>0 and 16 or 1) do summonBonusMarble(other:getUserData().team) end
             other:getBody():destroy()
         end,
     }
@@ -483,7 +483,7 @@ function track.init()
     end
     --被球撞向右移的屏障
     track.bonusCtrl.specialBarrier={
-        body=LP.newBody(track.world,225,270,'static'),
+        body=LP.newBody(track.world,-345,270,'static'),
         shape=LP.newRectangleShape(30,420),
         color=track.cbcmd[i]
     }
@@ -493,7 +493,7 @@ function track.init()
     o.fixture:setRestitution(.8)
     o.fixture:setCategory(16)
     track.onCollide[o.fixture]=function(this,other)
-        this:getBody():setX(this:getBody():getX()+(this:getBody():getX()>=920 and 90 or 10))
+        this:getBody():setX(this:getBody():getX()+(this:getBody():getX()>=920 and 90 or 15))
     end
 
     --轨道指令区障碍
@@ -638,7 +638,7 @@ function track.gameUpdate(dt)
         if track.ctrl1.tempMarble[i].body:isDestroyed() then table.remove(track.ctrl1.tempMarble,i) end
     end
 
-    track.trackSpeed=(max(track.gameTime-90,0)/360*14+1)/15
+    track.trackSpeed=(max(track.gameTime-60,0)/240*14+1)/15
     for i=1,6 do
         local t=track.track[i]
         for j=#t,1,-1 do
@@ -660,14 +660,14 @@ function track.gameUpdate(dt)
 end
 
 local bonusTxt={
-    "x5",.6,
+    "x5 to your\nOPPONENT",.25,
     "+3 marble*4\nreward",.25,
     "+5 marble*4\nreward",.25,
     "-12 marble*2\nto your\nopponent",.25,
     "Clear\nyour\ntracks",.3,
     "18s marble",.3,
     "24s marble",.3,
-    "x16 for\nOPPONENT",.3,
+    "x16",.6,
 }
 local bonusTimeUpTxt={
     "x1",.6,
