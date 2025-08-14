@@ -7,7 +7,7 @@ local kw,kh=kairan:getPixelDimensions()
 local devList={
     program={'Aqua6623 (Aquamarine6623, Kairan, 海兰)'},
     UI={'Aqua6623','Not-A-Robot'},
-    sfx={'Aqua6623','DJ Asriel','MrZ_26','Farter'},
+    sfx={'Aqua6623','DJ Asriel','Farter'},
     music={
         --{},
         hurtRecord={
@@ -23,10 +23,9 @@ local devList={
         {'滑稽2369 (Android)'}
     },
     specialThanks={
-        {'MrZ_26'},
         {'XMiao小渺 (Hoshizuki Kasuka)','User670','MianSoft','沙盒子',},
         {'Sunday','滑稽2369 (huaji2369)','沙丁子 (5sdac)','T427 默默颗',},
-        {'風洛霊flore','farter','Sennoma','xb2002b','大叔Rex'},
+        {'風洛霊flore','farter','Sennoma','大叔Rex'},
         {'DJ Asriel','Not-A-Robot','SweetSea','nekonaomii (MelloBoo44)',}
     }
 }
@@ -148,10 +147,6 @@ function stf.init()
     stf.stftxt1:addf(stf.txt1,4000,'center')
     stf.h[1]=stf.stftxt1:getHeight()
 
-    stf.stftxt2=gc.newText(font.Bender)
-    stf.stftxt2:addf(devList.specialThanks[1][1],4000,'center')
-    stf.h[2]=stf.stftxt2:getHeight()
-
     t1=''
     local sp=devList.specialThanks
     for i=2,#sp do
@@ -164,12 +159,12 @@ function stf.init()
     t1=t1..uls.tester
     t1=t1..'\n\nThank you for playing.'
 
-    stf.stftxt3=gc.newText(font.Bender)
-    stf.stftxt3:addf(t1,4000,'center')
-    stf.h[3]=stf.stftxt3:getHeight()
+    stf.stftxt2=gc.newText(font.Bender)
+    stf.stftxt2:addf(t1,4000,'center')
+    stf.h[2]=stf.stftxt2:getHeight()
 
 
-    posYMax=400+getH(3)
+    posYMax=200+getH(2)
 
     BUTTON.create('quit',{
         x=-700,y=400,type='rect',w=200,h=100,
@@ -246,8 +241,7 @@ function stf.draw()
     gc.draw(logo,0,0,0,1280/w,1280/w,w/2,h/2)
     gc.printf("By Team Blanker",font.Bender,0,240,10000,'center',0,.75,.75,5000,72)
     gc.draw(stf.stftxt1,0,400,0,stf.s[1],stf.s[1],2000)
-    gc.draw(stf.stftxt2,0,400+getH(1),0,stf.s[2],stf.s[2],2000)
-    gc.draw(stf.stftxt3,0,400+getH(2),0,stf.s[3],stf.s[3],2000)
+    gc.draw(stf.stftxt2,0,400+getH(1),0,stf.s[1],stf.s[1],2000)
 
     local p=stf.hideAnimy/1000
     gc.draw(kairan,900-kw/4,posYMax+540-kh/2*p,0,.5,.5,kw/2,0)
