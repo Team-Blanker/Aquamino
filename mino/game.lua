@@ -33,7 +33,7 @@ end
 function mino.freeze(player)
     --啥事不做，单纯的不让玩家操作
 end
-function mino.blockLock(player)
+function mino.blockLock(player,die)
     local his=player.history
     fLib.lock(player) fLib.loosenFall(player) mino.sfxPlay.lock(player,fLib.getSourcePos(player,mino.stereo,'history'))
     if mino.rule.onPieceDrop then mino.rule.onPieceDrop(player,mino) end
@@ -45,23 +45,27 @@ function mino.blockLock(player)
             mino.loosenDrop(player)
         else mino.addEvent(player,mino.rule.loosen.fallTPL,'loosenDrop') end
     else
-        if mino.rule.postCheckClear then mino.rule.postCheckClear(player,mino) end
         his.push=0
-        his.line,his.PC,his.clearLine=fLib.lineClear(player)
-        mino.checkClear(player,true) mino.sfxPlay.clear(player,fLib.getSourcePos(player,mino.stereo))
-        if mino.rule.afterCheckClear then mino.rule.afterCheckClear(player,mino) end
-        if his.line>0 then
-            if mino.rule.onLineClear then mino.rule.onLineClear(player,mino) end
-            if mino.blockSkin.onLineClear then mino.blockSkin.onLineClear(player,mino) end
-
-            local bo=player.boardOffset
-            bo.vel[2]=bo.vel[2]+mino.boardBounce.clearFactor*mino.boardBounce.dropVel*his.line
-        end
+        if not die then mino.manageClear(player) end
     end
     if mino.rule.afterPieceDrop then mino.rule.afterPieceDrop(player,mino) end
 
     if mino.blockSkin.afterPieceDrop then mino.blockSkin.afterPieceDrop(player,mino) end
     if mino.theme.afterPieceDrop then mino.theme.afterPieceDrop(player,mino) end
+end
+function mino.manageClear(player)
+    local his=player.history
+    if mino.rule.postCheckClear then mino.rule.postCheckClear(player,mino) end
+    his.line,his.PC,his.clearLine=fLib.lineClear(player)
+    mino.checkClear(player,true) mino.sfxPlay.clear(player,fLib.getSourcePos(player,mino.stereo))
+    if mino.rule.afterCheckClear then mino.rule.afterCheckClear(player,mino) end
+    if his.line>0 then
+        if mino.rule.onLineClear then mino.rule.onLineClear(player,mino) end
+        if mino.blockSkin.onLineClear then mino.blockSkin.onLineClear(player,mino) end
+
+        local bo=player.boardOffset
+        bo.vel[2]=bo.vel[2]+mino.boardBounce.clearFactor*mino.boardBounce.dropVel*his.line
+    end
 end
 
 function mino.win(player)
@@ -486,8 +490,9 @@ mino.operate={
                 end
             end
 
-             die=mino.checkDie(OP)
-            if die then mino.die(OP,isStacker) else mino.blockLock(OP,mino) end
+            die=mino.checkDie(OP)
+            mino.blockLock(OP,die)
+            if die then mino.die(OP,isStacker) end
         end
 
         local animTTL=mino.blockSkin.setDropAnimTTL and mino.blockSkin.setDropAnimTTL(OP,mino) or .5
@@ -560,17 +565,7 @@ function mino.loosenDrop(player)
     fLib.loosenFall(player)
     if player.loosen[1] then mino.addEvent(player,delay,'loosenDrop')
     else
-        if mino.rule.postCheckClear then mino.rule.postCheckClear(player,mino) end
-        his.line,his.PC,his.clearLine=fLib.lineClear(player)
-        mino.checkClear(player,true) mino.sfxPlay.clear(player,fLib.getSourcePos(player,mino.stereo))
-        if mino.rule.afterCheckClear then mino.rule.afterCheckClear(player,mino) end
-        if his.line>0 then
-            if mino.rule.onLineClear then mino.rule.onLineClear(player,mino) end
-            if mino.blockSkin.onLineClear then mino.blockSkin.onLineClear(player,mino) end
-
-            local bo=player.boardOffset
-            bo.vel[2]=bo.vel[2]+mino.boardBounce.clearFactor*mino.boardBounce.dropVel*his.line
-        end
+        mino.manageClear(player)
         if mino.rule.afterPieceDrop then mino.rule.afterPieceDrop(player,mino) end
         mino.addEvent(player,player.EDelay,'nextIns')
     end
@@ -772,7 +767,7 @@ function mino.init(isReset)
         if mino.blockSkin.init then mino.blockSkin.init(P[i]) end
         if mino.theme.init then mino.theme.init(P[i]) end
     end
-    curPlayTxt=user.lang.game.nowPlaying..mino.musInfo
+    curPlayTxt=user.lang.game.nowPlaying..(mino.musInfo and mino.musInfo or "")
     curModeTxt=user.lang.game.curMode..(user.lang.modeName[mino.mode] or mino.mode)
 
     --禁用背景就不画背景了，节省性能
@@ -1178,8 +1173,8 @@ function mino.gameUpdate(dt)
                 if C.piece and #C.piece~=0 then
                     his.dropHeight=0
                     die=mino.checkDie(P[i])
-                    if die then mino.die(P[i],S.opList[i])
-                    else P[i].LTimer=P[i].LTimer-P[i].LDelay mino.blockLock(P[i],mino) end
+                    P[i].LTimer=P[i].LTimer-P[i].LDelay mino.blockLock(P[i],die)
+                    if die then mino.die(P[i],S.opList[i]) end
                 end
 
                 if S.winState==0 then
