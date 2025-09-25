@@ -203,7 +203,7 @@ function mino.nextIns(player)
 end
 function mino.checkClear(player,comboBreak,delayBreak)
     local his=player.history
-    his.spin,his.mini=player.cur.spin,player.cur.mini
+    his.spin,his.mini=player.cur.spin,player.cur.mini and his.line<=mino.rule.maxMiniLine
 
     local b2b=his.B2B
     if his.line>0 then
@@ -745,7 +745,7 @@ function mino.init(isReset)
 
     mino.rule={
         timer=0,
-        allowPush={},allowSpin={T=true},spinType='default',enableMiniSpin=true,
+        allowPush={},allowSpin={T=true},spinType='default',enableMiniSpin=true,maxMiniLine=1,
         loosen={fallTPL=0}--TPL=Time Per Line
     }
     if mino.modeInfo then mino.mode=mino.modeInfo.mode end
