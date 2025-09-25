@@ -278,7 +278,7 @@ function simple.clearTextDraw(player,mino)
     local beta=alpha*(player.clearTxtTimer%.2>=.1 and .4 or .6)
     setColor(r,g,b,beta)
     local t=""
-    if CInfo.wide==4 and CInfo.line==1 then t=t.."4-wide" end
+    if CInfo.wide>=2 and CInfo.wide<=4 then t=t..CInfo.wide.."-wide" end
     if (CInfo.spin and CInfo.mini) then t=t..(t=="" and "weak" or " weak") end
     if t~="" then printf(t,font.Bender,0,-64*s-20,4000,'center',0,1/3,1/3,2000,72) end
 
