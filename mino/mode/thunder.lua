@@ -14,10 +14,10 @@ local event={
     {step={r=0,e=0,x=2},freq={r=0,e=0,x=1}},
 }
 function rule.init(P,mino)
-    mino.rule.allowPush={}
-    mino.rule.allowSpin={}
+    mino.rule.allowSpin={Z=true,S=true,J=true,L=true,T=true,O=true,I=true,}
+    mino.rule.enableMiniSpin=false
     scene.BG=require('BG/rain') scene.BG.init()
-    scene.BG.density=40 scene.BG.angle=0
+    scene.BG.density=80 scene.BG.angle=0
     scene.BG.thunderDensity=0
     mino.musInfo="DiscreetDragon - Thunderbolt"
     mus.add('music/Hurt Record/Thunderbolt','whole','ogg',15.857,240*6/14)
@@ -134,13 +134,15 @@ function rule.onPieceDrop(player,mino)
         end
     end
 
+    local his=player.history
+    print(player.history.line)
     if player.point%100~=99 then
         player.point=player.point+1
-    elseif player.history.line>0 and player.point%100==99 then sfx.play('top') end
+    elseif his.line>0 and player.point%100==99 then sfx.play('top') end
 end
 function rule.onLineClear(player,mino)
     local his=player.history
-    local point=2^player.history.line-1+player.history.combo-1
+    local point=2^his.line-1+his.combo-1+(his.spin and 1 or 0)
     player.point=player.point+point
 
     local x,y,ox,oy=block.size(player.history.piece)
@@ -153,7 +155,7 @@ function rule.onLineClear(player,mino)
         player.stormLv=min(player.stormLv+1,10) sfx.play('lvup') player.top=false
 
         if not mino.unableBG then
-        scene.BG.density=10+30*player.stormLv
+        scene.BG.density=20+60*player.stormLv
         if player.stormLv>5 then scene.BG.thunderDensity=.2 scene.BG.angle=.25
         scene.BG.addLightning() end
         end
@@ -163,6 +165,18 @@ function rule.onLineClear(player,mino)
     end
 end
 function rule.afterPieceDrop(player)
+    local his=player.history
+    if player.point%100~=99 then
+        if his.spin and his.line==0 then
+            local x,y,ox,oy=block.size(player.history.piece)
+
+            player.point=player.point+1
+            table.insert(player.scoreTxt,{
+            x=36*(his.x-ox)-18-18*player.w,y=-36*(his.y-oy)+18*player.h,v={0,-90},g=90,TTL=.4,tMax=.4,
+            size=40,color={1,1,1,.8},score=1
+            })
+        end
+    end
     if player.point%100==99 and not player.top then sfx.play('top') player.top=true end
 end
 local tList
@@ -182,12 +196,17 @@ function rule.always(player,dt)
     end
 end
 function rule.underFieldDraw(player)
+    local x=-18*player.w-110
+
     if player.point%100==99 then gc.setColor(1,.75,.5) else gc.setColor(1,1,1) end
-    gc.printf(""..player.point,font.JB_B,-player.w*18-110,-36,2048,'center',0,.5,.5,1024,84)
-    gc.printf(""..player.stormLv*100,font.JB_B,-player.w*18-110,36,2048,'center',0,.5,.5,1024,84)
+    gc.printf(""..player.point,font.JB_B,x,-36,2048,'center',0,.5,.5,1024,84)
+    gc.printf(""..player.stormLv*100,font.JB_B,x,36,2048,'center',0,.5,.5,1024,84)
     gc.printf("Level "..player.stormLv,font.JB_B,-player.w*18-28,288,2048,'right',0,0.25,0.25,2048,84)
     gc.setLineWidth(7)
     gc.line(-player.w*18-170,0,-player.w*18-50,0)
+
+    gc.printf(""..player.stat.block,font.JB,x,116,6000,'center',0,.4,.4,3000,font.height.JB/2)
+    gc.printf(user.lang.rule.thunder.piece,font.JB_B,x,156,6000,'center',0,.2,.2,3000,font.height.JB_B/2)
 end
 local alpha,szarg
 function rule.overFieldDraw(player)
@@ -224,9 +243,10 @@ end
 
 function rule.scoreSave(P,mino)
     local pb=file.read('player/best score')
-    local ispb=pb.thunder and (P[1].point>=1000 and P[1].gameTimer<pb.thunder.time or P[1].point>pb.thunder.point)
+    if not pb.thunder.piece then pb.thunder.piece=9999 end
+    local ispb=pb.thunder and (P[1].point>=1000 and P[1].stat.block<pb.thunder.piece or P[1].point>pb.thunder.point)
     if not pb.thunder or ispb then
-    pb.thunder={point=P[1].point,time=P[1].gameTimer,date=os.date("%Y/%m/%d  %H:%M:%S")}
+    pb.thunder={point=P[1].point,piece=P[1].stat.block,date=os.date("%Y/%m/%d  %H:%M:%S")}
     file.save('player/best score',pb)
     end
     return ispb

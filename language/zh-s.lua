@@ -185,6 +185,7 @@ return {
 
     rule={
         dig={remain="剩余行数",piece="使用块数"},
+        thunder={piece="使用块数"},
         backfire={remain="剩余垃圾行数",eff="效率"},
         square={time="剩余时间",amount="构造正方数",remainTime={"2 分钟","1 分钟","30 秒"}},
     },

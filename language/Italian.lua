@@ -187,6 +187,7 @@ return {
 
     rule={
         dig={remain="Da scavare",piece="Tetramini"},
+        thunder={piece="Tetramini"},
         backfire={remain="Da ricevere",eff="Efficienza"},
         square={time="Tempo",amount="Quadrati",remainTime={"2 minuti","1 minuto","30 SECONDI"}}
     },

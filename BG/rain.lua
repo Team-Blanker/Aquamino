@@ -1,47 +1,35 @@
 local ins,rem=table.insert,table.remove
 
 local rain={}
-local rListS,rListM,tList={},{},{}
+local rList,rListM,tList={},{},{}
 --rList={x,t,x,t,x,t...}
-local insTimeS,insTimeM,thunTime=0,0,0
+local insTime,thunTime=0,0
 local lightTTL=.25
 function rain.init()
     rain.density=200
     rain.thunderDensity=0.25
     rain.angle=0
-    rListS,rListM,tList={},{},{}
+    rList,tList={},{}
 end
 function rain.addLightning()
     ins(tList,lightTTL)
 end
 function rain.update(dt)
-    insTimeS=insTimeS+dt
-    for i=#rListS-1,1,-2 do
-        rListS[i+1]=rListS[i+1]+dt
-        if rListS[i+1]>=2 then rem(rListS,i) rem(rListS,i) end
+    insTime=insTime+dt
+    for i=#rList-2,1,-3 do
+        rList[i+1]=rList[i+1]+dt
+        if rList[i+1]>=2 then rem(rList,i) rem(rList,i) rem(rList,i) end
     end
-    if insTimeS>2/rain.density then
-        ins(rListS,2000*(rand()-.5))
-        ins(rListS,0)
-        insTimeS=insTimeS-2/rain.density
-    end
-    if math.random()<dt*rain.density/2 then
-        ins(rListS,2000*(rand()-.5))
-        ins(rListS,0)
-    end
-    insTimeM=insTimeM+dt
-    for i=#rListM-1,1,-2 do
-        rListM[i+1]=rListM[i+1]+dt
-        if rListM[i+1]>=1 then rem(rListM,i) rem(rListM,i) end
-    end
-    if insTimeM>4/rain.density then
-        ins(rListM,2000*(rand()-.5))
-        ins(rListM,0)
-        insTimeM=insTimeM-4/rain.density
+    if insTime>2/rain.density then
+        ins(rList,2000*(rand()-.5))
+        ins(rList,0)
+        ins(rList,.5+.5*rand())
+        insTime=insTime-2/rain.density
     end
     if math.random()<dt*rain.density/2 then
-        ins(rListM,2000*(rand()-.5))
-        ins(rListM,0)
+        ins(rList,2000*(rand()-.5))
+        ins(rList,0)
+        ins(rList,.5+.5*rand())
     end
 
     if rain.thunderDensity~=0 then thunTime=thunTime+dt
@@ -62,17 +50,15 @@ end
 function rain.draw()
     gc.clear(.04,.04,.08)
     for i=1,#tList do
-        gc.setColor(1,1,1,tList[i]/lightTTL*.15)
+        gc.setColor(1,1,1,tList[i]/lightTTL*.2)
         gc.rectangle('fill',-1000,-600,2000,1200)
     end
     gc.push('transform')
     gc.rotate(rain.angle)
-    gc.setColor(.8,.8,.84,.75)
-    for i=1,#rListS,2 do
-        gc.rectangle('fill',rListS[i]-1,-2000+2500*rListS[i+1],2,40)
-    end
-    for i=1,#rListM,2 do
-        gc.rectangle('fill',rListM[i]-2,-2000+5000*rListM[i+1],4,80)
+    for i=1,#rList,3 do
+        local sz=1/rList[i+2]
+        gc.setColor(.8,.8,.84,1-.5*rList[i+2])
+        gc.rectangle('fill',rList[i]-.5*sz,-2000*sz+3000*sz*rList[i+1],sz,80*sz)
     end
     gc.pop()
 end

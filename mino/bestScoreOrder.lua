@@ -13,7 +13,7 @@ return {
         end
     end,
     thunder=function(t)
-        return string.format('%d points  %d\'%.3f"',t.point,t.time/60,t.time%60)
+        return string.format('%d points  %d pieces',t.point,t.piece or 9999)
     end,
     smooth=function(t)
         return string.format('%.3f"',t.time)
