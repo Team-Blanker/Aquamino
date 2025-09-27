@@ -38,7 +38,7 @@ local function corner(player)
     local pList=cPoint[C.name]
     for i=1,#pList do
         local ox,oy=pList[i][1]*orientMult[o][1]+pList[i][2]*orientMult[o][2],pList[i][1]*orientMult[o][3]+pList[i][2]*orientMult[o][4]
-        print(ox,oy)
+        --print(ox,oy)
     if (not ia(player,x+ox,y+oy) or lc(player,x+ox,y+oy)) then c=c+1 end
     end
     return c
