@@ -1,7 +1,7 @@
 local spinCheck={}
 local fLib=require('mino/fieldLib')
 local M,T=myMath,myTable
---function spinchech.xx(player)
+--function spincheck.xx(player)
 --...
 --return spin,mini
 --end
