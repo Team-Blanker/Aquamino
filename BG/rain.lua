@@ -23,7 +23,7 @@ function rain.update(dt)
     if insTime>2/rain.density then
         ins(rList,2000*(rand()-.5))
         ins(rList,0)
-        ins(rList,.5+.5*rand())
+        ins(rList,.5+1*rand())
         insTime=insTime-2/rain.density
     end
     if math.random()<dt*rain.density/2 then

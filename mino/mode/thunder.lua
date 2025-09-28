@@ -34,8 +34,9 @@ function rule.init(P,mino)
     for k,v in pairs(P) do
         v.stormLv=1
         v.point=0
-        v.step={r=-4,e=-4,x=-4}
-        v.thunderList={}
+        v.step={r=-3,e=-3,x=-3}
+        v.thunderPreviewList={}
+        v.thunderAnimList={}
         v.scoreTxt={}--[1]={x,y,v,g,color,size,TTL,Tmax}
         v.top=false
     end
@@ -49,7 +50,7 @@ function rule.addLightning(player,x,y,sz,extp)
         ly=ly-120-60*(rand()-.5)
         pos[#pos+1]=lx pos[#pos+1]=ly
     end
-    player.thunderList[#player.thunderList+1]={
+    player.thunderAnimList[#player.thunderAnimList+1]={
         x=px,y=py,sz=sz,extp=extp,lnPos=pos,TTL=tAnimTTL
     }
 end
@@ -73,7 +74,15 @@ function rule.explodeX(player,x,y,sz)--X形爆炸
     end
     rule.addLightning(player,x,y,sz,'x')
 end
-function rule.find(player)
+function rule.find(player,x)
+    if x then
+        for j=#player.field,1,-1 do
+            if next(player.field[j][x]) then
+                s=true return x,j
+            end
+        end
+        return x,0
+    end
     local tc={}
     for i=1,player.w do tc[i]=i end
     local s=false
@@ -88,54 +97,19 @@ function rule.find(player)
     return rand(player.w),1 --啥都没找到，随便返回一个值
 end
 function rule.onPieceDrop(player,mino)
-    if event[player.stormLv].step.r>0 then player.step.r=player.step.r+1
-        if player.step.r>=event[player.stormLv].step.r then
-            local f=event[player.stormLv].freq.r
-            while f>0 do
-                if rand()<f then
-                local ex,ey=rule.find(player)
-                    rule.remove(player,ex,ey,1)
-                    player.explodePos={x=ex,y=ey}
-                    sfx.play('thunder'..rand(5),.8+.2*rand(),.95+.1*rand())
-                end
-                f=f-1
-            end
-            player.step.r=0
+    local tpl=player.thunderPreviewList
+    for i=1,#tpl do
+        local ex,ey=rule.find(player,tpl[1].x)
+        if     tpl[1].type=='r' then rule.remove  (player,ex,ey,1)
+        elseif tpl[1].type=='e' then rule.explode (player,ex,ey,2)
+        elseif tpl[1].type=='x' then rule.explodeX(player,ex,ey,2)
         end
+        player.explodePos={x=ex,y=ey}
+        sfx.play('thunder'..rand(5),.8+.2*rand(),.95+.1*rand())
+        rem(player.thunderPreviewList,1)
     end
-    if event[player.stormLv].step.e>0 then player.step.e=player.step.e+1
-        if player.step.e>=event[player.stormLv].step.e then
-            local f=event[player.stormLv].freq.e
-            while f>0 do
-                if rand()<f then
-                local ex,ey=rule.find(player)
-                    rule.explode(player,ex,ey,2)
-                    player.explodePos={x=ex,y=ey}
-                    sfx.play('thunder'..rand(5),.8+.2*rand(),.95+.1*rand())
-                end
-                f=f-1
-            end
-            player.step.e=0
-        end
-    end
-    if event[player.stormLv].step.x>0 then player.step.x=player.step.x+1
-        if player.step.x>=event[player.stormLv].step.x then
-            local f=event[player.stormLv].freq.x
-            while f>0 do
-                if rand()<f then
-                local ex,ey=rule.find(player)
-                    rule.explodeX(player,ex,ey,2)
-                    player.explodePos={x=ex,y=ey}
-                    sfx.play('thunder'..rand(5),.8+.2*rand(),.95+.1*rand())
-                end
-                f=f-1
-            end
-            player.step.x=0
-        end
-    end
-
     local his=player.history
-    print(player.history.line)
+    --print(player.history.line)
     if player.point%100~=99 then
         player.point=player.point+1
     elseif his.line>0 and player.point%100==99 then sfx.play('top') end
@@ -160,8 +134,9 @@ function rule.onLineClear(player,mino)
         scene.BG.addLightning() end
         end
 
-        local n=-4-2*max(player.stormLv-6,0)
+        local n=-3-2*max(player.stormLv-6,0)
         player.step.r,player.step.e,player.step.x=n,n,n
+        player.thunderPreviewList={}
     end
 end
 function rule.afterPieceDrop(player)
@@ -178,10 +153,53 @@ function rule.afterPieceDrop(player)
         end
     end
     if player.point%100==99 and not player.top then sfx.play('top') player.top=true end
+    if event[player.stormLv].step.r>0 then player.step.r=player.step.r+1
+        if player.step.r>=event[player.stormLv].step.r then
+            local f=event[player.stormLv].freq.r
+            while f>0 do
+                if rand()<f then
+                    local ex,ey=rule.find(player)
+                    ins(player.thunderPreviewList,{x=ex,y=ey,type='r',t=0})
+                end
+                f=f-1
+            end
+            player.step.r=0
+        end
+    end
+    if event[player.stormLv].step.e>0 then player.step.e=player.step.e+1
+        if player.step.e>=event[player.stormLv].step.e then
+            local f=event[player.stormLv].freq.e
+            while f>0 do
+                if rand()<f then
+                    local ex,ey=rule.find(player)
+                    ins(player.thunderPreviewList,{x=ex,y=ey,type='e',t=0})
+                end
+                f=f-1
+            end
+            player.step.e=0
+        end
+    end
+    if event[player.stormLv].step.x>0 then player.step.x=player.step.x+1
+        if player.step.x>=event[player.stormLv].step.x then
+            local f=event[player.stormLv].freq.x
+            while f>0 do
+                if rand()<f then
+                    local ex,ey=rule.find(player)
+                    ins(player.thunderPreviewList,{x=ex,y=ey,type='x',t=0})
+                end
+                f=f-1
+            end
+            player.step.x=0
+        end
+    end
+    local _
+    for i=1,#player.thunderPreviewList do
+        _,player.thunderPreviewList[i].y=rule.find(player,player.thunderPreviewList[i].x)
+    end
 end
-local tList
+local tList,tpl
 function rule.always(player,dt)
-    tList=player.thunderList
+    tList=player.thunderAnimList
     for i=#tList,1,-1 do
         tList[i].TTL=tList[i].TTL-dt
         if tList[i].TTL<0 then rem(tList,i) end
@@ -193,6 +211,10 @@ function rule.always(player,dt)
             txt[i].x,txt[i].y=txt[i].x+txt[i].v[1]*dt,txt[i].y+txt[i].v[2]*dt
             txt[i].v[2]=txt[i].v[2]+txt[i].g*dt
         end
+    end
+    tpl=player.thunderPreviewList
+    for i=1,#tpl do
+        tpl[i].t=tpl[i].t+dt
     end
 end
 function rule.underFieldDraw(player)
@@ -208,22 +230,40 @@ function rule.underFieldDraw(player)
     gc.printf(""..player.stat.block,font.JB,x,116,6000,'center',0,.4,.4,3000,font.height.JB/2)
     gc.printf(user.lang.rule.thunder.piece,font.JB_B,x,156,6000,'center',0,.2,.2,3000,font.height.JB_B/2)
 end
+local indicate=gc.newCanvas(36,180)
+gc.setCanvas(indicate)
+for i=1,90 do
+    gc.setColor(1,1,1,i/90)
+    gc.rectangle('fill',0,i*2-2,36,2)
+    gc.setColor(1,1,1)
+end
+gc.setCanvas()
+function rule.underStackDraw(player)
+    local tpl=player.thunderPreviewList
+    for i=1,#tpl do
+        gc.setColor(.8,.8,.84,.45+sin(tpl[i].t*math.pi*1.5)*.1)
+        gc.draw(indicate,tpl[i].x*36-36-18*player.w,-tpl[i].y*36+18*player.h-180)
+    end
+end
 local alpha,szarg
 function rule.overFieldDraw(player)
-    tList=player.thunderList
+    tList=player.thunderAnimList
     for i=1,#tList do
         alpha=tList[i].TTL/tAnimTTL
         if tList[i].extp=='x' then gc.setColor(.7,.85,1,alpha/2) else gc.setColor(1,1,1,alpha/2) end
-        gc.setLineWidth(16+16*tList[i].sz)
+        gc.setLineWidth(10+10*tList[i].sz)
+        gc.line(tList[i].lnPos)
+        if tList[i].extp=='x' then gc.setColor(.7,.85,1,alpha/2) else gc.setColor(1,1,1,alpha/2) end
+        gc.setLineWidth(8+8*tList[i].sz)
         gc.line(tList[i].lnPos)
         gc.setColor(1,1,1,alpha)
-        gc.setLineWidth(9+9*tList[i].sz)
+        gc.setLineWidth(6+6*tList[i].sz)
         gc.line(tList[i].lnPos)
         if tList[i].extp=='r' then
             gc.setColor(1,1,1,alpha*2)
             gc.rectangle('fill',tList[i].x-18,tList[i].y-18,36,36)
         elseif tList[i].extp=='e' then
-            gc.circle('fill',tList[i].x-18,tList[i].y-18,36*tList[i].sz-36+20*(1-alpha),4)
+            gc.circle('fill',tList[i].x,tList[i].y,36*tList[i].sz-36+20*(1-alpha),4)
         else
             gc.setColor(.9,.95,1,alpha*2)
             gc.rectangle('fill',tList[i].x-18,tList[i].y-18,36,36)
@@ -238,6 +278,38 @@ function rule.overFieldDraw(player)
         local clr=txt[i].color
         gc.setColor(clr[1],clr[2],clr[3],clr[4]*txt[i].TTL/txt[i].tMax)
         gc.printf("+"..txt[i].score,font.JB_B,txt[i].x,txt[i].y,5000,'center',0,txt[i].size/128,txt[i].size/128,2500,84)
+    end
+    local tpl=player.thunderPreviewList
+    for i=1,#tpl do
+        gc.setColor(1,1,1,1-tpl[i].t/.25)
+        --if     tpl[i].type=='r' then
+            gc.setLineWidth(6-18*tpl[i].t)
+            gc.rectangle('line',tpl[i].x*36-36-18*player.w-36*tpl[i].t,-tpl[i].y*36+18*player.h-36*tpl[i].t,36+72*tpl[i].t,36+72*tpl[i].t)
+        --[[elseif tpl[i].type=='e' then
+            gc.setLineWidth(8-32*tpl[i].t)
+            gc.circle('line',tpl[i].x*36-18-18*player.w,-tpl[i].y*36+18*player.h+18,36+36*tpl[i].t,4)
+        elseif tpl[i].type=='x' then
+            gc.setLineWidth(18+36*tpl[i].t)
+            gc.line(tpl[i].x*36-18*player.w-54-36*tpl[i].t,-tpl[i].y*36+18*player.h-18-36*tpl[i].t,tpl[i].x*36-18*player.w+18+36*tpl[i].t,-tpl[i].y*36+18*player.h+54+36*tpl[i].t)
+            gc.line(tpl[i].x*36-18*player.w-54-36*tpl[i].t,-tpl[i].y*36+18*player.h+54+36*tpl[i].t,tpl[i].x*36-18*player.w+18+36*tpl[i].t,-tpl[i].y*36+18*player.h-18-36*tpl[i].t)
+        end]]
+    end
+    for i=1,#tpl do
+        if     tpl[i].type=='r' then
+            gc.setLineWidth(4)
+            gc.setColor(.8,.8,.84,.36+sin(tpl[i].t*math.pi*1.5)*.08)
+            gc.rectangle('fill',tpl[i].x*36-36-18*player.w,-tpl[i].y*36+18*player.h,36,36)
+            gc.setColor(1,1,1,.8)
+            gc.rectangle('line',tpl[i].x*36-36-18*player.w,-tpl[i].y*36+18*player.h,36,36)
+        elseif tpl[i].type=='e' then
+            gc.setColor(.8,.8,.84,.36+sin(tpl[i].t*math.pi*1.5)*.08)
+            gc.circle('fill',tpl[i].x*36-18-18*player.w,-tpl[i].y*36+18*player.h+18,45,4)
+        elseif tpl[i].type=='x' then
+            gc.setColor(.8,.8,.84,.36+sin(tpl[i].t*math.pi*1.5)*.08)
+            gc.setLineWidth(18)
+            gc.line(tpl[i].x*36-18*player.w-54,-tpl[i].y*36+18*player.h-18,tpl[i].x*36-18*player.w+18,-tpl[i].y*36+18*player.h+54)
+            gc.line(tpl[i].x*36-18*player.w-54,-tpl[i].y*36+18*player.h+54,tpl[i].x*36-18*player.w+18,-tpl[i].y*36+18*player.h-18)
+        end
     end
 end
 
