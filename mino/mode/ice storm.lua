@@ -22,7 +22,7 @@ function rule.init(P,mino,modeInfo)
     --mino.bag={'I'}
 
     mino.rule.allowSpin={Z=true,S=true,J=true,L=true,T=true,O=true,I=true,}
-    mino.rule.enableMiniSpin=false
+    --mino.rule.enableMiniSpin=false
     sfx.add({
         smash='sfx/mode/ice storm/smash.wav',
         --lvup='sfx/mode/ice storm/level up.wav'
@@ -68,7 +68,7 @@ end
 function rule.rise(player,col)
     local ice=player.iceColumn[col]
     if ice.H<0 then ice.H=0
-        ice.speed=(player.stormLv<12 and .015+player.stormLv*.015 or .24)*(.75+.5*rand())
+        ice.speed=(player.stormLv<12 and .0125+player.stormLv*.0125 or .2)*(.75+.5*rand())
     end
 end
 function rule.destroy(player,col,scoring,mtp,sfxPlay)
@@ -164,7 +164,7 @@ end
 
 function rule.update(player,dt,mino)
     local A=player.ruleAnim
-    if rand()<((player.stormLv-1)/40+.1)*dt then
+    if rand()<((player.stormLv-1)/50+.1)*dt then
         local col=rand(player.w) rule.rise(player,col)
     end
     if player.iceFreezeTime<=0 then
@@ -232,7 +232,7 @@ function rule.onLineClear(player,mino)
     local r=B.getX(his.piece)
     local PIC=player.iceColumn
 
-    local x=B.size(his.piece)
+    --local x=B.size(his.piece)
 
     local iceSmash=0
     for i=1,#r do for j=1,1 do
@@ -246,13 +246,13 @@ function rule.onLineClear(player,mino)
         for i=k-1,k+1 do
             iceSmash=rule.destroy(player,i,true,(i==k and 2.5 or 1.5)*getmtp(player.smashCombo+iceSmash),true) and iceSmash+1 or iceSmash
         end
-        if PIC[k-2] then rule.decrease(player,k-2,min(PIC[k-2].H,1),2) end
-        if PIC[k+2] then rule.decrease(player,k+2,min(PIC[k+2].H,1),2) end
+        if PIC[k-2] then rule.decrease(player,k-2,1,.625) end
+        if PIC[k+2] then rule.decrease(player,k+2,1,.625) end
 
         player.iceFreezeTime=player.iceFreezeTime+.5
     else
         if his.spin then
-            if his.name=='I' and x==4 then--削弱I旋平放消一
+            if his.mini then--Mini Spin削弱
                 for i=1,#r do rule.decrease(player,r[i]+his.x,1,.625) end
             else
                 for i=1,#r do
