@@ -1366,12 +1366,15 @@ function mino.draw()
                 mino.blockSkin.holdDraw(P[i],H.piece,x,y,mino.color[H.name],P[i].canHold,mino.texType[H.name])
             gc.pop() end
 
+            local nx,ny,nd
+            if mino.theme.getNextPos then nx,ny,nd=mino.theme.getNextPos(P[i]) end
             --预览
             for j=1,#P[i].NP do
                 w,h,x,y=B.size(P[i].NP[j])
                 s=min((w/h>2 and 4/w or 2.5/h),1)
                 gc.push('transform')
-                    gc.translate(18*P[i].w+90+20,-410+100*j)
+                    --gc.translate(nx and nx or 18*P[i].w+90+20,(ny and ny or -410)+100*j)
+                    gc.translate(nx,ny+nd*j)
                     gc.scale(s)
                     mino.blockSkin.nextDraw(P[i],P[i].NP[j],x,y,mino.color[P[i].next[j]],mino.texType[P[i].next[j]])
                 gc.pop()

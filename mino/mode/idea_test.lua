@@ -15,7 +15,7 @@ function rule.init(P,mino)
 
     --mino.seqGenType='pairs'
     mino.bag={
-        'Z','S','J','L','X','O','I'
+        'Z','S','J','L','T','O','I'
     }
     mino.color.gold={.9,.81,.045}
     mino.color.silver={.8,.8,.88}
@@ -27,7 +27,8 @@ function rule.init(P,mino)
     end
     mino.rule.loosen.fallTPL=.1
     for k,v in pairs(P) do
-        --v.w=12
+        v.w=10
+        v.h=0
         v.LDRInit=1e99 v.FDelay=5 v.LDelay=1e99 v.LDR=1e99
 
         v.sqAnimList={}

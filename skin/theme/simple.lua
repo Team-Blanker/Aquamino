@@ -32,6 +32,9 @@ function simple.init(player)
     simple.NRSFXDelay=.8--破纪录音效多长时间后播放
 end
 local W,H,timeTxt
+function simple.getNextPos(player)
+    return 18*player.w+90+20,-18*max(player.h,20)-50,100
+end
 function simple.fieldDraw(player,mino)
     --[[
     setColor(1,1,1)
@@ -42,16 +45,18 @@ function simple.fieldDraw(player,mino)
     local darg=player.dangerAnimTimer/dangerAnimTMax
 
     W,H=36*player.w,36*player.h
+    local aH=36*max(player.h,20)
     setColor(.1,.1,.1,.8)
     rect('fill',-W/2,-H/2,W,H)
-    rect('fill',W/2+20,-H/2,180,100*player.preview)
-    rect('fill',-W/2-200,-H/2,180,100)
+    rect('fill',W/2+20,-aH/2,180,100*player.preview)
+    rect('fill',-W/2-200,-aH/2,180,100)
+
     setColor(1,1-.8*darg,1-.8*darg)
-    rect('fill',W/2+20,-H/2-30,180,30)
-    rect('fill',-W/2-200,-H/2-30,180,30)
+    rect('fill',W/2+20,-aH/2-30,180,30)
+    rect('fill',-W/2-200,-aH/2-30,180,30)
     gc.setLineWidth(1)
-    rect('line',W/2+20.5,-H/2+.5,179,100*player.preview-1)
-    rect('line',-W/2-199.5,-H/2+.5,179,99)
+    rect('line',W/2+20.5,-aH/2+.5,179,100*player.preview-1)
+    rect('line',-W/2-199.5,-aH/2+.5,179,99)
 
     setColor(1,1-.8*darg,1-.8*darg)
     gc.setLineWidth(2)
@@ -59,8 +64,8 @@ function simple.fieldDraw(player,mino)
     line(-W/2-19,-H/2,-W/2-19,H/2+1,W/2+19,H/2+1,W/2+19,-H/2)
 
     setColor(0,0,0)
-    draw(simple.hold,-W/2-110,-H/2-15,0,.2,.2,simple.holdW/2,simple.holdH/2)
-    draw(simple.next, W/2+110,-H/2-15,0,.2,.2,simple.nextW/2,simple.nextH/2)
+    draw(simple.hold,-W/2-110,-aH/2-15,0,.2,.2,simple.holdW/2,simple.holdH/2)
+    draw(simple.next, W/2+110,-aH/2-15,0,.2,.2,simple.nextW/2,simple.nextH/2)
 
     gc.setLineWidth(2)
     setColor(1,1-.8*darg,1-.8*darg,.1)
