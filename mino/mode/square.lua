@@ -18,6 +18,7 @@ function rule.init(P,mino)
     })
 
     mino.bag={'Z','Z','S','S','J','J','J','J','L','L','L','L','O','O','O','I','I','I','T','T','T','T'}
+    --mino.bag={'I'}
     mino.seqGenType='mayhem'
 
     mino.color.plum={.96,.48,.84}
@@ -32,11 +33,13 @@ function rule.init(P,mino)
     mino.rule.allowPush={}
 
     for k,v in pairs(mino.bag) do
-        mino.rule.allowSpin[v]=true
+        mino.rule.allowSpin[v]=false
         mino.rule.allowPush[v]=false
     end
 
     for k,v in pairs(P) do
+        --v.w=12
+    
         v.LDRInit=1e99 v.LDelay=1e99 v.LDR=1e99
 
         v.sqAnimList={}

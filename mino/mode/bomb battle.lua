@@ -41,9 +41,10 @@ function rule.init(P,mino,modeInfo)
     mino.rule.allowSpin={Z=true,S=true,J=true,L=true,T=true,O=true,I=true,}
     mino.rule.spinType='noMini'
 
-    mino.seqGenType='bagp1FromBag'
+    --mino.seqGenType='bagp1FromBag'
     mino.seqSync=true
     P[1].atk=0
+    P[1].garbageClear=0
     P[1].line=0
     P[2]=myTable.copy(P[1])
     --print(modeInfo.arg.playerPos)
@@ -53,7 +54,7 @@ function rule.init(P,mino,modeInfo)
     P[1].target=2 P[2].target=1
     mino.fieldScale=min(mino.fieldScale,1)
     battle.init(P[1]) battle.init(P[2]) fLib.setRS(P[2],'SRS_origin')
-    P[1].garbageCap=1 P[2].garbageCap=1
+    P[1].garbageCap=2 P[2].garbageCap=2
 
     rule.botThread=bot_cc.newThread(1,P,2)
     bot_cc.startThread(rule.botThread,nil)
@@ -86,7 +87,7 @@ function rule.gameUpdate(P,dt,mino)
     end
     if P[2].deadTimer>=0 then mino.win(P[1]) end
     for k,v in pairs(P) do
-        v.garbageCap=max(math.ceil(v.gameTimer/45)-1,1)
+        v.garbageCap=max(math.ceil(v.gameTimer/45),2)
     end
 end
 
@@ -104,6 +105,14 @@ function rule.onLineClear(player,mino)
     player.line=player.line+his.line
     player.atk=player.atk+battle.stdAtkCalculate(player)
     battle.sendAtk(player,mino.player[player.target],battle.stdAtkGen(player))
+    
+    if player.history.clearLine then
+        for k,v in pairs(player.history.clearLine) do
+            if v.type=='garbage' then
+                player.garbageClear=player.garbageClear+1
+            end
+        end
+    end
 end
 function rule.afterPieceDrop(player,mino)
     if player==mino.player[2] then
@@ -122,12 +131,15 @@ function rule.onNextGen(player,nextStart,mino)
 end
 local efftxt
 function rule.underFieldDraw(player)
-    local x=-18*player.w-110
     gc.setColor(1,1,1)
-    gc.printf(""..player.atk,font.JB,x,-54,6000,'center',0,.625,.625,3000,font.height.JB/2)
-
-    efftxt=player.line==0 and "-" or string.format("%.2f",player.atk/player.line)
-    gc.printf(efftxt,font.JB,x,48,6000,'center',0,.4,.4,3000,font.height.JB/2)
+    efftxt=(player.gameTimer==0 and "0.00" or string.format("%.2f",player.stat.block/player.gameTimer)).." PPS"
+    gc.printf(efftxt,font.JB_L,-18*player.w-28,18*player.h-176,2000,'right',0,.25,.25,2000,font.height.JB_L/2)
+    efftxt=(player.gameTimer==0 and "0.0" or string.format("%.1f",player.atk/player.gameTimer*60)).." APM"
+    gc.printf(efftxt,font.JB_L,-18*player.w-28,18*player.h-136,2000,'right',0,.25,.25,2000,font.height.JB_L/2)
+    efftxt=(player.gameTimer==0 and "0.0" or string.format("%.1f",(player.atk+player.garbageClear)/player.gameTimer*100)).." VS."
+    gc.printf(efftxt,font.JB_L,-18*player.w-28,18*player.h-96,2000,'right',0,.25,.25,2000,font.height.JB_L/2)
+    efftxt=(player.stat.block==0 and "0.00" or string.format("%.2f",player.atk/player.stat.block)).." APP"
+    gc.printf(efftxt,font.JB_L,-18*player.w-28,18*player.h-56,2000,'right',0,.25,.25,2000,font.height.JB_L/2)
 end
 function rule.overFieldDraw(player,mino)
     if player==mino.player[2] then

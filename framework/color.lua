@@ -24,7 +24,7 @@ function color.hex2num(str)
 	local r=(tonumber(string.sub(str,1,2),16) or 0)/255
     local g=(tonumber(string.sub(str,3,4),16) or 0)/255
     local b=(tonumber(string.sub(str,5,6),16) or 0)/255
-    local a=(tonumber(string.sub(str,7,8),16) or 255)/255 
+    local a=(tonumber(string.sub(str,7,8),16) or 255)/255
     return {r,g,b,a}
 end
 function color.hsv(h,s,v,a)-- Color type, Color amount, Light

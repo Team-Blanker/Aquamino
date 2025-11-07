@@ -47,7 +47,7 @@ function battle.atkRecv(player,atk,mino)
         h=sw and rand(player.w) or player.lastHole
         player.lastHole=h
         if sw then l=1 end
-        fLib.garbage(player,atk.block,1,h)
+        fLib.garbage(player,atk.block,1,h,'garbage')
     end
     if mino.theme.updateRecvAnim then mino.theme.updateRecvAnim(player,atk) end
     return l
@@ -98,7 +98,7 @@ function battle.stdAtkCalculate(player)
     local pc=his.PC and 6 or 0
     local bl=(s and not m) and 2*l-1 or l>=4 and 1.5*l-1.5 or l-.5 --基础攻击
     local ba=b>0 and min((3+b)/4,2.5) or 0 --B2B加成
-    local ca=max((c-3)/(2+2^(w-1))+((l>=4 and c>1) and 1.5 or .5),0) --连消加成
+    local ca=max((c-3)/(2^w)+.5,0)+(((l>=4 or his.spin) and c>1) and 1 or 0) --连消加成
     return l==0 and 0 or floor(bl+ba+ca+pc)
 end
 function battle.stdAtkGen(player,time)

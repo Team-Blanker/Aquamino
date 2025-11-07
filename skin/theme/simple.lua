@@ -10,7 +10,7 @@ local dangerAnimTMax=.2
 local gts
 function simple.init(player)
     gts=user.lang.game.theme.simple
-    simple.next=gc.newText(font.Bender_B,"N E X T") simple.hold=gc.newText(font.Bender_B,"H O L D")
+    simple.next=gc.newText(font.JB,"NEXT") simple.hold=gc.newText(font.JB,"HOLD")
     simple.nextW,simple.nextH=simple.next:getWidth(),simple.next:getHeight()
     simple.holdW,simple.holdH=simple.hold:getWidth(),simple.hold:getHeight()
 
@@ -28,6 +28,7 @@ function simple.init(player)
     player.spinTxt={txt=gc.newText(font.Bender),x=0}
     player.PCInfo={} player.clearTxtTimer=0 player.clearTxtTMax=0
     player.dangerAnimTimer=0
+    player.B2BAnimTimer=1e99
 
     simple.NRSFXDelay=.8--破纪录音效多长时间后播放
 end
@@ -52,21 +53,24 @@ function simple.fieldDraw(player,mino)
     rect('fill',-W/2-200,-aH/2,180,100)
 
     setColor(1,1-.8*darg,1-.8*darg)
-    rect('fill',W/2+20,-aH/2-30,180,30)
-    rect('fill',-W/2-200,-aH/2-30,180,30)
-    gc.setLineWidth(1)
-    rect('line',W/2+20.5,-aH/2+.5,179,100*player.preview-1)
-    rect('line',-W/2-199.5,-aH/2+.5,179,99)
+    --rect('fill',W/2+20,-aH/2-30,180,30)
+    --rect('fill',-W/2-200,-aH/2-30,180,30)
+    gc.setLineWidth(2)
+    rect('line',W/2+20,-aH/2,180,100*player.preview)
+    rect('line',-W/2-200,-aH/2,180,100)
 
     setColor(1,1-.8*darg,1-.8*darg)
     gc.setLineWidth(2)
     line(-W/2-1,-H/2,-W/2-1,H/2+1,W/2+1,H/2+1,W/2+1,-H/2)
     line(-W/2-19,-H/2,-W/2-19,H/2+1,W/2+19,H/2+1,W/2+19,-H/2)
 
-    setColor(0,0,0)
-    draw(simple.hold,-W/2-110,-aH/2-15,0,.2,.2,simple.holdW/2,simple.holdH/2)
-    draw(simple.next, W/2+110,-aH/2-15,0,.2,.2,simple.nextW/2,simple.nextH/2)
+    setColor(1,1,1,.18)
+    draw(simple.hold,-W/2-205,-aH/2+50,-math.pi/2,.3,.3,simple.holdW/2,0)
+    draw(simple.next, W/2+205,-aH/2+50,math.pi/2,.3,.3,simple.nextW/2,0)
 
+    for i=1,player.preview do
+        printf(tostring(i),font.JB_L,W/2+25,-aH/2+100*i-100,800,'left',0,.25,.25,0,0)
+    end
     gc.setLineWidth(2)
     setColor(1,1-.8*darg,1-.8*darg,.1)
     --网格
@@ -82,16 +86,17 @@ function simple.fieldDraw(player,mino)
     setColor(.5,1,.75)
     rect('fill',-W/2,H/2+4,W*(1-player.LTimer/player.LDelay),20)
     setColor(0,0,0)
-    printf(("%02d"):format(min(player.LDR,99)),font.Bender_B,-W/2+4,H/2+2+64*.2,400,'left',0,5/32,5/32,0,72)
+    printf(("%02d"):format(min(player.LDR,99)),font.JB_B,-W/2+4,H/2+2+64*.2,400,'left',0,5/32,5/32,0,font.height.JB_B/2)
     --计时
     local t=player.gameTimer
-    timeTxt=string.format("%d:%d%.3f",t/60,t/10%6,t%10)
+    timeTxt=string.format("%d:%d%d.%03d",t/60,t/10%6,t%10,t%1*1000)
+    --timeTxt=string.format("%d:%d%.3f",t/60,t/10%6,t%10)
     setColor(.2,.4,.3,.3)
     for i=0,3 do
-        printf(timeTxt,font.JB_B,-W/2-30+i%2*4,H/2-18+4*floor(i/2),800,'right',0,.25,.25,800,84)
+        printf(timeTxt,font.JB_B,-W/2-30+i%2*4,H/2-18+4*floor(i/2),800,'right',0,.25,.25,800,font.height.JB_B/2)
     end
     setColor(.5,1,.75)
-    printf(timeTxt,font.JB_B,-W/2-28,H/2-16,800,'right',0,.25,.25,800,84)
+    printf(timeTxt,font.JB_B,-W/2-28,H/2-16,800,'right',0,.25,.25,800,font.height.JB_B/2)
 end
 
 function simple.updateDefenseAnim(player,defList)
@@ -214,7 +219,6 @@ local clearClr={
     {1,1,1},{1,1,1},{1,0,0},{.64,.6,1},
     {.75,1,.5},{1,.5,.96},{.7,.6,1},{1,.5,.4},
 }
-local ctxt
 function simple.updateClearInfo(player,mino)
     local his=player.history
     if his.line>0 or his.spin then player.clearInfo=T.copy(player.history)
@@ -237,24 +241,39 @@ function simple.updateClearInfo(player,mino)
     else player.clearInfo.combo=his.combo player.clearInfo.wide=-1 end
     if his.PC then player.PCInfo[#player.PCInfo+1]=2.5 end
 end
+local ctxt,btxt
 function simple.clearTextDraw(player,mino)
     W,H=36*player.w,36*player.h
     local CInfo=player.clearInfo
     gc.translate(-W/2-20,-250)
     if CInfo.combo>1 then
-        ctxt=""..CInfo.combo.." chain"..(CInfo.combo>19 and "?!?!" or CInfo.combo>15 and "!!" or CInfo.combo>7 and "!" or "")..(CInfo.wide==4 and "\n4-wide" or "")
+        ctxt=""..CInfo.combo.." chain"--[[..(CInfo.combo>19 and "?!?!" or CInfo.combo>15 and "!!" or CInfo.combo>7 and "!" or "")..(CInfo.wide==4 and "\n4-wide" or "")]]
 
-        setColor(.1,.1,.1,.3)
-        for i=0,3 do
-            printf(ctxt,font.Bender_B,-19+i%2*6,9+6*floor(i/2),1200,'right',0,.25,.25,1200,72)
+        setColor(.1,.1,.1,.15)
+        for i=1,8 do
+            printf(ctxt,font.JB_B,-8+3*cos(i*math.pi/4),12+3*sin(i*math.pi/4),1200,'right',0,.25,.25,1200,font.height.JB_B/2)
         end
         if scene.time%.2<.1 then setColor(1,1,1) else local k=min((CInfo.combo-8)/8,1)
         setColor(1-.5*k,1,1-.125*k) end
-        printf(ctxt,font.Bender_B,-16,12,1200,'right',0,.25,.25,1200,72)
+        printf(ctxt,font.JB_B,-8,12,1200,'right',0,.25,.25,1200,font.height.JB_B/2)
+    end
+
+    btxt="B2B x"..max(player.history.B2B,0)
+    if player.history.B2B>0 then
+        local bc=(min(player.history.B2B,11)-1)/10
+        setColor(.4,.36-.16*bc,.2,.15)
+        for i=1,8 do
+            printf(btxt,font.JB_B,-8+3*cos(i*math.pi/4),57+3*sin(i*math.pi/4),1200,'right',0,5/16,5/16,1200,font.height.JB_B/2)
+        end
+        setColor(1,.9-.5*bc,.4)
+        printf(btxt,font.JB_B,-8,57,1200,'right',0,5/16,5/16,1200,font.height.JB_B/2)
+    else
+        setColor(.75,.75,.75,1-(player.B2BAnimTimer/.25)^2)
+        printf(btxt,font.JB_B,-8,57,1200,'right',0,5/16,5/16,1200,font.height.JB_B/2)
     end
     gc.translate(W/2+20,250)
 
-    local alpha=min(player.clearTxtTimer*1.5/player.clearTxtTMax,1)*.9
+    local a1=min(player.clearTxtTimer*1.5/player.clearTxtTMax,1)*.9
     local s=(CInfo.spin and .5 or CInfo.line>=4 and 1-.05*player.clearTxtTimer or .5)
     local r,g,b
 
@@ -272,7 +291,7 @@ function simple.clearTextDraw(player,mino)
         r,g,b=c[1],c[2],c[3]
     end
     if CInfo.line>8 then
-        setColor(r,g,b,alpha*min(CInfo.line-8,8)/96)
+        setColor(r,g,b,a1*min(CInfo.line-8,8)/96)
         for i=1,3 do
             for j=1,8 do
                 local m,n=2*i*cos(j*math.pi/4),2*i*sin(j*math.pi/4)
@@ -280,14 +299,14 @@ function simple.clearTextDraw(player,mino)
             end
         end
     end
-    local beta=alpha*(player.clearTxtTimer%.2>=.1 and .4 or .6)
-    setColor(r,g,b,beta)
+    local a2=a1*(player.clearTxtTimer%.2>=.1 and .4 or .6)
+    setColor(1,1,1,a2)
     local t=""
     if CInfo.wide>=2 and CInfo.wide<=4 then t=t..CInfo.wide.."-wide" end
     if (CInfo.spin and CInfo.mini) then t=t..(t=="" and "weak" or " weak") end
     if t~="" then printf(t,font.Bender,0,-64*s-20,4000,'center',0,1/3,1/3,2000,72) end
 
-    setColor(r,g,b,alpha)
+    setColor(r,g,b,a1)
     gc.draw(player.clearTxt,0,0,0,s,s,player.clearTxt:getWidth()/2,player.clearTxt:getHeight()/2)
     local angle=-max(2*(player.clearTxtTimer/player.clearTxtTMax-.5),0)^3*math.pi/2
     gc.draw(player.spinTxt.txt,s*player.spinTxt.x,0,angle,s,s,player.spinTxt.txt:getWidth()/2,player.spinTxt.txt:getHeight()/2)
@@ -348,6 +367,8 @@ function simple.update(player,dt)
 
     if checkDanger(player) then player.dangerAnimTimer=min(dangerAnimTMax,player.dangerAnimTimer+dt)
     else player.dangerAnimTimer=max(0,player.dangerAnimTimer-dt) end
+
+    player.B2BAnimTimer=(player.history.B2B>0 and 0 or player.B2BAnimTimer+dt)
 
     if player.garbage then
         for i=1,#player.garbage do

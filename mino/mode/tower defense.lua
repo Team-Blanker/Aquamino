@@ -299,12 +299,18 @@ function rule.gameUpdate(P,dt,mino)
 
     --若有一方失败
     if not rule.freezed then
-    for i=1,#P do
-        if rule.HP[P[i].side]<=0 then
-            for j=1,#P do mino.addEvent(P[j],1e99,'freeze') end
-            rule.freezed=true
-        break end
-    end
+        for i=1,#P do
+            if rule.HP[P[i].side]<=0 then
+                for j=1,#P do mino.addEvent(P[j],2.5,'freeze') end
+
+                rule.freezed=true
+            break end
+        end
+        if rule.HP[P[1].side]<=0 then
+            for j=1,#P do mino.addEvent(P[j],0,'lose') end
+        elseif rule.HP[P[2].side]<=0 then
+            for j=1,#P do mino.addEvent(P[j],0,'win') end
+        end
     end
 
     for i=1,#P do
@@ -421,6 +427,7 @@ local epp,epw,hpr,rsz,txt
 local atk,atkr
 function rule.underAllDraw()
     --说明图
+    setColor(1,1,1)
     draw(lpic,-540,-480,0,1,1,400,120)
     draw(rpic, 540,-480,0,1,1,400,120)
     --砖块

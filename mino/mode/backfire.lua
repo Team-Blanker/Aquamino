@@ -11,7 +11,7 @@ function rule.init(P,mino)
     mus.start()
 
     battle.init(P[1]) P[1].atkMinusByDef=false
-    mino.seqGenType='bagp1FromBag'
+    --mino.seqGenType='bagp1FromBag'
     P[1].recvLine=0
     P[1].atk=0
     P[1].line=0

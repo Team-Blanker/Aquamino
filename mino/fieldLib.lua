@@ -363,13 +363,14 @@ function fieldLib.wideDetect(player)--空n列检测，n<=4时数值才有意义
     return max-min+1
 end
 --垃圾进场
-function fieldLib.garbage(player,block,atk,hole)
+function fieldLib.garbage(player,block,atk,hole,sign)
     local field=player.field
     local h=#field
     local gb={}
     for i=1,player.w do gb[i]=(type(block)=='table' and T.copy(block) or {name=block}) end
     if type(hole)=='number' then gb[hole]={}
     else for i=1,#hole do gb[hole[i]]={} end end
+    if sign then gb.type=sign end
     for i=1,atk do
         for j=h,1,-1 do field[j+1]=field[j] end
         field[1]=T.copy(gb)

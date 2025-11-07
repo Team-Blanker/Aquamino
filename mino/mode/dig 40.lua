@@ -32,15 +32,16 @@ function rule.newGarbageLine(player)
     if player.checkboard then
         fLib.insertField(player,cbLine[player.cbLineType])
         player.cbLineType=player.cbLineType%2+1
+        player.field[1].type='gbg'
     else
         if player.lastHole==0 then h=rand(player.w)
         else h=rand(player.w-1)
             if h>=player.lastHole then h=h+1 end
         end
         player.lastHole=h
-        fLib.garbage(player,'g2',1,h)
+        fLib.garbage(player,'g2',1,h,'gbg')
     end
-    player.field[1].type='gbg'
+    --player.field[1].type='gbg'
     player.summonLine=player.summonLine-1
 end
 function rule.onLineClear(player,mino)

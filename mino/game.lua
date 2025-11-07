@@ -210,7 +210,8 @@ function mino.checkClear(player,comboBreak,delayBreak)
         if delayBreak or player.CDelay==0 then fLib.eraseEmptyLine(player)
         else mino.addEvent(player,player.CDelay,'eraseEmptyLine') end
         his.combo=his.combo+1
-        his.B2B=(his.spin or his.line>=4) and his.B2B+1 or -1
+        his.B2B=(his.spin or his.line>=4) and his.B2B+1 or his.PC and his.B2B or -1
+        if his.PC then his.B2B=his.B2B+1 end
         his.CDelay=player.CDelay
     elseif comboBreak then his.combo=0 end
     his.wide=fLib.wideDetect(player)
