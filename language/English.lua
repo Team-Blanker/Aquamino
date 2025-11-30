@@ -57,6 +57,7 @@ return {
         bestScore="Best score",
         noBestScore="No score",
         notPlayable="Coming s∞n",
+        ccNotSupported="System not supported",
         arg={
             battle={
                 bot_PPS="Bot PPS",
