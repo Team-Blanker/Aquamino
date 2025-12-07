@@ -191,33 +191,6 @@ return {
         backfire={remain="Da ricevere",eff="Efficienza"},
         square={time="Tempo",amount="Quadrati",remainTime={"2 minuti","1 minuto","30 SECONDI"}}
     },
-
-    tip={
-        "Bene bene bene...",
-        "Cos'è \"Push\"?",
-        "C4W è divertente",
-        "AAAUUUGGGGGGGGGGGGGGGGHHH",
-        "Lua No.1!",
-        "Kairan è solo un nabbo in blocchi, non conosce nemmeno una riga di codice.",
-        "Bad argument #6623: Attempt to compare number with nil",
-        "Aquad = Aqua + Quad",
-        "Sono sono un consiglio...",
-        "Questo è Kairan, né capace né carino, che dice solo sciocchezze al posto di consigli",
-        "In ogni caso, non sono il primo ad aggiungere suggerimenti in un gioco a blocchi",
-        "Un progetto creato da TEAM BLANKER",
-        "Il 14 agosto è il compleanno del gioco ed anche il compleanno di Kairan.",
-        "La skin dei blocchi \"Carbon Fiber\" è inspirata dai cubi di Rubik che usano stickers in fibra di carbonio.",
-        "Prova la meccanica Push di Aquamino in modalità Sandbox!",
-        "Non tutte le modalità sono legate all'acqua, anche se il gioco si chiamava \"Aqua\".",
-        "L'SRS in questo gioco ha l'I-spin simmetrico e potenti kicktables da 180.",
-        "\"Quanto simile a Techmino ma con un bel colore\"",
-        "La modalità \"Tempesta di ghiaccio\" deriva dalla modalità con lo stesso nome in Bejeweled 3",
-        "Puoi fare un T-spin Aquad in Aquamino!",
-        "...weak table...",
-        "a and b or c and d or e and f or g",
-
-        "Ogni singolo pentamino può periodicamente affiancare il piano."
-    },tipScale=.3,
     territory={info="Spazio,Enter=Pausa/run\nesc=Esci"},
     tracks={info="Spazio,Enter=Pausa/run\nesc=Esci"}
 }

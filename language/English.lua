@@ -191,33 +191,6 @@ return {
         backfire={remain="To receive",eff="Effeciency"},
         square={time="Time",amount="Squares",remainTime={"2 minutes","1 minute","30 SECONDS"}}
     },
-
-    tip={
-        "Well well well...",
-        "Waht is \"Push\"?",
-        "C4W is fun",
-        "AAAUUUGGGGGGGGGGGGGGGGHHH",
-        "Lua No.1!",
-        "Kairan is just a noob in blocks, not even know a line of code.",
-        "Bad argument #6623: Attempt to compare number with nil",
-        "Aquad = Aqua + Quad",
-        "I'm just a tip...",
-        "This is Kairan, neither capable nor cute, only making nonsense in tips",
-        "I'm not the first one who add tips into a block game, anyway",
-        "A Project by TEAM BLANKER",
-        "Aug 14th is the game's birthday, also Kairan's birthday.",
-        "Block skin \"Carbon Fibre\" is inspired by Rubik's cubes that use carbon fibre stickers.",
-        "Try Aquamino's Push mechanic in Sandbox mode!",
-        "Not every modes are related to water, although the game was named \"Aqua\".",
-        "SRS in this game has symmetric I-spin, and powerful 180 kicktables.",
-        "\"How similar to Techmino but with nice color\"",
-        "\"Ice Storm\" mode is from the mode with same name in Bejeweled 3",
-        "You can do a T-spin Aquad in Aquamino!",
-        "...weak table...",
-        "a and b or c and d or e and f or g",
-
-        "Every single pentominoes can periodically tile the plane."
-    },tipScale=.3,
     territory={info="Space,Enter=pause/run\nesc=exit"},
     tracks={info="Space,Enter=pause/run\nesc=exit"}
 }

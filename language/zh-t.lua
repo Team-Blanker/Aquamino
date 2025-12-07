@@ -188,39 +188,6 @@ return {
         backfire={remain="剩餘垃圾行數",eff="效率"},
         square={time="剩餘时间",amount="構造正方數",remainTime={"2 分鐘","1 分鐘","30 秒"}}
     },
-
-    tip={
-        "Push是什麼 不知道",
-        "賣弱的一律當5pps處理",
-        "c4w，爽！",
-        "Lua天下第一！",
-        "海蘭就是個菜比打塊的，懂什麼代碼",
-        "Bad argument #6623: Attempt to compare number with nil",
-        "Aquad = Aqua + Quad",
-        "我是一條湊數tip",
-        "你說得對，但是…",
-        "打SDPC不接DPC，那我缺的這個spike這塊誰給我補啊",
-        "這是海蘭，既沒實力又不可愛，只會在tip裡口嗨",
-        "反正我不是第一個往方塊遊戲加tip的",
-        "A Project 由 TEAM BLANKER",
-        "遊戲的生日？2023年暑假的時候開發的，就定在8月14日吧",
-        "Z醬銳評：「抄鐵殼抄的挺到位的」",
-        "Carbon Fibre 方塊材質的靈感來自於碳纖維貼紙",
-        "Aquamino特色推箱",
-        "雖然名字是水，但海蘭可不保證每個模式都和水有關係",
-        "本遊戲的SRS經過修改，I旋對稱，並且加入了180°踢牆",
-        "冰風暴模式來自於寶石迷陣3的同名模式",
-        "唉，weak table",
-        "腦袋空空…",
-        "少打方塊多讀書",
-        "遠離現充。",
-        "a and b or c and d or e and f or g",
-
-        {{1,0,0},"游戲名不是等長條，這不是什麽好笑的玩笑。"},
-        {{1,0,0},"速度快不一定就是開外挂。"},
-
-        "任意五連塊均可以周期性密鋪整個平面"
-    },tipScale=.4,
     territory={info="空格/Enter 切換暫停/運轉狀態\nesc 退出"},
     tracks={info="空格/Enter 切換暫停/運轉狀態\nesc 退出"}
 }

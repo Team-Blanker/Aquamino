@@ -42,8 +42,6 @@ function intro.init()
         end
         mus.setTag({'menu'})
     end
-    intro.tip=user.lang.tip
-    intro.tipOrder=rand(#intro.tip)
 end
 
 local tchar='territory' local cnum=1
@@ -95,8 +93,6 @@ function intro.draw()
     if birthday then r,g,b=COLOR.hsv(scene.time,.2,1) end
     gc.setColor(r,g,b)
     gc.printf(user.lang.intro.start,font.Bender,0,360,4000,'center',0,.625,.625,2000,84)
-
-    --gc.printf(intro.tip[intro.tipOrder],font.Bender,0,450,114514,'center',0,user.lang.tipScale,user.lang.tipScale,57257,84)
 
     gc.setColor(r,g,b,.3)
     gc.printf(win.versionTxt,font.Bender,950,540,10000,'right',0,.3,.3,10000,160)

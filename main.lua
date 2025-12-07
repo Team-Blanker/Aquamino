@@ -100,9 +100,10 @@ font={
     JB=gc.newFont('font/JetBrainsMono-Medium.ttf',128),
     JB_B=gc.newFont('font/JetBrainsMono-Bold.ttf',128),
     JB_L=gc.newFont('font/JetBrainsMono-Light.ttf',128),
-    --DIN=gc.newFont('font/DINNextW1G-Regular.otf',128),
-    --DIN_B=gc.newFont('font/DINNextW1G-Bold.otf',128),
-    --DIN_L=gc.newFont('font/DINNextW1G-Light.otf',128),
+    --JB=gc.newFont('font/Oxanium-Regular.ttf',128),
+    --JB_B=gc.newFont('font/Oxanium-Bold.ttf',128),
+    --JB_L=gc.newFont('font/Oxanium-Light.ttf',128),
+    --这里是纯偷懒测试用
 
     LED=gc.newFont('font/UniDreamLED.ttf',128)
 }
@@ -214,7 +215,7 @@ scene={
     slider=require'framework/control/slider'
 }
 
---scene.cur=require('minigame/territory/territory_96')
+--scene.cur=require('minigame/tracks/tracks')
 --scene.cur=require('scene/test/BG_Test')
 --scene.cur=require('scene/test/clock')
 --scene.cur=require('mino/game') scene.cur.mode='map_test'
