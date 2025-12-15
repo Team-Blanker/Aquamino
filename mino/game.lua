@@ -302,7 +302,7 @@ mino.operate={
         success=not coincide(OP,-1,0)
         landed=coincide(OP,0,-1)
         if success then
-            C.x=C.x-1 C.moveSuccess=true C.spin=false
+            C.x=C.x-1 C.spin=false
             OP.cur.ghostY=fLib.getGhostY(OP)
         end
         OP.moveDir='L'
@@ -315,7 +315,7 @@ mino.operate={
         success=not coincide(OP,1,0)
         landed=coincide(OP,0,-1)
         if success then
-            C.x=C.x+1 C.moveSuccess=true C.spin=false
+            C.x=C.x+1 C.spin=false
             OP.cur.ghostY=fLib.getGhostY(OP)
         end
         OP.moveDir='R'
@@ -327,7 +327,6 @@ mino.operate={
         C=OP.cur
         C.kickOrder=fLib.kick(OP,'R')
         if C.kickOrder then OP.cur.ghostY=fLib.getGhostY(OP)
-            C.moveSuccess=true
             if mino.rule.allowSpin[C.name] then C.spin,C.mini=SC[mino.rule.spinType](OP)
                 if not mino.rule.enableMiniSpin then C.mini=false end
             else C.spin,C.mini=false,false end
@@ -345,7 +344,6 @@ mino.operate={
         C=OP.cur
         C.kickOrder=fLib.kick(OP,'L')
         if C.kickOrder then OP.cur.ghostY=fLib.getGhostY(OP)
-            C.moveSuccess=true
             if mino.rule.allowSpin[C.name] then C.spin,C.mini=SC[mino.rule.spinType](OP)
                 if not mino.rule.enableMiniSpin then C.mini=false end
             else C.spin,C.mini=false,false end
@@ -363,7 +361,6 @@ mino.operate={
         C=OP.cur
         C.kickOrder=fLib.kick(OP,'F')
         if C.kickOrder then OP.cur.ghostY=fLib.getGhostY(OP)
-            C.moveSuccess=true
             if mino.rule.allowSpin[C.name] then C.spin,C.mini=SC[mino.rule.spinType](OP)
                 if not mino.rule.enableMiniSpin then C.mini=false end
             else C.spin,C.mini=false,false end
@@ -378,7 +375,7 @@ mino.operate={
         landed=coincide(OP,0,-1)
         C=OP.cur
         if success then mino.setAnimPrePiece(OP) OP.smoothAnim.timer=mino.smoothTime
-            C.x=C.x-1 C.moveSuccess=true C.spin=false
+            C.x=C.x-1 C.spin=false
             if landed and OP.LDR>0 then OP.LTimer=0 OP.LDR=OP.LDR-1 end
             OP.cur.ghostY=fLib.getGhostY(OP)
         else
@@ -395,7 +392,7 @@ mino.operate={
         landed=coincide(OP,0,-1)
         C=OP.cur
         if success then mino.setAnimPrePiece(OP) OP.smoothAnim.timer=mino.smoothTime
-            C.x=C.x+1 C.moveSuccess=true C.spin=false
+            C.x=C.x+1 C.spin=false
             if landed and OP.LDR>0 then OP.LTimer=0 OP.LDR=OP.LDR-1 end
             OP.cur.ghostY=fLib.getGhostY(OP)
         else
@@ -414,7 +411,6 @@ mino.operate={
         C.kickOrder=fLib.kick(OP,'R')
         if C.kickOrder then OP.smoothAnim.timer=mino.smoothTime
             OP.cur.ghostY=fLib.getGhostY(OP)
-            C.moveSuccess=true
             if landed and OP.LDR>0 then OP.LTimer=0 OP.LDR=OP.LDR-1
             else if C.kickOrder~=1 then OP.LDR=OP.LDR-1 end
             end
@@ -438,7 +434,6 @@ mino.operate={
         C.kickOrder=fLib.kick(OP,'L')
         if C.kickOrder then OP.smoothAnim.timer=mino.smoothTime
             OP.cur.ghostY=fLib.getGhostY(OP)
-            C.moveSuccess=true
             if landed and OP.LDR>0 then OP.LTimer=0 OP.LDR=OP.LDR-1
             else if C.kickOrder~=1 then OP.LDR=OP.LDR-1 end
             end
@@ -461,7 +456,6 @@ mino.operate={
         C.kickOrder=fLib.kick(OP,'F')
         if C.kickOrder then OP.smoothAnim.timer=mino.smoothTime
             OP.cur.ghostY=fLib.getGhostY(OP)
-            C.moveSuccess=true
             if landed and OP.LDR>0 then OP.LTimer=0 OP.LDR=OP.LDR-1
             else if C.kickOrder~=1 then OP.LDR=OP.LDR-1 end
             end
@@ -650,6 +644,8 @@ function mino.init(isReset)
     S.winState=0 S.started=false
     S.event={} S.newRecord=false S.endTimer=0 S.NRSFXPlayed=false
     S.keyDown={ML=false,MR=false,SD=false,CW=false,CCW=false,flip=false,hold=false}
+    S.recentInput=nil
+    S.recentRotateInput=nil
     P[1]=fLib.newPlayer()
 
     do
@@ -854,6 +850,7 @@ function mino.init(isReset)
     },.2)
 end
 
+local rotateKey={CW='rotateCW',CCW='rotateCCW',flip='rotate180'}
 function mino.inputPress(k)
     --if k=='f1' then mino.profile.switch() end
     if k=='pause' then mino.paused=not mino.paused
@@ -878,6 +875,7 @@ function mino.inputPress(k)
             end
         end
     else
+    local rotate=k=='CW' or k=='CCW' or k=='flip'
     for id,v in pairs(S.opList) do
         local OP=P[id]
         C,A=OP.cur,OP.smoothAnim
@@ -927,10 +925,8 @@ function mino.inputPress(k)
                 elseif k=='SD'   then mino.operate.SD(OP,true)
                 elseif k=='hold' and OP.canHold then mino.operate.hold(OP,true)
                 end
-
                 --推土机！
                 if mino.rule.allowPush[C.name] and C.kickOrder then
-                    local rotate=k=='CW' or k=='CCW' or k=='flip'
                     local reset=true local lBlock,push
                     if OP.moveDir=='R' and S.keyDown.MR and coincide(OP,1,0) then
                         if rotate then reset=false
@@ -982,6 +978,8 @@ function mino.inputPress(k)
         end
 
     end--for
+    S.recentInput=k
+    if rotate then S.recentRotateInput=k end
     end--if-else
 end
 
@@ -1038,6 +1036,12 @@ function mino.gameUpdate(dt)
 
         if OP.event[1] then OP.MTimer=min(OP.MTimer+dt,ctrl.ASD)
         elseif S.winState==0 and canop then
+        --旋转失败补足
+        for k,f in pairs(rotateKey) do
+            if not C.kickOrder and S.recentRotateInput==k and S.keyDown[S.recentRotateInput] then
+                mino.operate[f](OP,true)
+            end
+        end
         --长按移动键
         if S.keyDown.SD then
             if OP.event[1] or coincide(OP,0,-1) then OP.DTimer=min(OP.DTimer+dt,ctrl.SD_ASD)
@@ -1059,7 +1063,7 @@ function mino.gameUpdate(dt)
 
             while OP.MTimer>=ctrl.ASD and OP.moveDir=='L' and not coincide(OP,-1,0) do
                 C.x=C.x-1 C.spin=false m=m+1
-                C.moveSuccess=true OP.MTimer=OP.MTimer-ctrl.ASP
+                OP.MTimer=OP.MTimer-ctrl.ASP
                 if coincide(OP,0,-1) and OP.LDR>0 then OP.LTimer=0 OP.LDR=OP.LDR-1 end
 
                 if S.ctrl.ASP~=0 or m==1 then mino.sfxPlay.move(OP,true,coincide(OP,0,-1),fLib.getSourcePos(OP,mino.stereo,'cur')) end
@@ -1090,7 +1094,7 @@ function mino.gameUpdate(dt)
             while OP.MTimer>=ctrl.ASD and OP.moveDir=='R' and not coincide(OP,1,0) do
                 C.x=C.x+1 C.spin=false m=m+1
                 OP.cur.ghostY=fLib.getGhostY(OP)
-                C.moveSuccess=true OP.MTimer=OP.MTimer-ctrl.ASP
+                OP.MTimer=OP.MTimer-ctrl.ASP
                 if coincide(OP,0,-1) and OP.LDR>0 then OP.LTimer=0 OP.LDR=OP.LDR-1 end
 
                 if S.ctrl.ASP~=0 or m==1 then mino.sfxPlay.move(OP,true,coincide(OP,0,-1),fLib.getSourcePos(OP,mino.stereo,'cur')) end

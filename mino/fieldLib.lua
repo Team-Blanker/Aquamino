@@ -64,8 +64,7 @@ function fieldLib.newPlayer(arg)
             CDelay=0,wide=0,
         },
         cur={--当前块的所有信息
-            name=nil,piece={},x=5,y=21,O=0,ghostY=0,spin=false,mini=false,
-            moveSuccess=false,
+            name=nil,piece={},x=5,y=21,O=0,ghostY=0,spin=false,mini=false, 
             kickOrder=0
         },
         stat={--统计数据

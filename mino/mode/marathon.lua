@@ -18,7 +18,7 @@ function rule.init(P,mino)
     local c=mino.stacker.ctrl
     c.ASD=.15 c.ASP=.03 c.SD_ASD=0 c.SD_ASP=.03
 
-    P[1].LDelay=.5
+    P[1].LDelay=1
     for k,v in pairs(P) do
         v.CDelay=.25
         v.EDelay=.1
@@ -35,6 +35,7 @@ function rule.onLineClear(player,mino)
         if player.totalLine>=150 then mino.win(player) break end
         player.speedLv=player.speedLv+1
         player.FDelay=2^(-(player.speedLv-1)/14*8)
+        player.LDelay=max(player.FDelay,.5)
         mino.stacker.ctrl.SD_AMP=2^(-(player.speedLv-1)/14*8)*.03
         sfx.play('lvup')
         if not mino.unableBG then scene.BG.baseColor=myMath.lerp({.4,.4,.4},rule.finalColor,(player.speedLv-1)/14) end

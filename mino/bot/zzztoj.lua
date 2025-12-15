@@ -48,7 +48,7 @@ function bot_zzz.execute(player,eq,mino)
         if k=='l' then
             success=not fLib.coincide(player,-1,0)
             if success then mino.setAnimPrePiece(player) A.timer=A.delay
-                C.x=C.x-1 C.moveSuccess=true his.spin=false
+                C.x=C.x-1 his.spin=false
                 if landed and player.LDR>0 then player.LTimer=0 player.LDR=player.LDR-1 end
                 player.ghostY=fLib.getGhostY(player)
             end
@@ -59,7 +59,7 @@ function bot_zzz.execute(player,eq,mino)
             if not fLib.coincide(player,-1,0) then mino.setAnimPrePiece(player) A.timer=A.delay
                 while not fLib.coincide(player,-1,0) do
                 local landed=fLib.coincide(player,0,-1)
-                C.x=C.x-1 C.moveSuccess=true his.spin=false
+                C.x=C.x-1 his.spin=false
                 if landed and player.LDR>0 then player.LTimer=0 player.LDR=player.LDR-1 end
                 end
                 player.ghostY=fLib.getGhostY(player)
@@ -68,7 +68,7 @@ function bot_zzz.execute(player,eq,mino)
         elseif k=='r' then
             local success=not fLib.coincide(player,1,0)
             if success then mino.setAnimPrePiece(player) A.timer=A.delay
-                C.x=C.x+1 C.moveSuccess=true his.spin=false
+                C.x=C.x+1 his.spin=false
                 if landed and player.LDR>0 then player.LTimer=0 player.LDR=player.LDR-1 end
                 player.ghostY=fLib.getGhostY(player)
             end
@@ -79,7 +79,7 @@ function bot_zzz.execute(player,eq,mino)
             if not fLib.coincide(player,1,0) then mino.setAnimPrePiece(player) A.timer=A.delay
                 while not fLib.coincide(player,1,0) do
                 local landed=fLib.coincide(player,0,-1)
-                C.x=C.x+1 C.moveSuccess=true his.spin=false
+                C.x=C.x+1 his.spin=false
                 if landed and player.LDR>0 then player.LTimer=0 player.LDR=player.LDR-1 end
                 end
                 player.ghostY=fLib.getGhostY(player)
@@ -89,7 +89,6 @@ function bot_zzz.execute(player,eq,mino)
             C.kickOrder=fLib.kick(player,'R')
             if C.kickOrder then A.timer=A.delay
                 player.ghostY=fLib.getGhostY(player)
-                C.moveSuccess=true
                 if landed and player.LDR>0 then player.LTimer=0 player.LDR=player.LDR-1
                 else if C.kickOrder~=1 then player.LDR=player.LDR-1 end
                 end
@@ -103,7 +102,6 @@ function bot_zzz.execute(player,eq,mino)
             C.kickOrder=fLib.kick(player,'L')
             if C.kickOrder then A.timer=A.delay
                 player.ghostY=fLib.getGhostY(player)
-                C.moveSuccess=true
                 if landed and player.LDR>0 then player.LTimer=0 player.LDR=player.LDR-1
                 else if C.kickOrder~=1 then player.LDR=player.LDR-1 end
                 end
@@ -117,7 +115,6 @@ function bot_zzz.execute(player,eq,mino)
             C.kickOrder=fLib.kick(player,'F')
             if C.kickOrder then A.timer=A.delay
                 player.ghostY=fLib.getGhostY(player)
-                C.moveSuccess=true
                 if landed and player.LDR>0 then player.LTimer=0 player.LDR=player.LDR-1
                 else if C.kickOrder~=1 then player.LDR=player.LDR-1 end
                 end

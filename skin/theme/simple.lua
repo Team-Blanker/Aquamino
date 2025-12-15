@@ -87,6 +87,7 @@ function simple.fieldDraw(player,mino)
     rect('fill',-W/2,H/2+4,W*(1-player.LTimer/player.LDelay),20)
     setColor(0,0,0)
     printf(("%02d"):format(min(player.LDR,99)),font.JB_B,-W/2+4,H/2+2+64*.2,400,'left',0,5/32,5/32,0,font.height.JB_B/2)
+    printf(("%dms"):format(min(player.LDelay*1000,9999)),font.JB_B,W/2-4,H/2+2+64*.2,800,'right',0,5/32,5/32,800,font.height.JB_B/2)
     --计时
     local t=player.gameTimer
     timeTxt=string.format("%d:%d%d.%03d",t/60,t/10%6,t%10,t%1*1000)
