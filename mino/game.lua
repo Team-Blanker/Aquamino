@@ -36,6 +36,7 @@ end
 function mino.blockLock(player,die)
     local his=player.history
     fLib.lock(player) fLib.loosenFall(player) mino.sfxPlay.lock(player,fLib.getSourcePos(player,mino.stereo,'history'))
+    S.recentInput=nil S.recentRotateInput=nil
     if mino.rule.onPieceDrop then mino.rule.onPieceDrop(player,mino) end
     if mino.blockSkin.onPieceDrop then mino.blockSkin.onPieceDrop(player,mino) end
     if player.loosen[1] then
