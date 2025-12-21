@@ -5,16 +5,16 @@ return {
         txtScale=50/128,txtWidth=4000
     },
     modeName={
-        ['40 lines']="40 行競速",
+        ['40 lines']="40行競速",
         marathon="馬拉松",
         ['ice storm']="冰風暴",
         thunder="雷暴",
-        smooth="絲滑 40 行",
-        levitate="懸浮 40 行",
+        smooth="絲滑40行",
+        levitate="懸浮40行",
         master="大師",
         multitasking="雙線程",
         sandbox="沙盒",
-        ['dig 40']="挖掘 40 行",
+        ['dig 40']="挖掘40行",
         laser="激光",
         backfire="回旋鏢",
         battle="對戰",
@@ -164,12 +164,13 @@ return {
             virtualKey="觸控設定..."
         },
         virtualKey={
-            enable="啓用虛擬擊鍵",enableTxtScale=.25,
+            enable="啓用虛擬按鍵",enableTxtScale=.25,
             anim="按鈕動畫",animTxtScale=.25,
             preset="预設...",
             btsz="大小",
             tolerance="容錯",
-            attach="網格對齊"
+            attach="網格對齊",
+            info="虛擬按鍵僅供觸屏使用\n但也可以用來顯示按鍵輸入"
         },
         handling={
             ASD="自動移動延遲(ASD,舊稱DAS)",ASP="自動移動週期(ASP,舊稱ARR)",

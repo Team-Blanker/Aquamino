@@ -172,7 +172,8 @@ return {
             preset="Presets...",
             btsz="Size",
             tolerance="Margin",
-            attach="Alignment"
+            attach="Alignment",
+            info="Virtual keys are for touchscreen use only,\nbut you can also use it as input display."
         },
         handling={
             ASD="Auto shift delay(ASD)",ASP="Auto shift period(ASP)",

@@ -17,8 +17,8 @@ function rule.init(P,mino)
         sq='sfx/mode/general/sq.wav',
     })
 
-    mino.bag={'Z','Z','S','S','J','J','J','J','L','L','L','L','O','O','O','I','I','I','T','T','T','T'}
-    --mino.bag={'I'}
+    --mino.bag={'Z','Z','S','S','J','J','J','J','L','L','L','L','O','O','O','I','I','I','T','T','T','T'}
+    mino.bag={'J','L','O','I','T','T'}
     mino.seqGenType='mayhem'
 
     mino.color.plum={.96,.48,.84}

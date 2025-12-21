@@ -5,16 +5,16 @@ return {
         txtScale=50/128,txtWidth=4000
     },
     modeName={
-        ['40 lines']="40 行竞速",
+        ['40 lines']="40行竞速",
         marathon="马拉松",
         ['ice storm']="冰风暴",
         thunder="雷暴",
-        smooth="丝滑 40 行",
-        levitate="悬浮 40 行",
+        smooth="丝滑40行",
+        levitate="悬浮40行",
         master="大师",
         multitasking="双线程",
         sandbox="无尽 (沙盒)",
-        ['dig 40']="挖掘 40 行",
+        ['dig 40']="挖掘40行",
         laser="激光",
         backfire="回旋镖",
         battle="对战",
@@ -170,7 +170,8 @@ return {
             preset="预设...",
             btsz="大小",
             tolerance="容错",
-            attach="网格对齐"
+            attach="网格对齐",
+            info="虚拟按键仅供触屏使用\n但也可以用来显示按键输入"
         },
         handling={
             ASD="自动移动延迟(ASD,旧称DAS)",ASP="自动移动周期(ASP,旧称ARR)",

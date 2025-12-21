@@ -106,7 +106,7 @@ function VKey.save()
     file.save('conf/virtualKey',lst)
 end
 
-VKey.txt={preset={},vkEnable={},animEnable={}}
+VKey.txt={preset={},vkEnable={},animEnable={},info={}}
 VKey.sliderTxt={btsz={},tolerance={},attach={}}
 function VKey.init()
     scene.BG=require'BG/settings'
@@ -139,6 +139,11 @@ function VKey.init()
     a.txt=gc.newText(font.Bender_B,cfv.anim)
     a.w,a.h=a.txt:getDimensions()
     a.s=min(270/a.w,cfv.animTxtScale)
+    local i=VKey.txt.info
+    i.txt=gc.newText(font.Bender_B)
+    i.txt:setf(cfv.info,10000,'center')
+    i.w,i.h=i.txt:getDimensions()
+    i.s=min(1600/i.w,.3125)
 
     for k,t in pairs(VKey.sliderTxt) do
         t.txt=gc.newText(font.JB,cfv[k])
@@ -436,6 +441,9 @@ function VKey.draw()
         end
     end
 
+    gc.setColor(.5,1,.875,.75)
+    local v=VKey.txt.info
+    gc.draw(v.txt,0,470,0,v.s,v.s,5000,v.h/2)
     BUTTON.draw() SLIDER.draw()
 end
 function VKey.exit()

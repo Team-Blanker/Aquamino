@@ -46,7 +46,7 @@ function battle.atkRecv(player,atk,mino)
         local sw=rand()<(l-atk.cut)
         h=sw and rand(player.w) or player.lastHole
         player.lastHole=h
-        if sw then l=1 end
+        if sw then l=l-atk.cut end
         fLib.garbage(player,atk.block,1,h,'garbage')
     end
     if mino.theme.updateRecvAnim then mino.theme.updateRecvAnim(player,atk) end
@@ -128,7 +128,7 @@ function battle.stdAtkGen(player,time)
     return {
         amount=totalatk,
         block='g1',
-        cut=(w==4 or his.PC) and 1e99 or s and totalatk/2+b+.25 or 1e99,
+        cut=(w==4 or his.PC) and 1e99 or s and totalatk/2+b or 1e99,
         cutOffset=0,
         M_OC=(w>=2 and w<=4) and (4-w)*.025 or his.PC and 0 or max(1/(max(b,1)-0.1*(c-3)),.2),
         appearT=0,

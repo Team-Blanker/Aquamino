@@ -172,7 +172,8 @@ return {
             preset="preimpostazioni...",
             btsz="Dimensione",
             tolerance="Margine",
-            attach="Allineamento"
+            attach="Allineamento",
+            info="I tasti virtuali sono solo per l'uso touchscreen,\nma possono anche essere usati come display di input."
         },
         handling={
             ASD="Ritardo spostamento automatico (ASD)",ASP="Periodo di spostamento automatico(ASP)",
