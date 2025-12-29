@@ -132,13 +132,16 @@ function mino.nextIns(player)
         C.name=table.remove(player.next,1)
         C.piece=table.remove(player.NP,1)
         if mino.rule.onPieceSummon then mino.rule.onPieceSummon(player,mino) end
-        fLib.entryPlace(player)
+        fLib.setEntryPos(player)
 
         A.prePiece,A.drawPiece=T.copy(C.piece),T.copy(C.piece)
         for i=1,#A.prePiece do
             A.prePiece[i][1],A.prePiece[i][2]=A.prePiece[i][1]+C.x,A.prePiece[i][2]+C.y
             A.drawPiece[i][1],A.drawPiece[i][2]=A.drawPiece[i][1]+C.x,A.drawPiece[i][2]+C.y
         end
+        A.preCenter[1]=C.x A.preCenter[2]=C.y
+        A.drawCenter[1]=C.x A.drawCenter[2]=C.y
+        A.timer=player.FDelay==0 and 0 or mino.smoothTime
         player.canHold=true C.kickOrder=nil
     elseif player.hold.name then mino.hold(player)
     else C.piece,C.name=nil,nil end
@@ -230,7 +233,7 @@ function mino.hold(player)
         while C.piece and coincide(player) and C.y<player.h+B.Soff[C.name][2] do C.y=C.y+1 end
     elseif player.hold.mode=='S' then
     if C.name and C.piece then
-        fLib.entryPlace(player)
+        fLib.setEntryPos(player)
         C.O=mino.orient[C.name] or mino.orient.default
     else
         if player.next[player.preview+1] then
@@ -251,7 +254,7 @@ function mino.hold(player)
             C.name=table.remove(player.next,1)
             C.piece=table.remove(player.NP,1)
             if mino.rule.onPieceSummon then mino.rule.onPieceSummon(player,mino) end
-            fLib.entryPlace(player)
+            fLib.setEntryPos(player)
 
             A.prePiece,A.drawPiece=T.copy(C.piece),T.copy(C.piece)
             for i=1,#A.prePiece do
@@ -267,8 +270,10 @@ function mino.hold(player)
         if player.FDelay==0 then mino.Ins20GDrop(player) end
         if mino.rule.onPieceEntry then mino.rule.onPieceEntry(player) end
         if C.piece then player.cur.ghostY=fLib.getGhostY(player) end
-
     end
+    A.preCenter[1]=C.x A.preCenter[2]=C.y
+    A.drawCenter[1]=C.x A.drawCenter[2]=C.y
+    A.timer=player.FDelay==0 and 0 or mino.smoothTime
     while H.O~=0 do
         H.O=B.rotate(H.piece,H.O,'L')
     end
@@ -579,21 +584,22 @@ function mino.setAnimPrePiece(player)
     C,A=player.cur,player.smoothAnim
     for i=1,#C.piece do
         A.prePiece[i][1]=M.lerp(C.piece[i][1]+C.x,A.prePiece[i][1],A.timer/mino.smoothTime)
-        A.prePiece[i][2]=M.lerp(C.piece[i][2]+C.y-(player.FDelay==0 and 0 or player.FTimer/player.FDelay),A.prePiece[i][2],A.timer/mino.smoothTime)
+        A.prePiece[i][2]=M.lerp(C.piece[i][2]+C.y,A.prePiece[i][2],A.timer/mino.smoothTime)
     end
     A.preCenter[1]=M.lerp(C.x,A.preCenter[1],A.timer/mino.smoothTime)
-    A.preCenter[2]=M.lerp(C.y-(player.FDelay==0 and 0 or player.FTimer/player.FDelay),A.preCenter[2],A.timer/mino.smoothTime)
+    A.preCenter[2]=M.lerp(C.y,A.preCenter[2],A.timer/mino.smoothTime)
 end
 function mino.setAnimDrawPiece(player)
     if not mino.smoothAnimAct then return end
     C,A=player.cur,player.smoothAnim
     for i=1,#C.piece do
         A.drawPiece[i][1]=M.lerp(C.piece[i][1]+C.x,A.prePiece[i][1],A.timer/mino.smoothTime)
-        A.drawPiece[i][2]=M.lerp(C.piece[i][2]+C.y-(player.FDelay==0 and 0 or player.FTimer/player.FDelay),A.prePiece[i][2],A.timer/mino.smoothTime)
+        A.drawPiece[i][2]=M.lerp(C.piece[i][2]+C.y,A.prePiece[i][2],A.timer/mino.smoothTime)
     end
     A.drawCenter[1]=M.lerp(C.x,A.preCenter[1],A.timer/mino.smoothTime)
-    A.drawCenter[2]=M.lerp(C.y-(player.FDelay==0 and 0 or player.FTimer/player.FDelay),A.preCenter[2],A.timer/mino.smoothTime)
+    A.drawCenter[2]=M.lerp(C.y,A.preCenter[2],A.timer/mino.smoothTime)
 end
+--(player.FDelay==0 and 0 or player.FTimer/player.FDelay)
 function mino.insertNextQueue(player)
     local n--这个值表示新的next从第几个预览块开始
     local rong=mino.rule.onNextGen

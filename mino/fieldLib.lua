@@ -267,7 +267,7 @@ function fieldLib.changeNext(player,order,piece,ori)--修改某个next块
         end
     end
 end
-function fieldLib.entryPlace(player)--方块进场时使用，决定方块出块位置
+function fieldLib.setEntryPos(player)--方块进场时使用，决定方块出块位置
     local c=player.cur
     local x,y,ox,oy=B.size(c.piece)
     local dx,dy=ceil(player.w/2),player.h+1

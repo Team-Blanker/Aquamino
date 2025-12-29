@@ -190,7 +190,7 @@ return {
         dig={remain="To dig",piece="Pieces"},
         thunder={piece="Pieces"},
         backfire={remain="To receive",eff="Effeciency"},
-        square={time="Time",amount="Squares",remainTime={"2 minutes","1 minute","30 SECONDS"}}
+        square={time="Time",amount="Points",remainTime={"2 minutes","1 minute","30 SECONDS"}}
     },
     territory={info="Space,Enter=pause/run\nesc=exit"},
     tracks={info="Space,Enter=pause/run\nesc=exit"}

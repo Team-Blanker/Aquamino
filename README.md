@@ -22,13 +22,9 @@ The developer will try his best to optimize the code until the game no longer la
 
 ## 游戏简介
 
-**Aquamino** 是由 **Team Blanker** 开发的一款开源**现代**方块游戏！本游戏使用**LOVE2D**开发，理论上可以在任何 LOVE2D 支持的设备下游玩。
+**Aquamino**，算是我作为一个方块玩家的想法集成地。我不希望我脑子里的想法到最后全部沦为一句空谈。
 
-14 种模式任你选择，可以在 40 行竞速练习堆叠，在大师模式挑战自我，在沙盒模式放松、研究，也可以体验雷雨的暴戾、暴雪的残酷、激光的眩目！
-
-原创旋转系统 **AqRS** 等你探索，各种神奇的旋转等你发掘！
-
-## 试玩须知
+## 游玩须知
 
 游戏路径须为纯英文，否则程序会因为找不到 ColdClear 而报错。
 
@@ -52,13 +48,9 @@ QQ群：893232441
 
 ## Introduction
 
-**Aquamino** is an open-source **modern** block-stacking game developed by **Team Blanker**! This game is developed using **LOVE2D** and can theoretically be played on any device supported by LOVE2D.
+**Aquamino**, a collection of my thoughts as a block player. I don't want all the ideas in my head to end up being just empty talk.
 
-14 modes for you to choose. You can practice stacking in Spront mode, challenge yourself in Master mode, relax and study in Sandbox mode, or experience the violence of thunderstorms, the cruelty of blizzards, and the dazzling of lasers!
-
-The original rotation system **AqRS** is waiting for you to explore, and all kinds of magical rotations are waiting for you to discover!
-
-## Notes for trying
+## Notes for playing
 
 The game path must be in pure English, otherwise the program will report an error because it cannot find ColdClear.
 
@@ -74,6 +66,6 @@ itch.io: https://aqua6623.itch.io/aquamino
 
 ## Discussions and bug reports
 
-QQ群：893232441
+QQ Group：893232441
 
 [Discord](https://discord.gg/zc9HJhKWgz)

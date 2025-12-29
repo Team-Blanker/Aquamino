@@ -5,6 +5,7 @@ function rule.init(P,mino)
     mino.rule.allowSpin={T=true}
     mino.waitTime=.5
     mino.musInfo="R-side - Nine Five"
+    --P[1].LDelay=.1
     local date=os.date('*t')
     if date.month==8 and date.day==14 then
         mino.musInfo="T-Malu - Winter Story"
