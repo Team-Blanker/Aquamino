@@ -48,7 +48,7 @@ QQ群：893232441
 
 ## Introduction
 
-**Aquamino**, a collection of my thoughts as a block player. I don't want all the ideas in my head to end up being just empty talk.
+**Aquamino**, a collection of my thoughts as a block player. I don't want all the ideas in my mind to end up being just empty talk.
 
 ## Notes for playing
 
