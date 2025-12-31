@@ -4,6 +4,13 @@ local SLIDER=scene.slider
 
 local menu={modeKey=1,sAnimTMax=.15}
 
+-- Check if the system supports CC
+local lib_util = require'bin/lib_util'
+
+local function isCCSupported()
+    return lib_util.getCCLibName() ~= nil
+end
+
 local bso=require'mino/bestScoreOrder'
 
 local setIcon1,setIcon2=gc.newCanvas(120,120),gc.newCanvas(120,120)
@@ -222,10 +229,17 @@ function menu.init()
         x=0,y=390,type='rect',w=450,h=100,
         draw=function(bt,t)
             if not menu.selectedMode then return end
-            if not menu.modeList[menu.selectedMode].playable then
-                gc.printf(user.lang.menu.notPlayable,font.Bender,0,0,2000,'center',0,.625,.625,1000,font.height.Bender/2)
-                return
-            end
+        if not menu.modeList[menu.selectedMode].playable then
+            gc.printf(user.lang.menu.notPlayable,font.Bender,0,0,2000,'center',0,.625,.625,1000,font.height.Bender/2)
+            return
+        end
+        
+        -- Check if the system supports CC
+        local mode=menu.selectedMode
+        if (mode=='battle' or mode=='tower defense') and not isCCSupported() then
+            gc.printf(user.lang.menu.ccNotSupported or "System not supported",font.Bender,0,0,2000,'center',0,.625,.625,1000,font.height.Bender/2)
+            return
+        end
             local a=menu.sAnimTimer/menu.sAnimTMax*2-1
             if menu.pAnim then
                 local s=menu.pAnimTimer>.2 and 1 or menu.pAnimTimer%.1<.05 and 1 or 0
@@ -241,6 +255,12 @@ function menu.init()
         end,
         event=function()
             if not menu.modeList[menu.selectedMode].playable then return end
+            
+            -- Check if the system supports CC
+            local mode=menu.selectedMode
+            if (mode=='battle' or mode=='tower defense') and not isCCSupported() then
+                return
+            end
             menu.pAnim=true
             sfx.play('click',1,2^(2/3))
             sfx.play('gameEnter')

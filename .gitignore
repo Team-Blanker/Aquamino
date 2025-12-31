@@ -10,6 +10,10 @@ Icon?
 *.exe
 *.zip
 *.dll
+!bin/cold_clear.dll
 *.so
+!bin/cold_clear.so
+*.dylib
+!bin/cold_clear.dylib
 mino/mode/mech heart detector.lua
 pic/mode icon/mech heart detector.png
