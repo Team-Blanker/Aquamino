@@ -1,22 +1,18 @@
 local ffi=require'ffi'
-local lib_util=require'bin/lib_util'
 local head=love.filesystem.newFile('mino/bot/coldclear.h'):read()
 ffi.cdef(head)
 local c=ffi.C
 local gamePath=love.filesystem.getWorkingDirectory()
 local SBPath=love.filesystem.getSourceBaseDirectory()
--- print("\x1b[33m------------")
--- print("gamePath", gamePath)
--- print("SBPath  ", SBPath)
--- print("------------\x1b[0m")
-local lib_name=lib_util.getCCLibName()
+print(gamePath)
+local os=love.system.getOS()
 local CC
-if lib_name then
-    local lib_path=gamePath..'/bin/'..lib_name
-    print("CC load path",lib_path)
-    CC = ffi.load(lib_path)
-else
-    print("\x1b[31m".."Unknow System: "..os.."\x1b[0m")
+if os=='Windows' then
+    CC=ffi.load(gamePath..'/cold_clear.dll')
+elseif os=='Linux' then
+    CC=ffi.load(SBPath..'/Aquamino/cold_clear.so')
+elseif os=='OS X' then
+    CC=ffi.load(gamePath..'/cold_clear.dylib')
 end
 --CCAsyncBot *cc_launch_async(CCOptions *options, CCWeights *weights, CCBook *book, CCPiece *queue,
 --uint32_t count),
