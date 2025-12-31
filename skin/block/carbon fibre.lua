@@ -33,6 +33,7 @@ end
 function skin.unitDraw(player,x,y,color,alpha)
     setColor(color[1],color[2],color[3],alpha)
     rect('fill',-18+36*x,-18-36*y,36,36,4)
+    setColor(1,1,1) gc.draw(skin.sticker,36*x,-36*y,0,1,1,18,18)
 end
 function skin.update(player,dt)
     local sList=player.stickerList

@@ -127,14 +127,15 @@ return {
             frameLim="FPS Massimi",frameTxt="Si consiglia un valore pari alla frequenza di aggiornamento del monitor."
         },
         custom={
-            texture="Texture dei blocchi",color="Regolazione del colore...",
+            texture="Texture dei blocchi",color="Regolazione colori...",
             RS="Sistema di rotazione",
-            smooth="Movimento Liscio",
-            smoothTime="Tempo di movimento",
+            smooth="Animazione blocchi",
+            smoothTime="Durata animazione",
+            fallAnimType="Tipo di animazione\ndella gravità",
             rotationCenter="Asse di rotazione",
             boardBounce="Rimbalzo della griglia...",
             theme="Tema della griglia",
-            scale="Scala della griglia",scaleTxt="Dimensione della cella",
+            scale="Scala della griglia",
             sfx="Effetti Sonori",sfxWarning={
                 otto="ATTENZIONE: SUONI ALTI. USA A TUO RISCHIO."
             },

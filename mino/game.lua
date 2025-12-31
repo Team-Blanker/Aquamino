@@ -524,32 +524,51 @@ mino.operate={
     end,
     SD=function(OP,playSFX)--软降
         C=OP.cur
+        local h=0
+        local A=OP.smoothAnim
+        local success
         if S.ctrl.SD_ASD==0 and S.ctrl.SD_ASP==0 then
-            while not coincide(OP,0,-1) do local h=0
+            while not coincide(OP,0,-1) do
                 mino.setAnimPrePiece(OP) OP.smoothAnim.timer=mino.smoothTime
-                C.y=C.y-1 h=h+1 C.spin=false
+                C.y=C.y-1 h=h+1 C.spin=false success=true
                 if mino.sfxPlay.SD then mino.sfxPlay.SD(OP,fLib.getSourcePos(OP,mino.stereo,'cur')) end
             end
         elseif not coincide(OP,0,-1) then
             mino.setAnimPrePiece(OP) OP.smoothAnim.timer=mino.smoothTime
-            C.y=C.y-1 C.spin=false
+            C.y=C.y-1 C.spin=false success=true
             if playSFX and mino.sfxPlay.SD then mino.sfxPlay.SD(OP,fLib.getSourcePos(OP,mino.stereo,'cur')) end
+        end
+        if success and mino.smoothFallType==2 and coincide(OP,0,-1) then
+            local f=(OP.FDelay==0 and 0 or OP.FTimer/OP.FDelay)
+            for i=1,#C.piece do
+                A.prePiece[i][2]=A.prePiece[i][2]-f
+            end
+            A.preCenter[2]=A.preCenter[2]-f
+            print(123)
         end
         mino.sfxPlay.touch(OP,coincide(OP,0,-1),fLib.getSourcePos(OP,mino.stereo,'cur'))
     end,
     SD_drop=function(OP,playSFX)--软降到底
         C=OP.cur
-        while not coincide(OP,0,-1) do local h=0
+        local h=0
+        while not coincide(OP,0,-1) do
             mino.setAnimPrePiece(OP) OP.smoothAnim.timer=mino.smoothTime
             C.y=C.y-1 h=h+1 C.spin=false
             if mino.sfxPlay.SD then mino.sfxPlay.SD(OP,fLib.getSourcePos(OP,mino.stereo,'cur')) end
         end
         mino.sfxPlay.touch(OP,coincide(OP,0,-1),fLib.getSourcePos(OP,mino.stereo,'cur'))
     end,
-    SD1H=function(OP,playSFX)--软降一格
+    fall=function(OP,playSFX)--软降一格
         C=OP.cur
         if not coincide(OP,0,-1) then
-            mino.setAnimPrePiece(OP) OP.smoothAnim.timer=mino.smoothTime
+            if mino.smoothFallType==1 then mino.setAnimPrePiece(OP) OP.smoothAnim.timer=mino.smoothTime
+            elseif mino.smoothFallType==2 then
+                local A=OP.smoothAnim
+                for i=1,#C.piece do
+                    A.prePiece[i][2]=A.prePiece[i][2]-1
+                end
+                A.preCenter[2]=A.preCenter[2]-1
+            end
             C.y=C.y-1 C.spin=false
             if playSFX and mino.sfxPlay.SD then mino.sfxPlay.SD(OP,fLib.getSourcePos(OP,mino.stereo,'cur')) end
         end
@@ -673,6 +692,7 @@ function mino.init(isReset)
         mino.blockSkin=require('skin/block/'..pf.block)
         mino.theme=require('skin/theme/'..pf.theme)
         mino.smoothAnimAct=pf.smoothAnimAct
+        mino.smoothFallType=pf.smoothFallType
         mino.smoothTime=pf.smoothTime
         mino.showRotationCenter=pf.rotationCenter
         mino.sfxPlay=require('sfx/game/'..pf.sfx)
@@ -950,7 +970,7 @@ function mino.inputPress(k)
                     if S.keyDown.SD and coincide(OP,0,-1) then
                         if rotate then reset=false
                         OP.pushAtt=OP.pushAtt+1 lBlock,push=fLib.pushField(OP,'D')
-                        if push then mino.operate.SD1H(OP,true) end
+                        if push then mino.operate.SD(OP,true) end
                         end
                     end
                     if reset then OP.pushAtt=0 end
@@ -1056,7 +1076,7 @@ function mino.gameUpdate(dt)
                 local m=0
                 while OP.DTimer>=ctrl.SD_ASD and not coincide(OP,0,-1) do
                     m=m+1
-                    mino.operate.SD1H(OP,ctrl.SD_ASP~=0 or m==1)
+                    mino.operate.SD(OP,ctrl.SD_ASP~=0 or m==1)
                     OP.DTimer=OP.DTimer-ctrl.SD_ASP
                 end
                 mino.setAnimPrePiece(OP)
@@ -1084,7 +1104,7 @@ function mino.gameUpdate(dt)
                         local m=0
                         while OP.DTimer>=ctrl.SD_ASD and not coincide(OP,0,-1) do
                             m=m+1
-                            mino.operate.SD1H(OP,ctrl.SD_ASP~=0 or m==1)
+                            mino.operate.SD(OP,ctrl.SD_ASP~=0 or m==1)
                             OP.DTimer=OP.DTimer-ctrl.SD_ASP
                         end
                     end
@@ -1115,7 +1135,7 @@ function mino.gameUpdate(dt)
                         local m=0
                         while OP.DTimer>=ctrl.SD_ASD and not coincide(OP,0,-1) do
                             m=m+1
-                            mino.operate.SD1H(OP,ctrl.SD_ASP~=0 or m==1)
+                            mino.operate.SD(OP,ctrl.SD_ASP~=0 or m==1)
                             OP.DTimer=OP.DTimer-ctrl.SD_ASP
                         end
                     end
@@ -1176,7 +1196,7 @@ function mino.gameUpdate(dt)
             if coincide(P[i],0,-1) then P[i].LTimer=P[i].LTimer+dt P[i].FTimer=0 else
                 P[i].FTimer=P[i].FTimer+dt+remainTime remainTime=0
                 while P[i].FTimer>=P[i].FDelay and not coincide(P[i],0,-1) do
-                    mino.operate.SD1H(P[i],false)
+                    mino.operate.fall(P[i],false)
                     P[i].FTimer=P[i].FTimer-P[i].FDelay
                 end
             end
@@ -1342,14 +1362,15 @@ function mino.draw()
                 --投影
                 mino.blockSkin.ghostDraw(P[i],C.piece,C.x,P[i].cur.ghostY,mino.color[C.name],mino.texType[C.name])
                 --手上拿的
+                local f=(mino.smoothFallType==2 and (P[i].FDelay==0 and 0 or P[i].FTimer/P[i].FDelay) or 0)
                 if mino.smoothAnimAct then
                     mino.setAnimDrawPiece(P[i])
-                    mino.blockSkin.curDraw(P[i],A.drawPiece,0,0,mino.color[C.name],mino.texType[C.name])
+                    mino.blockSkin.curDraw(P[i],A.drawPiece,0,-f,mino.color[C.name],mino.texType[C.name])
                 else mino.blockSkin.curDraw(P[i],C.piece,C.x,C.y,mino.color[C.name],mino.texType[C.name]) end
                 if mino.showRotationCenter then
                     gc.setColor(1,1,1)
                     if mino.smoothAnimAct then
-                        gc.rectangle('fill',36*A.drawCenter[1]-3,-36*A.drawCenter[2]-3,6,6)
+                        gc.rectangle('fill',36*A.drawCenter[1]-3,-36*(A.drawCenter[2]-f)-3,6,6)
                         --gc.setColor(1,1,1,.4)
                         --gc.rectangle('fill',36*C.x-3,-36*C.y-3,6,6)
                     else gc.rectangle('fill',36*C.x-3,-36*C.y-3,6,6) end

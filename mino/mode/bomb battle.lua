@@ -130,16 +130,22 @@ function rule.onNextGen(player,nextStart,mino)
     end
 end
 local efftxt
+local fw=font.JB:getWidth("ABCDEFG")/2
 function rule.underFieldDraw(player)
     gc.setColor(1,1,1)
-    efftxt=(player.gameTimer==0 and "0.00" or string.format("%.2f",player.stat.block/player.gameTimer)).." PPS"
-    gc.printf(efftxt,font.JB_L,-18*player.w-28,18*player.h-176,2000,'right',0,.25,.25,2000,font.height.JB_L/2)
-    efftxt=(player.gameTimer==0 and "0.0" or string.format("%.1f",player.atk/player.gameTimer*60)).." APM"
-    gc.printf(efftxt,font.JB_L,-18*player.w-28,18*player.h-136,2000,'right',0,.25,.25,2000,font.height.JB_L/2)
-    efftxt=(player.gameTimer==0 and "0.0" or string.format("%.1f",(player.atk+player.garbageClear)/player.gameTimer*100)).." VS."
-    gc.printf(efftxt,font.JB_L,-18*player.w-28,18*player.h-96,2000,'right',0,.25,.25,2000,font.height.JB_L/2)
-    efftxt=(player.stat.block==0 and "0.00" or string.format("%.2f",player.atk/player.stat.block)).." APP"
-    gc.printf(efftxt,font.JB_L,-18*player.w-28,18*player.h-56,2000,'right',0,.25,.25,2000,font.height.JB_L/2)
+    efftxt=(player.gameTimer==0 and "0.00" or string.format("%.2f",player.stat.block/player.gameTimer))
+    gc.printf(efftxt,font.JB,-18*player.w-28-fw*.2,18*player.h-176,2000,'right',0,.25,.25,2000,font.height.JB/2)
+    efftxt=(player.gameTimer==0 and "0.0" or string.format("%.1f",player.atk/player.gameTimer*60))
+    gc.printf(efftxt,font.JB,-18*player.w-28-fw*.2,18*player.h-136,2000,'right',0,.25,.25,2000,font.height.JB/2)
+    efftxt=(player.gameTimer==0 and "0.0" or string.format("%.1f",(player.atk+player.garbageClear)/player.gameTimer*100))
+    gc.printf(efftxt,font.JB,-18*player.w-28-fw*.2,18*player.h-96,2000,'right',0,.25,.25,2000,font.height.JB/2)
+    efftxt=(player.stat.block==0 and "0.00" or string.format("%.2f",player.atk/player.stat.block))
+    gc.printf(efftxt,font.JB,-18*player.w-28-fw*.2,18*player.h-56,2000,'right',0,.25,.25,2000,font.height.JB/2)
+
+    gc.printf("PPS",font.JB,-18*player.w-28,18*player.h-172,2000,'right',0,.2,.2,2000,font.height.JB/2)
+    gc.printf("APM",font.JB,-18*player.w-28,18*player.h-132,2000,'right',0,.2,.2,2000,font.height.JB/2)
+    gc.printf("VS.",font.JB,-18*player.w-28,18*player.h-92,2000,'right',0,.2,.2,2000,font.height.JB/2)
+    gc.printf("APP",font.JB,-18*player.w-28,18*player.h-52,2000,'right',0,.2,.2,2000,font.height.JB/2)
 end
 function rule.overFieldDraw(player,mino)
     if player==mino.player[2] then

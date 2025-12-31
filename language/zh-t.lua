@@ -127,12 +127,13 @@ return {
         custom={
             texture="方塊材質",color="方塊配色...",
             RS="旋轉系統",
-            smooth="平滑運動",
+            smooth="方塊緩動",
+            fallAnimType="重力緩動類型",
             smoothTime="動畫時長",
             rotationCenter="顯示旋轉中心",
             boardBounce="版面晃动...",
             theme="版面風格",
-            scale="版面縮放",scaleTxt="單元方塊大小：",
+            scale="版面縮放",
             sfx="音效包",sfxWarning={
                 otto="此音效包包含音量過大內容，謹慎選擇。"
             },

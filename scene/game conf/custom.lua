@@ -6,14 +6,32 @@ local block=require'mino/blocks'
 local BUTTON,SLIDER=scene.button,scene.slider
 
 local blockSkinList={'glossy','glass','metal','pure','carbon fibre','classic','wheelchair'}
+local skinFuncList={}
+for k,v in pairs(blockSkinList) do
+    skinFuncList[v]=require('skin/block/'..v)
+end
+
+local defaultColor={
+    Z={.9,.15,.3},S={.45,.9,0},J={0,.6,.9},L={.9,.6,.3},T={.75,.18,.9},O={.9,.9,0},I={.15,.9,.67},
+    g1={.5,.5,.5},g2={.75,.75,.75},
+}
+local blockDraw={'Z','S','J','L','T','O','I','g1','g2',}
 local themeList={'simple'}
 local sfxList={'plastic_v2','plastic','krystal','meme','otto',--[['LexNinja']]}
 local RSList={'SRS','AqRS'}
 function custom.read()
-    custom.info={block='glossy',theme='simple',sfx='plastic',RS='SRS',smoothAnimAct=false,rotationCenter=false,smoothTime=.05,fieldScale=1}
-    custom.color={}
+    custom.info={block='glossy',theme='simple',sfx='plastic',RS='SRS',smoothAnimAct=false,smoothFallType=1,rotationCenter=false,smoothTime=.05,fieldScale=1}
     local info=file.read('conf/custom')
     T.combine(custom.info,info)
+
+    custom.color={}
+    custom.color=myTable.copy(defaultColor)
+    local c=file.read('conf/mino color')
+    myTable.combine(custom.color,c)
+
+    custom.texType={}
+    if fs.getInfo('conf/mino textype') then T.combine(custom.texType,file.read('conf/mino textype'))
+    end
 end
 function custom.save()
     file.save('conf/custom',custom.info)
@@ -21,10 +39,10 @@ end
 custom.seTxt={texture={},RS={},theme={},sfx={},scale={}}
 custom.smslTxt={}--平滑运动滑块文本
 custom.smTxt={}--平滑运动勾选框文本
+custom.smfTxt={}--重力运动按钮文本
 custom.rcTxt={}--旋转中心勾选框文本
 custom.csTxt={}--方块颜色按钮文本
 custom.bbTxt={}--版面晃动按钮文本
-custom.sTxt={}--版面缩放说明文本
 custom.titleTxt={txt=gc.newText(font.Bender)}
 local tt
 function custom.init()
@@ -66,6 +84,11 @@ function custom.init()
     sm.w,sm.h=sm.txt:getDimensions()
     sm.s=min(288/sm.w,1/3)
 
+    local smf=custom.smfTxt
+    smf.txt=gc.newText(font.Bender,cfc.fallAnimType)
+    smf.w,smf.h=smf.txt:getDimensions()
+    smf.s=min(60/smf.h,min(270/smf.w,.3125))
+
     local rc=custom.rcTxt
     rc.txt=gc.newText(font.Bender_B,cfc.rotationCenter)
     rc.w,rc.h=rc.txt:getDimensions()
@@ -84,9 +107,6 @@ function custom.init()
     custom.RSOrder=T.include(RSList,custom.info.RS) or 1
     custom.tOrder=T.include(themeList,custom.info.theme) or 1
     custom.sOrder=T.include(sfxList,custom.info.sfx) or 1
-
-    custom.sTxt.txt=gc.newText(font.Bender_B,cfc.scaleTxt)
-    custom.sTxt.w,custom.sTxt.h=custom.sTxt.txt:getDimensions()
 
     BUTTON.create('quit',{
         x=-700,y=400,type='rect',w=200,h=100,
@@ -343,11 +363,15 @@ function custom.init()
             end
             gc.setColor(1,1,1)
             gc.printf(("%.2f"):format(sz),font.Bender,0,0,1280,'center',0,.45,.45,640,font.height.Bender/2)
-            gc.setColor(1,1,1,.75)
-            gc.draw(custom.sTxt.txt,-w/2,h/2+36,0,.25,.25,0,custom.sTxt.h/2)
-            local bsz=36*custom.info.fieldScale
-            gc.setLineWidth(3)
-            gc.rectangle('line',-w/2+.25*custom.sTxt.w+16,h/2+36-bsz/2,bsz,bsz)
+            gc.push()
+            gc.translate(0,50)
+            gc.scale(custom.info.fieldScale)
+            local sk=blockSkinList[custom.bOrder]
+            for i=1,#blockDraw do
+                local bd=blockDraw[i]
+                skinFuncList[sk].unitDraw(nil,i-#blockDraw/2-.5,-.5,custom.color[bd],1,custom.texType[sk][bd])
+            end
+            gc.pop()
         end,
         event=function(x,y,bt)
             local success=false
@@ -417,8 +441,42 @@ function custom.init()
             sfx.play(custom.info.smoothAnimAct and 'cOn' or 'cOff')
         end
     },.2)
+    BUTTON.create('fallAnimType',{
+        x=140,y=-80,type='rect',w=120,h=40,success=false,
+        draw=function(bt,t,ct,cp)
+            if not custom.info.smoothAnimAct then return end
+            local o=custom.info.smoothFallType
+            local w,h=bt.w,bt.h
+            if bt.success then local a=1-6*ct
+                gc.setColor(1,1,1,a)
+                gc.setLineWidth(3)
+                local off=h/2*(1-a)
+                if cp[1]<0 then gc.line(-(w-h)/2-off,h/2,-w/2-off,0,-(w-h)/2-off,-h/2)
+                else gc.line((w-h)/2+off,h/2,w/2+off,0,(w-h)/2+off,-h/2)
+                end
+            end
+            gc.setColor(1,1,1)
+            gc.draw(smf.txt,-340,0,0,smf.s,smf.s,0,smf.h/2)
+            gc.setLineWidth(3)
+            if o>1 then gc.line(-(w-h)/2,h/2-4,-w/2+4,0,-(w-h)/2,-h/2+4) end
+            if o<2 then gc.line( (w-h)/2,h/2-4, w/2-4,0, (w-h)/2,-h/2+4) end
+            gc.setColor(1,1,1)
+            gc.printf(custom.info.smoothFallType,font.Bender,0,0,1280,'center',0,.4,.4,640,font.height.Bender/2)
+        end,
+        event=function(x,y,bt)
+            if not custom.info.smoothAnimAct then return end
+            local success=false
+            if x<0 then
+                if custom.info.smoothFallType>1 then custom.info.smoothFallType=custom.info.smoothFallType-1 success=true end
+            elseif custom.info.smoothFallType<2 then custom.info.smoothFallType=custom.info.smoothFallType+1 success=true
+            end
+            bt.success=success
+            if success then sfx.play('optionSwitch') end
+        end
+    },.2)
+
     SLIDER.create('smoothAnimTime',{
-        x=0,y=-280,type='hori',sz={400,32},button={32,32},
+        x=0,y=-240,type='hori',sz={400,32},button={32,32},
         gear=0,pos=(custom.info.smoothTime-1/30)*15,
         sliderDraw=function(g,sz)
             if custom.info.smoothAnimAct then

@@ -128,12 +128,13 @@ return {
         custom={
             texture="方块材质",color="方块配色...",
             RS="旋转系统",
-            smooth="平滑运动",
+            smooth="方块缓动",
             smoothTime="动画时长",
+            fallAnimType="重力缓动类型",
             rotationCenter="显示旋转中心",
             boardBounce="版面晃动...",
             theme="版面风格",
-            scale="版面缩放",scaleTxt="单格方块大小",
+            scale="版面缩放",
             sfx="音效包",sfxWarning={
                 otto="该音效包包含音量过大内容，谨慎选择。"
             },

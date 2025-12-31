@@ -129,12 +129,13 @@ return {
         custom={
             texture="Block texture",color="Color adjust...",
             RS="Rotation system",
-            smooth="Smooth move",
-            smoothTime="Time",
+            smooth="Block easing",
+            smoothTime="Ease time",
+            fallAnimType="Gravity ease type",
             rotationCenter="Rotation center",
             boardBounce="Board bounce...",
             theme="Board theme",
-            scale="Board scale",scaleTxt="Cell size",
+            scale="Board scale",
             sfx="SFX pack",sfxWarning={
                 otto="LOUD SOUND WARNING. USE AT YOUR OWN RISK."
             },

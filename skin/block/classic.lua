@@ -54,10 +54,10 @@ end
 function skin.afterPieceDrop(player)
     if player.history.line==0 then player.laTimer=0 end
 end
-function skin.unitDraw(player,x,y,clr,alpha)
+function skin.unitDraw(player,x,y,clr,alpha,texType)
     setColor(clr[1],clr[2],clr[3],clr[4] or alpha or 1)
     setShader(skin.sd)
-    draw(skin.pic[mino.texType[F[y][x].name]],36*x,-36*y,0,36/skinsz,36/skinsz,skinsz/2,skinsz/2)
+    draw(skin.pic[texType],36*x,-36*y,0,36/skinsz,36/skinsz,skinsz/2,skinsz/2)
     setShader()
 end
 function skin.fieldDraw(player,mino)
