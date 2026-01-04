@@ -410,7 +410,7 @@ mino.operate={
 
         if playSFX and mino.sfxPlay.move then mino.sfxPlay.move(OP,success,landed,fLib.getSourcePos(OP,mino.stereo,'cur')) end
     end,
-    rotateCW=function(OP,playSFX)--顺时针旋转
+    rotateCW=function(OP,playSFX,enableFailSFX)--顺时针旋转
         landed=coincide(OP,0,-1)
         mino.setAnimPrePiece(OP)
         C=OP.cur
@@ -425,7 +425,7 @@ mino.operate={
             else C.spin,C.mini=false,false end
         end
 
-        if playSFX and mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,C.spin,fLib.getSourcePos(OP,mino.stereo,'cur')) end
+        if playSFX and (C.kickOrder or enableFailSFX) and mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,C.spin,fLib.getSourcePos(OP,mino.stereo,'cur')) end
 
         --版面晃动
         if C.kickOrder and C.spin then
@@ -433,7 +433,7 @@ mino.operate={
         end
     end,
 
-    rotateCCW=function(OP,playSFX)--顺时针旋转
+    rotateCCW=function(OP,playSFX,enableFailSFX)--顺时针旋转
         landed=coincide(OP,0,-1)
         mino.setAnimPrePiece(OP)
         C=OP.cur
@@ -448,14 +448,14 @@ mino.operate={
             else C.spin,C.mini=false,false end
         end
 
-        if playSFX and mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,C.spin,fLib.getSourcePos(OP,mino.stereo,'cur')) end
+        if playSFX and (C.kickOrder or enableFailSFX) and mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,C.spin,fLib.getSourcePos(OP,mino.stereo,'cur')) end
 
         --版面晃动
         if C.kickOrder and C.spin then
             OP.boardOffset.angvel=OP.boardOffset.angvel-mino.boardBounce.spinAngvel
         end
     end,
-    rotate180=function(OP,playSFX)--180°旋转
+    rotate180=function(OP,playSFX,enableFailSFX)--180°旋转
         landed=coincide(OP,0,-1)
         mino.setAnimPrePiece(OP)
         C=OP.cur
@@ -470,7 +470,7 @@ mino.operate={
             else C.spin,C.mini=false,false end
         end
 
-        if playSFX and mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,C.spin,fLib.getSourcePos(OP,mino.stereo,'cur')) end
+        if playSFX and (C.kickOrder or enableFailSFX) and mino.sfxPlay.rotate then mino.sfxPlay.rotate(OP,C.kickOrder,C.spin,fLib.getSourcePos(OP,mino.stereo,'cur')) end
     end,
 
     HD=function(OP,isStacker)--硬降
@@ -945,9 +945,9 @@ function mino.inputPress(k)
 
                 if     k=='ML'   then mino.operate.ML(OP,true)
                 elseif k=='MR'   then mino.operate.MR(OP,true)
-                elseif k=='CW'   then mino.operate.rotateCW(OP,true)
-                elseif k=='CCW'  then mino.operate.rotateCCW(OP,true)
-                elseif k=='flip' then mino.operate.rotate180(OP,true)
+                elseif k=='CW'   then mino.operate.rotateCW(OP,true,true)
+                elseif k=='CCW'  then mino.operate.rotateCCW(OP,true,true)
+                elseif k=='flip' then mino.operate.rotate180(OP,true,true)
                 elseif k=='HD'   then mino.operate.HD(OP,true)
                 elseif k=='SD'   then mino.operate.SD(OP,true)
                 elseif k=='hold' and OP.canHold then mino.operate.hold(OP,true)
@@ -1067,6 +1067,7 @@ function mino.gameUpdate(dt)
         for k,f in pairs(rotateKey) do
             if not C.kickOrder and S.recentRotateInput==k and S.keyDown[S.recentRotateInput] then
                 mino.operate[f](OP,true)
+                if mino.blockSkin.keyP then mino.blockSkin.keyP(OP,k,mino) end
             end
         end
         --长按移动键
