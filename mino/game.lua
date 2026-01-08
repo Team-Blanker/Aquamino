@@ -544,7 +544,6 @@ mino.operate={
                 A.prePiece[i][2]=A.prePiece[i][2]-f
             end
             A.preCenter[2]=A.preCenter[2]-f
-            print(123)
         end
         mino.sfxPlay.touch(OP,coincide(OP,0,-1),fLib.getSourcePos(OP,mino.stereo,'cur'))
     end,
@@ -1194,6 +1193,7 @@ function mino.gameUpdate(dt)
                 rem(P[i].event,1) rem(P[i].event,1)
             end
         elseif S.winState==0 and P[i].deadTimer<0 then
+            --方块掉落
             if coincide(P[i],0,-1) then P[i].LTimer=P[i].LTimer+dt P[i].FTimer=0 else
                 P[i].FTimer=P[i].FTimer+dt+remainTime remainTime=0
                 while P[i].FTimer>=P[i].FDelay and not coincide(P[i],0,-1) do
@@ -1201,7 +1201,8 @@ function mino.gameUpdate(dt)
                     P[i].FTimer=P[i].FTimer-P[i].FDelay
                 end
             end
-            if P[i].LTimer>P[i].LDelay then
+            --方块自然锁定
+            if P[i].LTimer>=P[i].LDelay then
                 local die
                 if C.piece and #C.piece~=0 then
                     his.dropHeight=0

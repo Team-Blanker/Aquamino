@@ -39,7 +39,7 @@ function rule.init(P,mino,modeInfo)
     mino.musInfo=songInfoList[songCs]
 
     mino.rule.allowSpin={Z=true,S=true,J=true,L=true,T=true,O=true,I=true,}
-    mino.rule.spinType='noMini'
+    mino.rule.spinType='default'
 
     --mino.seqGenType='bagp1FromBag'
     mino.seqSync=true

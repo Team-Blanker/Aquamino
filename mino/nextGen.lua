@@ -50,6 +50,22 @@ function GenShin.bagp1FromBag(bag,player,buffer)
         table.insert(player.next,new[i])
     end
 end
+function GenShin.bagpX(bag,player,buffer)
+    if (not buffer.bag) then buffer.bag=T.copy(bag) buffer.count=0 end
+
+    local new=myTable.shuffle(bag)
+    for i=1,max(3-buffer.count,1) do
+        if #buffer.bag~=0 then
+            local piece=table.remove(buffer.bag,rand(#buffer.bag)) --print(piece)
+            local pos=rand(#new+1)
+            table.insert(new,pos,piece)
+        end
+    end
+    for i=1,#new do
+        table.insert(player.next,new[i])
+    end
+    buffer.count=buffer.count+1
+end
 function GenShin.pairs(bag,player)
     local cb=T.copy(bag)
     local a,b=rem(cb,rand(#cb)),rem(cb,rand(#cb))

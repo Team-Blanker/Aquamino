@@ -38,7 +38,7 @@ function rule.init(P,mino,modeInfo)
 
     mino.musInfo=songInfoList[songCs]
 
-    --mino.seqGenType='bagp1FromBag'
+    --mino.seqGenType='bagpX'
     mino.seqSync=true
     P[1].atk=0
     P[1].garbageClear=0
