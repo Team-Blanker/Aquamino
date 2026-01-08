@@ -907,7 +907,7 @@ function mino.inputPress(k)
         C,A=OP.cur,OP.smoothAnim
         if OP.deadTimer<0 and S.winState==0 then
             if OP.event[1] then--提前操作
-                print(S.ctrl.IHS)
+                --print(S.ctrl.IHS)
                 if S.ctrl.IHS.tap and k=='hold' and OP.canInitHold then
                     OP.initOpQueue[#OP.initOpQueue+1]='initHold'
                     OP.canInitHold=false

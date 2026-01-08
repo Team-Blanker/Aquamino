@@ -103,7 +103,7 @@ function rule.init(P,mino)
     P[1].nextLaserList={{'s','destroy',rand(2)==1 and 1 or P[1].w}}
     P[1].eventBeat=0
     P[1].beat=0
-    P[1].garbageTimer,P[1].garbageTMax=3,3
+    P[1].garbageBeatTimer,P[1].garbageTMax=7,7
 
     rule.laserIndex1=rand(12)
     rule.laserIndex2=rand(8)
@@ -168,7 +168,7 @@ function rule.onPieceDrop(player,mino)
         end
     end
 
-    player.garbageTimer=player.garbageTMax
+    player.garbageBeatTimer=player.garbageTMax
 end
 function rule.onLineClear(player,mino)
     local l,c=player.history.line,player.history.combo
@@ -189,8 +189,11 @@ function rule.onLineClear(player,mino)
     for i=1,#progressAct do
         if player.point<progressAct[i][1] then player.laserLv=i break end
     end
+    if player.point>=400 then
+        player.garbageTMax=0
+    end
     if player.point>=300 then
-        player.garbageTMax=max(3-(player.point-300)*.05,.1)
+        player.garbageTMax=max(8-(player.point-300)/10,1)
     end
 end
 
@@ -205,10 +208,10 @@ end
 local BPM,offset=128,0
 local mb={0,0,0,0,0}
 function rule.update(player,dt,mino)
-    if not player.event[1] then player.garbageTimer=player.garbageTimer-dt end
     local beat=(player.gameTimer+offset)*BPM/60
     if beat-1>=player.beat then
         player.beat=player.beat+1 player.eventBeat=player.eventBeat+1
+        player.garbageBeatTimer=player.garbageBeatTimer-1
         for i=1,5 do mb[i]=rand(0,1) end
 
         if player.eventBeat>=(player.laserList and player.laserList.beat or progressAct[player.laserLv][2]) then
@@ -216,10 +219,10 @@ function rule.update(player,dt,mino)
             player.nextLaserList=progressAct[player.laserLv][3](player)
             player.eventBeat=player.eventBeat%progressAct[player.laserLv][2]
         end
-        if player.garbageTimer<=0 then
+        if player.garbageBeatTimer<0 then
             fLib.garbage(player,'g1',1,rand(player.w))
             fLib.garbage(player,'g1',1,rand(player.w))
-            player.garbageTimer=player.garbageTMax
+            player.garbageBeatTimer=player.garbageTMax
             sfx.play('forceGarbage')
         end
     end
@@ -255,9 +258,8 @@ function rule.underFieldDraw(player)
     gc.setLineWidth(7)
     gc.line(-player.w*18-170,0,-player.w*18-50,0)
 
-    if player.garbageTimer<=0 then setColor(1,0,0) else setColor(1,1,1) end
-    gc.setLineWidth(40)
-    gc.arc('line','open',0,0,450,-math.pi/2,(min(1-player.garbageTimer/player.garbageTMax,1)-.25)*2*math.pi,72)
+    if player.garbageBeatTimer<=0 then setColor(1,0,0) else setColor(1,1,1) end
+    gc.printf(user.lang.rule.laser.punish,font.JB,player.w*18+20,player.h*18,2048,'left',-math.pi/2,3/16,3/16,0,0)
 end
 function rule.underStackDraw(player)
     setColor(1,1,1,.05)
@@ -280,6 +282,10 @@ function rule.overFieldDraw(player,mino)
 
     local list,nList,aList=player.laserList,player.nextLaserList,player.animLaserList
     W,H=36*player.w,36*player.h
+
+    if player.garbageBeatTimer<=0 then setColor(1,0,0) else setColor(.5,0,0) end
+    local h=player.h*36*min(1-player.garbageBeatTimer/player.garbageTMax,1)
+    gc.rectangle('fill',player.w*18+2,18*player.h-h,16,h)
 
     gc.translate(-18*player.w,18*player.h)--绘制原点移至场地左下角
     for i=1,#list do

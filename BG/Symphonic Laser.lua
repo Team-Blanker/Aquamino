@@ -8,7 +8,7 @@ local offset=0
 local loopStartBeat=96
 local loopBeatLen=200
 
-local flore,ceil,max,min=math.floor,math.ceil,math.max,math.min
+local floor,ceil,max,min=math.floor,math.ceil,math.max,math.min
 
 local rect,setColor=gc.rectangle,gc.setColor
 
@@ -39,12 +39,12 @@ local function diamondPos(sz,p)
 end
 function bg.draw()
     if bg.time==0 then return end
-    beat=(offset+bg.time)*BPM/60 intBeat=flore(beat)
+    beat=(offset+bg.time)*BPM/60 intBeat=floor(beat)
 
     if beat<64 then
         if beat>=16 then
             local m=beat%4*4
-            if flore(beat)~=31 then
+            if floor(beat)~=31 then
             for i=0,7 do
                 if i<=m%8-1 then
                 setColor(1,1,1,.06+.02*i)
@@ -53,8 +53,8 @@ function bg.draw()
                 end
             end
             setColor(1,1,1,.2+.4*(beat>60 and 1-beat%.25*4 or beat>56 and 1-beat%.5*2 or beat>=48 and (1-beat%1) or 0))
-            rect('fill',m<8 and -960 or 0,-540+flore(m%8)*120,960,120)
-            rect('fill',m<8 and 0 or -960,420-flore(m%8)*120,960,120)
+            rect('fill',m<8 and -960 or 0,-540+floor(m%8)*120,960,120)
+            rect('fill',m<8 and 0 or -960,420-floor(m%8)*120,960,120)
             end
         end
 
@@ -88,19 +88,19 @@ function bg.draw()
         rect('fill',-960,-540,1920,1080)
         for i=-7,0 do
             if beat+i/8>=80 then
-            local m=flore(beat*4+i)%16
+            local m=floor(beat*4+i)%16
             setColor(1,1,1,.2+i*.05)
             rect('fill',-960+120*m,-540,120,1080)
             rect('fill',840-120*m,-540,120,1080)
             end
         end
     else--进入循环
-        loopBeat=(beat-loopStartBeat)%200 intLoopBeat=flore(loopBeat)
+        loopBeat=(beat-loopStartBeat)%200 intLoopBeat=floor(loopBeat)
         if loopBeat<44 then
             setColor(1,1,1,.25*(1-loopBeat)) rect('fill',-960,-540,1920,1080)
 
             for i=-7,0 do
-                local m=flore(beat*4+i)%16
+                local m=floor(beat*4+i)%16
                 setColor(1,1,1,.2+i*.05)
                 rect('fill',-960+120*m,-540,120,1080)
                 rect('fill',840-120*m,-540,120,1080)
@@ -108,34 +108,34 @@ function bg.draw()
 
             for i=-4,0 do
                 if loopBeat+i/4>=0 then
-                local m=math.abs(8-flore(loopBeat*4+i)%16)
+                local m=math.abs(8-floor(loopBeat*4+i)%16)
                 setColor(1,1,1,.2+i*.05)
                 rect('fill',-960,-540+120*m,1920,120)
                 end
             end
-            if loopBeat>=16 and loopBeat<40 then --local sz=flore(loopBeat%8)+1
-                setColor(1,1,1,.1+.025*(intLoopBeat%8+1)*(1-loopBeat%1))
+            if loopBeat>=16 and loopBeat<40 then --local sz=floor(loopBeat%8)+1
+                setColor(1,1,1,.1+.025*(intLoopBeat%8==7 and 8 or 2)*(1-loopBeat%1*2))
                 --rect('fill',-sz*120,-540,sz*240,1080)
                 rect('fill',-960,-540,1920,1080)
             end
         elseif loopBeat<48 then
-            setColor(1,1,1,.2*max(1-.55*flore((loopBeat-44)*3)/5,.45)+.02*max(flore((loopBeat-46)*4/3+1),0))
-            local m=min(flore((loopBeat-44)*3),6)
+            setColor(1,1,1,.2*max(1-.55*floor((loopBeat-44)*3)/5,.45)+.02*max(floor((loopBeat-46)*4/3+1),0))
+            local m=min(floor((loopBeat-44)*3),6)
             rect('fill',-960,420-m*192,1920,120+m*192)
-            local s=max(flore((loopBeat-46)*4/3+1),0)
+            local s=max(floor((loopBeat-46)*4/3+1),0)
             setColor(1,1,1,.1*s)
             --local sz=(4-s)*120
             rect('fill',-840+120*s,-60,120,120) rect('fill',720-120*s,-60,120,120)
         elseif loopBeat<152 then
             setColor(1,1,1,.25*(49-loopBeat)) rect('fill',-960,-540,1920,1080)
-            setColor(0,1,.5,.15) rect('fill',-960,-540,1920,1080)
+            setColor(0,1,.75,.15) rect('fill',-960,-540,1920,1080)
 
             if loopBeat<140 then
                 if loopBeat>=76 and loopBeat<80 then
                     setColor(1,1,1,.8*(77-loopBeat))
                     rect('fill',-960,-60,1920,120) rect('fill',-60,-540,120,1080)
 
-                    local m=14-flore(loopBeat%4*3)
+                    local m=14-floor(loopBeat%4*3)
                     setColor(1,1,1,.08*(12-m)/8)
                     for i=-m,m do
                         if i==-m or i==m then rect('fill',-60+120*i,-60,120,120)
@@ -147,17 +147,17 @@ function bg.draw()
                 elseif loopBeat>=108 and loopBeat<112 then
                     local m=loopBeat%4-1
                     setColor(1,1,1,.5)
-                    rect('fill',-540,-1620+1080*flore(m*9)/9,120,1080)
-                    rect('fill', 420,  540-1080*flore(m*9)/9,120,1080)
-                    rect('fill',-1620+1080*flore(m*9)/9, 420,1080,120)
-                    rect('fill',  540-1080*flore(m*9)/9,-540,1080,120)
-                else local m=flore(loopBeat*8%8+1)
+                    rect('fill',-540,-1620+1080*floor(m*9)/9,120,1080)
+                    rect('fill', 420,  540-1080*floor(m*9)/9,120,1080)
+                    rect('fill',-1620+1080*floor(m*9)/9, 420,1080,120)
+                    rect('fill',  540-1080*floor(m*9)/9,-540,1080,120)
+                else local m=floor(loopBeat*8%8+1)
                 setColor(1,1,1,.3*(9-m)/8)
                 rect('fill',-960,-540,120*m,1080)
                 rect('fill',960-120*m,-540,120*m,1080)
 
                 if loopBeat%8>=7 then
-                    local n=flore(loopBeat%1*16)
+                    local n=floor(loopBeat%1*16)
                     setColor(1,1,1,.2)
                     for i=1,7 do
                         rect('fill',-960+(i+n)%2*120,-540+120*(i+n-8),120,120)
@@ -173,13 +173,13 @@ function bg.draw()
             for i=1,3 do
                 if loopBeat-i/3>48 then
                 setColor(1,1,1,.1*(4-i))
-                local x,y=diamondPos(3,flore(beat*3%12)-i)
+                local x,y=diamondPos(3,floor(beat*3%12)-i)
                 rect('fill',120*x-60,-120*y-60,120,120)
                 rect('fill',-120*x-60,120*y-60,120,120)
                 end
             end
             setColor(1,1,1,.4+.4*max(1.5-beat%1*3,0))
-            local x,y=diamondPos(3,flore(beat*3%12))
+            local x,y=diamondPos(3,floor(beat*3%12))
             rect('fill',120*x-60,-120*y-60,120,120)
             rect('fill',-120*x-60,120*y-60,120,120)
             setColor(1,1,1,.8*(1-beat%1*1.5))
@@ -199,7 +199,7 @@ function bg.draw()
             rect('fill',-960,-60,660,120) rect('fill', 300,-60,660,120)
             setColor(1,1,1,.25*(153-loopBeat)) rect('fill',-960,-540,1920,1080)
 
-            local m=flore(loopBeat%4*4)
+            local m=floor(loopBeat%4*4)
             setColor(1,1,1,loopBeat<168 and .1 or .1+.025*m)
             for i=-m,m do
                 if i==-m or i==m then rect('fill',-60+120*i,-60,120,120)
@@ -215,7 +215,7 @@ function bg.draw()
 
             for i=-7,0 do
                 if loopBeat+i/8>=184 then
-                local m=flore(beat*4+i)%32
+                local m=floor(beat*4+i)%32
                 setColor(1,1,1,.2+i*.05)
                 rect('fill',-960+120*m,-540,120,1080)
                 rect('fill',840-120*m,-540,120,1080)
@@ -223,5 +223,6 @@ function bg.draw()
             end
         end
     end
+    --gc.setColor(1,1,1) gc.printf(floor(beat),font.JB,0,420,800,'center',0,.625,.625,400,84)
 end
 return bg
