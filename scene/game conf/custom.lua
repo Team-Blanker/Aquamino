@@ -406,7 +406,7 @@ function custom.init()
             gc.setColor(r,g,b,2*t)
             gc.rectangle('fill',-w/2,-h/2,h,h)
             gc.setColor(1,1,1)
-            gc.draw(rc.txt,w/2+16,0,0,rc.s,rc.s,0,rc.h/2)
+            gc.draw(rc.txt,w/2+20,0,0,rc.s,rc.s,0,rc.h/2)
         end,
         event=function()
             custom.info.rotationCenter=not custom.info.rotationCenter
@@ -434,7 +434,7 @@ function custom.init()
             gc.setColor(r,g,b,2*t)
             gc.rectangle('fill',-w/2,-h/2,h,h)
             gc.setColor(1,1,1)
-            gc.draw(sm.txt,w/2+16,0,0,sm.s,sm.s,0,sm.h/2)
+            gc.draw(sm.txt,w/2+20,0,0,sm.s,sm.s,0,sm.h/2)
         end,
         event=function()
             custom.info.smoothAnimAct=not custom.info.smoothAnimAct
@@ -486,7 +486,7 @@ function custom.init()
             gc.draw(st.txt,-210,-24,0,st.s,st.s,0,st.h)
             st.numTxt:clear()
             st.numTxt:add(string.format(":%3.0fms",custom.info.smoothTime*1000))
-            gc.draw(st.numTxt,-210+st.ow,-24,0,.3125,.3125,0,st.h)
+            gc.draw(st.numTxt,-210+st.ow,-24,0,1/3,1/3,0,st.h)
             end
         end,
         buttonDraw=function(pos,sz)

@@ -109,6 +109,12 @@ function skin.curDraw(player,piece,x,y,color,tex)
         draw(skin.curPic[tex],36*(x+piece[i][1]),-36*(y+piece[i][2]),0,36/skinsz,36/skinsz,skinsz/2,skinsz/2)
     end
     setShader()
+    if player.cur.spin then
+    for i=1,#piece do
+        setColor(1,1,1,.5*(1-player.skinSpinTimer/.25))
+        rect('fill',-18+36*(x+piece[i][1]),-18-36*(y+piece[i][2]),36,36)
+    end
+    end
 end
 function skin.AscHoldDraw(player,piece,x,y,color,tex)
 end

@@ -6,6 +6,7 @@ local menu={modeKey=1,sAnimTMax=.15}
 
 local bso=require'mino/bestScoreOrder'
 
+local rulebookIcon=gc.newImage('pic/UI/sign/rulebook.png')
 local setIcon1,setIcon2=gc.newCanvas(120,120),gc.newCanvas(120,120)
 local aboutIcon=gc.newCanvas(120,120)
 gc.translate(60,60)
@@ -188,14 +189,16 @@ function menu.init()
             })
         end
     },.2)
-    BUTTON.create('nothing',{
+    BUTTON.create('rulebook',{
         x=960,y=540,type='diamond',r=225,
         draw=function(bt,t)
-            gc.setColor(.5,.5,.5,.3)
+            gc.setColor(.5,.5,.5,.3+t)
             gc.circle('fill',0,0,bt.r,4)
             gc.setColor(.8,.8,.8)
             gc.setLineWidth(5)
             gc.circle('line',0,0,bt.r,4)
+            gc.setColor(1,1,1)
+            gc.draw(rulebookIcon,0,0,0,1,1,120,120)
         end,
         event=function()
         end
@@ -354,7 +357,7 @@ gc.circle('fill',150,150,140,4)
 gc.setCanvas()
 
 local mt
-local ts=.4
+local ts=5/12
 local w,h,c
 local lerp=myMath.lerp
 function menu.draw()
@@ -379,7 +382,7 @@ function menu.draw()
         gc.rectangle('fill',v.x-w/2+16*i,v.y-45-h-v.hoverT/.15*15-2,w,h+4)
         end
         gc.setColor(1,1,1,v.hoverT/.15)
-        gc.draw(mt[k].txt,v.x,v.y-45-v.hoverT/.15*15,0,.4,.4,mt[k].w/2,mt[k].h)
+        gc.draw(mt[k].txt,v.x,v.y-45-v.hoverT/.15*15,0,ts,ts,mt[k].w/2,mt[k].h)
     end
     BUTTON.draw(1)
 

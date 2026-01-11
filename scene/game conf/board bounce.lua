@@ -148,7 +148,7 @@ local sliderList={
             gc.draw(v.txt,-sz[1]/2-10,-24,0,v.s,v.s,0,v.h)
             v.numTxt:clear()
             v.numTxt:add(bb.boardBounce.custom and ":-" or string.format(":%d",sl.pos))
-            gc.draw(v.numTxt,-sz[1]/2-10+v.ow,-24,0,.3125,.3125,0,v.h)
+            gc.draw(v.numTxt,-sz[1]/2-10+v.ow,-24,0,1/3,1/3,0,v.h)
         end,
         buttonDraw=function(pos,sz)
             gc.setColor(1,1,1)
@@ -179,7 +179,7 @@ local sliderList={
             gc.draw(v.txt,-sz[1]/2-10,-24,0,v.s,v.s,0,v.h)
             v.numTxt:clear()
             v.numTxt:add(string.format(":%6.2f",bb.boardBounce.moveForce))
-            gc.draw(v.numTxt,-sz[1]/2-10+v.ow,-24,0,.3125,.3125,0,v.h)
+            gc.draw(v.numTxt,-sz[1]/2-10+v.ow,-24,0,1/3,1/3,0,v.h)
         end,
         buttonDraw=function(pos,sz)
             gc.setColor(1,1,1)
@@ -206,7 +206,7 @@ local sliderList={
             gc.draw(v.txt,-sz[1]/2-10,-24,0,v.s,v.s,0,v.h)
             v.numTxt:clear()
             v.numTxt:add(string.format(":%5.2f",bb.boardBounce.dropVel))
-            gc.draw(v.numTxt,-sz[1]/2-10+v.ow,-24,0,.3125,.3125,0,v.h)
+            gc.draw(v.numTxt,-sz[1]/2-10+v.ow,-24,0,1/3,1/3,0,v.h)
         end,
         buttonDraw=function(pos,sz)
             gc.setColor(1,1,1)
@@ -233,7 +233,7 @@ local sliderList={
             gc.draw(v.txt,-sz[1]/2-10,-24,0,v.s,v.s,0,v.h)
             v.numTxt:clear()
             v.numTxt:add(string.format(":%3.2e",bb.boardBounce.velDamping))
-            gc.draw(v.numTxt,-sz[1]/2-10+v.ow,-24,0,.3125,.3125,0,v.h)
+            gc.draw(v.numTxt,-sz[1]/2-10+v.ow,-24,0,1/3,1/3,0,v.h)
         end,
         buttonDraw=function(pos,sz)
             gc.setColor(1,1,1)
@@ -260,7 +260,7 @@ local sliderList={
             gc.draw(v.txt,-sz[1]/2-10,-24,0,v.s,v.s,0,v.h)
             v.numTxt:clear()
             v.numTxt:add(string.format(":%3.2e",bb.boardBounce.elasticFactor))
-            gc.draw(v.numTxt,-sz[1]/2-10+v.ow,-24,0,.3125,.3125,0,v.h)
+            gc.draw(v.numTxt,-sz[1]/2-10+v.ow,-24,0,1/3,1/3,0,v.h)
         end,
         buttonDraw=function(pos,sz)
             gc.setColor(1,1,1)
@@ -287,7 +287,7 @@ local sliderList={
             gc.draw(v.txt,-sz[1]/2-10,-24,0,v.s,v.s,0,v.h)
             v.numTxt:clear()
             v.numTxt:add(string.format(":%5.2f",bb.boardBounce.clearFactor))
-            gc.draw(v.numTxt,-sz[1]/2-10+v.ow,-24,0,.3125,.3125,0,v.h)
+            gc.draw(v.numTxt,-sz[1]/2-10+v.ow,-24,0,1/3,1/3,0,v.h)
         end,
         buttonDraw=function(pos,sz)
             gc.setColor(1,1,1)
@@ -315,7 +315,7 @@ local sliderList={
             gc.draw(v.txt,-sz[1]/2-10,-24,0,v.s,v.s,0,v.h)
             v.numTxt:clear()
             v.numTxt:add(string.format(":%5.2f",bb.boardBounce.spinAngvel))
-            gc.draw(v.numTxt,-sz[1]/2-10+v.ow,-24,0,.3125,.3125,0,v.h)
+            gc.draw(v.numTxt,-sz[1]/2-10+v.ow,-24,0,1/3,1/3,0,v.h)
         end,
         buttonDraw=function(pos,sz)
             gc.setColor(1,1,1)
@@ -342,7 +342,7 @@ local sliderList={
             gc.draw(v.txt,-sz[1]/2-10,-24,0,v.s,v.s,0,v.h)
             v.numTxt:clear()
             v.numTxt:add(string.format(":%3.2e",bb.boardBounce.angDamping))
-            gc.draw(v.numTxt,-sz[1]/2-10+v.ow,-24,0,.3125,.3125,0,v.h)
+            gc.draw(v.numTxt,-sz[1]/2-10+v.ow,-24,0,1/3,1/3,0,v.h)
         end,
         buttonDraw=function(pos,sz)
             gc.setColor(1,1,1)
@@ -369,7 +369,7 @@ local sliderList={
             gc.draw(v.txt,-sz[1]/2-10,-24,0,v.s,v.s,0,v.h)
             v.numTxt:clear()
             v.numTxt:add(string.format(":%3.2e",bb.boardBounce.spinFactor))
-            gc.draw(v.numTxt,-sz[1]/2-10+v.ow,-24,0,.3125,.3125,0,v.h)
+            gc.draw(v.numTxt,-sz[1]/2-10+v.ow,-24,0,1/3,1/3,0,v.h)
         end,
         buttonDraw=function(pos,sz)
             gc.setColor(1,1,1)

@@ -1,18 +1,18 @@
 --模拟可激发介质的背景
 local bg={}
 
-local updateT,updateTimer=1/8,0
+local updateT,updateTimer=1/15,0
 local time=0
 local medium={}--“介质”
 local w,h=64,36
 local CDTick=9--介质冷却刻数
 local cellSize=1920/w
-local actChance=.95--介质被完全激活的概率
+local actChance=.8--介质被完全激活的概率
 for y=1,h do
     medium[y]={}
     for x=1,w do
-        --medium[y][x]={value=rand()<.025 and rand(CDTick) or 0,newValue=0}
-        medium[y][x]={value=0,newValue=0}
+        medium[y][x]={value=rand()<.1 and rand(CDTick) or 0,newValue=0}
+        --medium[y][x]={value=0,newValue=0}
     end
 end
 for i=1,2 do medium[rand(h)][rand(w)].value=CDTick end

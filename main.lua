@@ -93,19 +93,19 @@ end
 font={
     height={},
 
-    ALBBPHT=gc.newFont('font/AlibabaPuHuiTi-Regular.otf',128),
-    Bender=gc.newFont('font/Bender.otf',128),
-    Bender_B=gc.newFont('font/Bender-Bold.otf',128),
-    Bender_L=gc.newFont('font/Bender-Light.otf',128),
-    JB=gc.newFont('font/JetBrainsMono-Medium.ttf',128),
-    JB_B=gc.newFont('font/JetBrainsMono-Bold.ttf',128),
-    JB_L=gc.newFont('font/JetBrainsMono-Light.ttf',128),
-    --JB=gc.newFont('font/Oxanium-Regular.ttf',128),
-    --JB_B=gc.newFont('font/Oxanium-Bold.ttf',128),
-    --JB_L=gc.newFont('font/Oxanium-Light.ttf',128),
+    ALBBPHT=gc.newFont('font/AlibabaPuHuiTi-Regular.otf',120),
+    Bender=gc.newFont('font/Bender.otf',120),
+    Bender_B=gc.newFont('font/Bender-Bold.otf',120),
+    Bender_L=gc.newFont('font/Bender-Light.otf',120),
+    JB=gc.newFont('font/JetBrainsMono-Medium.ttf',120),
+    JB_B=gc.newFont('font/JetBrainsMono-Bold.ttf',120),
+    JB_L=gc.newFont('font/JetBrainsMono-Light.ttf',120),
+    --JB=gc.newFont('font/Oxanium-Regular.ttf',120),
+    --JB_B=gc.newFont('font/Oxanium-Bold.ttf',120),
+    --JB_L=gc.newFont('font/Oxanium-Light.ttf',120),
     --这里是纯偷懒测试用
 
-    LED=gc.newFont('font/UniDreamLED.ttf',128)
+    LED=gc.newFont('font/UniDreamLED.ttf',120)
 }
 for k,v in pairs(font) do
     if k~='height' then
@@ -412,7 +412,7 @@ function love.draw()
         gc.printf(("%d × %d"):format(win.W,win.H),font.Bender,-950,-520,2000,'left',0,.25,.25,0,72)
     end
     gc.setColor(1,1,1,.5)
-    gc.print("TPS: "..love.timer.getFPS()..", FPS: "..drawCtrl.FPS..", gcinfo: "..gcinfo(),font.Bender_B,-950,510,0,.2,.2)
+    gc.print("TPS: "..love.timer.getFPS()..", FPS: "..drawCtrl.FPS..", gcinfo: "..gcinfo(),font.Bender_B,-950,505,0,.25,.25)
     if scene.watermark and not fs.isFused() then
         gc.setColor(.5,1,.875,.15+.0*sin(scene.totalTime*5*math.pi))
         gc.printf("作者：Aqua6623",font.JB_B,480*sin(scene.totalTime/2*math.pi),-440,5000,'center',0,.5,.5,2500,84)

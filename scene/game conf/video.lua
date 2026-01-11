@@ -104,7 +104,7 @@ function video.init()
             gc.rectangle('fill',-w/2,-h/2,h,h)
             gc.setColor(1,1,1)
             local s=min(280/video.ubgTxt:getWidth(),1/3)
-            gc.draw(video.ubgTxt,w/2+40,0,0,s,s,0,video.ubgTxt:getHeight()/2)
+            gc.draw(video.ubgTxt,w/2+20,0,0,s,s,0,video.ubgTxt:getHeight()/2)
         end,
         event=function()
             video.info.unableBG=not video.info.unableBG
@@ -132,7 +132,7 @@ function video.init()
             gc.setColor(r,g,b,2*t)
             gc.rectangle('fill',-w/2,-h/2,h,h)
             gc.setColor(1,1,1)
-            gc.printf(cf.video.vsync,font.Bender_B,w/2+40,0,1200,'left',0,1/3,1/3,0,72)
+            gc.printf(cf.video.vsync,font.Bender_B,w/2+20,0,1200,'left',0,1/3,1/3,0,72)
         end,
         event=function()
             video.info.vsync=not video.info.vsync
@@ -162,7 +162,7 @@ function video.init()
             gc.rectangle('fill',-w/2,-h/2,h,h)
             gc.setColor(1,1,1)
             local s=min(280/video.fscrTxt:getWidth(),1/3)
-            gc.draw(video.fscrTxt,w/2+40,0,0,s,s,0,video.fscrTxt:getHeight()/2)
+            gc.draw(video.fscrTxt,w/2+20,0,0,s,s,0,video.fscrTxt:getHeight()/2)
         end,
         event=function()
             video.info.fullscr=not video.info.fullscr
@@ -192,7 +192,7 @@ function video.init()
             gc.rectangle('fill',-w/2,-h/2,h,h)
             gc.setColor(1,1,1)
             local s=min(280/video.VRAMTxt:getWidth(),1/3)
-            gc.draw(video.VRAMTxt,w/2+40,0,0,s,s,0,video.VRAMTxt:getHeight()/2)
+            gc.draw(video.VRAMTxt,w/2+20,0,0,s,s,0,video.VRAMTxt:getHeight()/2)
         end,
         event=function()
             video.info.discardAfterDraw=not video.info.discardAfterDraw
@@ -222,7 +222,7 @@ function video.init()
             gc.rectangle('fill',-w/2,-h/2,h,h)
             gc.setColor(1,1,1)
             local s=min(min(280/video.mpTxt:getWidth(),bt.h/video.mpTxt:getHeight()),1/3)
-            gc.draw(video.mpTxt,w/2+40,0,0,s,s,0,video.mpTxt:getHeight()/2)
+            gc.draw(video.mpTxt,w/2+20,0,0,s,s,0,video.mpTxt:getHeight()/2)
         end,
         event=function()
             video.info.moreParticle=not video.info.moreParticle
@@ -273,7 +273,7 @@ function video.init()
             gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
             gc.setColor(1,1,1)
             gc.printf(string.format(cf.video.frameLim..":%3d",video.info.frameLim),
-                font.JB,-410,-48,10000,'left',0,.3125,.3125,0,84)
+                font.JB,-410,-48,10000,'left',0,1/3,1/3,0,84)
             gc.setColor(1,1,1,.75)
             gc.printf(cf.video.frameTxt,font.Bender_B,-410,48,800/.25,'left',0,.25,.25,0,72)
         end,
@@ -297,7 +297,7 @@ function video.init()
             gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
             gc.setColor(1,1,1)
             gc.printf(string.format(cf.video.BGBrightness..":%3d%%",video.info.BGBrightness*100),
-                font.JB,-230,-48,2000,'left',0,.3125,.3125,0,84)
+                font.JB,-230,-48,2000,'left',0,1/3,1/3,0,84)
         end,
         buttonDraw=function(pos,sz)
             gc.setColor(1,1,1)

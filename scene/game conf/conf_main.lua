@@ -28,12 +28,12 @@ function config.init()
     for k,v in pairs(config.txt) do
         v.txt=gc.newText(font.Bender,cfm[k])
         v.w,v.h=v.txt:getWidth(),v.txt:getHeight()
-        v.s=min(.75,(k=='title' and 450 or 400)/v.w)
+        v.s=min(.8,(k=='title' and 450 or 400)/v.w)
     end
     ct.test={}
     ct.test.txt=gc.newText(font.Bender,cf.test)
     ct.test.w,ct.test.h=ct.test.txt:getWidth(),ct.test.txt:getHeight()
-    ct.test.s=min(.75,240/ct.test.w)
+    ct.test.s=min(.8,240/ct.test.w)
 
     BUTTON.create('quit',{
         x=-675,y=225*3^.5,type='circle',r=150,

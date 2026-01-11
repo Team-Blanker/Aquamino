@@ -1,7 +1,7 @@
 --模拟可激发介质的背景
 local bg={}
 
-local updateT,updateTimer=1/8,0
+local updateT,updateTimer=1/15,0
 local time=0
 local medium={R={},G={},B={}}--“介质”
 local w,h=64,36
@@ -11,7 +11,7 @@ local actChance=.8--介质被完全激活的概率
 for k,v in pairs(medium) do
     for y=1,h do v[y]={}
         for x=1,w do
-            v[y][x]={value=rand()<.01 and rand(CDTick) or 0,newValue=0}
+            v[y][x]={value=rand()<.01 and CDTick or 0,newValue=0}
         end
     end
 end

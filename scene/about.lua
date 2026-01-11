@@ -11,7 +11,7 @@ local ballR=32
 local repo={
     {'json.lua','rxi'},{'profile.lua','itraykov'}
 }
-local tool={'beepbox.co','GoldWave','REAPER','Malody','VS Code','vecta.io','GFIE (Greenfish Icon Editor)','Photoshop CC 2019'}
+local tool={'beepbox.co','GoldWave','REAPER','Malody','VS Code','vecta.io','GFIE (Greenfish Icon Editor)',--[['Photoshop CC 2019']]}
 
 local simdt=0
 local about={}
