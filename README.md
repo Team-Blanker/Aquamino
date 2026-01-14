@@ -4,21 +4,11 @@
 
 ## 重要事项 Important issue
 
-收到部分玩家反馈 Aquamino 卡顿严重且严重影响操作，常会突然卡死，甚至出现帧率不到 1 的情况。
+目前已知问题：
 
-开发者本人在自家的旧电脑上测试未发现此类问题，游戏可以流畅运行，不知道这种情况是不是和电脑型号有关。
-
-理想情况下，游戏左下角的的 TPS 数值应稳定在一个三位数且没有较大波动，FPS 数值应几乎等于用户设置。
-
-开发者会尽力优化代码直到游戏不会再卡顿为止。若游戏出现严重卡顿，请开 issue 描述详细情况或联系开发者。
-
-The developer have received feedback from some players that Aquamino has serious lags and seriously affects the operation. It often freezes suddenly and even has a FPS of less than 1.
-
-The developer himself did not find such problems when testing on his old computer at home. The game can run smoothly， don’t know if this situation is related to the computer model.
-
-Ideally, the TPS value in the lower left corner of the game should be stable at a number bigger than 100 without large fluctuations, and the FPS value should be almost equal to the user setting.
-
-The developer will try his best to optimize the code until the game no longer lags. If serious lag happened, please open an issue and describe the details, or contact to the developer.
+* 双线程模式有可能卡死，排查问题中
+* ColdClear有可能罢工，技术问题无法修复，关游戏重开吧
+* 部分玩家反馈游戏卡顿严重，原因未知
 
 ## 游戏简介
 

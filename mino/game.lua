@@ -146,7 +146,10 @@ function mino.nextIns(player)
     elseif player.hold.name then mino.hold(player)
     else C.piece,C.name=nil,nil end
 
-    while #player.next<=player.preview do mino.insertNextQueue(player) end
+    while #player.next<=player.preview do
+        --print('stacker event execution')
+        mino.insertNextQueue(player)
+    end
     if player.next[player.preview] then
         local n=player.preview
         player.NP[n]=T.copy(B[player.next[n]])
@@ -264,7 +267,10 @@ function mino.hold(player)
             player.canHold=true C.kickOrder=nil
         elseif player.hold.name then mino.hold(player)
         else C.piece,C.name=nil,nil end
-        while #player.next<=player.preview do mino.insertNextQueue(player) end
+        while #player.next<=player.preview do
+            --print('next queue generation')
+            mino.insertNextQueue(player)
+        end
         player.MTimer,player.DTimer=min(player.MTimer,S.ctrl.ASD),min(player.DTimer,S.ctrl.SD_ASD)
 
         if player.FDelay==0 then mino.Ins20GDrop(player) end
@@ -275,6 +281,7 @@ function mino.hold(player)
     A.drawCenter[1]=C.x A.drawCenter[2]=C.y
     A.timer=player.FDelay==0 and 0 or mino.smoothTime
     while H.O~=0 do
+        --print('hold piece orientation align')
         H.O=B.rotate(H.piece,H.O,'L')
     end
     else error("player.hold.mode must be 'S' or 'A'") end
@@ -501,6 +508,7 @@ mino.operate={
         for j=1,#xlist do
             local hmax=ymax
             while not T.include(his.piece,{xlist[j],hmax}) do
+                --print('while1')
                 hmax=hmax-1
             end
             OP.dropAnim[#OP.dropAnim+1]={
@@ -529,6 +537,7 @@ mino.operate={
         local success
         if S.ctrl.SD_ASD==0 and S.ctrl.SD_ASP==0 then
             while not coincide(OP,0,-1) do
+                --print('while2')
                 mino.setAnimPrePiece(OP) OP.smoothAnim.timer=mino.smoothTime
                 C.y=C.y-1 h=h+1 C.spin=false success=true
                 if mino.sfxPlay.SD then mino.sfxPlay.SD(OP,fLib.getSourcePos(OP,mino.stereo,'cur')) end
@@ -551,6 +560,7 @@ mino.operate={
         C=OP.cur
         local h=0
         while not coincide(OP,0,-1) do
+            --print('while3')
             mino.setAnimPrePiece(OP) OP.smoothAnim.timer=mino.smoothTime
             C.y=C.y-1 h=h+1 C.spin=false
             if mino.sfxPlay.SD then mino.sfxPlay.SD(OP,fLib.getSourcePos(OP,mino.stereo,'cur')) end
@@ -779,7 +789,10 @@ function mino.init(isReset)
     if mino.seqSync then mino.publicPlayer=fLib.newPlayer() end
 
     for i=1,#P do
-        while #P[i].next<P[i].preview do mino.insertNextQueue(P[i]) end
+        while #P[i].next<P[i].preview do
+            --print('next queue init')
+            mino.insertNextQueue(P[i])
+        end
         for j=1,P[i].preview do --给所有玩家放上预览块
             P[i].NP[j]=T.copy(B[P[i].next[j]])
             P[i].NO[j]=mino.orient[P[i].next[j]] or mino.orient.default
@@ -895,7 +908,7 @@ function mino.inputPress(k)
     if mino.paused then --nothing
     elseif mino.waitTime>0 then
         for id,v in pairs(S.opList) do
-            local OP=P[id]--Player Operated by you
+            local OP=P[id]
             if     k=='ML' then OP.moveDir='L'
             elseif k=='MR' then OP.moveDir='R'
             end
@@ -987,7 +1000,10 @@ function mino.inputPress(k)
                 --最高下落速度
                 if k~='HD' and OP.FDelay==0 then
                     local h=0
-                    while not coincide(OP,0,-1) do C.y=C.y-1 h=h+1 C.spin=false end
+                    while not coincide(OP,0,-1) do
+                        --print('while4')
+                        C.y=C.y-1 h=h+1 C.spin=false
+                    end
                     if h>0 then mino.sfxPlay.touch(OP,true,fLib.getSourcePos(OP,mino.stereo,'cur')) end
                 end
 
@@ -1075,6 +1091,7 @@ function mino.gameUpdate(dt)
             else OP.DTimer=OP.DTimer+dt
                 local m=0
                 while OP.DTimer>=ctrl.SD_ASD and not coincide(OP,0,-1) do
+                    --print('block DAS soft drop')
                     m=m+1
                     mino.operate.SD(OP,ctrl.SD_ASP~=0 or m==1)
                     OP.DTimer=OP.DTimer-ctrl.SD_ASP
@@ -1089,6 +1106,7 @@ function mino.gameUpdate(dt)
             if coincide(OP,-1,0) then OP.MTimer=min(OP.MTimer+dt,ctrl.ASD) end
 
             while OP.MTimer>=ctrl.ASD and OP.moveDir=='L' and not coincide(OP,-1,0) do
+                --print('block DAS moving left')
                 C.x=C.x-1 C.spin=false m=m+1
                 OP.MTimer=OP.MTimer-ctrl.ASP
                 if coincide(OP,0,-1) and OP.LDR>0 then OP.LTimer=0 OP.LDR=OP.LDR-1 end
@@ -1096,7 +1114,10 @@ function mino.gameUpdate(dt)
                 if S.ctrl.ASP~=0 or m==1 then mino.sfxPlay.move(OP,true,coincide(OP,0,-1),fLib.getSourcePos(OP,mino.stereo,'cur')) end
 
                 if OP.FDelay==0 then
-                    while not coincide(OP,0,-1) do C.y=C.y-1 end
+                    while not coincide(OP,0,-1) do
+                        --print('while5')
+                        C.y=C.y-1
+                    end
                 else
                     if S.keyDown.SD then
                     if coincide(OP,0,-1) then OP.DTimer=min(OP.DTimer+dt,ctrl.SD_ASD)
@@ -1119,6 +1140,7 @@ function mino.gameUpdate(dt)
             if coincide(OP,1,0) then OP.MTimer=min(OP.MTimer+dt,ctrl.ASD) end
 
             while OP.MTimer>=ctrl.ASD and OP.moveDir=='R' and not coincide(OP,1,0) do
+                --print('block DAS moving right')
                 C.x=C.x+1 C.spin=false m=m+1
                 OP.cur.ghostY=fLib.getGhostY(OP)
                 OP.MTimer=OP.MTimer-ctrl.ASP
@@ -1127,13 +1149,17 @@ function mino.gameUpdate(dt)
                 if S.ctrl.ASP~=0 or m==1 then mino.sfxPlay.move(OP,true,coincide(OP,0,-1),fLib.getSourcePos(OP,mino.stereo,'cur')) end
 
                 if OP.FDelay==0 then
-                    while not coincide(OP,0,-1) do C.y=C.y-1 end
+                    while not coincide(OP,0,-1) do 
+                        --print('while6')
+                        C.y=C.y-1
+                    end
                 else
                     if S.keyDown.SD then
                     if coincide(OP,0,-1) then OP.DTimer=min(OP.DTimer+dt,ctrl.SD_ASD)
                     else
                         local m=0
                         while OP.DTimer>=ctrl.SD_ASD and not coincide(OP,0,-1) do
+                            --print('while7')
                             m=m+1
                             mino.operate.SD(OP,ctrl.SD_ASP~=0 or m==1)
                             OP.DTimer=OP.DTimer-ctrl.SD_ASP
@@ -1183,6 +1209,7 @@ function mino.gameUpdate(dt)
             P[i].event[1]=P[i].event[1]-dt
             if not P[i].event[3] and P[i].event[1]<=0 then remainTime=P[i].event[1] end
             while P[i].event[1] and P[i].event[1]<=0 do
+                --print('player event execution')
                 if P[i].event[3] then P[i].event[3]=P[i].event[3]+P[i].event[1] end
                 if type(P[i].event[2])=='string' then
                     if mino[P[i].event[2]] then mino[P[i].event[2]](P[i])
@@ -1197,6 +1224,7 @@ function mino.gameUpdate(dt)
             if coincide(P[i],0,-1) then P[i].LTimer=P[i].LTimer+dt P[i].FTimer=0 else
                 P[i].FTimer=P[i].FTimer+dt+remainTime remainTime=0
                 while P[i].FTimer>=P[i].FDelay and not coincide(P[i],0,-1) do
+                    --print('block falling')
                     mino.operate.fall(P[i],false)
                     P[i].FTimer=P[i].FTimer-P[i].FDelay
                 end
@@ -1304,6 +1332,7 @@ function mino.update(dt)
         if S.event[1] then
             S.event[1]=S.event[1]-dt
             while S.event[1] and S.event[1]<=0 do
+                --print('stacker event execution')
                 if S.event[3] then S.event[3]=S.event[3]+S.event[1] end
                 if type(S.event[2])=='string' then
                     if mino[S.event[2]] then mino[S.event[2]](S)

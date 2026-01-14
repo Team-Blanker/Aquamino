@@ -27,6 +27,7 @@ return {
         square="正方拼合",
         ['core destruction']="[已廢棄模式]",
         ['dig bomb']="炸彈挖掘",
+        multitasking_plus="大腦升級，，，",
 
         ['mech heart detector']="機心檢測器",
     },
@@ -89,7 +90,7 @@ return {
     staff={
         program="程序",
         UI="UI & 視覺設計",
-        music="音樂来自", hurtRecord="来自 HURT RECORD (https://www.hurtrecord.com) :",
+        music="音樂来自", hurtRecord="来自 HURT RECORD (https://www.hurtrecord.com) :", dovaS="来自 DOVA-SYNDROME (https://dova-s.jp) :",
         sfx="音效",
         translate="翻譯 & 本地化",
         multiPlatform="多平台兼容",

@@ -218,7 +218,7 @@ scene={
 --scene.cur=require('minigame/tracks/tracks')
 --scene.cur=require('scene/test/BG_Test')
 --scene.cur=require('scene/test/clock')
---scene.cur=require('mino/game') scene.cur.mode='map_test'
+--scene.cur=require('mino/game') scene.cur.mode='bg_test'
 
 win.x,win.y=love.window.getPosition()
 win.x_win,win.y_win=love.window.getPosition()

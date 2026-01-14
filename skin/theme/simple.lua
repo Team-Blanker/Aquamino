@@ -81,22 +81,26 @@ function simple.fieldDraw(player,mino)
         line(36*x,-H/2,36*x,H/2)
     end
     --锁延重置&次数
-    setColor(.25,.5,.375,.4)
+    setColor(.25,.5,.4375,.4)
     rect('fill',-W/2,H/2+4,W,20)
-    setColor(.5,1,.75)
+    setColor(.5,1,.875)
     rect('fill',-W/2,H/2+4,W*(1-player.LTimer/player.LDelay),20)
     setColor(0,0,0)
-    printf(("%02d"):format(min(player.LDR,99)),font.JB_B,-W/2+4,H/2+2+64*.2,400,'left',0,5/32,5/32,0,font.height.JB_B/2)
-    printf(("%dms"):format(min(player.LDelay*1000,999999)),font.JB_B,W/2-4,H/2+2+64*.2,800,'right',0,5/32,5/32,800,font.height.JB_B/2)
+    printf(("%02d"):format(min(player.LDR,99)),font.JB_B,-W/2+4,H/2+14,400,'left',0,1/6,1/6,0,font.height.JB_B/2)
+    printf(("%dms"):format(min(player.LDelay*1000,999999)),font.JB_B,W/2-4,H/2+14,800,'right',0,1/6,1/6,800,font.height.JB_B/2)
+    --手感参数（调试用）
+    setColor(1,1,1)
+    --printf(("MTimer %5.4f/%5.4f/%5.4f"):format(player.MTimer,mino.stacker.ctrl.ASD,mino.stacker.ctrl.ASP),font.JB_B,-W/2,H/2+34,4000,'left',0,1/6,1/6,0,font.height.JB_B/2)
+    --printf(("DTimer %5.4f/%5.4f/%5.4f"):format(player.DTimer,mino.stacker.ctrl.SD_ASD,mino.stacker.ctrl.SD_ASP),font.JB_B,-W/2,H/2+54,4000,'left',0,1/6,1/6,0,font.height.JB_B/2)
     --计时
     local t=player.gameTimer
     timeTxt=string.format("%d:%d%d.%03d",t/60,t/10%6,t%10,t%1*1000)
     --timeTxt=string.format("%d:%d%.3f",t/60,t/10%6,t%10)
-    setColor(.2,.4,.3,.3)
+    setColor(.2,.4,.35,.3)
     for i=0,3 do
         printf(timeTxt,font.JB_B,-W/2-30+i%2*4,H/2-18+4*floor(i/2),800,'right',0,.25,.25,800,font.height.JB_B/2)
     end
-    setColor(.5,1,.75)
+    setColor(.5,1,.875)
     printf(timeTxt,font.JB_B,-W/2-28,H/2-16,800,'right',0,.25,.25,800,font.height.JB_B/2)
 end
 

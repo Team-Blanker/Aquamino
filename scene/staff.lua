@@ -101,11 +101,11 @@ function stf.init()
     end
     stf.txt1[#stf.txt1+1]=t1]]
 
-    stf.txt1[#stf.txt1+1]={1,.75,.75}
+    stf.txt1[#stf.txt1+1]={1,0,0}
     stf.txt1[#stf.txt1+1]='\n\n'..uls.hurtRecord
 
     stf.txt1[#stf.txt1+1]=c2
-    t1='\n\n'
+    t1='\n'
     local hr=devList.music.hurtRecord
     for i=1,#hr do
         for j=1,#hr[i] do

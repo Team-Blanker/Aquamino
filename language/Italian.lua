@@ -27,6 +27,7 @@ return {
         square="Quadrati",
         ['core destruction']='[Deprecated mode]',
         ['dig bomb']="Scavo di bombe",
+        multitasking_plus="Multitasking+",
 
         ['mech heart detector']="MH Detector",
     },
@@ -89,7 +90,7 @@ return {
     staff={
         program="Programmazione",
         UI="Interfaccia Utente & Progettazione Artistica",
-        music="Musica composta da", hurtRecord="Of which from HURT RECORD (https://www.hurtrecord.com) :",
+        music="Musica composta da", hurtRecord="Of which from HURT RECORD (https://www.hurtrecord.com) :", dovaS="Of which from DOVA-SYNDROME (https://dova-s.jp) :",
         sfx="Progettazione di effetti sonori",
         translate="Translation & Localization",
         multiPlatform="Multipiattaforma",
