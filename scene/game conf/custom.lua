@@ -7,13 +7,13 @@ local BUTTON,SLIDER=scene.button,scene.slider
 
 local blockSkinList={'glossy','glass','metal','metal2','pure','bubble','carbon fibre','classic','wheelchair'}
 local skinAuthor={
-    glossy="Izumi Kairan",
-    glass="Izumi Kairan",
-    metal="Izumi Kairan",
-    metal2="Izumi Kairan",
+    glossy="Kairan Izumi",
+    glass="Kairan Izumi",
+    metal="Kairan Izumi",
+    metal2="Kairan Izumi",
     pure="-",
     bubble="DJ Asriel",
-    ['carbon fibre']="Izumi Kairan",
+    ['carbon fibre']="Kairan Izumi",
     classic="-",
     wheelchair="-",
 }
@@ -30,9 +30,9 @@ local blockDraw={'Z','S','J','L','T','O','I','g1','g2',}
 local themeList={'simple'}
 local sfxList={'plastic_v2','plastic','krystal','meme','otto'}
 local sfxAuthor={
-    plastic_v2="DJ Asriel & Izumi Kairan",
-    plastic="Izumi Kairan",
-    krystal="Izumi Kairan",
+    plastic_v2="DJ Asriel & Kairan Izumi",
+    plastic="Kairan Izumi",
+    krystal="Kairan Izumi",
     meme="farter",
     otto="-",
 }

@@ -5,9 +5,9 @@ local w,h=logo:getPixelDimensions()
 local kairan=gc.newImage('pic/assets/kairan.png')
 local kw,kh=kairan:getPixelDimensions()
 local devList={
-    program={'Izumi Kairan'},
-    UI={'Izumi Kairan','Not-A-Robot'},
-    sfx={'Izumi Kairan','DJ Asriel','Farter'},
+    program={'Kairan Izumi'},
+    UI={'Kairan Izumi','Not-A-Robot'},
+    sfx={'Kairan Izumi','DJ Asriel','Farter'},
     music={
         --{},
         hurtRecord={
@@ -17,9 +17,9 @@ local devList={
             {'ミレラ','周藤三日月','DiscreetDragon'}
         }
     },
-    translate={'Izumi Kairan (简中/繁中/English)','Sunday (繁中)','DJ Asriel (Italiano)'},
+    translate={'Kairan Izumi (简中/繁中/English)','Sunday (繁中)','DJ Asriel (Italiano)'},
     multiPlatform={
-        {'Izumi Kairan (Windows & Android)','Sennoma (MacOS & Linux)'},
+        {'Kairan Izumi (Windows & Android)','Sennoma (MacOS & Linux)'},
         {'滑稽2369 (Android)'}
     },
     specialThanks={
