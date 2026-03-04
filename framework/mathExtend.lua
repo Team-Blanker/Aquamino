@@ -1,3 +1,5 @@
+local min,max,floor,ceil,abs=math.min,math.max,math.floor,math.ceil,math.abs
+
 local mymath={}
 function mymath.lerp(a,b,t)--ab间选择插值
     if type(a)~=type(b) then error('a and b nust be the same type') end
@@ -24,7 +26,7 @@ function mymath.direction(x,y,z)--获取模长为1的方向向量
     end
 end
 function mymath.vecplus(a,b)--矢量叠加
-    local l=math.min(#a,#b) local c={}
+    local l=min(#a,#b) local c={}
     for i=1,l do c[i]=a[i]+b[i] end
     if #a>#b then for i=l+1,#a do c[i]=a[i] end
     elseif #b>#a then for i=l+1,#a do c[i]=a[i] end
@@ -53,7 +55,7 @@ function mymath.isSameSign(list)--列表中所有元素是否同号
     return true
 end
 function mymath.round(x)
-    return math.floor(x+.5)
+    return floor(x+.5)
 end
 function mymath.pointInPolygon(px,py,poly)--检测某点是否位于凸多边形内，凸多边形必须为列表形式
     local check=true local edge=#poly
@@ -69,6 +71,13 @@ function mymath.pointInRect(px,py,U,D,L,R)
 end
 function mymath.pointInCircle(px,py,X,Y,r)
     return (X-px)^2+(Y-py)^2<=r^2
+end
+
+function mymath.triWave(x)
+    return 1-abs(x%2-1)
+end
+function mymath.sqWave(x)
+    return x%2<=1 and 0 or 1
 end
 
 function mymath.rotate3D(x,y,z,oplist,scale)--沿着作为旋转轴的坐标轴的正方向看，旋转均为顺时针
