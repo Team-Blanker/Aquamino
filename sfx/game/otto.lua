@@ -34,6 +34,7 @@ function otto.addSFX()
         wtf='sfx/game/otto/wtf.wav',
 
         bomb='sfx/game/otto/bomb.wav',
+        square='sfx/game/otto/square.wav',
 
         loose='sfx/game/otto/loose.wav',
         push='sfx/game/otto/push.wav'

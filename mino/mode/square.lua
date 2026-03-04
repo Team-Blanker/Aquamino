@@ -13,9 +13,11 @@ function rule.init(P,mino)
     mino.musInfo="K.Y. - Birth and Death"
     mus.add('music/Hurt Record/Birth and Death','parts','ogg',12.375,48.75)
 
-    sfx.add({
-        sq='sfx/mode/general/sq.wav',
-    })
+    if not sfx.check('square') then
+        sfx.add({
+            square='sfx/mode/general/sq.wav',
+        })
+    end
 
     --mino.bag={'Z','Z','S','S','J','J','J','J','L','L','L','L','O','O','O','I','I','I','T','T','T','T'}
     mino.bag={'J','L','O','I','T','T'}
@@ -112,7 +114,7 @@ local sq=player.sqAnimList
 
                 player.sqPoint=player.sqPoint+sqPoint[sqtp]
 
-                sfx.play('sq',1,1,fLib.getSourcePos(player,mino.stereo,x+1.5))
+                sfx.play('square',1,1,fLib.getSourcePos(player,mino.stereo,x+1.5))
             end
         end
     end  end
