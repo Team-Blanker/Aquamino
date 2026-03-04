@@ -75,7 +75,7 @@ function rule.init(P,mino,modeInfo)
     })
 
     rule.expect={}
-    rule.opDelay=modeInfo.arg.bot_DropDelay
+    rule.opDelay=1/modeInfo.arg.bot_PPS
     rule.opTimer=0
 
     rule.botSpin=specialBrick[rand(#specialBrick)]
@@ -206,7 +206,7 @@ local abl,epp
 function rule.gameUpdate(P,dt,mino)
     --bot定时操作
     rule.opTimer=rule.opTimer+dt
-    if rule.opTimer>1 and rule.HP[P[2].side]>0 then
+    if rule.opTimer>0 and rule.HP[P[2].side]>0 then
         if not msgSend then
         rule.botThread.sendChannel:push({op='require'})
         msgSend=true

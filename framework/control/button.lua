@@ -87,8 +87,8 @@ end
 function BUTTON.press(x,y,l)
     l=l or 0
     if BUTTON.list[l] then
-        for k,v in pairs(BUTTON.list[l]) do
-        if BUTTON.check(v,x,y) then BUTTON.active=k return k end
+        for k,v in pairs(BUTTON.list[l]) do --print(k)
+        if BUTTON.check(v,x,y) then BUTTON.active=k  return k end
         end
     end
 end

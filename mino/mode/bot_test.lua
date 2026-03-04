@@ -3,7 +3,7 @@ local bot_cc=require('mino/bot/cc')
 local btest={}
 function btest.init(P,mino)
     mino.resetStopMusic=false
-    mino.seqGenType='bagp1FromBag'
+    mino.seqGen='bagp1FromBag'
     mino.rule.allowSpin={T=true}
     --mino.waitTime=.5
     mino.musInfo="R-side - Nine Five"

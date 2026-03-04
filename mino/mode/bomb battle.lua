@@ -41,7 +41,7 @@ function rule.init(P,mino,modeInfo)
     mino.rule.allowSpin={Z=true,S=true,J=true,L=true,T=true,O=true,I=true,}
     mino.rule.spinType='default'
 
-    --mino.seqGenType='bagp1FromBag'
+    --mino.seqGen='bagp1FromBag'
     mino.seqSync=true
     P[1].atk=0
     P[1].garbageClear=0
@@ -105,7 +105,7 @@ function rule.onLineClear(player,mino)
     player.line=player.line+his.line
     player.atk=player.atk+battle.stdAtkCalculate(player)
     battle.sendAtk(player,mino.player[player.target],battle.stdAtkGen(player))
-    
+
     if player.history.clearLine then
         for k,v in pairs(player.history.clearLine) do
             if v.type=='garbage' then

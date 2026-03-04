@@ -1,24 +1,26 @@
 local M=myMath
-local max,min=math.max,math.min
+local max,min,abs=math.max,math.min,math.abs
 local color={
-	red='ff0000',
-	orange='ff7f00',
-	yellow='ffff00',
-	lawn='7fff00',
-	green='00ff00',
-	jade='00ff7f',
-	cyan='00ffff',
-	azure='007fff',
-	blue='0000ff',
-	violet='7f00ff',
-	magenta='ff00ff',
-	hotpink='ff007f',
+	red=    {1,0,0},
+	orange= {1,.5,0},
+	yellow= {1,1,0},
+	lawn=   {.5,1,0},
+	green=  {0,1,0},
+	jade=   {0,1,.5},
+	cyan=   {0,1,1},
+	azure=  {0,.5,1},
+	blue=   {0,0,1},
+	violet= {.5,0,1},
+	magenta={1,0,1},
+	hotpink={1,0,.5},
 
-	white='ffffff',
-	silver='c0c0c0',
-	gray='7f7f7f',
-	dark='404040',
-	black='0f0f0f'
+	aquamarine={.5,1,.875},
+
+	white=  {1,1,1},
+	silver= {.75,.75,.75},
+	gray=   {.5,.5,.5},
+	dark=   {.25,.25,.25},
+	black=  {0,0,0},
 }
 function color.hex2num(str)
 	local r=(tonumber(string.sub(str,1,2),16) or 0)/255
@@ -31,7 +33,7 @@ function color.hsv(h,s,v,a)-- Color type, Color amount, Light
     if s<=0 then return v,v,v,a end
     h=h%6
     local c=v*s
-    local x=math.abs((h-1)%2-1)*c
+    local x=abs((h-1)%2-1)*c
     if     h<1 then return v,x+v-c,v-c,a
     elseif h<2 then return x+v-c,v,v-c,a
     elseif h<3 then return v-c,v,x+v-c,a
@@ -39,6 +41,20 @@ function color.hsv(h,s,v,a)-- Color type, Color amount, Light
     elseif h<5 then return x+v-c,v-c,v,a
     else            return v,v-c,x+v-c,a
     end
+end
+function color.hsl(h, s, l, a)
+	if s<=0 then return l,l,l,a end
+	h=h%6
+	local c=(1-abs(2*l-1))*s
+	local x=(1-abs(h%2-1))*c
+	local m,r,g,b = (l-.5*c), 0,0,0
+	if     h<1 then r,g,b = c,x,0
+	elseif h<2 then r,g,b = x,c,0
+	elseif h<3 then r,g,b = 0,c,x
+	elseif h<4 then r,g,b = 0,x,c
+	elseif h<5 then r,g,b = x,0,c
+	else            r,g,b = c,0,x
+	end return r+m, g+m, b+m, a
 end
 function color.getHue(clr)
 	local Cmax=max(clr[1],max(clr[2],clr[3]))

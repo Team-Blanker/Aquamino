@@ -7,7 +7,7 @@ function rule.init(P,mino)
     mus.add('music/Hurt Record/Exciter','whole','ogg',30.709,192*60/127)
     mus.start()
 
-    mino.seqGenType='bagES'
+    mino.seqGen='bagES'
     for i=1,#P do P[i].line=0 end
 end
 function rule.onLineClear(player,mino)

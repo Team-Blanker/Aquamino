@@ -5,7 +5,18 @@ local custom={}
 local block=require'mino/blocks'
 local BUTTON,SLIDER=scene.button,scene.slider
 
-local blockSkinList={'glossy','glass','metal','pure','carbon fibre','classic','wheelchair'}
+local blockSkinList={'glossy','glass','metal','metal2','pure','bubble','carbon fibre','classic','wheelchair'}
+local skinAuthor={
+    glossy="Izumi Kairan",
+    glass="Izumi Kairan",
+    metal="Izumi Kairan",
+    metal2="Izumi Kairan",
+    pure="-",
+    bubble="DJ Asriel",
+    ['carbon fibre']="Izumi Kairan",
+    classic="-",
+    wheelchair="-",
+}
 local skinFuncList={}
 for k,v in pairs(blockSkinList) do
     skinFuncList[v]=require('skin/block/'..v)
@@ -17,7 +28,14 @@ local defaultColor={
 }
 local blockDraw={'Z','S','J','L','T','O','I','g1','g2',}
 local themeList={'simple'}
-local sfxList={'plastic_v2','plastic','krystal','meme','otto',--[['LexNinja']]}
+local sfxList={'plastic_v2','plastic','krystal','meme','otto'}
+local sfxAuthor={
+    plastic_v2="DJ Asriel & Izumi Kairan",
+    plastic="Izumi Kairan",
+    krystal="Izumi Kairan",
+    meme="farter",
+    otto="-",
+}
 local RSList={'SRS','AqRS'}
 function custom.read()
     custom.info={block='glossy',theme='simple',sfx='plastic',RS='SRS',smoothAnimAct=false,smoothFallType=1,rotationCenter=false,smoothTime=.05,fieldScale=1}
@@ -213,6 +231,8 @@ function custom.init()
             if o<l then gc.line( (w-h)/2,h/2-16, w/2-16,0, (w-h)/2,-h/2+16) end
             gc.setColor(1,1,1)
             gc.printf(blockSkinList[custom.bOrder],font.Bender,0,0,1280,'center',0,.4,.4,640,font.height.Bender/2)
+            gc.setColor(1,1,1,.5)
+            gc.printf(skinAuthor[custom.info.block],font.Bender,0,h/2+4,3200,'center',0,.25,.25,1600,0)
         end,
         event=function(x,y,bt)
             local success=false
@@ -317,8 +337,10 @@ function custom.init()
             if o<l then gc.line( (w-h)/2,h/2-16, w/2-16,0, (w-h)/2,-h/2+16) end
             gc.setColor(1,1,1)
             gc.printf(sfxList[custom.sOrder],font.Bender,0,0,1280,'center',0,.4,.4,640,font.height.Bender/2)
-            if cfc.sfxWarning[sfxList[o]] then gc.setColor(1,0,0,.75)
-            gc.printf(cfc.sfxWarning[sfxList[o]],font.Bender_B,-w/2,h/2+48,1600,'left',0,.25,.25,0,152)
+            gc.setColor(1,1,1,.5)
+            gc.printf(sfxAuthor[custom.info.sfx],font.Bender,0,h/2+4,3200,'center',0,.25,.25,1600,0)
+            if cfc.sfxWarning[sfxList[o]] then gc.setColor(1,0,0,1)
+                gc.printf(cfc.sfxWarning[sfxList[o]],font.Bender_B,0,h/2+34,1600,'center',0,.25,.25,800,0)
             end
         end,
         event=function(x,y,bt)
@@ -369,7 +391,7 @@ function custom.init()
             local sk=blockSkinList[custom.bOrder]
             for i=1,#blockDraw do
                 local bd=blockDraw[i]
-                skinFuncList[sk].unitDraw(nil,i-#blockDraw/2-.5,-.5,custom.color[bd],1,custom.texType[sk][bd])
+                skinFuncList[sk].unitDraw(nil,i-#blockDraw/2-.5,-.5,custom.color[bd],1,custom.texType[sk] and custom.texType[sk][bd])
             end
             gc.pop()
         end,

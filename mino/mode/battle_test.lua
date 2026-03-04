@@ -8,7 +8,7 @@ function rule.init(P,mino)
     mus.add('music/Hurt Record/nega to posi','whole','ogg',61.847,224*60/130)
     mus.start()
 
-    mino.seqGenType='bagp1FromBag' mino.seqSync=true
+    mino.seqGen='bagp1FromBag' mino.seqSync=true
     P[1].atk=0
     P[1].line=0
     P[1].LDelay=1e99

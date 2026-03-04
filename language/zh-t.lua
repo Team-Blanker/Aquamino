@@ -33,14 +33,14 @@ return {
     },
     modeDescription={
         ['40 lines']="以最快速度消除40行",
-        marathon={{1,1,1},"消除150行，但方塊下落越來越快\n",{1,1,0},"參數限制：ASD=150ms ASP=30ms 軟降ASP=30ms\n重力隨等級提升而增大"},
-        ['ice storm']="利用All-spin機制抵禦上升的冰柱！",
+        marathon={{1,1,1},"消除150行，但方塊下落越來越快\n",{1,1,0},"控制參數不可調"},
+        ['ice storm']="利用All-Spin機制抵禦上升的冰柱！",
         thunder="應對雷電的破壞",
-        smooth={{1,1,1}," 眞的有這麽絲滑嗎？\n",{1,1,0},"降落延遲爲0，鎖定延遲增加至3秒"},
-        levitate={{1,1,0},"消除后場地内磚格不掉落"},
+        smooth={{1,1,1}," 眞的有這麽絲滑嗎？\n",{1,.5,0},"20G\n",{1,1,0},"控制參數不可調"},
+        levitate="消除后場地内磚格不掉落",
         square={{1,1,1}," 你能在3分鐘内拼出多少4×4正方形？"},
-        master={{1,1,1}," 在最高下落速度下極限堆疊！\n",{1,.5,0},"降落延遲爲0，鎖定延遲隨等級提升縮短\n",{1,1,0},"參數限制：ASD=150ms ASP=30ms"},
-        multitasking={{1,1,1},"*Galaxy Brain Meme*\n",{1,1,0},"參數限制：ASD=150ms ASP=30ms 軟降ASP=30ms\n重力隨等級提升而增大"},
+        master={{1,1,1}," 在最高下落速度下極限堆疊！\n",{1,.5,0},"20G\n",{1,1,0},"控制參數不可調"},
+        multitasking={{1,1,1},"媽媽生的.mp4\n",{1,1,0},"控制參數不可調"},
         sandbox={{1,1,0},"該模式不記錄成績"},
         ['dig 40']="靜心思考，高效挖掘",
         laser={{1,1,1},"做人不要太攀比，踏踏實實做自己\n如果非要比一比，那就比比激光雨\n",{1,1,0},"節奏模式，强烈建議開啓音樂游玩"},
@@ -65,6 +65,15 @@ return {
                     pos="玩家位置",
                     left="左侧",
                     right="右侧"
+                },
+                ruleSet="預設規則",
+                ruleSetName={
+                    basic="基礎",
+                    allspin="All-Spin",
+                    allspin2="All-Spin 2",
+                    shrink="Shrink",
+                    aqua="Aqua",
+                    bomb="炸彈",
                 }
             },
             ['tower defense']={
@@ -78,6 +87,19 @@ return {
             ['ice storm']={
                 iceOpacity="冰柱不透明度"
             }
+        },
+        button={
+            setting="設定",
+            about="關於",
+            links="學習"
+        },
+        extLink={
+            "Aquamino官方規則文檔",
+            "Hard Drop Tetris Wiki",
+            "俄羅斯方塊中文維基",
+            "Tetris Wiki",
+            "FOUR.LOL",
+            "Dunspixel的O旋教程",
         }
     },
     about={
@@ -121,9 +143,10 @@ return {
             vsync="垂直同步",
             vsyncTxt="本程式繪製代碼與運算代碼形式上分離，稱繪製幀率為FPS，運算幀率為TPS。\n若設定的最高FPS小於等於垂直同步限制的FPS，則TPS不受限。\n本程式主要考慮PC端運行情況，該選項預設為關閉。\n低性能設備可開啟此選項優化運算代碼運行。",
             discardAfterDraw="顯存回收加速",
-            DADTxt="每幀繪製完成后立刻回收對應顯存。用于移動端优化。",
+            DADTxt="每幀繪製完成后立刻回收對應顯存。用于移動端优化。如果出現花屏，不要打開。",
             moreParticle="粒子特效",
-            frameLim="最高繪製幀率",frameTxt="建議將該值調整為與顯示器幀率相等。"
+            frameLim="最高繪製幀率",frameTxt="建議將該值調整為與顯示器幀率相等。",
+            sysCursor="外部光標",
         },
         custom={
             texture="方塊材質",color="方塊配色...",
@@ -136,7 +159,7 @@ return {
             theme="版面風格",
             scale="版面縮放",
             sfx="音效包",sfxWarning={
-                otto="此音效包包含音量過大內容，謹慎選擇。"
+                otto="音量過大警告"
             },
             colorSet={
                 title="調整方塊顏色",
@@ -160,14 +183,15 @@ return {
             }
         },
         keys={
-            keyName={'左移','右移','順轉','逆轉','180°轉','軟降','硬降','保留','重開','暫停'} ,
+            keyName={'左移','右移','順轉','逆轉','180°轉','軟降','硬降','保留','重開','暫停','功能1','功能2'} ,
             kScale=.4,
             info="點選新增鍵位綁定 (最多3個)\nBackspace清空選定鍵位\n按下已綁定鍵位以刪除該綁定",
             virtualKey="觸控設定..."
         },
         virtualKey={
             enable="啓用虛擬按鍵",enableTxtScale=.25,
-            anim="按鈕動畫",animTxtScale=.25,
+            shade="按鍵陰影",shadeTxtScale=.25,
+            anim="按鍵動畫",animTxtScale=.25,
             preset="预設...",
             btsz="大小",
             tolerance="容錯",

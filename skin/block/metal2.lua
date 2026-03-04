@@ -6,8 +6,8 @@ local arc,circle,rect=gc.arc,gc.circle,gc.rectangle
 function skin.setDropAnimTTL(player)
     return .25
 end
-skin.pic=gc.newImage('skin/block/metal/metal.png')
-skin.bombpic=gc.newImage('skin/block/metal/bomb.png')
+skin.pic=gc.newImage('skin/block/metal2/metal2.png')
+skin.bombpic=gc.newImage('skin/block/metal2/bomb.png')
 skin.sd=gc.newShader('shader/grayscale stain.glsl')
 
 local bb=gc.newCanvas(36,36)

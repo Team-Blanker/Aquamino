@@ -2,7 +2,7 @@ local m=user.lang.menu
 local BUTTON=scene.button
 local SLIDER=scene.slider
 
-local menu={modeKey=1,sAnimTMax=.15}
+local menu={modeKey=1}
 
 local bso=require'mino/bestScoreOrder'
 
@@ -48,14 +48,15 @@ menu.secretMode={
     ['tower defense']={mode='core destruction',arg='tower defense'},
     sandbox={mode='square'},
     ['dig 40']={mode='dig bomb'},
-    battle={mode='bomb battle',arg='battle'},
     --multitasking={mode='multitasking_plus'},
 }
-menu.notRecordScore={sandbox=true,battle=true,['tower defense']=true}
+
+menu.notSaveScore={sandbox=true,battle=true,['tower defense']=true}
 menu.icon={}
+menu.battleRuleSet={'basic','allspin','allspin2','aqua','shrink','bomb'}
 menu.option={
-    battle={bot_DropDelay=1,playerPos='left'},
-    ['tower defense']={bot_DropDelay=1,playerPos='left'},
+    battle={bot_PPS=1,playerPos='left',ruleNum=0,ruleSet='basic'},
+    ['tower defense']={bot_PPS=1,playerPos='left'},
     ['ice storm']={iceOpacity=1}
 }
 
@@ -63,12 +64,22 @@ for k,v in pairs(menu.modeList) do
     menu.icon[k]=gc.newImage('pic/mode icon/'..k..'.png')
 end
 
+local extLinkURL={
+    'https://github.com/Aqua6623/Aquamino_Doc',
+    'https://harddrop.com/wiki/Tetris_Wiki',
+    'http://tetriswiki.cn',
+    'https://tetris.wiki',
+    'https://four.lol',
+    'https://dunspixel.github.io/ospin-guide/',
+}
 local playButtonPolygon={-225,0,-175,50,175,50,225,0,175,-50,-175,-50}
 function menu.init()
     sfx.add({
         click='sfx/general/buttonClick.wav',
         quit='sfx/general/buttonQuit.wav',
         gameEnter='sfx/general/gameEnter.wav',
+        rbopen='sfx/general/ruleBookOpen.wav',
+        rbclose='sfx/general/ruleBookClose.wav',
     })
 
     for k,v in pairs(menu.modeList) do
@@ -110,7 +121,9 @@ function menu.init()
         menu.describeTxt[k].h=menu.describeTxt[k].txt:getHeight()
     end
 
-    menu.lvl=1 menu.sAnimTimer=0
+    menu.lvl=1
+    menu.selectAnimTimer=0 menu.selectAnimTMax=.15
+    menu.linkAnimTimer=0 menu.linkAnimTMax=.15
     menu.pAnim=false menu.pAnimTimer=0
     menu.rCount=0
     menu.selectedMode=nil
@@ -121,8 +134,8 @@ function menu.init()
         menu.pbString[k]=bso[k](v)
     end
 
-    menu.CDTimer=0--旧核心毁灭进入计时
-    menu.CDEnter=false
+    menu.SMTimer=0
+    menu.SMEnter=false
 
     BUTTON.setLayer(1)
     BUTTON.create('setting',{
@@ -140,6 +153,8 @@ function menu.init()
             gc.draw(setIcon1,0,0)
             gc.setColor(1,1,1,(t*5))
             gc.draw(setIcon2,0,0)
+            gc.setColor(1,1,1,t*3)
+            gc.printf(m.button.setting,font.Bender,114,114,2000,'center',-math.pi/4,1/3,1/3,1000,0)
         end,
         event=function()
             scene.switch({
@@ -155,6 +170,7 @@ function menu.init()
     BUTTON.create('quit',{
         x=-960,y=540,type='diamond',r=225,
         draw=function(bt,t)
+            if menu.lvl~=1 then return end
             gc.setColor(.5,.5,.5,.3+t)
             gc.circle('fill',0,0,bt.r,4)
             gc.setColor(.8,.8,.8)
@@ -181,6 +197,8 @@ function menu.init()
             gc.circle('line',0,0,bt.r,4)
             gc.setColor(1,1,1)
             gc.draw(aboutIcon,0,0,0,1,1,120,0)
+            gc.setColor(1,1,1,t*3)
+            gc.printf(m.button.about,font.Bender,-114,114,2000,'center',math.pi/4,1/3,1/3,1000,0)
         end,
         event=function()
             sfx.play('click')
@@ -190,7 +208,7 @@ function menu.init()
             })
         end
     },.2)
-    BUTTON.create('rulebook',{
+    BUTTON.create('links',{
         x=960,y=540,type='diamond',r=225,
         draw=function(bt,t)
             gc.setColor(.5,.5,.5,.3+t)
@@ -200,21 +218,25 @@ function menu.init()
             gc.circle('line',0,0,bt.r,4)
             gc.setColor(1,1,1)
             gc.draw(rulebookIcon,0,0,0,1,1,120,120)
+            gc.setColor(1,1,1,t*3)
+            gc.printf(m.button.links,font.Bender,-114,-114,2000,'center',-math.pi/4,1/3,1/3,1000,font.height.Bender)
         end,
         event=function()
+            sfx.play('click')
+            menu.lvl=3
         end
     },.2)
     BUTTON.setLayer(2)
-    BUTTON.create('back',{
+    BUTTON.create('backsm',{
         x=-960,y=540,type='diamond',r=225,
         draw=function(bt,t)
-            local a=menu.sAnimTimer/menu.sAnimTMax
-            gc.setColor(.5,.5,.5,(.3+t)*a)
+            if menu.lvl~=2 then return end
+            gc.setColor(.5,.5,.5,.3+t)
             gc.circle('fill',0,0,bt.r,4)
-            gc.setColor(.8,.8,.8,a)
+            gc.setColor(.8,.8,.8)
             gc.setLineWidth(5)
             gc.circle('line',0,0,bt.r,4)
-            gc.setColor(1,1,1,a)
+            gc.setColor(1,1,1)
             gc.draw(win.UI.back,0,0,0,1,1,-5,95)
         end,
         event=function()
@@ -227,10 +249,10 @@ function menu.init()
         draw=function(bt,t)
             if not menu.selectedMode then return end
             if not menu.modeList[menu.selectedMode].playable then
-                gc.printf(user.lang.menu.notPlayable,font.Bender,0,0,2000,'center',0,.625,.625,1000,font.height.Bender/2)
+                gc.printf(m.notPlayable,font.Bender,0,0,2000,'center',0,.625,.625,1000,font.height.Bender/2)
                 return
             end
-            local a=menu.sAnimTimer/menu.sAnimTMax*2-1
+            local a=menu.selectAnimTimer/menu.selectAnimTMax*2-1
             if menu.pAnim then
                 local s=menu.pAnimTimer>.2 and 1 or menu.pAnimTimer%.1<.05 and 1 or 0
                 gc.setColor(.75,.75,.75,.5+.1*s)
@@ -257,6 +279,45 @@ function menu.init()
             menu.send=menu.gameSend
         end
     },.2)
+    BUTTON.setLayer(3)
+    BUTTON.create('backrbcs',{
+        x=-960,y=540,type='diamond',r=225,
+        draw=function(bt,t)
+            if menu.lvl<=2 then return end
+            gc.setColor(.5,.5,.5,.3+t)
+            gc.circle('fill',0,0,bt.r,4)
+            gc.setColor(.8,.8,.8)
+            gc.setLineWidth(5)
+            gc.circle('line',0,0,bt.r,4)
+            gc.setColor(1,1,1)
+            gc.draw(win.UI.back,0,0,0,1,1,-5,95)
+        end,
+        event=function()
+            sfx.play('quit',1,2^(1/3))
+            menu.lvl=1
+        end
+    },.2)
+    for i=1,#extLinkURL do
+        BUTTON.create(('extlink'..i),{
+        x=0,y=-280+80*i,type='rect',w=960,h=60,
+        draw=function(bt,t)
+            local a=menu.linkAnimTimer/menu.linkAnimTMax
+            if t>0 then gc.setColor(.5,1,.875,a*.1)
+                gc.rectangle('fill',-bt.w/2,-bt.h/2,bt.w,bt.h)
+            end
+            if t>0 then gc.setColor(.5,1,.875,a) else gc.setColor(1,1,1,a) end
+            gc.draw(win.UI.link,bt.w/2-bt.h/2,0,0,.2,.2,100,100)
+            gc.printf(m.extLink[i],font.Bender,-bt.w/2,bt.h/2,2000,'left',0,.4,.4,0,font.height.Bender)
+            gc.setLineWidth(2)
+            gc.line(-bt.w/2,bt.h/2,bt.w/2,bt.h/2)
+        end,
+        event=function()
+            sfx.play('rbopen')
+            love.system.openURL(extLinkURL[i])
+        end
+    },.0001)
+    end
+    BUTTON.setLayer(4)
 
     local lst=require'scene/menu/modeOption'
     lst.slider(menu)
@@ -296,14 +357,15 @@ function menu.mouseP(x,y,button,istouch)
                     menu.send=menu.gameSend
                 end
             end
-        elseif menu.lvl==2 then
+        elseif menu.lvl==3 then
         end
     end
 end
 function menu.mouseR(x,y,button,istouch)
     if not (BUTTON.release(x,y,menu.lvl) or SLIDER.mouseR(x,y,button,istouch)) then
         for k,v in pairs(menu.modeList) do
-            if abs(x-v.x)+abs(y-v.y)<150 and k==menu.selectedMode then
+            local click=abs(x-v.x)+abs(y-v.y)<150
+            if click and k==menu.selectedMode and menu.lvl==1 then
                 menu.lvl=2
             end
         end
@@ -331,8 +393,8 @@ function menu.update(dt)
 
     if love.mouse.isDown(1) then
         for k,v in pairs(menu.secretMode) do
-            if hv==k and not menu.CDEnter then menu.CDTimer=menu.CDTimer+dt
-                if menu.CDTimer>=5 then menu.CDEnter=true
+            if hv==k and not menu.SMEnter then menu.SMTimer=menu.SMTimer+dt
+                if menu.SMTimer>=5 then menu.SMEnter=true
                     sfx.play('gameEnter')
                     scene.switch({
                         dest='game',destScene=require'mino/game',
@@ -344,10 +406,11 @@ function menu.update(dt)
                 end
             end
         end
-    else menu.CDTimer=0 end
+    else menu.SMTimer=0 end
 
     if menu.pAnim then menu.pAnimTimer=menu.pAnimTimer+dt end
-    menu.sAnimTimer=menu.lvl==2 and min(menu.sAnimTimer+dt,menu.sAnimTMax) or max(menu.sAnimTimer-dt,0)
+    menu.selectAnimTimer=menu.lvl==2 and min(menu.selectAnimTimer+dt,menu.selectAnimTMax) or max(menu.selectAnimTimer-dt,0)
+    menu.linkAnimTimer=menu.lvl>=3 and min(menu.linkAnimTimer+dt,menu.linkAnimTMax) or max(menu.linkAnimTimer-dt,0)
     BUTTON.update(dt,msx,msy,menu.lvl)
 end
 
@@ -363,6 +426,10 @@ local w,h,c
 local lerp=myMath.lerp
 function menu.draw()
     mt=menu.modeTxt
+
+    BUTTON.draw(1)
+
+    local a=menu.linkAnimTimer/menu.linkAnimTMax
     for k,v in pairs(menu.modeList) do
         c=v.borderColor
 
@@ -385,11 +452,10 @@ function menu.draw()
         gc.setColor(1,1,1,v.hoverT/.15)
         gc.draw(mt[k].txt,v.x,v.y-45-v.hoverT/.15*15,0,ts,ts,mt[k].w/2,mt[k].h)
     end
-    BUTTON.draw(1)
 
     if menu.selectedMode then
     c=menu.modeList[menu.selectedMode].borderColor
-    local a=menu.sAnimTimer/menu.sAnimTMax
+    local a=menu.selectAnimTimer/menu.selectAnimTMax
     gc.setColor(.05,.05,.05,a*.75)
     gc.rectangle('fill',-960,-540,1920,1080)
     gc.setColor(c[1],c[2],c[3],a)
@@ -403,17 +469,22 @@ function menu.draw()
     local s=min(750/t.w,.75)
     gc.draw(t.txt,0,-390,0,s,s,t.w/2,t.h)
     if det then gc.draw(det.txt,0,-360,0,3/8,3/8,0,0) end
-    if not menu.notRecordScore[menu.selectedMode] then
+    if not menu.notSaveScore[menu.selectedMode] then
         if bst then
-            gc.printf(user.lang.menu.bestScore,font.Bender,0,150,2000,'center',0,.5,.5,1000,72)
-            gc.printf(menu.pbString[menu.selectedMode],font.Bender,0,210,3000,'center',0,1/3,1/3,1500,72)
-            gc.printf(menu.pb[menu.selectedMode].date or '',font.Bender,0,270,2000,'center',0,.25,.25,1000,72)
-        else gc.printf(user.lang.menu.noBestScore,font.Bender,0,180,2000,'center',0,.5,.5,1000,72) end
+            gc.printf(m.bestScore,font.Bender,0,150,2000,'center',0,.5,.5,1000,font.height.Bender/2)
+            gc.printf(menu.pbString[menu.selectedMode],font.Bender,0,210,3000,'center',0,1/3,1/3,1500,font.height.Bender/2)
+            gc.printf(menu.pb[menu.selectedMode].date or '',font.Bender,0,270,2000,'center',0,.25,.25,1000,font.height.Bender/2)
+        else gc.printf(m.noBestScore,font.Bender,0,180,2000,'center',0,.5,.5,1000,font.height.Bender/2) end
         end
     end
 
     BUTTON.draw(2)
     SLIDER.draw()
+
+    gc.setColor(.05,.05,.05,a*.75)
+    gc.rectangle('fill',-960,-540,1920,1080)
+    gc.setColor(1,1,1,a)
+    BUTTON.draw(3)
 end
 function menu.exit()
     file.save('player/unlocked',menu.unlocked)

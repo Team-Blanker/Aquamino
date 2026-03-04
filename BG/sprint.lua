@@ -42,8 +42,8 @@ function bg.draw()
             end
         end
     else
-        gc.setColor(1,1,1,m*.15)
-        gc.rectangle('fill',-1000,-600,2000,1200)
+        gc.setColor(1,1,1,(2*m-1)*.15)
+        gc.rectangle('fill',-960,-540,1920,1080)
         if bg.pc==1 then gc.setColor(1,.96,.6) else gc.setColor(1,1,1) end
         k=math.log(beat%4+1,2)
         gc.setLineWidth(36+36*k)

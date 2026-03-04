@@ -19,7 +19,7 @@ function rule.init(P,mino)
 
     --mino.bag={'Z','Z','S','S','J','J','J','J','L','L','L','L','O','O','O','I','I','I','T','T','T','T'}
     mino.bag={'J','L','O','I','T','T'}
-    mino.seqGenType='mayhem'
+    mino.seqGen='mayhem'
 
     mino.color.plum={.96,.48,.84}
     mino.color.gold={.9,.81,.045}

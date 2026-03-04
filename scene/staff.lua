@@ -5,9 +5,9 @@ local w,h=logo:getPixelDimensions()
 local kairan=gc.newImage('pic/assets/kairan.png')
 local kw,kh=kairan:getPixelDimensions()
 local devList={
-    program={'Izumi Kairan(Aquamarine6623, 海兰)'},
-    UI={'Aqua6623','Not-A-Robot'},
-    sfx={'Aqua6623','DJ Asriel','Farter'},
+    program={'Izumi Kairan'},
+    UI={'Izumi Kairan','Not-A-Robot'},
+    sfx={'Izumi Kairan','DJ Asriel','Farter'},
     music={
         --{},
         hurtRecord={
@@ -17,14 +17,14 @@ local devList={
             {'ミレラ','周藤三日月','DiscreetDragon'}
         }
     },
-    translate={'Aqua6623 (简中/繁中/English)','Sunday (繁中)','DJ Asriel (Italiano)'},
+    translate={'Izumi Kairan (简中/繁中/English)','Sunday (繁中)','DJ Asriel (Italiano)'},
     multiPlatform={
-        {'Aqua6623 (Windows & Android)','Sennoma (MacOS & Linux)'},
+        {'Izumi Kairan (Windows & Android)','Sennoma (MacOS & Linux)'},
         {'滑稽2369 (Android)'}
     },
     specialThanks={
         {'XMiao小渺 (Hoshizuki Kasuka)','User670','MianSoft','沙盒子',},
-        {'Sunday','滑稽2369 (huaji2369)','沙丁子 (5sdac)','T427 默默颗',},
+        {'Sunday','滑稽2369 (huaji2369)','沙丁子 (5sdac)','默默颗です',},
         {'風洛霊flore','farter','Sennoma','大叔Rex'},
         {'DJ Asriel','Not-A-Robot','SweetSea','nekonaomii (MelloBoo44)',}
     }

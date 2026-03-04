@@ -27,7 +27,7 @@ function rule.init(P,mino,modeInfo)
         smash='sfx/mode/ice storm/smash.wav',
         --lvup='sfx/mode/ice storm/level up.wav'
     })
-    mino.seqGenType='bagp1FromBag'
+    mino.seqGen='bagp1FromBag'
     rule.allowPush={}
     rule.scoreUp=480
     rule.scoreBase=960

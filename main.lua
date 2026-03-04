@@ -172,7 +172,23 @@ win={
     end,
     UI={
         back=gc.newImage('pic/UI/sign/back.png'),     --120*70
-        lang=gc.newImage('pic/UI/sign/language.png')  --100*100
+        lang=gc.newImage('pic/UI/sign/language.png'), --200*200
+        link=gc.newImage('pic/UI/sign/link.png'), --200*200
+
+        sysCursor=true,
+        mouse={
+            l=false,r=false,m=false,
+            holdClr={
+                {1,.4,.4},{.4,.6,1},{1,.6,1},{.48,.84,.4},{.9,.9,.4},{.4,.9,.9},{1,1,1}
+            },
+            holdTime=0, holdTMax=.05,
+            clickPar={},clickParTMax=.25,
+            clickParClr={
+                [0]={1,1,1},{1,.4,.4},{.4,.6,1},{.48,.84,.4},
+            },
+            scrollAnimTimer={u=0,d=0,l=0,r=0},
+            suspendTime=1e99
+        }
     }
 }
 win.H=gc.getHeight()
@@ -256,14 +272,23 @@ function love.mousepressed(x,y,button,istouch)
     if istouch then return end
     local rx,ry=adaptWindow:inverseTransformPoint(x+.5,y+.5)
     if scene.cur.mouseP and canop then scene.cur.mouseP(rx,ry,button) end
+    if not win.UI.sysCursor then ins(win.UI.mouse.clickPar,{x=rx,y=ry,b=button<4 and button or 0,t=win.UI.mouse.clickParTMax}) end
+    win.UI.mouse.suspendTime=0
 end
 function love.mousereleased(x,y,button,istouch)
     if istouch then return end
     local rx,ry=adaptWindow:inverseTransformPoint(x+.5,y+.5)
     if scene.cur.mouseR and canop then scene.cur.mouseR(rx,ry,button) end
 end
-function love.wheelmoved(dx,dy)--滚轮上滚是1，下滚是-1
+function love.mousemoved(x,y,dx,dy)
+    win.UI.mouse.suspendTime=0
+end
+function love.wheelmoved(dx,dy)--滚轮上滚 dy=1，下滚 dy=-1 左滚 dx=-1 右滚 dx=1
     if scene.cur.wheelMove and canop then scene.cur.wheelMove(dx,dy) end
+    local sa=win.UI.mouse.scrollAnimTimer
+    if dx>0 then sa.r=.1 elseif dx<0 then sa.l=.1 end
+    if dy>0 then sa.u=.1 elseif dy<0 then sa.d=.1 end
+    win.UI.mouse.suspendTime=0
 end
 function love.touchpressed(id,x,y)
     local rx,ry=adaptWindow:inverseTransformPoint(x+.5,y+.5)
@@ -271,6 +296,7 @@ function love.touchpressed(id,x,y)
     if scene.cur.touchP then scene.cur.touchP(id,rx,ry)
     elseif scene.cur.mouseP then scene.cur.mouseP(rx,ry,1) end
     end
+    if not win.UI.sysCursor then ins(win.UI.mouse.clickPar,{x=rx,y=ry,b=0,t=win.UI.mouse.clickParTMax}) end
 end
 function love.touchreleased(id,x,y)
     local rx,ry=adaptWindow:inverseTransformPoint(x+.5,y+.5)
@@ -296,7 +322,25 @@ function mainUpdate(dt)
         win.distractTime=max(win.distractTime,0)
         win.distractTime=win.distractTime+dt
     end
+    --光标动画
+    local ma=win.UI.mouse
+    ma.l,ma.r,ma.m=love.mouse.isDown(1),love.mouse.isDown(2),love.mouse.isDown(3)
+    if love.mouse.isDown(1,2,3,4,5) then
+        ma.holdTime=min(ma.holdTime+dt,ma.holdTMax)
+        ma.suspendTime=0
+    else
+        ma.holdTime=max(ma.holdTime-dt,0)
+    end
+    for i=#ma.clickPar,1,-1 do
+        ma.clickPar[i].t=ma.clickPar[i].t-dt
+        if ma.clickPar[i].t<=0 then rem(ma.clickPar,i) end
+    end
+    for k,v in pairs(ma.scrollAnimTimer) do
+        ma.scrollAnimTimer[k]=max(ma.scrollAnimTimer[k]-dt,0)
+    end
+    ma.suspendTime=ma.suspendTime+dt
 
+    --场景切换
     if scene.dest or scene.destScene then canop=false
         if scene.swapT>0 then
             scene.swapT=scene.swapT-dt
@@ -356,12 +400,15 @@ function love.update(dt)
 end
 
 local dfcv={scene.canvas,stencil=true}
+local p,c
 
 function love.draw()
     --local dpiS=love.window.getDPIScale()
     --local rw,rh=dpiS*win.W,dpiS*win.H
 
     local rx,ry=adaptWindow:inverseTransformPoint(ms.getX()+.5,ms.getY()+.5)
+    local ma=win.UI.mouse
+    local msa=ma.scrollAnimTimer
 
     --[[画面显示：找到最大的16:9的矩形，居中，以该矩形的中心为原点，向右为x轴正方向，向下为y轴正方向，
     矩形长边为1920单位，短边为1080单位，以此为基准进行绘制]]
@@ -399,6 +446,34 @@ function love.draw()
 
     gc.setColor(1,1,1)--过场动画
     if scene.anim then scene.anim() end
+
+    --鼠标
+    for i=1,#ma.clickPar do
+        p=ma.clickPar[i] c=ma.clickParClr[p.b]
+        gc.setColor(c[1],c[2],c[3],p.t/ma.clickParTMax)
+        gc.setLineWidth(2)
+        gc.circle('line',p.x,p.y,40-20*p.t/ma.clickParTMax,4)
+    end
+
+    if not win.UI.sysCursor then
+        gc.translate(rx,ry)
+        local at=ma.holdTime/ma.holdTMax
+        gc.setColor(1,1,1,.75)
+        gc.setLineWidth(2)
+        if ma.l or ma.r or ma.m then
+        gc.setColor(ma.holdClr[(ma.l and 1 or 0)+(ma.m and 4 or 0)+(ma.r and 2 or 0)])
+        else gc.setColor(1,1,1,.75*min(1,max(5-ma.suspendTime,0)^.5)) end
+        gc.circle('line',0,0,22.5-5*at,4)
+        gc.circle('line',0,0,17.5-5*at,4)
+
+        gc.setColor(1,1,1)
+        if msa.u>0 then gc.line(-12,-18,  0,-30, 12,-18) end
+        if msa.d>0 then gc.line(-12, 18,  0, 30, 12, 18) end
+        if msa.l>0 then gc.line(-18,-12,-30,  0,-18, 12) end
+        if msa.r>0 then gc.line( 18,-12, 30,  0, 18, 12) end
+
+        gc.translate(-rx,-ry)
+    end
 
     gc.setColor(1,1,1)
     if win.showInfo then

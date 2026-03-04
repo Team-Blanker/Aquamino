@@ -129,7 +129,7 @@ function config.init()
             gc.setLineWidth(9)
             gc.arc('line','closed',0,0,bt.r,arcs,arcf,6)
             gc.setColor(1,1,1)
-            gc.draw(win.UI.lang,0,0,0,1.5,1.5,50,50)
+            gc.draw(win.UI.lang,0,0,0,.75,.75,100,100)
         end,
         event=function()
             sfx.play('confEnter')

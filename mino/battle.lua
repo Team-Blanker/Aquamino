@@ -7,9 +7,14 @@ local battle={}
 function battle.init(player)
     player.garbage={} player.atkAnimList={} player.defAnimList={} player.recvAnimList={}
     player.lastHole=rand(player.w)
-    player.defAmount=0
+    player.defAmount=0 player.atkUsedToDef=0
     player.atkScale=1 player.defScale=1
     player.atkMinusByDef=true
+
+    player.charge=0--充能，不管是什么意义上的
+    player.lastReleaseCharge=0
+    player.chargeAnimTimer=1e99
+    player.chargeAnimType='release'
 
     player.garbageCap=1e99
 
@@ -34,6 +39,7 @@ function battle.sendAtk(player,dest,atk)
     cut=1e99 M_OC=1即标准对战垃圾
     }]]
     ins(dest.garbage,atk)
+    --return atk.amount
 end
 function battle.atkRecv(player,atk,mino)
     if atk.amount==0 then return end
@@ -59,8 +65,9 @@ function battle.getGarbageAmount(player)
     end
     return n
 end
-function battle.defense(player,amount,mino)
-    local n=amount*player.defScale
+function battle.defense(player,amount,mino,defScale)
+    defScale=defScale or player.defScale
+    local n=floor(amount*defScale)
     local remList={}
     local defAmount=0
     while player.garbage[1] and n>0 do
@@ -78,6 +85,7 @@ function battle.defense(player,amount,mino)
     if mino.theme.updateDefenseAnim then mino.theme.updateDefenseAnim(player,remList) end
 
     player.defAmount=defAmount --抵消了多少攻击
+    player.atkUsedToDef=ceil(defAmount/defScale) --实际用掉了多少攻击来抵消
 end
 function battle.update(player,dt)
     for i=1,#player.garbage do
@@ -92,16 +100,42 @@ end
 local l,s,m,w,b,c
 function battle.stdAtkCalculate(player)
     local his=player.history
-    l,s,m,b=his.line,his.spin,his.mini,his.B2B
-    w,c=(his.wide>4 and 1 or his.wide),min(his.combo,12)
+    l,s,m,b,c=his.line,his.spin,his.mini,his.B2B,his.combo
 
-    local pc=his.PC and 6 or 0
-    local bl=(s and not m) and 2*l-1 or l>=4 and 1.5*l-1.5 or l-.5 --基础攻击
-    local ba=b>0 and min((3+b)/4,2.5) or 0 --B2B加成
-    local ca=max((c-3)/(2^w)+.5,0)+(((l>=4 or his.spin) and c>1) and 1 or 0) --连消加成
-    return l==0 and 0 or floor(bl+ba+ca+pc)
+    local pc=his.PC and 8 or 0 --全消加成
+    local bl=(s and not m) and 2*l or l>=4 and l or l-1 --基础攻击
+    local ba=b>0 and 1 or 0 --B2B加成
+    local ca=min(c/3,3) --连消加成
+    return floor(bl+ba+ca+pc)
 end
-function battle.stdAtkGen(player,time)
+function battle.atkGen(player,atkCalculate,garbageSummon,atkScale)
+    atkScale=atkScale or player.atkScale
+
+    local his=player.history
+
+    local atk=atkCalculate(player)
+    local def=(player.atkMinusByDef and player.atkUsedToDef or 0)
+    local totalatk=(atk-def)*atkScale
+    player.defAmount=0 player.atkUsedToDef=0
+
+    if atk>0 then
+        player.spikeCount=player.spikeCount+atk
+        player.defSpikeCount=player.defSpikeCount+def
+        player.spikeTimer=1
+
+        player.spikeAnimCount=player.spikeCount
+        player.defSpikeAnimCount=player.defSpikeCount
+        player.spikeAnimTimer=player.spikeAnimTMax
+
+        local x,y,ox,oy=block.size(his.piece)
+        ins(player.atkAnimList,{x=his.x-ox,y=his.y-oy,t=0,amount=atk,defAmount=def,B2B=his.B2B})
+    end
+
+    if totalatk<=0 then return end
+
+    return garbageSummon(player,totalatk)
+end
+function battle.stdAtkGen(player,t)
     local his=player.history
     l,s,m,w,b,c=his.line,his.spin,his.mini,his.wide,his.B2B,his.combo
 
@@ -125,14 +159,19 @@ function battle.stdAtkGen(player,time)
 
     if totalatk<=0 then return end
 
+    return battle.stdGarbageSummon(player,totalatk,t)
+end
+function battle.stdGarbageSummon(player,atk,t)
+    local his=player.history
+    l,s,m,w,b,c=his.line,his.spin,his.mini,his.wide,his.B2B,his.combo
     return {
-        amount=totalatk,
+        amount=atk,
         block='g1',
-        cut=(w==4 or his.PC) and 1e99 or s and totalatk/2+b or 1e99,
+        cut=1e99,
         cutOffset=0,
-        M_OC=(w>=2 and w<=4) and (4-w)*.025 or his.PC and 0 or max(1/(max(b,1)-0.1*(c-3)),.2),
+        M_OC=1,
         appearT=0,
-        time=time or .5,
+        time=t or .5,
     }
 end
 function battle.stdAtkRecv(player,mino)
@@ -196,5 +235,16 @@ function battle.stdBombAtkRecv(player,mino)
         else i=i+1 end
     end
     return amount
+end
+function battle.charge(player,amount)
+    player.charge=player.charge+amount
+    player.chargeAnimTimer=0
+    player.chargeAnimType='charge'
+end
+function battle.chargeRelease(player)
+    player.lastReleaseCharge=player.charge
+    player.charge=0
+    player.chargeAnimTimer=0
+    player.chargeAnimType='release'
 end
 return battle

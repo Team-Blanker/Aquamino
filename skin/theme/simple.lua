@@ -1,7 +1,8 @@
 local simple={}
 local T,M=myTable,myMath
-local setColor,rect,line,circle,printf,draw=gc.setColor,gc.rectangle,gc.line,gc.circle,gc.printf,gc.draw
+local setColor,setLineWidth,rect,line,circle,printf,draw=gc.setColor,gc.setLineWidth,gc.rectangle,gc.line,gc.circle,gc.printf,gc.draw
 
+local tau=2*math.pi
 local atkAnimTMax=.5
 local defAnimTMax=.2
 local recvAnimTMax=.2
@@ -29,6 +30,7 @@ function simple.init(player)
     player.PCInfo={} player.clearTxtTimer=0 player.clearTxtTMax=0
     player.dangerAnimTimer=0
     player.B2BAnimTimer=1e99
+    player.keepChargeAnimTimer=0
 
     simple.NRSFXDelay=.8--破纪录音效多长时间后播放
 end
@@ -36,10 +38,13 @@ local W,H,timeTxt
 function simple.getNextPos(player)
     return 18*player.w+90+20,-18*max(player.h,20)-50,100
 end
+function simple.getHoldPos(player)
+    return -18*player.w-90-20,-18*max(player.h,20)+50
+end
 function simple.fieldDraw(player,mino)
     --[[
     setColor(1,1,1)
-    gc.setLineWidth(4)
+    setLineWidth(4)
     rect('line',-400,-400,800,800)
     ]]
 
@@ -55,12 +60,12 @@ function simple.fieldDraw(player,mino)
     setColor(1,1-.8*darg,1-.8*darg)
     --rect('fill',W/2+20,-aH/2-30,180,30)
     --rect('fill',-W/2-200,-aH/2-30,180,30)
-    gc.setLineWidth(2)
+    setLineWidth(2)
     rect('line',W/2+20,-aH/2,180,100*player.preview)
     rect('line',-W/2-200,-aH/2,180,100)
 
     setColor(1,1-.8*darg,1-.8*darg)
-    gc.setLineWidth(2)
+    setLineWidth(2)
     line(-W/2-1,-H/2,-W/2-1,H/2+1,W/2+1,H/2+1,W/2+1,-H/2)
     line(-W/2-19,-H/2,-W/2-19,H/2+1,W/2+19,H/2+1,W/2+19,-H/2)
 
@@ -71,7 +76,7 @@ function simple.fieldDraw(player,mino)
     for i=1,player.preview do
         printf(tostring(i),font.JB_L,W/2+25,-aH/2+100*i-100,800,'left',0,.25,.25,0,0)
     end
-    gc.setLineWidth(2)
+    setLineWidth(2)
     setColor(1,1-.8*darg,1-.8*darg,.1)
     --网格
     for y=-.5*player.h+1,.5*player.h-1 do
@@ -135,9 +140,11 @@ function simple.garbageDraw(player,mino)
         if tga-g.amount<=40 then
             rt=-g.time/cooldownAnimTMax
             t=(1-min(g.appearT,.075)/.075)^2
+            if rt>0 then
             gc.setColor(1,1,1,2-2*rt)
-            gc.setLineWidth(2)
+            setLineWidth(2)
             rect('line',-W/2-18-8*rt,H/2-36*(tga+t*.75)-12*rt,16+16*rt,36*g.amount+24*rt)
+            end
 
             if g.time>0 then gc.setColor(.6,.45,.45,1-t) else gc.setColor(1,.75,.75,1-t) end
             rect('fill',-W/2-18,H/2-36*(tga+t*.75),16,36*g.amount)
@@ -157,12 +164,24 @@ function simple.garbageDraw(player,mino)
     if player.garbageCap then
         local darg=player.dangerAnimTimer/dangerAnimTMax
         setColor(.5+.5*darg,1,.875+.125*darg)
-        gc.setLineWidth(1)
+        setLineWidth(1)
         line(-W/2-18,H/2-36*player.garbageCap,-W/2-2,H/2-36*player.garbageCap)
     end
 end
 
-local spikeColor={[0]={1,1,1,.5},{.96,.96,.96,1},{.5,1,.875,1},{.6,.8,1,1},{.8,.6,1,1}}
+local spikeColor={
+    [0]={1,1,1,.5}, --0
+    {1,1,1,.5}, --4
+    {1,1,1,1}, --8
+    {1,1,1,1}, --12
+    {.5,1,.875,1}, --16
+    {.6,.8,1,1}, --20
+    {.6,.6,1,1}, --24
+    {.8,.6,1,1}, --28
+    {1,.6,1,1}, --32
+    {1,.5,.7,1}, --36
+    {1,.4,.4,1}, --40
+}
 function simple.overFieldDraw(player)
     local aal=player.atkAnimList
     if aal then
@@ -183,17 +202,28 @@ function simple.overFieldDraw(player)
 
     local spk,dspk=player.spikeAnimCount,player.defSpikeAnimCount
     if spk and spk>=8 then
+        local sz=floor((spk-dspk)/4)
 
-        local sc=spikeColor[min(floor((spk-dspk)/8),4)]
+        local sc=spikeColor[min(sz,#spikeColor)]
 
-        local ts=.3+.05*min(floor((spk-dspk)/8),4)
+        local ts=sz<2 and .275 or .275+.025*min(max(floor(sz),0),#spikeColor)
 
         gc.setColor(sc[1],sc[2],sc[3],sc[4]*(player.spikeAnimTimer/player.spikeAnimTMax*2)^.5)
-        local ah=(spk-dspk>=8 and 80*ts/.35 or 0)*max( (player.spikeAnimTMax-player.spikeAnimTimer)/.2*(1-(player.spikeAnimTMax-player.spikeAnimTimer)/.2),0 )
-        if dspk>0 then
-            gc.printf(string.format("%d SPIKE (-%d)",spk,dspk),font.Bender,0,-H/5-ah,4000,'center',0,ts,ts,2000,font.height.Bender/2)
+        local aw,ah=0,0
+        --[[if spk-dspk>24 then
+            local v=max((.2-player.spikeAnimTMax+player.spikeAnimTimer)/.2,0)
+            local shake=(spk-dspk>32 and 12 or 6)
+            aw=shake*v*(rand()*2-1) ah=shake*v*(rand()*2-1)
         else
-            gc.printf(string.format("%d SPIKE",spk),font.Bender,0,-H/5-ah,4000,'center',0,ts,ts,2000,font.height.Bender/2)
+            aw=0
+            ah=(spk-dspk>=8 and 80*ts/.35 or 0)*max( (player.spikeAnimTMax-player.spikeAnimTimer)/.2*(1-(player.spikeAnimTMax-player.spikeAnimTimer)/.2),0 )
+        end]]
+        aw=0
+            ah=(spk-dspk>=8 and 80*ts/.35 or 0)*max( (player.spikeAnimTMax-player.spikeAnimTimer)/.2*(1-(player.spikeAnimTMax-player.spikeAnimTimer)/.2),0 )
+        if dspk>0 then
+            gc.printf(string.format("%d SPIKE (-%d)",spk,dspk),font.Bender,aw,-H/5-ah,4000,'center',0,ts,ts,2000,font.height.Bender/2)
+        else
+            gc.printf(string.format("%d SPIKE",spk),font.Bender,aw,-H/5-ah,4000,'center',0,ts,ts,2000,font.height.Bender/2)
         end
     end
 end
@@ -214,7 +244,7 @@ local clearTxt={
     'Boron','Carbon','Nitrogen','Oxygen',
     'Fluorine','Neon','Sodium','Magnesium',
     'Aluminium','Silicon','Phosphorus','Sulfur',
-    'Chlorine','Argon','Potassium','Calcium','NUCLEAR FUSION'
+    'Chlorine','Argon','Potassium','Calcium','NEUTRON'
 }
 local clearClr={
     [0]={1,1,1},
@@ -256,11 +286,38 @@ function simple.clearTextDraw(player,mino)
 
         setColor(.1,.1,.1,.15)
         for i=1,8 do
-            printf(ctxt,font.JB_B,-8+3*cos(i*math.pi/4),12+3*sin(i*math.pi/4),1200,'right',0,.25,.25,1200,font.height.JB_B/2)
+            printf(ctxt,font.JB_B,-8+3*cos(i*math.pi/4),12+3*sin(i*math.pi/4),1200,'right',0,4/15,4/15,1200,font.height.JB_B/2)
         end
         if scene.time%.2<.1 then setColor(1,1,1) else local k=min((CInfo.combo-8)/8,1)
         setColor(1-.5*k,1,1-.125*k) end
-        printf(ctxt,font.JB_B,-8,12,1200,'right',0,.25,.25,1200,font.height.JB_B/2)
+        printf(ctxt,font.JB_B,-8,12,1200,'right',0,4/15,4/15,1200,font.height.JB_B/2)
+    end
+
+    if player.charge then
+        if player.chargeAnimType=='charge' and player.charge>0 then
+            local h=2.75+min(max(player.charge-10,0)*.125,2.25)
+            setColor(COLOR.hsv(h,.5,1,.4))
+            local sz=1+.2*max(.05-abs(2*player.chargeAnimTimer-.05),0)/.05
+            gc.arc('fill','closed',-90,120,min(30+1*max(player.charge-5,0),45)*sz,0,.75*tau,3)
+            setColor(COLOR.hsv(h,1,.25,1))
+            for i=1,8 do
+                printf(player.charge,font.JB_B,-90+3*cos(i*math.pi/4),120+3*sin(i*math.pi/4),1200,'center',0,5/16,5/16,600,font.height.JB_B/2)
+            end
+            setColor(1,1,1)
+
+            printf(player.charge,font.JB_B,-90,120,1200,'center',0,.3,.3,600,font.height.JB_B/2)
+            printf("CHARGE",font.Bender_B,-90,156,1200,'center',0,1/6,1/6,600,font.height.Bender_B/2)
+            setLineWidth(2)
+            line(-132,150,-138,156,-132,162)
+            line(-48,150,-42,156,-48,162)
+        elseif player.chargeAnimType=='release' and player.lastReleaseCharge>0 then
+            local h=2.75+min(max(player.lastReleaseCharge-10,0)*.125,2.25)
+            setColor(COLOR.hsv(h,.5,1,.4*(1-player.chargeAnimTimer/.2)))
+            local sz=1+3*player.chargeAnimTimer
+            gc.arc('fill','closed',-90,120,min(30+1*max(player.lastReleaseCharge-5,0),45)*sz,0,.75*tau,3)
+            setColor(1,1,1,1*(1-player.chargeAnimTimer/.2))
+            printf(player.lastReleaseCharge,font.JB_B,-90,120,1200,'center',0,5/16*sz,5/16*sz,600,font.height.JB_B/2)
+        end
     end
 
     btxt="B2B x"..max(player.history.B2B,0)
@@ -268,13 +325,13 @@ function simple.clearTextDraw(player,mino)
         local bc=(min(player.history.B2B,11)-1)/10
         setColor(.4,.36-.16*bc,.2,.15)
         for i=1,8 do
-            printf(btxt,font.JB_B,-8+3*cos(i*math.pi/4),57+3*sin(i*math.pi/4),1200,'right',0,5/16,5/16,1200,font.height.JB_B/2)
+            printf(btxt,font.JB_B,-8+3*cos(i*math.pi/4),52+3*sin(i*math.pi/4),1200,'right',0,1/3,1/3,1200,font.height.JB_B/2)
         end
         setColor(1,.9-.5*bc,.4)
-        printf(btxt,font.JB_B,-8,57,1200,'right',0,5/16,5/16,1200,font.height.JB_B/2)
+        printf(btxt,font.JB_B,-8,52,1200,'right',0,1/3,1/3,1200,font.height.JB_B/2)
     else
         setColor(.75,.75,.75,1-(player.B2BAnimTimer/.25)^2)
-        printf(btxt,font.JB_B,-8,57,1200,'right',0,5/16,5/16,1200,font.height.JB_B/2)
+        printf(btxt,font.JB_B,-8,52,1200,'right',0,1/3,1/3,1200,font.height.JB_B/2)
     end
     gc.translate(W/2+20,250)
 
@@ -374,6 +431,10 @@ function simple.update(player,dt)
     else player.dangerAnimTimer=max(0,player.dangerAnimTimer-dt) end
 
     player.B2BAnimTimer=(player.history.B2B>0 and 0 or player.B2BAnimTimer+dt)
+    if player.charge then
+        player.chargeAnimTimer=player.chargeAnimTimer+dt
+        player.keepChargeAnimTimer=(player.charge>0 and player.keepChargeAnimTimer+dt or 0)
+    end
 
     if player.garbage then
         for i=1,#player.garbage do

@@ -13,7 +13,7 @@ function rule.init(P,mino)
         sq='sfx/mode/general/sq.wav',
     })
 
-    --mino.seqGenType='pairs'
+    --mino.seqGen='pairs'
     mino.bag={
         'Z','S','J','L','T','O','I'
     }

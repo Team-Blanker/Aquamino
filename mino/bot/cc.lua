@@ -221,10 +221,15 @@ function ccWrap.sendNext(thread,player,nextStart)
 end
 function ccWrap.renderField(player)
     assert(player.w==10,'Field width must be 10')
+    local offset=0
+    if #player.field>16 then
+        if #player.field+4>=player.h then offset=max(player.h-20,0)
+        else offset=#player.field-16 end
+    end
     local boolField={}
-    for y=1,min(#player.field,40) do
+    for y=1+offset,min(#player.field,40+offset) do
         for x=1,10 do
-        boolField[10*(y-1)+x]=(next(player.field[y][x]) and not player.field[y][x].bomb) and true or false
+        boolField[10*(y-1-offset)+x]=(next(player.field[y][x]) and not player.field[y][x].bomb) and true or false
         end
     end
     for i=#boolField+1,400 do

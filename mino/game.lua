@@ -47,7 +47,11 @@ function mino.blockLock(player,die)
         else mino.addEvent(player,mino.rule.loosen.fallTPL,'loosenDrop') end
     else
         his.push=0
-        if not die then mino.manageClear(player) end
+        if not die then mino.manageClear(player)
+        else
+            his.spin,his.mini=false,false
+            his.line=0 his.wide=-1 his.combo=0
+        end
     end
     if mino.rule.afterPieceDrop then mino.rule.afterPieceDrop(player,mino) end
 
@@ -234,6 +238,7 @@ function mino.hold(player)
     if player.hold.mode=='A' then
         H.x,H.y,C.x,C.y=C.x,C.y,H.x,H.y
         while C.piece and coincide(player) and C.y<player.h+B.Soff[C.name][2] do C.y=C.y+1 end
+        --这里没做完……
     elseif player.hold.mode=='S' then
     if C.name and C.piece then
         fLib.setEntryPos(player)
@@ -421,11 +426,11 @@ mino.operate={
         landed=coincide(OP,0,-1)
         mino.setAnimPrePiece(OP)
         C=OP.cur
-        C.kickOrder=fLib.kick(OP,'R')
+        C.kickOrder,C.kick=fLib.kick(OP,'R')
         if C.kickOrder then OP.smoothAnim.timer=mino.smoothTime
             OP.cur.ghostY=fLib.getGhostY(OP)
             if landed and OP.LDR>0 then OP.LTimer=0 OP.LDR=OP.LDR-1
-            else if C.kickOrder~=1 then OP.LDR=OP.LDR-1 end
+            else if C.kickOrder~=0 and C.kick[2]>0 then OP.LDR=OP.LDR-1 end
             end
             if mino.rule.allowSpin[C.name] then C.spin,C.mini=SC[mino.rule.spinType](OP)
                 if not mino.rule.enableMiniSpin then C.mini=false end
@@ -444,11 +449,11 @@ mino.operate={
         landed=coincide(OP,0,-1)
         mino.setAnimPrePiece(OP)
         C=OP.cur
-        C.kickOrder=fLib.kick(OP,'L')
+        C.kickOrder,C.kick=fLib.kick(OP,'L')
         if C.kickOrder then OP.smoothAnim.timer=mino.smoothTime
             OP.cur.ghostY=fLib.getGhostY(OP)
             if landed and OP.LDR>0 then OP.LTimer=0 OP.LDR=OP.LDR-1
-            else if C.kickOrder~=1 then OP.LDR=OP.LDR-1 end
+            else if C.kickOrder~=0 and C.kick[2]>0 then OP.LDR=OP.LDR-1 end
             end
             if mino.rule.allowSpin[C.name] then C.spin,C.mini=SC[mino.rule.spinType](OP)
                 if not mino.rule.enableMiniSpin then C.mini=false end
@@ -466,11 +471,11 @@ mino.operate={
         landed=coincide(OP,0,-1)
         mino.setAnimPrePiece(OP)
         C=OP.cur
-        C.kickOrder=fLib.kick(OP,'F')
+        C.kickOrder,C.kick=fLib.kick(OP,'F')
         if C.kickOrder then OP.smoothAnim.timer=mino.smoothTime
             OP.cur.ghostY=fLib.getGhostY(OP)
             if landed and OP.LDR>0 then OP.LTimer=0 OP.LDR=OP.LDR-1
-            else if C.kickOrder~=1 then OP.LDR=OP.LDR-1 end
+            else if C.kickOrder~=0 and C.kick[2]>0 then OP.LDR=OP.LDR-1 end
             end
             if mino.rule.allowSpin[C.name] then C.spin,C.mini=SC[mino.rule.spinType](OP)
                 if not mino.rule.enableMiniSpin then C.mini=false end
@@ -633,7 +638,7 @@ function mino.insertNextQueue(player)
     local rong=mino.rule.onNextGen
     if mino.seqSync then
         mino.publicPlayer.next={}
-        NG[mino.seqGenType](mino.bag,mino.publicPlayer,mino.publicPlayer.seqGen.buffer)
+        NG[mino.seqGen](mino.bag,mino.publicPlayer,mino.publicPlayer.seqGen.buffer)
         for k,v in pairs(mino.player) do
             n=#v.next+1
             for i=1,#mino.publicPlayer.next do
@@ -643,7 +648,7 @@ function mino.insertNextQueue(player)
         end
     else
         n=#player.next+1
-        NG[mino.seqGenType](mino.bag,player,player.seqGen.buffer)
+        NG[mino.seqGen](mino.bag,player,player.seqGen.buffer)
         if rong then rong(player,n,mino) end
     end
     player.seqGen.count=player.seqGen.count+1
@@ -684,7 +689,7 @@ function mino.init(isReset)
     P[1]=fLib.newPlayer()
 
     do
-        mino.seqGenType='bag' mino.seqSync=false
+        mino.seqGen='bag' mino.seqSync=false
         mino.bag={'Z','S','J','L','T','O','I'}
         mino.orient={
             Z=0,S=0,J=0,L=0,T=0,O=0,I=0,
@@ -765,7 +770,7 @@ function mino.init(isReset)
     }
 
     S.VKey=file.read('conf/virtualKey')
-    vKey.init(S.ctrl,S.VKey.anim)
+    vKey.init(S.ctrl,S.VKey.shade,S.VKey.anim)
     if S.VKey.enabled then
         for ki,v in pairs(S.VKey.set) do
             --print(v)
@@ -967,21 +972,25 @@ function mino.inputPress(k)
                 --推土机！
                 if mino.rule.allowPush[C.name] and C.kickOrder then
                     local reset=true local lBlock,push
-                    if OP.moveDir=='R' and S.keyDown.MR and coincide(OP,1,0) then
+                    local pr=OP.moveDir=='R' and S.keyDown.MR and coincide(OP,1,0)
+                    local pl=OP.moveDir=='L' and S.keyDown.ML and coincide(OP,-1,0)
+                    local pd=S.keyDown.SD and coincide(OP,0,-1)
+                    if pr or pl or pd then OP.pushAtt=OP.pushAtt+1 end
+                    if pr then
                         if rotate then reset=false
-                        OP.pushAtt=OP.pushAtt+1 lBlock,push=fLib.pushField(OP,'R')
+                        lBlock,push=fLib.pushField(OP,'R')
                         if push then mino.operate.MR(OP,true) end
                         end
                     end
-                    if OP.moveDir=='L' and S.keyDown.ML and coincide(OP,-1,0) then
+                    if pl then
                         if rotate then reset=false
-                        OP.pushAtt=OP.pushAtt+1 lBlock,push=fLib.pushField(OP,'L')
+                        lBlock,push=fLib.pushField(OP,'L')
                         if push then mino.operate.ML(OP,true) end
                         end
                     end
-                    if S.keyDown.SD and coincide(OP,0,-1) then
+                    if pd then
                         if rotate then reset=false
-                        OP.pushAtt=OP.pushAtt+1 lBlock,push=fLib.pushField(OP,'D')
+                        lBlock,push=fLib.pushField(OP,'D')
                         if push then mino.operate.SD(OP,true) end
                         end
                     end
@@ -1425,7 +1434,8 @@ function mino.draw()
             if H.name and H.mode=='S' then gc.push()
                 w,h,x,y=B.size(H.piece)
                 s=min((w/h>1.6 and 4/w or 2.5/h),1)
-                gc.translate(-18*P[i].w-90-20,-310)
+                local hx,hy=mino.theme.getHoldPos(P[i])
+                gc.translate(hx,hy)
                 gc.scale(s)
                 mino.blockSkin.holdDraw(P[i],H.piece,x,y,mino.color[H.name],P[i].canHold,mino.texType[H.name])
             gc.pop() end

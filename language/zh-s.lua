@@ -33,14 +33,14 @@ return {
     },
     modeDescription={
         ['40 lines']="以最快速度消除40行",
-        marathon={{1,1,1},"消除150行，但方块下落越来越快\n",{1,1,0},"参数限制：ASD=150ms ASP=30ms 软降ASP=30ms\n重力随等级提升而增大"},
-        ['ice storm']="利用All-spin机制抵御上升的冰柱",
+        marathon={{1,1,1},"消除150行，但方块下落越来越快\n",{1,1,0},"控制参数不可调"},
+        ['ice storm']="利用All-Spin机制抵御上升的冰柱",
         thunder="应对雷电的破坏",
-        smooth={{1,1,1}," 真的有这么丝滑吗？\n",{1,1,0},"降落延迟为0，锁定延迟增加至3秒"},
-        levitate={{1,1,0},"消行后场地内砖格不掉落"},
+        smooth={{1,1,1}," 真的有这么丝滑吗？\n",{1,.5,0},"20G\n",{1,1,0},"控制参数不可调"},
+        levitate="消行后场地内砖格不掉落",
         square={{1,1,1}," 你能在3分钟内拼出多少4×4正方形？"},
-        master={{1,1,1}," 在最高下落速度下极限堆叠！\n",{1,.5,0},"降落延迟为0，锁定延迟随等级提升缩短\n",{1,1,0},"参数限制：ASD=150ms ASP=30ms"},
-        multitasking={{1,1,1},"妈妈生的.mp4\n",{1,1,0},"参数限制：ASD=150ms ASP=30ms 软降ASP=30ms\n重力随等级提升而增大"},
+        master={{1,1,1}," 在最高下落速度下极限堆叠！\n",{1,.5,0},"20G\n",{1,1,0},"控制参数不可调"},
+        multitasking={{1,1,1},"妈妈生的.mp4\n",{1,1,0},"控制参数不可调"},
         sandbox={{1,1,0},"该模式不记录成绩"},
         ['dig 40']="静心思考，高效挖掘",
         laser={{1,1,1},"做人不要太攀比，踏踏实实做自己\n如果非要比一比，那就比比激光雨\n",{1,1,0},"节奏模式，强烈建议开启音乐游玩"},
@@ -65,6 +65,15 @@ return {
                     pos="玩家位置",
                     left="左侧",
                     right="右侧"
+                },
+                ruleSet="预设规则",
+                ruleSetName={
+                    basic="基础",
+                    allspin="All-Spin",
+                    allspin2="All-Spin 2",
+                    shrink="Shrink",
+                    aqua="Aqua",
+                    bomb="炸弹",
                 }
             },
             ['tower defense']={
@@ -78,6 +87,19 @@ return {
             ['ice storm']={
                 iceOpacity="冰柱不透明度"
             }
+        },
+        button={
+            setting="设置",
+            about="关于",
+            links="学习"
+        },
+        extLink={
+            "Aquamino官方规则文档",
+            "Hard Drop Tetris Wiki",
+            "俄罗斯方块中文维基",
+            "Tetris Wiki",
+            "FOUR.LOL",
+            "Dunspixel的O旋教程",
         }
     },
     about={
@@ -122,9 +144,10 @@ return {
             vsync="垂直同步",
             vsyncTxt="本程序绘制代码与运算代码形式上分离，称绘制帧率为FPS，运算帧率为TPS。\n若设定的最高FPS小于等于垂直同步限制的FPS，则TPS不受限。\n本程序主要考虑PC端运行情况，该选项默认关闭。\n低性能设备可开启此选项优化运算代码运行。",
             discardAfterDraw="显存回收加速",
-            DADTxt="每帧绘制完成后立刻丢弃对应显存。用于移动端优化。",
+            DADTxt="每帧绘制完成后立刻丢弃对应显存。用于移动端优化。如果出现花屏，不要打开。",
             moreParticle="粒子特效",
-            frameLim="最高绘制帧率",frameTxt="推荐将该值调整为与显示器帧率相等。"
+            frameLim="最高绘制帧率",frameTxt="推荐将该值调整为与显示器帧率相等。",
+            sysCursor="外部光标",
         },
         custom={
             texture="方块材质",color="方块配色...",
@@ -137,7 +160,7 @@ return {
             theme="版面风格",
             scale="版面缩放",
             sfx="音效包",sfxWarning={
-                otto="该音效包包含音量过大内容，谨慎选择。"
+                otto="音量过大警告"
             },
             colorSet={
                 title="调整方块颜色",
@@ -161,14 +184,15 @@ return {
             }
         },
         keys={
-            keyName={'左移','右移','顺转','逆转','180°转','软降','硬降','暂存','重开','暂停'},
+            keyName={'左移','右移','顺转','逆转','180°转','软降','硬降','暂存','重开','暂停','功能1','功能2'},
             kScale=.4,
             info="点击添加键位绑定 (最多3个)\nBackspace清空选定键位\n按下已绑定键位以删除该绑定",
             virtualKey="触控设置..."
         },
         virtualKey={
             enable="启用虚拟按键",enableTxtScale=.25,
-            anim="按钮动画",animTxtScale=.25,
+            shade="按键阴影",shadeTxtScale=.25,
+            anim="按键动画",animTxtScale=.25,
             preset="预设...",
             btsz="大小",
             tolerance="容错",

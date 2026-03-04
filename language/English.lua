@@ -29,25 +29,25 @@ return {
         ['dig bomb']="Bomb Dig",
         multitasking_plus="Multitasking+",
 
-        ['mech heart detector']="MH Detector",
+        ['mech heart detector']="Mech Detector",
     },
     modeDescription={
         ['40 lines']="Clear 40 lines as fast as you can!",
-        marathon={{1,1,1},"Clear 150 lines with increasing speed.\n",{1,1,0},"Handling Restriction:\nASD=150ms ASP=30ms SD ASP=30ms\nGravity increases with level"},
-        ['ice storm']="Use All-spin mechanics to stop rising icicles!",
+        marathon={{1,1,1},"Clear 150 lines with increasing speed.\n",{1,1,0},"Fixed handling"},
+        ['ice storm']="Use All-Spin mechanics to stop rising icicles!",
         thunder="Do your best to avoid destruction\nfrom lightning.",
-        smooth={{1,1,1},"Is it really that smooth?\n",{1,1,0},"Fall delay is 0, Lock delay is increased to 3s"},
-        levitate={{1,1,0},"Blocks don't fall after clearing"},
+        smooth={{1,1,1},"Is it really that smooth?\n",{1,.5,0},"20G\n",{1,1,0},"Fixed handling"},
+        levitate="Blocks don't fall after clearing",
         square={{1,1,1}," How many 4*4 squares can you build \nin 3 minutes?"},
-        master={{1,1,1},"Survive in the cruelest speed!\n",{1,.5,0},"Fall delay is 0, lock delay shortens with\nlevel increases\n",{1,1,0},"Handling Restriction: ASD=150ms ASP=30ms"},
-        multitasking={{1,1,1},"*Galaxy Brain Meme*\n",{1,1,0},"Handling Restriction:\nASD=150ms ASP=30ms SD ASP=30ms\nGravity increases with level"},
+        master={{1,1,1},"Survive in the cruelest speed!\n",{1,.5,0},"20G\n",{1,1,0},"Fixed handling"},
+        multitasking={{1,1,1},"*Galaxy Brain Meme*\n",{1,1,0},"Fixed handling"},
         sandbox={{1,1,0},"This mode does not record any score"},
         ['dig 40']="Dig 40 garbages with as few blocks\nas you can.",
         laser={{1,1,1},"U  N  D-E-R  G  R  O-U-N\nU  N  D-E-R  G  R  O-U-N-D\n",{1,1,0},"This is a rhythmical mode.\nTurning on music is strongly recommended."},
         backfire="Receive the attack sent by yourself!",
         battle={{1,1,1},"Let's battle!\n",{1,1,0},"This mode does not record any score"},
         ['tower defense']={{1,1,0},"This mode does not record any score\n",{1,.2,.2},"This mode is unstable. (Re)starting this mode\nmay cause the game to freeze."},
-        overdose={{1,1,1},"\"Maybe I was just high on drugs.\"\n",{1,.2,.2},"If experience any discomfort,\nclose the game immediately."},
+        overdose={{1,1,1},"Tight! Tight! Tight! Yeah!\n",{1,.2,.2},"If experience any discomfort,\nclose the game immediately."},
 
         ['mech heart detector']={{1,1,1},"I made a Mech Hearts detector.\n7-Bag, no any punishment.\n",{1,1,0},"This mode does not record any score"},
     },
@@ -65,6 +65,15 @@ return {
                     pos="Player's place",
                     left="left",
                     right="right"
+                },
+                ruleSet="Rule presets",
+                ruleSetName={
+                    basic="Basic",
+                    allspin="All-Spin",
+                    allspin2="All-Spin 2",
+                    shrink="Shrink",
+                    aqua="Aqua",
+                    bomb="Bomb",
                 }
             },
             ['tower defense']={
@@ -78,6 +87,19 @@ return {
             ['ice storm']={
                 iceOpacity="Ice opacity"
             }
+        },
+        button={
+            setting="Settings",
+            about="About",
+            links="Learn"
+        },
+        extLink={
+            "Aquamino official document",
+            "Hard Drop Tetris Wiki",
+            "Chinese Tetris Wiki",
+            "Tetris Wiki",
+            "FOUR.LOL",
+            "Dunspixel’s O-Spin guide",
         }
     },
     about={
@@ -123,9 +145,10 @@ return {
             vsync="Vertical Sync",
             vsyncTxt="The drawing code and computing code of this program are separated in form. How many times The drawing code executed in 1 second is FPS, so as TPS.\nIf the maximum FPS is lower than or equal to the vertical sync limit FPS, the TPS is not limited.\nThis program mainly considers PC performance, and this option is turned off by default.\nLow-performance devices can turn on this option to optimize the execution of the computing code.",
             discardAfterDraw="VRAM boost",
-            DADTxt="Discards (trashes) the contents of the screen after each frame is drawn.",
+            DADTxt="Discards (trashes) the contents of the screen after each frame is drawn. If the screen is glitching, do not enable this.",
             moreParticle="Particle effect",
-            frameLim="Max draw FPS",frameTxt="A value equal to your monitor's FPS is recommended."
+            frameLim="Max draw FPS",frameTxt="A value equal to your monitor's FPS is recommended.",
+            sysCursor="External cursor",
         },
         custom={
             texture="Block texture",color="Color adjust...",
@@ -138,7 +161,7 @@ return {
             theme="Board theme",
             scale="Board scale",
             sfx="SFX pack",sfxWarning={
-                otto="LOUD SOUND WARNING. USE AT YOUR OWN RISK."
+                otto="LOUD SOUND WARNING"
             },
 
             colorSet={
@@ -163,13 +186,14 @@ return {
             }
         },
         keys={
-            keyName={"Move Left","Move Right","Rotate CW","Rotate CCW","Rotate 180",'Soft drop','Hard Drop','Hold piece','Restart','Pause'},
+            keyName={"Move Left","Move Right","Rotate CW","Rotate CCW","Rotate 180",'Soft drop','Hard Drop','Hold piece','Restart','Pause','Function 1','Function 2'},
             kScale=.25,
             info="Click a key set to bind your keys.\nHit backspace to erase selected key set.\nHit a bound key to remove this bind.",
             virtualKey="Touch settings..."
         },
         virtualKey={
             enable="Enable virtual keys",enableTxtScale=.2,
+            shade="Key shadow",shadeTxtScale=.25,
             anim="Key animations",animTxtScale=.2,
             preset="Presets...",
             btsz="Size",

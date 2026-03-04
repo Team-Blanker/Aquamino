@@ -12,7 +12,7 @@ function btest.init(P,mino)
     mus.start()
 
     battle.init(P[1]) P[1].atkMinusByDef=false
-    mino.seqGenType='bagp1FromBag'
+    mino.seqGen='bagp1FromBag'
     P[1].LDelay=1e99
     P[1].recvLine=0
     P[1].atk=0

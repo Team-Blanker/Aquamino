@@ -2,7 +2,7 @@ local cfk=user.lang.conf.keys
 
 local BUTTON=scene.button
 
-local keyName={'ML','MR','CW','CCW','flip','SD','HD','hold','R','pause'}
+local keyName={'ML','MR','CW','CCW','flip','SD','HD','hold','R','pause','F1','F2'}
 local key={
     keySet={},
     banned={'f1','f2','f3','f4','f5','f6','f7','f8','f9','f10','f11','f12', 'f17','f18',
@@ -18,7 +18,8 @@ function key.read()
         ML={'left'},MR={'right'},
         CW={'x'},CCW={'c'},flip={'d'},
         SD={'down'},HD={'up'},hold={'z'},
-        R={'r'},pause={'escape','p'}
+        R={'r'},pause={'escape','p'},
+        F1={'a'},F2={'s'},
     }
     local keySet=file.read('conf/keySet')
     T.combine(key.keySet,keySet)
@@ -69,7 +70,7 @@ function key.init()
     key.read()
     key.order=nil
 
-    key.desTxt.txt=gc.newText(font.JB)
+    key.desTxt.txt=gc.newText(font.Bender_B)
     key.desTxt.txt:addf(cfk.info,8000,'center',0,0,0,1,1,4000,0)
     key.desTxt.w,key.desTxt.h=key.desTxt.txt:getDimensions()
     key.desTxt.s=min(.3125,1000/key.desTxt.w)
@@ -185,9 +186,10 @@ function key.update(dt)
 end
 function key.draw()
     tt=key.titleTxt
-    gc.setColor(1,1,1)
+     gc.setColor(1,1,1)
     gc.draw(tt.txt,0,-510,0,tt.s,tt.s,tt.w/2,0)
-    gc.draw(key.desTxt.txt,0,420,0,key.desTxt.s,key.desTxt.s,0,key.desTxt.h/2)
+    gc.setColor(.5,1,.875,.75)
+    gc.draw(key.desTxt.txt,0,400,0,key.desTxt.s,key.desTxt.s,0,key.desTxt.h/2)
 
     gc.setColor(1,1,1,.25)
     for i=0,keySheet-1 do
@@ -214,7 +216,7 @@ function key.draw()
     for i=1,#keyName do local K=key.keySet[keyName[i]]
         for j=1,#K do
             gc.printf(K[j]:len()==1 and K[j]:upper() or K[j],
-            font.JB,(i>keySheet and keyBtWidth or -700)+200*j,-300+keyBtWidth*((i-1)%keySheet+.5),2000,'center',0,1/3,1/3,1000,84)
+            font.JB,(i>keySheet and keyBtWidth or -700)+200*j,-300+keyBtWidth*((i-1)%keySheet+.5),2000,'center',0,1/3,1/3,1000,font.height.JB/2)
         end
     end
     gc.setColor(.5,1,.875)

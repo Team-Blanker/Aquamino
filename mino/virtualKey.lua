@@ -1,6 +1,6 @@
 --用于方块游戏的虚拟按键模块，适配移动端用
 
-local keyName={'ML','MR','CW','CCW','flip','SD','HD','hold','R','pause'}
+local keyName={'ML','MR','CW','CCW','flip','SD','HD','hold','R','pause','F1','F2'}
 local keyIcon={}
 for i=1,#keyName do
     keyIcon[keyName[i]]=gc.newImage('pic/virtual key/'..keyName[i]..'.png')--200*200
@@ -9,11 +9,20 @@ end
 local borderCanvas=gc.newCanvas(450,450)
 gc.setScissor(0,0,450,450)
 gc.setCanvas(borderCanvas)
-gc.setLineWidth(10)
+gc.setLineWidth(4)
 gc.setColor(1,1,1)
 gc.circle('line',225,225,200,4)
 gc.setCanvas()
 gc.setScissor()
+local shadeCanvas=gc.newCanvas(600,600)
+gc.setCanvas(shadeCanvas)
+gc.setBlendMode('replace')
+for i=1,5 do
+    gc.setColor(0,0,0,i*.05)
+    gc.circle('fill',300,300,250-10*i,4)
+end
+gc.setBlendMode('alpha')
+gc.setCanvas()
 
 local T=myTable
 local ins,rem=table.insert,table.remove
@@ -31,14 +40,15 @@ local function defaultVkDraw(k,v)
     end
 
     gc.setColor(1,1,1)
-    gc.setLineWidth(5*v.r/100)
-    gc.circle('line',v.x,v.y,v.r,4)
+    gc.setLineWidth(2*v.r/100)
+    gc.circle('line',v.x,v.y,v.r*.96,4)
+    gc.circle('line',v.x,v.y,v.r*1.04,4)
 
     gc.setColor(1,1,1,1-5*v.clickT)
     gc.draw(borderCanvas,v.x,v.y,0,v.r/200*(1+2*v.clickT),v.r/200*(1+2*v.clickT),225,225)
 
     gc.setColor(1,1,1,.8)
-    gc.draw(keyIcon[k],v.x,v.y,0,v.r/100,v.r/100,100,100)
+    gc.draw(keyIcon[k],v.x,v.y,0,v.r/200,v.r/200,200,200)
 end
 
 local vkDraw={
@@ -53,8 +63,9 @@ local vkDraw={
         end
 
         if l then gc.setColor(.5,1,.875) else gc.setColor(1,1,1) end
-        gc.setLineWidth(5*v.r/100)
-        gc.circle('line',v.x,v.y,v.r,4)
+        gc.setLineWidth(2*v.r/100)
+        gc.circle('line',v.x,v.y,v.r*.96,4)
+        gc.circle('line',v.x,v.y,v.r*1.04,4)
         if l then gc.setColor(.5,1,.875,v.holdT%.2<.1 and 1 or .75)
         gc.arc('line','open',v.x-v.r*(1/3+va),v.y,v.r*2/3,tau/4,tau*3/4,2)
         end
@@ -63,7 +74,7 @@ local vkDraw={
         gc.draw(borderCanvas,v.x,v.y,0,v.r/200*(1+2*v.clickT),v.r/200*(1+2*v.clickT),225,225)
 
         gc.setColor(1,1,1,.8)
-        gc.draw(keyIcon[k],v.x-v.r*.25*ia,v.y,0,v.r/100,v.r/100,100,100)
+        gc.draw(keyIcon[k],v.x-v.r*.25*ia,v.y,0,v.r/200,v.r/200,200,200)
     end,
 
     MR=function(k,v)
@@ -77,8 +88,9 @@ local vkDraw={
         end
 
         if l then gc.setColor(.5,1,.875) else gc.setColor(1,1,1) end
-        gc.setLineWidth(5*v.r/100)
-        gc.circle('line',v.x,v.y,v.r,4)
+        gc.setLineWidth(2*v.r/100)
+        gc.circle('line',v.x,v.y,v.r*.96,4)
+        gc.circle('line',v.x,v.y,v.r*1.04,4)
         if l then gc.setColor(.5,1,.875,v.holdT%.2<.1 and 1 or .75)
         gc.arc('line','open',v.x+v.r*(1/3+va),v.y,v.r*2/3,-tau/4,tau/4,2)
         end
@@ -87,7 +99,7 @@ local vkDraw={
         gc.draw(borderCanvas,v.x,v.y,0,v.r/200*(1+2*v.clickT),v.r/200*(1+2*v.clickT),225,225)
 
         gc.setColor(1,1,1,.8)
-        gc.draw(keyIcon[k],v.x+v.r*.25*ia,v.y,0,v.r/100,v.r/100,100,100)
+        gc.draw(keyIcon[k],v.x+v.r*.25*ia,v.y,0,v.r/200,v.r/200,200,200)
     end,
 
     SD=function(k,v)
@@ -101,8 +113,9 @@ local vkDraw={
         end
 
         if l then gc.setColor(.5,1,.875) else gc.setColor(1,1,1) end
-        gc.setLineWidth(5*v.r/100)
-        gc.circle('line',v.x,v.y,v.r,4)
+        gc.setLineWidth(2*v.r/100)
+        gc.circle('line',v.x,v.y,v.r*.96,4)
+        gc.circle('line',v.x,v.y,v.r*1.04,4)
         if l then gc.setColor(.5,1,.875,v.holdT%.2<.1 and 1 or .75)
         gc.arc('line','open',v.x,v.y+v.r*(1/3+va),v.r*2/3,0,tau/2,2)
         end
@@ -111,7 +124,7 @@ local vkDraw={
         gc.draw(borderCanvas,v.x,v.y,0,v.r/200*(1+2*v.clickT),v.r/200*(1+2*v.clickT),225,225)
 
         gc.setColor(1,1,1,.8)
-        gc.draw(keyIcon[k],v.x,v.y+v.r*.25*ia,0,v.r/100,v.r/100,100,100)
+        gc.draw(keyIcon[k],v.x,v.y+v.r*.25*ia,0,v.r/200,v.r/200,200,200)
     end,
 
     HD=function(k,v)
@@ -124,14 +137,15 @@ local vkDraw={
         end
 
         gc.setColor(1,1,1)
-        gc.setLineWidth(5*v.r/100)
-        gc.circle('line',v.x,v.y,v.r,4)
+        gc.setLineWidth(2*v.r/100)
+        gc.circle('line',v.x,v.y,v.r*.96,4)
+        gc.circle('line',v.x,v.y,v.r*1.04,4)
 
         gc.setColor(1,1,1,1-5*v.clickT)
         gc.draw(borderCanvas,v.x,v.y,0,v.r/200*(1+2*v.clickT),v.r/200*(1+2*v.clickT),225,225)
 
         gc.setColor(1,1,1,.8)
-        gc.draw(keyIcon[k],v.x,v.y+v.r*ia,0,v.r/100,v.r/100,100,100)
+        gc.draw(keyIcon[k],v.x,v.y+v.r*ia,0,v.r/200,v.r/200,200,200)
     end,
 
     CW=function(k,v)
@@ -142,14 +156,15 @@ local vkDraw={
     end
 
     gc.setColor(1,1,1)
-    gc.setLineWidth(5*v.r/100)
-    gc.arc('line','closed',v.x,v.y,v.r,-as/4*tau,(3-as)/4*tau,3)
+    gc.setLineWidth(2*v.r/100)
+    gc.arc('line','closed',v.x,v.y,v.r*.96,-as/4*tau,(3-as)/4*tau,3)
+    gc.arc('line','closed',v.x,v.y,v.r*1.04,-as/4*tau,(3-as)/4*tau,3)
 
     gc.setColor(1,1,1,1-5*v.clickT)
     gc.draw(borderCanvas,v.x,v.y,0,v.r/200*(1+2*v.clickT),v.r/200*(1+2*v.clickT),225,225)
 
     gc.setColor(1,1,1,.8)
-    gc.draw(keyIcon[k],v.x,v.y,0,v.r/100,v.r/100,100,100)
+    gc.draw(keyIcon[k],v.x,v.y,0,v.r/200,v.r/200,200,200)
     end,
 
     CCW=function(k,v)
@@ -160,14 +175,15 @@ local vkDraw={
         end
 
         gc.setColor(1,1,1)
-        gc.setLineWidth(5*v.r/100)
-        gc.arc('line','closed',v.x,v.y,v.r,as/4*tau,(3+as)/4*tau,3)
+        gc.setLineWidth(2*v.r/100)
+        gc.arc('line','closed',v.x,v.y,v.r*.96,as/4*tau,(3+as)/4*tau,3)
+        gc.arc('line','closed',v.x,v.y,v.r*1.04,as/4*tau,(3+as)/4*tau,3)
 
         gc.setColor(1,1,1,1-5*v.clickT)
         gc.draw(borderCanvas,v.x,v.y,0,v.r/200*(1+2*v.clickT),v.r/200*(1+2*v.clickT),225,225)
 
         gc.setColor(1,1,1,.8)
-        gc.draw(keyIcon[k],v.x,v.y,0,v.r/100,v.r/100,100,100)
+        gc.draw(keyIcon[k],v.x,v.y,0,v.r/200,v.r/200,200,200)
     end,
 
     flip=function(k,v)
@@ -179,15 +195,17 @@ local vkDraw={
         end
 
         gc.setColor(1,1,1)
-        gc.setLineWidth(5*v.r/100)
-        gc.arc('line','closed',v.x,v.y,v.r,-as/4*tau,(3-as)/4*tau,3)
-        gc.arc('line','closed',v.x,v.y,v.r, as/4*tau,(3+as)/4*tau,3)
+        gc.setLineWidth(2*v.r/100)
+        gc.arc('line','closed',v.x,v.y,v.r*.96,as/4*tau,(3+as)/4*tau,3)
+        gc.arc('line','closed',v.x,v.y,v.r*1.04,as/4*tau,(3+as)/4*tau,3)
+        gc.arc('line','closed',v.x,v.y,v.r*.96,-as/4*tau,(3-as)/4*tau,3)
+        gc.arc('line','closed',v.x,v.y,v.r*1.04,-as/4*tau,(3-as)/4*tau,3)
 
         gc.setColor(1,1,1,1-5*v.clickT)
         gc.draw(borderCanvas,v.x,v.y,0,v.r/200*(1+2*v.clickT),v.r/200*(1+2*v.clickT),225,225)
 
         gc.setColor(1,1,1,.8)
-        gc.draw(keyIcon[k],v.x,v.y,0,v.r/100,v.r/100,100,100)
+        gc.draw(keyIcon[k],v.x,v.y,0,v.r/200,v.r/200,200,200)
     end,
 
     hold=function(k,v)
@@ -200,22 +218,24 @@ local vkDraw={
         end
 
         gc.setColor(1,1,1)
-        gc.setLineWidth(5*v.r/100)
-        gc.ellipse('line',v.x,v.y,v.r,v.r,4)
+        gc.setLineWidth(2*v.r/100)
+        gc.circle('line',v.x,v.y,v.r*.96,4)
+        gc.circle('line',v.x,v.y,v.r*1.04,4)
 
         gc.setColor(1,1,1,1-5*v.clickT)
         gc.draw(borderCanvas,v.x,v.y,0,v.r/200*(1+2*v.clickT),v.r/200*(1+2*v.clickT),225,225)
 
         gc.setColor(1,1,1,.8)
-        gc.draw(keyIcon[k],v.x,v.y,0,v.r/100*ia,v.r/100,100,100)
+        gc.draw(keyIcon[k],v.x,v.y,0,v.r/200*ia,v.r/200,200,200)
     end,
 }
 
-function vk.init(ctrl,anim)
+function vk.init(ctrl,shade,anim)
     vk.key={}
     vk.act={}
     vk.animAct={}--非触屏
     vk.ctrl=ctrl
+    vk.shade=shade
     vk.anim=anim
 end
 --arg={x,y,r,t,op}
@@ -265,6 +285,10 @@ function vk.checkActive(name)
 end
 function vk.draw()
     for k,v in pairs(vk.key) do
+        if vk.shade then
+            gc.setColor(1,1,1)
+            gc.draw(shadeCanvas,v.x,v.y,0,v.r/200,v.r/200,300,300)
+        end
         if vk.anim and vkDraw[k] then vkDraw[k](k,v) else defaultVkDraw(k,v) end
     end
 end

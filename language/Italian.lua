@@ -33,21 +33,21 @@ return {
     },
     modeDescription={
         ['40 lines']="Completa 40 righe\nil più velocemente possibile!",
-        marathon={{1,1,1},"Completa 150 righe con velocità crescente.\n",{1,1,0},"Restrizioni del movimento:\nASD=150ms ASP=30ms SD ASP=30ms\nLa gravità aumenta ad ogni livello."},
-        ['ice storm']="Usa le meccaniche All-spin\nper fermare la risalita dei ghiacciai!",
+        marathon={{1,1,1},"Completa 150 righe con velocità crescente.\n",{1,1,0},"Parametri fissi"},
+        ['ice storm']="Usa le meccaniche All-Spin\nper fermare la risalita dei ghiacciai!",
         thunder="Si prega di fare del proprio meglio per\nevitare la distruzione causata dai fulmini.",
-        smooth={{1,1,1},"È davvero così liscio?\n",{1,1,0},"Il Ritardo di Caduta è 0\nmentre Il Ritardo di Blocco è aumentato a 3s"},
-        levitate={{1,1,0},"I blocchi non cadono\ndopo aver completato linee"},
+        smooth={{1,1,1},"È davvero così liscio?\n",{1,.5,0},"20G\n",{1,1,0},"Parametri fissi"},
+        levitate="I blocchi non cadono\ndopo aver completato linee",
         square={{1,1,1}," Quanti quadrati 4*4 puoi costruire \nin 3 minuti?"},
-        master={{1,1,1},"Sopravvivi alla velocità più crudele!\n",{1,.5,0},"Il Ritardo di Caduta è 0\nmentre il Ritardo di Blocco\nsi riduce ad ogni livello.\n",{1,1,0},"Restrizioni del movimento: ASD=150ms ASP=30ms"},
-        multitasking={{1,1,1},"*Galaxy Brain Meme*\n",{1,1,0},"Restrizioni del movimento:\nASD=150ms ASP=30ms SD ASP=30ms\nLa gravità aumenta ad ogni livello."},
+        master={{1,1,1},"Sopravvivi alla velocità più crudele!\n",{1,.5,0},"20G\n",{1,1,0},"Parametri fissi"},
+        multitasking={{1,1,1},"*Galaxy Brain Meme*\n",{1,1,0},"Parametri fissi"},
         sandbox={{1,1,0},"Questa modalità non registra\nalcun punteggio."},
         ['dig 40']="Pensa. Scava. Sii Efficiente.",
         laser={{1,1,1},"U  N  D-E-R  G  R  O-U-N\nU  N  D-E-R  G  R  O-U-N-D\n",{1,1,0},"Questa è una modalità ritmica.\nSi consiglia vivamente di attivare la musica."},
         backfire="Ricevi l'attacco inviato da te stesso!",
         battle={{1,1,1},"Combattiamo!\n",{1,1,0},"Questa modalità non registra\nalcun punteggio."},
         ['tower defense']={{1,1,0},"Questa modalità non registra\nalcun punteggio.\n",{1,.2,.2},"L'avvio/riavvio di questa modalità potrebbe\ncausare il blocco del gioco per motivi sconosciuti"},
-        overdose={{1,1,1},"\"Probabilmente ero sotto effetto di droga....\"\n",{1,.2,.2},"Se provi disagio,\nchiudi immediatamente il gioco."},
+        overdose={{1,1,1},"Tight! Tight! Tight! Yeah!\n",{1,.2,.2},"Se provi disagio,\nchiudi immediatamente il gioco."},
 
         ['mech heart detector']={{1,1,1},"I made a Mech Hearts detector.\n7-Bag, no any punishment.\n",{1,1,0},"Questa modalità non registra\nalcun punteggio."},
     },
@@ -65,6 +65,15 @@ return {
                     pos="Posto del giocatore",
                     left="sinistra",
                     right="destra"
+                },
+                ruleSet="Preset",
+                ruleSetName={
+                    basic="Basic",
+                    allspin="All-Spin",
+                    allspin2="All-Spin 2",
+                    shrink="Shrink",
+                    aqua="Aqua",
+                    bomb="Bombe",
                 }
             },
             ['tower defense']={
@@ -78,6 +87,19 @@ return {
             ['ice storm']={
                 iceOpacity="Opacità della Colonna di Ghiaccio"
             }
+        },
+        button={
+            setting="Opzioni",
+            about="Info",
+            links="Impara"
+        },
+        extLink={
+            "Guida ufficiale Aquamino",
+            "Hard Drop Tetris Wiki",
+            "Tetris Wiki Cinese",
+            "Tetris Wiki",
+            "FOUR.LOL",
+            "Guida O-Spin di Dunspixel",
         }
     },
     about={
@@ -123,9 +145,10 @@ return {
             vsync="VSync",
             vsyncTxt="Sincronizza la frequenza dei fotogrammi con la frequenza di aggiornamento del monitor.",
             discardAfterDraw="Aumento della VRAM",
-            DADTxt="Elimina il contenuto dello schermo dopo aver disegnato ciascun fotogramma.",
+            DADTxt="Elimina il contenuto dello schermo dopo aver disegnato ciascun fotogramma. Se la schermata presenta problemi, non abilitare questa opzione.",
             moreParticle="Effetti particellari",
-            frameLim="FPS Massimi",frameTxt="Si consiglia un valore pari alla frequenza di aggiornamento del monitor."
+            frameLim="FPS Massimi",frameTxt="Si consiglia un valore pari alla frequenza di aggiornamento del monitor.",
+            sysCursor="Cursore esterno",
         },
         custom={
             texture="Texture dei blocchi",color="Regolazione colori...",
@@ -138,7 +161,7 @@ return {
             theme="Tema della griglia",
             scale="Scala della griglia",
             sfx="Effetti Sonori",sfxWarning={
-                otto="ATTENZIONE: SUONI ALTI. USA A TUO RISCHIO."
+                otto="ATTENZIONE: SUONI ALTI"
             },
 
             colorSet={
@@ -157,21 +180,22 @@ return {
                 velDamping="Smorzamento velocità",
                 elasticFactor="Fattore elastico",
 
-                spinAngvel="Slancio angolare all-spin",
-                angDamping="Smorzamento all-spin",
-                spinFactor="Fattore elastico all-spin",
+                spinAngvel="Slancio angolare All-Spin",
+                angDamping="Smorzamento All-Spin",
+                spinFactor="Fattore elastico All-Spin",
             }
         },
         keys={
-            keyName={"Muovi a Sinistra","Muovi a Destra","Ruota in senso\norario","Ruota in senso\nantiorario","Ruota a 180°",'Soft drop','Hard Drop','Riserva','Riavvia','Pausa'},
+            keyName={"Muovi a Sinistra","Muovi a Destra","Ruota in senso\norario","Ruota in senso\nantiorario","Ruota a 180°",'Soft drop','Hard Drop','Riserva','Riavvia','Pausa','Funzione 1','Funzione 2'},
             kScale=.25,
             info="- Fai clic associare i tuoi controlli.\n- Premi Backspace per cancellare il set di controlli selezionato.\n- Premi un tasto associato per rimuoverlo dai controlli.",
             virtualKey="Impostazioni touchscreen..."
         },
         virtualKey={
             enable="Abilita i controlli virtuali",enableTxtScale=.2,
+            shade="Ombre pulsanti",shadeTxtScale=.2,
             anim="Animazioni controlli",animTxtScale=.2,
-            preset="preimpostazioni...",
+            preset="Presets...",
             btsz="Dimensione",
             tolerance="Margine",
             attach="Allineamento",

@@ -13,11 +13,14 @@
     w.vsync=0
 
     w.highdpi=true
+    w.usedpiscale=true 
 
     t.version='11.4'
 
     t.identity="Aquamino"
     t.externalstorage=true
+
+    t.audio.mixwithsystem=false
 
     t.gammacorrect=false
 end

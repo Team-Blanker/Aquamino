@@ -65,7 +65,7 @@ function fieldLib.newPlayer(arg)
         },
         cur={--当前块的所有信息
             name=nil,piece={},x=5,y=21,O=0,ghostY=0,spin=false,mini=false,
-            kickOrder=0
+            kickOrder=0,kick=nil
         },
         stat={--统计数据
             block=0
@@ -132,12 +132,12 @@ local data={}
 function fieldLib.kick(player,mode)
 
     if fieldLib.coincide(player) then --如果重叠，先检测IRS_RS的踢
-        local ko=fieldLib.coincideKick(player,mode)
-        if ko then return ko end
+        local co,ck=fieldLib.coincideKick(player,mode)
+        if co then return co,ck end
     end
 
     local cur=player.cur
-    --local originPiece,originO=T.copy(cur.piece),cur.O--先存一个，万一你没踢成功呢
+    --local originPiece,originO=T.copy(cur.piece),cur.O
     local originO=cur.O
     local RS=player.RS
 
@@ -146,7 +146,7 @@ function fieldLib.kick(player,mode)
     cur.O=B.rotate(cur.piece,cur.O,mode)
     if RS.kick then
         local kickOrder=RS.kick(player,mode)
-        if kickOrder then return kickOrder end
+        if kickOrder then return kickOrder,kickOffset end
     else
         local ukick=RS.getKickTable and RS.getKickTable(data,cur.name,originO+1,mode) or RS.kickTable[cur.name] and RS.kickTable[cur.name][mode][originO+1]
         if ukick and player.LDR>0 then
@@ -156,23 +156,23 @@ function fieldLib.kick(player,mode)
                     for j=1,#gOffd[mode] do
                         x,y=ukick[i][1]*2+gOffd[mode][j][1],ukick[i][2]*2+gOffd[mode][j][2]
                         if not fieldLib.coincide(player,x,y) then cur.x,cur.y=cur.x+x,cur.y+y
-                        return i end
+                        return i,ukick[i] end
                     end
                     for j=1,#gOffu[mode] do
                         x,y=ukick[i][1]*2+gOffu[mode][j][1],ukick[i][2]*2+gOffu[mode][j][2]
                         if not fieldLib.coincide(player,x,y) then cur.x,cur.y=cur.x+x,cur.y+y
-                        return i end
+                        return i,ukick[i] end
                     end
                 end
             else
                 for i=1,#ukick do
                     x,y=ukick[i][1],ukick[i][2]
                     if not fieldLib.coincide(player,x,y) then cur.x,cur.y=cur.x+x,cur.y+y
-                    return i end
+                    return i,ukick[i] end
                 end
             end
         else
-            if not fieldLib.coincide(player,x,y) then return 1 end
+            if not fieldLib.coincide(player,x,y) then return 1,{0,0} end
         end
     end
     --cur.piece,cur.O=T.copy(originPiece),originO
@@ -182,7 +182,7 @@ function fieldLib.kick(player,mode)
 end
 function fieldLib.coincideKick(player,mode)
     local cur=player.cur
-    --local originPiece,originO=T.copy(cur.piece),cur.O--先存一个，万一你没踢成功呢
+    --local originPiece,originO=T.copy(cur.piece),cur.O
     local originO=cur.O
     local RS=IRS_RS
 
@@ -190,8 +190,8 @@ function fieldLib.coincideKick(player,mode)
 
     cur.O=B.rotate(cur.piece,cur.O,mode)
     if RS.kick then
-        local kickOrder=RS.kick(player,mode)
-        if kickOrder then return kickOrder end
+        local kickOrder,kickOffset=RS.kick(player,mode)
+        if kickOrder then return kickOrder,kickOffset end
     else
         local ukick=RS.getKickTable and RS.getKickTable(data,cur.name,originO+1,mode) or RS.kickTable[cur.name] and RS.kickTable[cur.name][mode][originO+1]
         if ukick and player.LDR>0 then
@@ -201,23 +201,23 @@ function fieldLib.coincideKick(player,mode)
                     for j=1,#gOffd[mode] do
                         x,y=ukick[i][1]*2+gOffd[mode][j][1],ukick[i][2]*2+gOffd[mode][j][2]
                         if not fieldLib.coincide(player,x,y) then cur.x,cur.y=cur.x+x,cur.y+y
-                        return i end
+                        return i,ukick[i] end
                     end
                     for j=1,#gOffu[mode] do
                         x,y=ukick[i][1]*2+gOffu[mode][j][1],ukick[i][2]*2+gOffu[mode][j][2]
                         if not fieldLib.coincide(player,x,y) then cur.x,cur.y=cur.x+x,cur.y+y
-                        return i end
+                        return i,ukick[i] end
                     end
                 end
             else
                 for i=1,#ukick do
                     x,y=ukick[i][1],ukick[i][2]
                     if not fieldLib.coincide(player,x,y) then cur.x,cur.y=cur.x+x,cur.y+y
-                    return i end
+                    return i,ukick[i] end
                 end
             end
         else
-            if not fieldLib.coincide(player,x,y) then return 1 end
+            if not fieldLib.coincide(player,x,y) then return 1,{0,0} end
         end
     end
     --cur.piece,cur.O=T.copy(originPiece),originO
@@ -297,16 +297,18 @@ function fieldLib.lock(player)
     for i=1,#C.piece do
         local x=C.x+C.piece[i][1]
         local y=C.y+C.piece[i][2]
-        while not player.field[y] do fieldLib.addLine(player)  end
-        if not player.field[y][x].bomb then player.field[y][x]={name=C.name,loosen=false,id=player.stat.block} end
+        if x>0 and x<=player.w then
+            while not player.field[y] do fieldLib.addLine(player) end
+            if not player.field[y][x].bomb then player.field[y][x]={name=C.name,loosen=false,id=player.stat.block} end
 
-        for i=y-1,1,-1 do
-        if fieldLib.isBlock(player,x,i) then
-            if player.field[i][x].bomb then
-                player.field[i].triggered=true
-                player.field[i].triggerPos=x
+            for i=y-1,1,-1 do
+            if fieldLib.isBlock(player,x,i) then
+                if player.field[i][x].bomb then
+                    player.field[i].triggered=true
+                    player.field[i].triggerPos=x
+                else break end
             else break end
-        else break end
+            end
         end
     end
     his.piece,his.name,his.o,his.x,his.y=C.piece,C.name,C.o,C.x,C.y

@@ -9,13 +9,13 @@ local ASDList={
     .15,.15,.15,.15,.15,
     .15,.15,.15,.15,.15,
     .14,.14,.14,.14,.14,
-    .13,.13,.12,.10,.09
+    .13,.12,.11,.10,.08
 }
 local ASPList={
     .030,.030,.030,.030,.030,
     .030,.030,.030,.030,.030,
     .028,.028,.028,.028,.028,
-    .026,.026,.024,.020,.018
+    .026,.026,.024,.020,.016
 }
 function rule.init(P,mino)
 
@@ -50,7 +50,7 @@ function rule.onLineClear(player,mino)
         if player.totalLine>=200 then mino.win(player) break end
         player.speedLv=player.speedLv+1
         player.LDelay=LDelayList[player.speedLv]
-        player.CDelay=max(.25*(16-player.speedLv)/15,0)
+        player.CDelay=max(.25*(16-player.speedLv)/15,.01)
         sfx.play('lvup')
         local c=mino.stacker.ctrl
         c.ASD=ASDList[player.speedLv]

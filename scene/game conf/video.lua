@@ -8,12 +8,15 @@ function video.read()
     video.info={
         unableBG=false,BGBrightness=1,
         vsync=false,fullscr=false,frameLim=isMobile and 60 or 120,
-        discardAfterDraw=false,moreParticle=false
+        discardAfterDraw=false,moreParticle=false,
+        sysCursor=true
     }
     local info=file.read('conf/video')
     T.combine(video.info,info)
     win.setFullscr(video.info.fullscr)
     win.discardAfterDraw=video.info.discardAfterDraw
+    win.UI.sysCursor=video.info.sysCursor
+    ms.setVisible(win.UI.sysCursor)
 end
 function video.save()
     file.save('conf/video',video.info)
@@ -38,19 +41,21 @@ function video.init()
         quit='sfx/general/confSwitch.wav',
     })
 
+    cf=user.lang.conf
+
     tt=video.titleTxt
     tt.txt:clear()
     tt.txt:add(cf.main.video)
     tt.w,tt.h=tt.txt:getDimensions()
     tt.s=min(600/tt.w,1)
 
-    cf=user.lang.conf
     video.info.fullscr=win.fullscr video.save() video.read()
 
     video.ubgTxt=gc.newText(font.Bender_B,cf.video.unableBG)
     video.fscrTxt=gc.newText(font.Bender_B,cf.video.fullScr)
     video.VRAMTxt=gc.newText(font.Bender_B,cf.video.discardAfterDraw)
     video.mpTxt=gc.newText(font.Bender_B,cf.video.moreParticle)
+    video.scTxt=gc.newText(font.Bender_B,cf.video.sysCursor)
 
     video.VSDTxt=gc.newText(font.Bender_B)
     video.VSDTxt:addf(cf.video.vsyncTxt,2500,'left')
@@ -227,6 +232,37 @@ function video.init()
         event=function()
             video.info.moreParticle=not video.info.moreParticle
             sfx.play(video.info.moreParticle and 'cOn' or 'cOff')
+        end
+    },.2)
+    BUTTON.create('sysCursor',{
+        x=420,y=160,type='rect',w=80,h=80,
+        draw=function(bt,t,ct)
+            local animArg=video.info.sysCursor and min(ct/.2,1) or max(1-ct/.2,0)
+            local w,h=bt.w,bt.h
+            local r=M.lerp(1,.5,animArg)
+            local g=1
+            local b=M.lerp(1,.875,animArg)
+            gc.setColor(.5,1,.875,.4)
+            gc.rectangle('fill',w/2,-h/2,360*animArg,h)
+            gc.setColor(1,1,1,.4)
+            gc.rectangle('fill',w/2+360*animArg,-h/2,360*(1-animArg),h)
+            gc.setColor(r,g,b)
+            gc.setLineWidth(6)
+            gc.rectangle('line',-w/2+3,-h/2+3,w-6,h-6)
+            if video.info.sysCursor then
+                gc.line(-w*3/8,0,-w/8,h/4,w*3/8,-h/4)
+            end
+            gc.setColor(r,g,b,2*t)
+            gc.rectangle('fill',-w/2,-h/2,h,h)
+            gc.setColor(1,1,1)
+            local s=min(280/video.scTxt:getWidth(),1/3)
+            gc.draw(video.scTxt,w/2+20,0,0,s,s,0,video.scTxt:getHeight()/2)
+        end,
+        event=function()
+            video.info.sysCursor=not video.info.sysCursor
+            win.UI.sysCursor=video.info.sysCursor
+            sfx.play(video.info.sysCursor and 'cOn' or 'cOff')
+            ms.setVisible(win.UI.sysCursor)
         end
     },.2)
 

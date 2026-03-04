@@ -11,7 +11,7 @@ local ballR=32
 local repo={
     {'json.lua','rxi'},{'profile.lua','itraykov'}
 }
-local tool={'beepbox.co','GoldWave','REAPER','Malody','VS Code','vecta.io','GFIE (Greenfish Icon Editor)',--[['Photoshop CC 2019']]}
+local tool={'beepbox.co','GoldWave','REAPER','Malody','VS Code','vecta.io','GFIE (Greenfish Icon Editor)','Photoshop CC 2019'}
 
 local simdt=0
 local about={}
@@ -173,7 +173,7 @@ function about.update(dt)
 end
 function about.draw()
     gc.setColor(1,1,1)
-    gc.draw(logo,0,-400+12*sin(scene.time/5%2*math.pi),0,800/w,800/w,w/2,h/2)
+    gc.draw(logo,0,-400,0,800/w,800/w,w/2,h/2)
     gc.draw(about.eTxt,425,-400+800/w*h/4,0,1/3,1/3,0,128)
     gc.draw(about.rTxt,-810,-270,0,1/3,1/3,0,0)
     gc.draw(about.tTxt,-270,-270,0,1/3,1/3,0,0)

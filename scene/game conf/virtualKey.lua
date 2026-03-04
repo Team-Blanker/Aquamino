@@ -3,10 +3,21 @@ local M,T=myMath,myTable
 
 local cfv
 
-local keyName={'ML','MR','CW','CCW','flip','SD','HD','hold','R','pause'}
+local keyName={'ML','MR','CW','CCW','flip','SD','HD','hold','R','pause','F1','F2'}
 
 local attachList={[0]=0,30,40,50,60,90,120}
 local attachIndex=4
+
+local shadeCanvas=gc.newCanvas(600,600)
+gc.setCanvas(shadeCanvas)
+gc.setBlendMode('replace')
+for i=1,5 do
+    gc.setColor(0,0,0,i*.05)
+    gc.circle('fill',300,300,250-10*i,4)
+end
+gc.setBlendMode('alpha')
+gc.setCanvas()
+
 
 local defaultPreset={
     --开发者在铁壳的大致配置（类似铁壳默认配置1）
@@ -21,6 +32,8 @@ local defaultPreset={
         hold= {x=-600,y= 360,r=120,tolerance=60},
         R=    {x=-500,y=-400,r= 90,tolerance=30},
         pause={x= 500,y=-400,r= 90,tolerance=30},
+        F1=   {x= 840,y= -60,r= 60,tolerance=60},
+        F2=   {x=-840,y= -60,r= 60,tolerance=60},
     },
     --对称
     {
@@ -34,6 +47,8 @@ local defaultPreset={
         hold= {x= 600,y= 360,r=120,tolerance=60},
         R=    {x=-500,y=-400,r= 90,tolerance=30},
         pause={x= 500,y=-400,r= 90,tolerance=30},
+        F1=   {x=-840,y= -60,r= 60,tolerance=60},
+        F2=   {x= 840,y= -60,r= 60,tolerance=60},
     },
     --铁壳默认配置3
     {
@@ -47,6 +62,8 @@ local defaultPreset={
         hold= {x= 840,y=- 60,r=120,tolerance=60},
         R=    {x=-500,y=-400,r= 90,tolerance=30},
         pause={x= 500,y=-400,r= 90,tolerance=30},
+        F1=   {x=-840,y= 180,r=120,tolerance=60},
+        F2=   {x=-600,y= 180,r=120,tolerance=60},
     },
     --铁壳默认配置4
     {
@@ -60,6 +77,23 @@ local defaultPreset={
         hold= {x=-360,y= 420,r=120,tolerance=60},
         R=    {x=-500,y=-400,r= 90,tolerance=30},
         pause={x= 500,y=-400,r= 90,tolerance=30},
+        F1=   {x=-840,y= 180,r=120,tolerance=60},
+        F2=   {x=-840,y= -60,r=120,tolerance=60},
+    },
+    --纯展示用的那种
+    {
+        ML=   {x=-600,y=-480,r= 60,tolerance=60},
+        MR=   {x=-480,y=-480,r= 60,tolerance=60},
+        SD=   {x=-360,y=-480,r= 60,tolerance=60},
+        HD=   {x=-240,y=-480,r= 60,tolerance=60},
+        CW=   {x=- 60,y=-480,r= 60,tolerance=60},
+        CCW=  {x=  60,y=-480,r= 60,tolerance=60},
+        flip= {x= 180,y=-480,r= 60,tolerance=60},
+        hold= {x= 300,y=-480,r= 60,tolerance=60},
+        R=    {x=-900,y=-480,r= 60,tolerance=30},
+        pause={x= 900,y=-480,r= 60,tolerance=30},
+        F1=   {x= 480,y=-480,r= 60,tolerance=60},
+        F2=   {x= 600,y=-480,r= 60,tolerance=60},
     },
     --maimai
     {
@@ -73,6 +107,8 @@ local defaultPreset={
         hold= {x=-200,y=-500,r=120,tolerance=60},
         R=    {x=-870,y=-450,r= 90,tolerance=30},
         pause={x= 870,y=-450,r= 90,tolerance=30},
+        F1=   {x=-600,y=   0,r= 60,tolerance=60},
+        F2=   {x= 600,y=   0,r= 60,tolerance=60},
     },
 }
 local presetIndex=0
@@ -89,8 +125,11 @@ function VKey.read()
     if not vk.set then vk.set={} end
     if not vk.enabled then vk.enabled=false end
     if not vk.anim then vk.anim=false end
+    if not vk.shade then vk.shade=false end
     T.combine(VKey.set,vk.set)
+
     VKey.enabled=vk.enabled
+    VKey.shade=vk.shade
     VKey.anim=vk.anim
 
     for i=1,#keyName do
@@ -102,11 +141,11 @@ function VKey.read()
     end
 end
 function VKey.save()
-    local lst={enabled=VKey.enabled,set=VKey.set,anim=VKey.anim}
+    local lst={enabled=VKey.enabled,set=VKey.set,shade=VKey.shade,anim=VKey.anim}
     file.save('conf/virtualKey',lst)
 end
 
-VKey.txt={preset={},vkEnable={},animEnable={},info={}}
+VKey.txt={preset={},vkEnable={},shadeEnable={},animEnable={},info={}}
 VKey.sliderTxt={btsz={},tolerance={},attach={}}
 function VKey.init()
     scene.BG=require'BG/settings'
@@ -130,11 +169,15 @@ function VKey.init()
     local p=VKey.txt.preset
     p.txt=gc.newText(font.Bender,cfv.preset)
     p.w,p.h=p.txt:getDimensions()
-    p.s=min(288/p.w,.4)
+    p.s=min(288/p.w,.3)
     local v=VKey.txt.vkEnable
     v.txt=gc.newText(font.Bender_B,cfv.enable)
     v.w,v.h=v.txt:getDimensions()
     v.s=min(270/v.w,cfv.enableTxtScale)
+    local s=VKey.txt.shadeEnable
+    s.txt=gc.newText(font.Bender_B,cfv.shade)
+    s.w,s.h=s.txt:getDimensions()
+    s.s=min(270/s.w,cfv.shadeTxtScale)
     local a=VKey.txt.animEnable
     a.txt=gc.newText(font.Bender_B,cfv.anim)
     a.w,a.h=a.txt:getDimensions()
@@ -154,7 +197,7 @@ function VKey.init()
     end
 
     BUTTON.create('quit',{
-        x=0,y=300,type='rect',w=140,h=80,
+        x=0,y=300,type='rect',w=120,h=60,
         draw=function(bt,t)
             local w,h=bt.w,bt.h
             gc.setColor(.5,.5,.5,.3+t)
@@ -163,7 +206,7 @@ function VKey.init()
             gc.setLineWidth(3)
             gc.rectangle('line',-w/2,-h/2,w,h)
             gc.setColor(1,1,1)
-            gc.draw(win.UI.back,0,0,0,.8,.8,60,35)
+            gc.draw(win.UI.back,0,0,0,.6,.6,60,35)
         end,
         event=function()
             sfx.play('quit')
@@ -174,7 +217,7 @@ function VKey.init()
         end
     },.2)
     BUTTON.create('vkEnable',{
-        x=-150,y=0,type='rect',w=60,h=60,
+        x=-150,y=-60,type='rect',w=60,h=60,
         draw=function(bt,t,ct)
             local animArg=VKey.enabled and min(ct/.2,1) or max(1-ct/.2,0)
             local w,h=bt.w,bt.h
@@ -202,8 +245,36 @@ function VKey.init()
             sfx.play(VKey.enabled and 'cOn' or 'cOff')
         end
     },.2)
+    BUTTON.create('shadeEnable',{
+        x=-150,y=30,type='rect',w=60,h=60,
+        draw=function(bt,t,ct)
+            local animArg=VKey.shade and min(ct/.2,1) or max(1-ct/.2,0)
+            local w,h=bt.w,bt.h
+            local r=M.lerp(1,.5,animArg)
+            local g=1
+            local b=M.lerp(1,.875,animArg)
+            gc.setColor(.5,1,.875,.4)
+            gc.rectangle('fill',w/2,-h/2,300*animArg,h)
+            gc.setColor(1,1,1,.4)
+            gc.rectangle('fill',w/2+300*animArg,-h/2,300*(1-animArg),h)
+            gc.setColor(r,g,b)
+            gc.setLineWidth(4)
+            gc.rectangle('line',-w/2+2,-h/2+2,h-4,h-4)
+            if VKey.shade then
+                gc.line(-w*3/8,0,-w/8,h/4,w*3/8,-h/4)
+            end
+            gc.setColor(r,g,b,2*t)
+            gc.rectangle('fill',-w/2,-h/2,h,h)
+            gc.setColor(1,1,1)
+            gc.draw(s.txt,w/2+15,0,0,a.s,a.s,0,a.h/2)
+        end,
+        event=function()
+            VKey.shade=not VKey.shade
+            sfx.play(VKey.shade and 'cOn' or 'cOff')
+        end
+    },.2)
     BUTTON.create('animEnable',{
-        x=-150,y=90,type='rect',w=60,h=60,
+        x=-150,y=120,type='rect',w=60,h=60,
         draw=function(bt,t,ct)
             local animArg=VKey.anim and min(ct/.2,1) or max(1-ct/.2,0)
             local w,h=bt.w,bt.h
@@ -231,7 +302,7 @@ function VKey.init()
         end
     },.2)
     BUTTON.create('preset',{
-        x=0,y=200,type='rect',w=320,h=80,
+        x=0,y=210,type='rect',w=320,h=60,
         draw=function(bt,t,ct)
             if VKey.enabled then
             local w,h=bt.w,bt.h
@@ -256,7 +327,7 @@ function VKey.init()
     },.2)
 
     SLIDER.create('szAdjust',{
-        x=-0,y=-180,type='hori',sz={300,24},button={24,24},
+        x=-0,y=-200,type='hori',sz={300,24},button={24,24},
         gear=19,pos=0,
         sliderDraw=function(g,sz)
             if VKey.enabled and VKey.choose then
@@ -283,7 +354,7 @@ function VKey.init()
         end
     })
     SLIDER.create('toleranceAdjust',{
-        x=0,y=-90,type='hori',sz={300,24},button={24,24},
+        x=0,y=-120,type='hori',sz={300,24},button={24,24},
         gear=13,pos=0,
         sliderDraw=function(g,sz)
             if VKey.enabled and VKey.choose then
@@ -310,7 +381,7 @@ function VKey.init()
         end
     })
     SLIDER.create('attachAdjust',{
-        x=-0,y=-270,type='hori',sz={300,24},button={24,24},
+        x=-0,y=-280,type='hori',sz={300,24},button={24,24},
         gear=7,pos=attachIndex,
         sliderDraw=function(g,sz)
             if VKey.enabled then
@@ -347,7 +418,8 @@ function VKey.keyP(k)
     end
 end
 function VKey.mouseP(x,y,button,istouch)
-    if not BUTTON.press(x,y) and not SLIDER.mouseP(x,y,button,istouch) and VKey.enabled then
+    local bp,sp=BUTTON.press(x,y),SLIDER.mouseP(x,y,button,istouch)
+    if not bp and not sp and VKey.enabled then
         local ak
         local d=1e99
         for k,v in pairs(VKey.set) do
@@ -398,29 +470,34 @@ function VKey.draw()
     gc.rectangle('line',-184,-364,368,728)
 
     if VKey.enabled then
-    local attach=attachList[attachIndex]
-    if attach~=0 then
-    gc.setColor(1,1,1,.25)
-    gc.setLineWidth(max(attach/30,2))
-    for i=0,960,attach do
-        if i==0 then gc.line(0,-540,0,540)
-        else
-            gc.line(i,-540,i,540) gc.line(-i,-540,-i,540)
+        local attach=attachList[attachIndex]
+        if attach~=0 then
+            gc.setColor(1,1,1,.25)
+            gc.setLineWidth(max(attach/30,2))
+            for i=0,960,attach do
+                if i==0 then gc.line(0,-540,0,540)
+                else
+                    gc.line(i,-540,i,540) gc.line(-i,-540,-i,540)
+                end
+            end
+            for i=0,540,attach do
+                if i==0 then gc.line(-960,0,960,0)
+                else
+                    gc.line(-960,i,960,i) gc.line(-960,-i,960,-i)
+                end
+            end
         end
-    end
-    for i=0,540,attach do
-        if i==0 then gc.line(-960,0,960,0)
-        else
-            gc.line(-960,i,960,i) gc.line(-960,-i,960,-i)
-        end
-    end
-    end
-        gc.setColor(1,1,1,.8)
         for k,v in pairs(VKey.set) do
-            gc.setLineWidth(5*v.r/100)
-            gc.circle('line',v.x,v.y,v.r,4)
+            if VKey.shade then
+                gc.setColor(1,1,1)
+                gc.draw(shadeCanvas,v.x,v.y,0,v.r/200,v.r/200,300,300)
+            end
+            gc.setColor(1,1,1,.8)
+            gc.setLineWidth(2*v.r/100)
+            gc.circle('line',v.x,v.y,v.r*.96,4)
+            gc.circle('line',v.x,v.y,v.r*1.04,4)
             --gc.printf(k,font.Bender,v.x,v.y,2000,'center',0,.5,.5,1000,72)
-            gc.draw(vkpic[k],v.x,v.y,0,v.r/100,v.r/100,100,100)
+            gc.draw(vkpic[k],v.x,v.y,0,v.r/200,v.r/200,200,200)
         end
         if VKey.choose then
             local v=VKey.set[VKey.choose]
