@@ -17,6 +17,9 @@ function sfx.add(sfxTable)
         sfx.buffer[v]={}
     end
 end
+function sfx.check(name)
+    return sfx.key[name] and true or false
+end
 function sfx.play(key,volume,pitch,pos)--音频名，音量，音高，位置（-1到1，映射到一个半圆弧上）
     local fpos
     if pos then fpos=max(min(pos,1),-1) else fpos=0 end
