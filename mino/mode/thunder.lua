@@ -221,13 +221,13 @@ function rule.underFieldDraw(player)
     local x=-18*player.w-110
 
     if player.point%100==99 then gc.setColor(1,.75,.5) else gc.setColor(1,1,1) end
-    gc.printf(""..player.point,font.JB_B,x,-36,2048,'center',0,.5,.5,1024,84)
-    gc.printf(""..player.stormLv*100,font.JB_B,x,36,2048,'center',0,.5,.5,1024,84)
+    gc.printf(""..player.point,font.JB_B,x,-42,2048,'center',0,.5,.5,1024,84)
+    gc.printf(""..player.stormLv*100,font.JB_B,x,42,2048,'center',0,.5,.5,1024,84)
     gc.printf("Level "..player.stormLv,font.JB_B,-player.w*18-28,288,2048,'right',0,0.25,0.25,2048,84)
-    gc.setLineWidth(7)
+    gc.setLineWidth(6)
     gc.line(-player.w*18-170,0,-player.w*18-50,0)
 
-    gc.printf(""..player.stat.block,font.JB,x,116,6000,'center',0,.4,.4,3000,font.height.JB/2)
+    gc.printf(""..player.stat.block,font.JB,x,120,6000,'center',0,.4,.4,3000,font.height.JB/2)
     gc.printf(user.lang.rule.thunder.piece,font.JB_B,x,156,6000,'center',0,.2,.2,3000,font.height.JB_B/2)
 end
 local indicate=gc.newCanvas(36,180)

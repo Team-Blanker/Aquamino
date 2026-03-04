@@ -215,7 +215,7 @@ return {
         thunder={piece="使用块数"},
         backfire={remain="剩余垃圾行数",eff="效率"},
         laser={punish="拖延惩罚"},
-        square={time="剩余时间",amount="分数",remainTime={"2 分钟","1 分钟","30 秒"}},
+        square={time="剩余时间",amount="分数",record="最佳",remainTime={"2 分钟","1 分钟","30 秒"}},
     },
     territory={info="空格/Enter 切换暂停/运行状态\nesc 退出"},
     tracks={info="空格/Enter 切换暂停/运行状态\nesc 退出"}

@@ -217,7 +217,7 @@ return {
         thunder={piece="Tetramini"},
         backfire={remain="Da ricevere",eff="Efficienza"},
         laser={punish="Penalità"},
-        square={time="Tempo",amount="Punti",remainTime={"2 minuti","1 minuto","30 SECONDI"}}
+        square={time="Tempo",amount="Punti",record="Record",remainTime={"2 minuti","1 minuto","30 SECONDI"}}
     },
     territory={info="Spazio,Enter=Pausa/run\nesc=Esci"},
     tracks={info="Spazio,Enter=Pausa/run\nesc=Esci"}

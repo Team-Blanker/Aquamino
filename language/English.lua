@@ -217,7 +217,7 @@ return {
         thunder={piece="Pieces"},
         backfire={remain="To receive",eff="Effeciency"},
         laser={punish="Dragging\npenalty"},
-        square={time="Time",amount="Points",remainTime={"2 minutes","1 minute","30 SECONDS"}}
+        square={time="Time",amount="Points",record="Record",remainTime={"2 minutes","1 minute","30 SECONDS"}}
     },
     territory={info="Space,Enter=pause/run\nesc=exit"},
     tracks={info="Space,Enter=pause/run\nesc=exit"}

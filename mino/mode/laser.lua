@@ -253,9 +253,9 @@ function rule.BGUpdate(stacker,dt)
 end
 function rule.underFieldDraw(player)
     if player.point>=300 then gc.setColor(1,.95,.05) else gc.setColor(1,1,1) end
-    gc.printf(""..player.point,font.JB_B,-player.w*18-110,-36,2048,'center',0,.5,.5,1024,font.height.JB_B/2)
-    gc.printf(300,font.JB_B,-player.w*18-110,36,2048,'center',0,.5,.5,1024,font.height.JB_B/2)
-    gc.setLineWidth(7)
+    gc.printf(""..player.point,font.JB_B,-player.w*18-110,-42,2048,'center',0,.5,.5,1024,font.height.JB_B/2)
+    gc.printf(300,font.JB_B,-player.w*18-110,42,2048,'center',0,.5,.5,1024,font.height.JB_B/2)
+    gc.setLineWidth(6)
     gc.line(-player.w*18-170,0,-player.w*18-50,0)
 
     if player.garbageBeatTimer<=0 then setColor(1,0,0) else setColor(1,1,1) end

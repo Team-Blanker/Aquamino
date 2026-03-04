@@ -37,14 +37,17 @@ function rule.init(P,mino)
         mino.rule.allowPush[v]=false
     end
 
+    local pb=file.read('player/best score')
+
     for k,v in pairs(P) do
         --v.w=12
-    
+
         v.LDRInit=1e99 v.LDelay=1e99 v.LDR=1e99
 
         v.sqAnimList={}
 
         v.sqPoint=0
+        v.sqRecord=pb.square and pb.square.sqPoint or 0
     end
 end
 
@@ -143,10 +146,12 @@ function rule.underFieldDraw(player)
     local x=-18*player.w-110
     local t=max(180-player.gameTimer,0)
     gc.setColor(1,1,1)
-    gc.printf(player.sqPoint,font.JB,x,-48,6000,'center',0,.625,.625,3000,96)
-    gc.printf(rsq.amount,font.JB_B,x,0,6000,'center',0,.2,.2,3000,96)
-    gc.printf(string.format("%01d:%02d",t/60,t%60),font.JB,x,56,6000,'center',0,.4,.4,3000,96)
-    gc.printf(rsq.time,font.JB_B,x,96,6000,'center',0,.2,.2,3000,96)
+    gc.printf(player.sqPoint,font.JB,x,0,6000,'center',0,.6,.6,3000,font.height.JB/2)
+    gc.printf(rsq.amount,font.JB_B,x,48,6000,'center',0,.2,.2,3000,font.height.JB_B/2)
+    gc.printf(player.sqRecord,font.JB,x,108,6000,'center',0,.4,.4,3000,font.height.JB/2)
+    gc.printf(rsq.record,font.JB_B,x,144,6000,'center',0,.2,.2,3000,font.height.JB_B/2)
+    gc.printf(string.format("%01d:%02d",t/60,t%60),font.JB,x,-108,6000,'center',0,.4,.4,3000,font.height.JB/2)
+    gc.printf(rsq.time,font.JB_B,x,-72,6000,'center',0,.2,.2,3000,font.height.JB_B/2)
 end
 function rule.overFieldDraw(player)
     local sq=player.sqAnimList
