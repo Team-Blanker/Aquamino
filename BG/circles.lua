@@ -1,7 +1,7 @@
 --对Lumines的关卡Circles的拙劣模仿
 local BPM=120
 local tau=2*math.pi
-local bg={}
+local bg={time=0}
 
 local circleShader = love.graphics.newShader[[
 vec4 effect(vec4 color,Image tex,vec2 texCoord,vec2 scrCoord){
@@ -107,7 +107,7 @@ function bg.draw()
     local beat=bg.time*BPM/60
     local t=beat/64%1
 
-    gc.scale(.5)
+    --gc.scale(.5)
 
     gc.setBlendMode('add')
     gc.setShader(lightShader2)
@@ -159,6 +159,6 @@ function bg.draw()
     end
     gc.setShader()
 
-    gc.scale(2)
+    --gc.scale(2)
 end
 return bg
