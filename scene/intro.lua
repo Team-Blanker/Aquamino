@@ -80,8 +80,8 @@ function intro.update(dt)
 end
 
 local logo=gc.newImage('pic/assets/title.png')
-local logo_mzk=gc.newImage('pic/assets/title_Mizuki.png')
-local logo_gg=gc.newImage('pic/assets/title_Goldenglow.png')
+local logo_mzk=gc.newImage('pic/assets/title_mzk.png')
+local logo_gg=gc.newImage('pic/assets/title_gg.png')
 
 local lw,lh=logo:getPixelDimensions()
 
