@@ -48,6 +48,9 @@ function custom.read()
     myTable.combine(custom.color,c)
 
     custom.texType={}
+    for k,v in pairs(skinFuncList) do
+        if v.defaultTexType then custom.texType[k]=T.copy(v.defaultTexType) end
+    end
     if fs.getInfo('conf/mino textype') then T.combine(custom.texType,file.read('conf/mino textype'))
     end
 end

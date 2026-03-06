@@ -8,7 +8,7 @@ gc.setColor(1,1,1)
 gc.rectangle('fill',0,0,400,400)
 gc.setCanvas()
 function BGTest.init()
-    scene.BG=require('BG/sqdance')
+    scene.BG=require('BG/circles')
     if scene.BG.init then scene.BG.init() end
     --BGTest.sd=gc.newShader('shader/merge.glsl')
     --scene.setShader('shader/mosaic.glsl')
@@ -28,7 +28,7 @@ function BGTest.draw()
     for i=-540,540,120 do
         gc.line(-960,i,960,i)
     end]]
-    
+
     --[[gc.setColor(1,1,1)
     BGTest.sd:send('phase',t/3)
     gc.setShader(BGTest.sd)

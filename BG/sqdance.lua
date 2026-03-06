@@ -1,3 +1,4 @@
+--对Lumines Remastered的关卡Square Dance的拙劣模仿
 local bg={}
 
 local time=0
