@@ -103,11 +103,13 @@ local lightPhase={}
 for i=1,lightAmount do
     lightPhase[i]=rand()
 end
+local circleMode=2
 function bg.draw()
     local beat=bg.time*BPM/60
     local t=beat/64%1
+    local t1=beat/16%3
 
-    --gc.scale(.5)
+    gc.scale(.5)
 
     gc.setBlendMode('add')
     gc.setShader(lightShader2)
@@ -132,33 +134,46 @@ function bg.draw()
     gc.circle('fill',0,0,720)
 
     gc.setShader(circleShader)
-    gc.setColor(.8,0,0)
-    gc.draw(circle,480*cos(tau*(t    )),480*sin(tau*(t    )),tau*t*(1-3),.6,.6,405,405)
-    gc.draw(circle,480*cos(tau*(t+1/4)),480*sin(tau*(t+1/4)),tau*t*(1-3),.6,.6,405,405)
-    gc.draw(circle,480*cos(tau*(t+2/4)),480*sin(tau*(t+2/4)),tau*t*(1-3),.6,.6,405,405)
-    gc.draw(circle,480*cos(tau*(t+3/4)),480*sin(tau*(t+3/4)),tau*t*(1-3),.6,.6,405,405)
+    if circleMode==1 then
+        gc.setColor(.8,0,0)
+        gc.draw(circle,480*cos(tau*(t    )),480*sin(tau*(t    )),tau*t*(1-3),.6,.6,405,405)
+        gc.draw(circle,480*cos(tau*(t+1/4)),480*sin(tau*(t+1/4)),tau*t*(1-3),.6,.6,405,405)
+        gc.draw(circle,480*cos(tau*(t+2/4)),480*sin(tau*(t+2/4)),tau*t*(1-3),.6,.6,405,405)
+        gc.draw(circle,480*cos(tau*(t+3/4)),480*sin(tau*(t+3/4)),tau*t*(1-3),.6,.6,405,405)
 
-    gc.setColor(.8,.4,0)
-    gc.draw(circle,0,0,tau*t*(3+1),.6,.6,405,405)
+        gc.setColor(.8,.4,0)
+        gc.draw(circle,0,0,tau*t*(3+1),.6,.6,405,405)
 
-    gc.setColor(.8,.8,0)
-    gc.draw(circle,160*cos(tau*(t    )),160*sin(tau*(t    )),tau*t*(1-3+12),.2,.2,405,405)
-    gc.draw(circle,160*cos(tau*(t+1/4)),160*sin(tau*(t+1/4)),tau*t*(1-3+12),.2,.2,405,405)
-    gc.draw(circle,160*cos(tau*(t+2/4)),160*sin(tau*(t+2/4)),tau*t*(1-3+12),.2,.2,405,405)
-    gc.draw(circle,160*cos(tau*(t+3/4)),160*sin(tau*(t+3/4)),tau*t*(1-3+12),.2,.2,405,405)
-    gc.draw(circle,0,0,tau*t*(3+1-12),.2,.2,405,405)
+        gc.setColor(.8,.8,0)
+        gc.draw(circle,160*cos(tau*(t    )),160*sin(tau*(t    )),tau*t*(1-3+12),.2,.2,405,405)
+        gc.draw(circle,160*cos(tau*(t+1/4)),160*sin(tau*(t+1/4)),tau*t*(1-3+12),.2,.2,405,405)
+        gc.draw(circle,160*cos(tau*(t+2/4)),160*sin(tau*(t+2/4)),tau*t*(1-3+12),.2,.2,405,405)
+        gc.draw(circle,160*cos(tau*(t+3/4)),160*sin(tau*(t+3/4)),tau*t*(1-3+12),.2,.2,405,405)
+        gc.draw(circle,0,0,tau*t*(3+1-12),.2,.2,405,405)
 
-    gc.setColor(.8,.6,0)
-    for i=0,3 do
-        local x,y=480*cos(tau*(t+i/4)),480*sin(tau*(t+i/4))
-        gc.draw(circle,x+160*cos(tau*(t    )),y+160*sin(tau*(t    )),tau*t*(1-3-6),.2,.2,405,405)
-        gc.draw(circle,x+160*cos(tau*(t+1/4)),y+160*sin(tau*(t+1/4)),tau*t*(1-3-6),.2,.2,405,405)
-        gc.draw(circle,x+160*cos(tau*(t+2/4)),y+160*sin(tau*(t+2/4)),tau*t*(1-3-6),.2,.2,405,405)
-        gc.draw(circle,x+160*cos(tau*(t+3/4)),y+160*sin(tau*(t+3/4)),tau*t*(1-3-6),.2,.2,405,405)
-        gc.draw(circle,x,y,tau*t*(3+1+6),.2,.2,405,405)
+        gc.setColor(.8,.6,0)
+        for i=0,3 do
+            local x,y=480*cos(tau*(t+i/4)),480*sin(tau*(t+i/4))
+            gc.draw(circle,x+160*cos(tau*(t    )),y+160*sin(tau*(t    )),tau*t*(1-3-6),.2,.2,405,405)
+            gc.draw(circle,x+160*cos(tau*(t+1/4)),y+160*sin(tau*(t+1/4)),tau*t*(1-3-6),.2,.2,405,405)
+            gc.draw(circle,x+160*cos(tau*(t+2/4)),y+160*sin(tau*(t+2/4)),tau*t*(1-3-6),.2,.2,405,405)
+            gc.draw(circle,x+160*cos(tau*(t+3/4)),y+160*sin(tau*(t+3/4)),tau*t*(1-3-6),.2,.2,405,405)
+            gc.draw(circle,x,y,tau*t*(3+1+6),.2,.2,405,405)
+        end
+    elseif circleMode==2 then
+        local ax,bx,cx=180*cos(tau*(t1)),180*cos(tau*(2*t1)),180*cos(tau*(2*t1))
+        local ay,by,cy=180*sin(tau*(t1)),180*sin(tau*(2*t1)),180*sin(tau*(2*t1))
+        gc.setColor(.8,0,0)
+        gc.draw(circle,ax,ay,tau*t1*(1-4/3),1.35,1.35,405,405)
+        gc.setColor(.8,.4,0)
+        gc.draw(circle,ax+bx,ay+by,tau*t1*-1.5,.9,.9,405,405)
+        gc.setColor(.8,.8,0)
+        gc.draw(circle,ax+bx+cx,ay+by+cy,tau*t1*-5,.45,.45,405,405)
     end
     gc.setShader()
 
-    --gc.scale(2)
+    gc.scale(2)
+    gc.setColor(0,1,1)
+    --gc.printf(floor(beat),font.JB,0,480,8000,'center',0,.6,.6,4000,font.height.JB/2)
 end
 return bg

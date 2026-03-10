@@ -100,6 +100,7 @@ font={
     JB=gc.newFont('font/JetBrainsMono-Medium.ttf',120),
     JB_B=gc.newFont('font/JetBrainsMono-Bold.ttf',120),
     JB_L=gc.newFont('font/JetBrainsMono-Light.ttf',120),
+    JB_EL=gc.newFont('font/JetBrainsMono-ExtraLight.ttf',120),
     --JB=gc.newFont('font/Oxanium-Regular.ttf',120),
     --JB_B=gc.newFont('font/Oxanium-Bold.ttf',120),
     --JB_L=gc.newFont('font/Oxanium-Light.ttf',120),

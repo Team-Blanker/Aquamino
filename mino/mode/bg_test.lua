@@ -4,7 +4,6 @@ function rule.init(P,mino)
     mino.resetStopMusic=false
     mino.rule.allowSpin={T=true}
     --mino.waitTime=.5
-    mino.musInfo="R-side - Nine Five"
     P[1].LDelay=1e99
     P[1].LDR=1e99
     P[1].LDRInit=1e99
