@@ -315,7 +315,7 @@ end
 
 function rule.scoreSave(P,mino)
     local pb=file.read('player/best score')
-    if not pb.thunder.piece then pb.thunder.piece=9999 end
+    if pb.thunder and not pb.thunder.piece then pb.thunder.piece=9999 end
     local ispb=pb.thunder and (P[1].point>=1000 and P[1].stat.block<pb.thunder.piece or P[1].point>pb.thunder.point)
     if not pb.thunder or ispb then
     pb.thunder={point=P[1].point,piece=P[1].stat.block,date=os.date("%Y/%m/%d  %H:%M:%S")}
