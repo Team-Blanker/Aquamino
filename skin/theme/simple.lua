@@ -279,8 +279,9 @@ end
 local ctxt,btxt
 function simple.clearTextDraw(player,mino)
     W,H=36*player.w,36*player.h
+    local aH=36*max(player.h,20)
     local CInfo=player.clearInfo
-    gc.translate(-W/2-20,-250)
+    gc.translate(-W/2-20,-aH/2+110)
     if CInfo.combo>1 then
         ctxt=""..CInfo.combo.." chain"--[[..(CInfo.combo>19 and "?!?!" or CInfo.combo>15 and "!!" or CInfo.combo>7 and "!" or "")..(CInfo.wide==4 and "\n4-wide" or "")]]
 
@@ -333,7 +334,7 @@ function simple.clearTextDraw(player,mino)
         setColor(.75,.75,.75,1-(player.B2BAnimTimer/.25)^2)
         printf(btxt,font.JB_B,-8,52,1200,'right',0,1/3,1/3,1200,font.height.JB_B/2)
     end
-    gc.translate(W/2+20,250)
+    gc.translate(W/2+20,aH/2-110)
 
     local a1=min(player.clearTxtTimer*1.5/player.clearTxtTMax,1)*.9
     local s=(CInfo.spin and .5 or CInfo.line>=4 and 1-.05*player.clearTxtTimer or .5)

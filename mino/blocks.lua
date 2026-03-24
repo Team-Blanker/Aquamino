@@ -82,24 +82,24 @@ function block.flipH(b) --竖直翻转
 end
 
 function block.size(b)--计算方块最小外包框大小以及旋转中心相对这个框的偏移
-    local xMiao,xmax,yMiao,ymax=b[1][1],b[1][1],b[1][2],b[1][2]
+    local xmin,xmax,ymin,ymax=b[1][1],b[1][1],b[1][2],b[1][2]
     for i=1,#b do
-        if b[i][1]<xMiao then xMiao=b[i][1] end
-        if b[i][1]>xmax  then xmax =b[i][1] end
-        if b[i][2]<yMiao then yMiao=b[i][2] end
-        if b[i][2]>ymax  then ymax =b[i][2] end
+        if b[i][1]<xmin then xmin=b[i][1] end
+        if b[i][1]>xmax then xmax =b[i][1] end
+        if b[i][2]<ymin then ymin=b[i][2] end
+        if b[i][2]>ymax then ymax =b[i][2] end
     end
-    return xmax-xMiao+1,ymax-yMiao+1,-(xmax+xMiao)/2,-(ymax+yMiao)/2--宽，高，x偏移，y偏移
+    return xmax-xmin+1,ymax-ymin+1,-(xmax+xmin)/2,-(ymax+ymin)/2--宽，高，x偏移，y偏移
 end
 function block.edge(b)--获取最边缘的方块信息
-    local xMiao,xmax,yMiao,ymax=b[1][1],b[1][1],b[1][2],b[1][2]
+    local xmin,xmax,ymin,ymax=b[1][1],b[1][1],b[1][2],b[1][2]
     for i=1,#b do
-        if b[i][1]<xMiao then xMiao=b[i][1] end
-        if b[i][1]>xmax  then xmax =b[i][1] end
-        if b[i][2]<yMiao then yMiao=b[i][2] end
-        if b[i][2]>ymax  then ymax =b[i][2] end
+        if b[i][1]<xmin then xmin=b[i][1] end
+        if b[i][1]>xmax then xmax =b[i][1] end
+        if b[i][2]<ymin then ymin=b[i][2] end
+        if b[i][2]>ymax then ymax =b[i][2] end
     end
-    return xMiao,xmax,yMiao,ymax
+    return xmin,xmax,ymin,ymax
 end
 function block.getX(b)
     local n={}

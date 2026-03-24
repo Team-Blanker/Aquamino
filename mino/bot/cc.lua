@@ -215,7 +215,7 @@ end
 function ccWrap.sendNext(thread,player,nextStart)
     local arg={next={},op='next'}
     for i=nextStart,#player.next do
-        arg.next[#arg.next+1]=player.next[i]
+        arg.next[#arg.next+1]=player.next[i].name
     end
     thread.sendChannel:push(arg)
 end

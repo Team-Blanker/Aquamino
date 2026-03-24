@@ -18,6 +18,12 @@ local IRS_RS=require('mino/rotateSys/IRS-RS')
 
 local fieldLib={}
 
+--[[
+player.next[i]={
+    name=nil,piece={},x=5,y=21,O=0,ghostY=0,spin=false,mini=false,
+    kickOrder=0,kick=nil,
+},
+]]
 function fieldLib.newPlayer(arg)
     local stdPlayer={
         started=false,alive=true,gameTimer=0,deadTimer=-1,loseTimer=-1,winTimer=-1,
@@ -44,7 +50,7 @@ function fieldLib.newPlayer(arg)
 
         RS_name='SRS',
         RS=nil,
-        next={},NO={},NP={},preview=6,--NO next所有块朝向  NP next所有块“实体”
+        next={},preview=6,
         hold={mode='S'},canHold=true,
         canInitMove=true,canInitRotate=true,canInitHold=true,
 
@@ -65,7 +71,7 @@ function fieldLib.newPlayer(arg)
         },
         cur={--当前块的所有信息
             name=nil,piece={},x=5,y=21,O=0,ghostY=0,spin=false,mini=false,
-            kickOrder=0,kick=nil
+            kickOrder=0,kick=nil,
         },
         stat={--统计数据
             block=0
@@ -257,12 +263,12 @@ end
 --方块与场地相关
 function fieldLib.changeNext(player,order,piece,ori)--修改某个next块
     if order>#player.next then error("cannot change this piece because it's out of next queue")
-    else player.next[order]=piece
+    else player.next[order].name=piece
         if order<=player.preview then
-        player.NP[order]=T.copy(B[player.next[order]])
-        player.NO[order]=ori
-        for k=1,player.NO[order] do
-            B.rotate(player.NP[order],0,'R')
+        player.next[order].piece=T.copy(B[player.next[order]])
+        player.next[order].O=ori
+        for k=1,player.next[order].O do
+            B.rotate(player.next[order].piece,0,'R')
         end
         end
     end

@@ -30,7 +30,7 @@ end
 function bot_zzz.calculate(player,nextLimit)
     local nq=player.cur.name
     for i=1,math.min(#player.next,nextLimit) do
-        nq=nq..player.next[i]
+        nq=nq..player.next[i].name
     end
     return zzz.run(bot_zzz.renderField(player),player.cur.name or ' ',player.hold.name or ' ',player.canHold,nq)
 end

@@ -132,9 +132,7 @@ function mino.nextIns(player)
     local his=player.history
     his.line=0 C.spin=false C.mini=false his.dropHeight=0
     if player.next[1] then
-        C.O=table.remove(player.NO,1)
-        C.name=table.remove(player.next,1)
-        C.piece=table.remove(player.NP,1)
+        T.combine(player.cur,table.remove(player.next,1))
         if mino.rule.onPieceSummon then mino.rule.onPieceSummon(player,mino) end
         fLib.setEntryPos(player)
 
@@ -156,10 +154,11 @@ function mino.nextIns(player)
     end
     if player.next[player.preview] then
         local n=player.preview
-        player.NP[n]=T.copy(B[player.next[n]])
-        player.NO[n]=mino.orient[player.next[n]] or mino.orient.default
-        for k=1,player.NO[n] do
-            B.rotate(player.NP[n],0,'R')
+        local pv=player.next[player.preview]
+        pv.piece=T.copy(B[player.next[n].name])
+        pv.O=mino.orient[player.next[n].name] or mino.orient.default
+        for k=1,pv.O do
+            B.rotate(player.next[n].piece,0,'R')
         end
     end
 
@@ -246,10 +245,10 @@ function mino.hold(player)
     else
         if player.next[player.preview+1] then
             local nxt=player.preview+1
-            player.NP[nxt]=T.copy(B[player.next[nxt]])
-            player.NO[nxt]=mino.orient[player.next[nxt]] or mino.orient.default
-            for k=1,player.NO[nxt] do
-                B.rotate(player.NP[nxt],0,'R')
+            player.next[nxt].piece=T.copy(B[player.next[nxt].name])
+            player.next[nxt].O=mino.orient[player.next[nxt].name] or mino.orient.default
+            for k=1,player.next[nxt].O do
+                B.rotate(player.next[nxt].piece,0,'R')
             end
         end
 
@@ -258,9 +257,7 @@ function mino.hold(player)
         local his=player.history
         his.line=0 C.spin=false C.mini=false his.dropHeight=0
         if player.next[1] then
-            C.O=table.remove(player.NO,1)
-            C.name=table.remove(player.next,1)
-            C.piece=table.remove(player.NP,1)
+            T.combine(player.cur,table.remove(player.next,1))
             if mino.rule.onPieceSummon then mino.rule.onPieceSummon(player,mino) end
             fLib.setEntryPos(player)
 
@@ -799,10 +796,10 @@ function mino.init(isReset)
             mino.insertNextQueue(P[i])
         end
         for j=1,P[i].preview do --给所有玩家放上预览块
-            P[i].NP[j]=T.copy(B[P[i].next[j]])
-            P[i].NO[j]=mino.orient[P[i].next[j]] or mino.orient.default
-            for k=1,P[i].NO[j] do
-            B.rotate(P[i].NP[j],0,'R')
+            P[i].next[j].piece=T.copy(B[P[i].next[j].name])
+            P[i].next[j].O=mino.orient[P[i].next[j].name] or mino.orient.default
+            for k=1,P[i].next[j].O do
+            B.rotate(P[i].next[j].piece,0,'R')
             end
         end
         if mino.blockSkin.init then mino.blockSkin.init(P[i]) end
@@ -1443,15 +1440,17 @@ function mino.draw()
             local nx,ny,nd
             if mino.theme.getNextPos then nx,ny,nd=mino.theme.getNextPos(P[i]) end
             --预览
-            for j=1,#P[i].NP do
-                w,h,x,y=B.size(P[i].NP[j])
+            for j=1,#P[i].next do
+                if P[i].next[j].piece then
+                w,h,x,y=B.size(P[i].next[j].piece)
                 s=min((w/h>2 and 4/w or 2.5/h),1)
                 gc.push('transform')
                     --gc.translate(nx and nx or 18*P[i].w+90+20,(ny and ny or -410)+100*j)
                     gc.translate(nx,ny+nd*j)
                     gc.scale(s)
-                    mino.blockSkin.nextDraw(P[i],P[i].NP[j],x,y,mino.color[P[i].next[j]],mino.texType[P[i].next[j]])
+                    mino.blockSkin.nextDraw(P[i],P[i].next[j].piece,x,y,mino.color[P[i].next[j].name],mino.texType[P[i].next[j].name])
                 gc.pop()
+                end
             end
 
             if mino.theme.overFieldDraw then mino.theme.overFieldDraw(P[i],mino) end

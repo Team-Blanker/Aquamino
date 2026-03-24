@@ -6,7 +6,7 @@ local rand=math.random
 function GenShin.bag(bag,player)
     local new=T.copy(bag)
     for i=1,#new do
-        table.insert(player.next,table.remove(new,rand(#new)))
+        table.insert(player.next,{name=table.remove(new,rand(#new))})
     end
 end
 
@@ -21,11 +21,11 @@ function GenShin.bagES(bag,player)
             if T.include(ES,new[i]) then table.insert(new,1,table.remove(new,i)) break end
         end
         for i=1,#new do
-            table.insert(player.next,new[i])
+            table.insert(player.next,{name=new[i]})
         end
     else
         for i=1,#new do
-            table.insert(player.next,table.remove(new,rand(#new)))
+            table.insert(player.next,{name=table.remove(new,rand(#new))})
         end
     end
 end
@@ -33,7 +33,7 @@ function GenShin.bagp1(bag,player)
     local new=T.copy(bag)
     table.insert(new,bag[rand(#bag)])
     for i=1,#new do
-        table.insert(player.next,table.remove(new,rand(#new)))
+        table.insert(player.next,{name=table.remove(new,rand(#new))})
     end
 end
 function GenShin.bagp1FromBag(bag,player,buffer)
@@ -47,7 +47,7 @@ function GenShin.bagp1FromBag(bag,player,buffer)
     end
     table.insert(new,pos,piece)
     for i=1,#new do
-        table.insert(player.next,new[i])
+        table.insert(player.next,{name=new[i]})
     end
 end
 function GenShin.bagpX(bag,player,buffer)
@@ -62,7 +62,7 @@ function GenShin.bagpX(bag,player,buffer)
         end
     end
     for i=1,#new do
-        table.insert(player.next,new[i])
+        table.insert(player.next,{name=new[i]})
     end
     buffer.count=buffer.count+1
 end
@@ -71,12 +71,12 @@ function GenShin.pairs(bag,player)
     local a,b=rem(cb,rand(#cb)),rem(cb,rand(#cb))
     local new={a,a,a,b,b,b}
     for i=1,#new do
-        table.insert(player.next,table.remove(new,rand(#new)))
+        table.insert(player.next,{name=table.remove(new,rand(#new))})
     end
 end
 function GenShin.history(bag,player)
 end
 function GenShin.mayhem(bag,player)
-    table.insert(player.next,bag[rand(#bag)])
+    table.insert(player.next,{name=bag[rand(#bag)]})
 end
 return Impact

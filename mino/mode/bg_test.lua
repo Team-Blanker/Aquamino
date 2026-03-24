@@ -1,6 +1,6 @@
 local rule={}
 function rule.init(P,mino)
-    scene.BG=require'BG/sqdance'
+    scene.BG=require'BG/New Clear'
     mino.resetStopMusic=false
     mino.rule.allowSpin={T=true}
     --mino.waitTime=.5
