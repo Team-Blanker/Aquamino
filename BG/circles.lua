@@ -103,13 +103,13 @@ local lightPhase={}
 for i=1,lightAmount do
     lightPhase[i]=rand()
 end
-local circleMode=2
+local circleMode=1
 function bg.draw()
     local beat=bg.time*BPM/60
     local t=beat/64%1
     local t1=beat/16%3
 
-    gc.scale(.5)
+    --gc.scale(.5)
 
     gc.setBlendMode('add')
     gc.setShader(lightShader2)
@@ -172,7 +172,7 @@ function bg.draw()
     end
     gc.setShader()
 
-    gc.scale(2)
+    --gc.scale(2)
     gc.setColor(0,1,1)
     --gc.printf(floor(beat),font.JB,0,480,8000,'center',0,.6,.6,4000,font.height.JB/2)
 end
