@@ -94,6 +94,7 @@ font={
     height={},
 
     ALBBPHT=gc.newFont('font/AlibabaPuHuiTi-Regular.otf',120),
+    ALBBPHT_B=gc.newFont('font/AlibabaPuHuiTi-Bold.otf',120),
     Bender=gc.newFont('font/Bender.otf',120),
     Bender_B=gc.newFont('font/Bender-Bold.otf',120),
     Bender_L=gc.newFont('font/Bender-Light.otf',120),
@@ -114,8 +115,8 @@ for k,v in pairs(font) do
         print(k,font.height[k])
     end
 end
-font.Bender:setFallbacks(font.ALBBPHT) font.Bender_B:setFallbacks(font.ALBBPHT) font.Bender_L:setFallbacks(font.ALBBPHT)
-font.JB:setFallbacks(font.ALBBPHT) font.JB_B:setFallbacks(font.ALBBPHT)
+font.Bender:setFallbacks(font.ALBBPHT) font.Bender_B:setFallbacks(font.ALBBPHT_B) font.Bender_L:setFallbacks(font.ALBBPHT)
+font.JB:setFallbacks(font.ALBBPHT) font.JB_B:setFallbacks(font.ALBBPHT_B)
 --font.DIN:setFallbacks(font.ALBBPHT) font.DIN_B:setFallbacks(font.ALBBPHT)
 
 canop=true--决定玩家是否能操作场景的变量
@@ -491,8 +492,8 @@ function love.draw()
     gc.print("TPS: "..love.timer.getFPS()..", FPS: "..drawCtrl.FPS..", gcinfo: "..gcinfo(),font.Bender_B,-950,505,0,.25,.25)
     if scene.watermark and not fs.isFused() then
         gc.setColor(.5,1,.875,.15+.0*sin(scene.totalTime*5*math.pi))
-        gc.printf("作者：Aqua6623",font.JB_B,480*sin(scene.totalTime/2*math.pi),-440,5000,'center',0,.5,.5,2500,84)
-        gc.printf("Author: Aqua6623",font.JB_B,-480*sin(scene.totalTime/2*math.pi), 440,5000,'center',0,.5,.5,2500,84)
+        gc.printf("开发：Team Blanker",font.JB_B,480*sin(scene.totalTime/2*math.pi),-440,5000,'center',0,.5,.5,2500,84)
+        gc.printf("Author: Team Blanker",font.JB_B,-480*sin(scene.totalTime/2*math.pi), 440,5000,'center',0,.5,.5,2500,84)
     end
     gc.origin()
 
