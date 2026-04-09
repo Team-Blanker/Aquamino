@@ -94,7 +94,7 @@ font={
     height={},
 
     ALBBPHT=gc.newFont('font/AlibabaPuHuiTi-Regular.otf',120),
-    ALBBPHT_B=gc.newFont('font/AlibabaPuHuiTi-Bold.otf',120),
+    ALBBPHT_SB=gc.newFont('font/AlibabaPuHuiTi-SemiBold.otf',120),
     Bender=gc.newFont('font/Bender.otf',120),
     Bender_B=gc.newFont('font/Bender-Bold.otf',120),
     Bender_L=gc.newFont('font/Bender-Light.otf',120),
@@ -115,8 +115,8 @@ for k,v in pairs(font) do
         print(k,font.height[k])
     end
 end
-font.Bender:setFallbacks(font.ALBBPHT) font.Bender_B:setFallbacks(font.ALBBPHT_B) font.Bender_L:setFallbacks(font.ALBBPHT)
-font.JB:setFallbacks(font.ALBBPHT) font.JB_B:setFallbacks(font.ALBBPHT_B)
+font.Bender:setFallbacks(font.ALBBPHT) font.Bender_B:setFallbacks(font.ALBBPHT_SB) font.Bender_L:setFallbacks(font.ALBBPHT)
+font.JB:setFallbacks(font.ALBBPHT) font.JB_B:setFallbacks(font.ALBBPHT_SB)
 --font.DIN:setFallbacks(font.ALBBPHT) font.DIN_B:setFallbacks(font.ALBBPHT)
 
 canop=true--决定玩家是否能操作场景的变量
