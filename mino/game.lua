@@ -632,21 +632,21 @@ end
 --(player.FDelay==0 and 0 or player.FTimer/player.FDelay)
 function mino.insertNextQueue(player)
     local n--这个值表示新的next从第几个预览块开始
-    local rong=mino.rule.onNextGen
+    local ng=mino.rule.onNextGen
     if mino.seqSync then
         mino.publicPlayer.next={}
         NG[mino.seqGen](mino.bag,mino.publicPlayer,mino.publicPlayer.seqGen.buffer)
         for k,v in pairs(mino.player) do
             n=#v.next+1
             for i=1,#mino.publicPlayer.next do
-                table.insert(v.next,mino.publicPlayer.next[i])
+                table.insert(v.next,T.copy(mino.publicPlayer.next[i]))
             end
-            if rong then rong(v,n,mino) end
+            if ng then ng(v,n,mino) end
         end
     else
         n=#player.next+1
         NG[mino.seqGen](mino.bag,player,player.seqGen.buffer)
-        if rong then rong(player,n,mino) end
+        if ng then ng(player,n,mino) end
     end
     player.seqGen.count=player.seqGen.count+1
 end
