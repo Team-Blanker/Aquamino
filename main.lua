@@ -59,6 +59,11 @@ gc={}
 for k,v in pairs(love.graphics) do
     gc[k]=v
 end
+
+function gc.setCanvas(cv)
+    if cv then love.graphics.setCanvas(cv) gc.setBlendMode('alpha','premultiplied')
+    else love.graphics.setCanvas() gc.setBlendMode('alpha','alphamultiply') end
+end
 function gc.setDefaultCanvas()
     if scene.shader then gc.setCanvas(scene.canvas) else gc.setCanvas() end
 end
@@ -140,6 +145,8 @@ win={
     versionTxt="Beta V0.3.3.2",
     OS=love.system.getOS(),
     showInfo=false,
+    watermark=true,
+    showPerformance=true,
     fullscr=false,discardAfterDraw=false,
     distractTime=0,
     date=os.date('*t'),
@@ -203,7 +210,6 @@ user={
 user.lang=require('language/'..user.langName)
 
 scene={
-    watermark=true,
     totalTime=0,
     enterNewScene=false,
     cur=require('scene/warning'),pos='warning',
@@ -233,7 +239,10 @@ scene={
     slider=require'framework/control/slider'
 }
 
+--win.watermark=false win.showPerformance=false
+
 --scene.cur=require('minigame/tracks/tracks')
+--scene.cur=require('minigame/zombie battle/zombie battle')
 --scene.cur=require('scene/test/BG_Test')
 --scene.cur=require('scene/test/clock')
 --scene.cur=require('mino/game') scene.cur.mode='bg_test'
@@ -488,12 +497,14 @@ function love.draw()
         gc.printf(("%.2f,%.2f"):format(rx,ry),font.Bender,rx,ry-16,2000,'center',0,.15,.15,1000,72)
         gc.printf(("%d × %d"):format(win.W,win.H),font.Bender,-950,-520,2000,'left',0,.25,.25,0,72)
     end
+    if win.showPerformance then
     gc.setColor(1,1,1,.5)
     gc.print("TPS: "..love.timer.getFPS()..", FPS: "..drawCtrl.FPS..", gcinfo: "..gcinfo(),font.Bender_B,-950,505,0,.25,.25)
-    if scene.watermark and not fs.isFused() then
+    end
+    if win.watermark and not fs.isFused() then
         gc.setColor(.5,1,.875,.15+.0*sin(scene.totalTime*5*math.pi))
-        gc.printf("开发：Team Blanker",font.JB_B,480*sin(scene.totalTime/2*math.pi),-440,5000,'center',0,.5,.5,2500,84)
-        gc.printf("Author: Team Blanker",font.JB_B,-480*sin(scene.totalTime/2*math.pi), 440,5000,'center',0,.5,.5,2500,84)
+        gc.printf("开发:Team Blanker",font.JB_B,480*sin(scene.totalTime/2*math.pi),-440,5000,'center',0,.5,.5,2500,84)
+        gc.printf("Author:Team Blanker",font.JB_B,-480*sin(scene.totalTime/2*math.pi), 440,5000,'center',0,.5,.5,2500,84)
     end
     gc.origin()
 

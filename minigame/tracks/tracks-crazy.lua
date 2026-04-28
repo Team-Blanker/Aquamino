@@ -485,7 +485,6 @@ function track.init()
     track.bonusCtrl.specialBarrier={
         body=LP.newBody(track.world,-345,270,'static'),
         shape=LP.newRectangleShape(30,420),
-        color=track.cbcmd[i]
     }
     o=track.bonusCtrl.specialBarrier
     o.fixture=LP.newFixture(o.body,o.shape,1)

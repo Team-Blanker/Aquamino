@@ -12,6 +12,6 @@ vec4 effect( vec4 color, Image texture, vec2 texCoord, vec2 scrCoord ){
     //highp float ll=max(z/sqrt(x*x+(1.-y)*(1.-y)+z*z),0.)*.6;
 
     //ll=（反光与泛光取大）+（边缘光）
-    highp float ll=max(rsq*(z*.9),rsq*.3) + min((.5+.5*sign(rsq-.94+z*.02))*(z+2.)/3.,1.)*.8;
-    return vec4(1.,1.,1.,ll)*color;
+    highp float ll=max(rsq*(z*.9),rsq*.3) + min((.5+.5*sign(rsq-.94+z*.02))*(z+2.)/3.,1.)*.9;
+    return vec4(1.,1.,1.,ll*ll)*color;
 }
