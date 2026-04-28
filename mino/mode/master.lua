@@ -17,7 +17,7 @@ local ASPList={
     .028,.028,.028,.028,.028,
     .026,.026,.024,.020,.016
 }
-function rule.init(P,mino)
+function rule.init(P,mino,modeInfo)
 
     mino.rule.allowPush={}
     mino.rule.allowSpin={T=true}
@@ -35,12 +35,21 @@ function rule.init(P,mino)
 
     P[1].LDelay=.5
     for k,v in pairs(P) do
-        v.CDelay=.25
         v.EDelay=.1
         v.FDelay=0
-        v.speedLv=1
+        v.speedLv=modeInfo.arg.startLv or 1
+        v.LDelay=LDelayList[v.speedLv]
+        v.CDelay=max(.25*(16-v.speedLv)/15,.01)
+        c.ASD=ASDList[v.speedLv]
+        c.ASP=ASPList[v.speedLv]
         v.totalLine=0
         v.LDRInit=20 v.LDR=20
+
+        if not mino.unableBG then
+            scene.BG.density=1.5+4.5*(v.speedLv-1)/19
+            scene.BG.BGColor=(v.speedLv>15 and {.04,.12,.08} or v.speedLv>10 and {.12,.06,.06} or v.speedLv>5 and {.04,.06,.12} or {0,0,0})
+            scene.BG.parColor=(v.speedLv>15 and {0,1,.6} or v.speedLv>10 and {1,.4,.4} or v.speedLv>5 and {0,.5,1} or {1,1,1})
+        end
     end
 end
 function rule.onLineClear(player,mino)

@@ -59,6 +59,12 @@ return {
         noBestScore="Nessun Punteggio",
         notPlayable="Arriverà presto",
         arg={
+            marathon={
+                startLv="Velocità",
+            },
+            master={
+                startLv="Velocità",
+            },
             battle={
                 bot_PPS="Bot PPS",
                 player={

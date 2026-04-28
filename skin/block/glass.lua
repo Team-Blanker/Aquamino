@@ -28,7 +28,7 @@ skin.defaultTexType={
 }
 
 function skin.unitDraw(player,x,y,color,alpha)
-    setColor(color[1],color[2],color[3],.25)
+    setColor(color[1],color[2],color[3],.3)
     rect('fill',-18+36*x,-18-36*y,36,36)
     setColor(color[1],color[2],color[3],color[4] or alpha or 1)
     draw(pic,-18+36*x,-18-36*y)
@@ -127,7 +127,7 @@ function skin.fieldDraw(player,mino)
             local C=mino.color[F[y][x].name]
             if F[y][x] and next(F[y][x]) and C then
 
-                setColor(C[1],C[2],C[3],.15)
+                setColor(C[1],C[2],C[3],mino.texType[F[y][x].name]==1 and .15 or .3)
                 rect('fill',-18+36*x,-18-36*h,36,36)
                 setColor(C)
                 draw(pic,-18+36*x,-18-36*h)

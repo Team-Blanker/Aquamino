@@ -59,6 +59,12 @@ return {
         noBestScore="暫無成績",
         notPlayable="即將到來",
         arg={
+            marathon={
+                startLv="起始速度等級",
+            },
+            master={
+                startLv="起始速度等級",
+            },
             battle={
                 bot_PPS="機器人PPS",
                 player={

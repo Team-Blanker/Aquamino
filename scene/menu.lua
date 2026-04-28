@@ -55,6 +55,8 @@ menu.notSaveScore={sandbox=true,battle=true,['tower defense']=true}
 menu.icon={}
 menu.battleRuleSet={'basic','allspin','allspin2','aqua','shrink','bomb'}
 menu.option={
+    marathon={startLv=1},
+    master={startLv=1},
     battle={bot_PPS=1,playerPos='left',ruleNum=0,ruleSet='basic'},
     ['tower defense']={bot_PPS=1,playerPos='left'},
     ['ice storm']={iceOpacity=1}

@@ -59,6 +59,12 @@ return {
         noBestScore="No score",
         notPlayable="Coming s∞n",
         arg={
+            marathon={
+                startLv="Initial speed Lv",
+            },
+            master={
+                startLv="Initial speed Lv",
+            },
             battle={
                 bot_PPS="Bot PPS",
                 player={

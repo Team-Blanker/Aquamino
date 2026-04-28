@@ -1,5 +1,5 @@
 local rule={}
-function rule.init(P,mino)
+function rule.init(P,mino,modeInfo)
 
     mino.rule.allowPush={}
     mino.rule.allowSpin={T=true}
@@ -23,9 +23,14 @@ function rule.init(P,mino)
         v.CDelay=.25
         v.EDelay=.1
 
-        v.speedLv=1
+        v.speedLv=modeInfo.arg.startLv or 1
         v.FDelay=2^(-(v.speedLv-1)/14*8)
+        v.LDelay=max(v.FDelay,.5)
+        c.SD_ASP=2^(-(v.speedLv-1)/14*8)*.03
+
         v.totalLine=0
+
+        if not mino.unableBG then scene.BG.baseColor=myMath.lerp({.4,.4,.4},rule.finalColor,(v.speedLv-1)/14) end
     end
 end
 function rule.onLineClear(player,mino)

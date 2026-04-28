@@ -8,6 +8,60 @@ end
 function lst.slider(menu)
     local argTxt=user.lang.menu.arg
     local opt=menu.option
+        SLIDER.create('marathon_startLv',{
+        x=0,y=0,type='hori',sz={800,32},button={32,32},
+        gear=15,pos=opt.marathon.startLv-1,
+        act=function ()
+            return menu.lvl==2 and menu.selectedMode=='marathon'
+        end,
+        sliderDraw=function(g,sz)
+            if menu.lvl==2 and menu.selectedMode=='marathon' then
+            gc.setColor(.5,.5,.5,.8)
+            gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
+            gc.setColor(1,1,1)
+            gc.printf(argTxt.marathon.startLv..":"..opt.marathon.startLv,
+                font.JB,-416,-40,4000,'left',0,1/3,1/3,0,font.height.JB/2)
+            end
+        end,
+        buttonDraw=function(pos,sz)
+            if menu.lvl==2 and menu.selectedMode=='marathon' then
+            gc.setColor(1,1,1)
+            gc.circle('fill',sz[1]*(pos-.5),0,20,4)
+            end
+        end,
+        always=function(pos)
+            if menu.lvl==2 and menu.selectedMode=='marathon' then
+            opt.marathon.startLv=pos+1
+            end
+        end
+    })
+    SLIDER.create('master_startLv',{
+        x=0,y=0,type='hori',sz={800,32},button={32,32},
+        gear=20,pos=opt.master.startLv-1,
+        act=function ()
+            return menu.lvl==2 and menu.selectedMode=='master'
+        end,
+        sliderDraw=function(g,sz)
+            if menu.lvl==2 and menu.selectedMode=='master' then
+            gc.setColor(.5,.5,.5,.8)
+            gc.polygon('fill',-sz[1]/2-8,0,-sz[1]/2,-8,sz[1]/2,-8,sz[1]/2+8,0,sz[1]/2,8,-sz[1]/2,8)
+            gc.setColor(1,1,1)
+            gc.printf(argTxt.master.startLv..":"..opt.master.startLv,
+                font.JB,-416,-40,4000,'left',0,1/3,1/3,0,font.height.JB/2)
+            end
+        end,
+        buttonDraw=function(pos,sz)
+            if menu.lvl==2 and menu.selectedMode=='master' then
+            gc.setColor(1,1,1)
+            gc.circle('fill',sz[1]*(pos-.5),0,20,4)
+            end
+        end,
+        always=function(pos)
+            if menu.lvl==2 and menu.selectedMode=='master' then
+            opt.master.startLv=pos+1
+            end
+        end
+    })
     SLIDER.create('battle_botDropDelay',{
         x=0,y=-100,type='hori',sz={800,32},button={32,32},
         gear=0,pos=opt.battle.bot_PPS/8,
