@@ -4,9 +4,18 @@ local skin={}
 local COLOR=require('framework/color')
 local setColor,rect,draw=gc.setColor,gc.rectangle,gc.draw
 local pic=gc.newImage('skin/block/glass/glass.png')
-local glowpic=gc.newImage('skin/block/glass/glow.png')
 local bombpic=gc.newImage('skin/block/glass/bomb.png')
 pic:setFilter('nearest')
+
+--local glowpic=gc.newImage('skin/block/glass/glow.png')
+local glowpic=gc.newCanvas(72,72)
+gc.setCanvas(glowpic)
+--gc.setBlendMode('alpha','premultiplied')
+setColor(1,1,1,.01)
+for i=0,36 do
+rect('fill',18,i,36,36) rect('fill',i,18,36,36)
+end
+gc.setCanvas()
 
 skin.defaultTexType={
     Z=1,S=1,J=1,L=1,T=1,O=1,I=1,

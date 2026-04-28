@@ -216,7 +216,7 @@ function bc.init()
         end
     },.2)
     SLIDER.create('colorR',{
-        x=-480,y=250,type='hori',sz={400,32},button={32,32},
+        x=-560,y=250,type='hori',sz={400,32},button={32,32},
         gear=0,pos=bc.color[bList[bc.blockIndex]][1],
         sliderDraw=function(g,sz)
             local v=bc.color[bList[bc.blockIndex]][1]
@@ -252,7 +252,7 @@ function bc.init()
         end
     })
     SLIDER.create('colorB',{
-        x=480,y=250,type='hori',sz={400,32},button={32,32},
+        x=560,y=250,type='hori',sz={400,32},button={32,32},
         gear=0,pos=bc.color[bList[bc.blockIndex]][3],
         sliderDraw=function(g,sz)
             local v=bc.color[bList[bc.blockIndex]][3]
