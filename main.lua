@@ -74,6 +74,7 @@ ms=love.mouse
 touch=love.touch
 
 myMath=require'framework/mathExtend' myTable=require'framework/tableExtend'
+rng=require'framework/random'
 anim=require'scene/swapAnim'
 COLOR=require'framework/color'
 
@@ -245,7 +246,7 @@ scene={
 --scene.cur=require('minigame/zombie battle/zombie battle')
 --scene.cur=require('scene/test/BG_Test')
 --scene.cur=require('scene/test/clock')
---scene.cur=require('mino/game') scene.cur.mode='bg_test'
+--scene.cur=require('mino/game') scene.cur.mode='bot_test'
 
 win.x,win.y=love.window.getPosition()
 win.x_win,win.y_win=love.window.getPosition()

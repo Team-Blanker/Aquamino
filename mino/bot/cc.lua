@@ -100,6 +100,9 @@ function ccWrap.newBot(option,weight)--生成一个新bot
     if weight then for k,v in pairs(weight) do
         ccw[k]=v
     end end
+    for k,v in pairs(defaultWeight) do
+        print(k,ccw[k])
+    end
     ccw.use_bag=false
 
     return {bot=CC.cc_launch_async(cco,ccw,NULL,NULL,0),move=ffi.new('CCMove',{})}

@@ -5,12 +5,13 @@ local custom={}
 local block=require'mino/blocks'
 local BUTTON,SLIDER=scene.button,scene.slider
 
-local blockSkinList={'glossy','glass','metal','metal2','pure','bubble','carbon fibre','classic','wheelchair'}
+local blockSkinList={'glossy','glass','metal','metal2','PMMA','pure','bubble','carbon fibre','classic','wheelchair'}
 local skinAuthor={
     glossy="Kairan Izumi",
     glass="Kairan Izumi",
     metal="Kairan Izumi",
     metal2="Kairan Izumi",
+    PMMA="Kairan Izumi",
     pure="-",
     bubble="DJ Asriel",
     ['carbon fibre']="Kairan Izumi",
@@ -27,7 +28,11 @@ local defaultColor={
     g1={.5,.5,.5},g2={.75,.75,.75},
 }
 local blockDraw={'Z','S','J','L','T','O','I','g1','g2',}
-local themeList={'simple'}
+local themeList={'simple','Puzzle Fusion'}
+local themeAuthor={
+    simple="Kairan Izumi",
+    ['Puzzle Fusion']="Kairan Izumi",
+}
 local sfxList={'plastic_v2','plastic','krystal','meme','otto'}
 local sfxAuthor={
     plastic_v2="DJ Asriel & Kairan Izumi",
@@ -306,6 +311,8 @@ function custom.init()
             if o<l then gc.line( (w-h)/2,h/2-16, w/2-16,0, (w-h)/2,-h/2+16) end
             gc.setColor(1,1,1)
             gc.printf(themeList[custom.tOrder],font.Bender,0,0,1280,'center',0,.4,.4,640,font.height.Bender/2)
+            gc.setColor(1,1,1,.5)
+            gc.printf(skinAuthor[custom.info.block],font.Bender,0,h/2+4,3200,'center',0,.25,.25,1600,0)
         end,
         event=function(x,y,bt)
             local success=false

@@ -52,7 +52,7 @@ return {
         ['mech heart detector']={{1,1,1},"寫了一套檢測機心的機制\n全程7-Bag沒有任何懲罰\n",{1,1,0},"該模式不記錄成績"},
     },
     intro={
-        start="按任一鍵進入游戲",
+        start="按任一鍵開始",
     },
     menu={
         bestScore="最佳成績",

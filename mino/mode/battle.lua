@@ -110,15 +110,16 @@ local ruleSet={
     allspin2={
         w=10,h=20,
         seqGen='bag',
-        spinType='default',
+        spinType='AllMini',
         allowSpin={Z=true,S=true,J=true,L=true,T=true,O=true,I=true},
         atkScale=1,defScale=1,
         garbageType='normal',
+        maxMiniLine=999,
         afterPieceDrop=function(player)
             local his=player.history
-            if his.spin and his.line==0 then
-                battle.charge(player,his.mini and 1 or 2)
-            elseif his.line>0 then
+            if his.B2B>=4 and his.line>0 then
+                battle.charge(player,his.B2B==4 and 4 or 1)
+            elseif his.line>0 and his.B2B<0 then
                 battle.chargeRelease(player)
             end
         end,
@@ -126,13 +127,13 @@ local ruleSet={
             local l,s,m,b,c,p,w
             local his=player.history
             l,s,m,b,p=his.line,his.spin,his.mini,his.B2B,his.name
-            w,c=(his.wide>4 and 1 or his.wide),min(his.combo,12)
+            w,c=(his.wide>4 and 1 or his.wide),his.combo
 
-            local pc=his.PC and 4 or 0 --全消加成
+            local pc=his.PC and 5 or 0 --全消加成
             local bl=(s and not m) and (p=='T' and 2*l or l) or l>=4 and l or l-1 --基础攻击
             local ba=b>0 and 1 or 0 --B2B加成
-            local ca=max((c-3)/(2^w)+1,0) --连消加成
-            return floor(bl+ba+ca+pc+player.charge)
+            local ca=(bl+ba<1 and c>=3) and math.log(1.25*(c-1)+1) or 0 --连消加成
+            return floor((bl+ba)*(.75+.25*c)+ca+pc+(b<0 and player.charge or 0))
         end,
         garbageSummon=function(player,atk)
             local his=player.history
@@ -305,6 +306,8 @@ function mode.init(P,mino,modeInfo)
 
     mino.rule.specialBlock=ruleSet[mode.ruleName].specialBlock
     mino.rule.specialBlockRequire=ruleSet[mode.ruleName].specialBlockRequire
+
+    if ruleSet[mode.ruleName].maxMiniLine then mino.rule.maxMiniLine=ruleSet[mode.ruleName].maxMiniLine end
 
     P[1].w,P[1].h=ruleSet[mode.ruleName].w,ruleSet[mode.ruleName].h
     P[1].atk=0

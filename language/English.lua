@@ -52,7 +52,7 @@ return {
         ['mech heart detector']={{1,1,1},"I made a Mech Hearts detector.\n7-Bag, no any punishment.\n",{1,1,0},"This mode does not record any score"},
     },
     intro={
-        start="Press any key to start",
+        start="Press any key",
     },
     menu={
         bestScore="Best score",

@@ -40,6 +40,7 @@ function skin.init(player)
     player.pList={}
 end
 local c,p
+local vel,angle
 function skin.keyP(player,k,mino)
     if (k=='CW' or k=='CCW' or k=='flip') and player.cur.kickOrder and player.cur.spin then
         player.spinAct=player.cur.spin
@@ -59,7 +60,6 @@ function skin.keyP(player,k,mino)
         end
     end
 end
-local vel,angle
 function skin.onLineClear(player,mino)
     if mino.moreParticle then
         for k,v in pairs(player.history.clearLine) do

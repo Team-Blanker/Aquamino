@@ -15,7 +15,7 @@ function btest.init(P,mino)
         {'L','L',' ','I','I','I','I','S','O','O'},
     })]]
     btest.botThread=bot_cc.newThread(1,P,1)
-    bot_cc.startThread(btest.botThread,{pcloop=2},{perfect_clear=9999})
+    bot_cc.startThread(btest.botThread,{pcloop=1},{--[[tspin1=800,tspin2=1000,tspin3=2000,wasted_t=-800,clear4=1000,mini_tspin1=8000,perfect_clear=9999]]})
     btest.botThread.sendChannel:push({op='send',
     boolField=bot_cc.renderField(P[1]),
     B2B=P[1].history.B2B>0,
@@ -36,7 +36,7 @@ function btest.update(player,dt,mino)
         if op and msgSend then
         btest.expect=op.expect
         bot_cc.operate(player,op,false,mino)
-        btest.opTimer=btest.opTimer-1/6
+        btest.opTimer=btest.opTimer-1/4
         msgSend=false
         end
     end

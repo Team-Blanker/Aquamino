@@ -1,6 +1,6 @@
-local simple={}
+local theme={}
 local T,M=myTable,myMath
-local setColor,setLineWidth,rect,line,circle,printf,draw=gc.setColor,gc.setLineWidth,gc.rectangle,gc.line,gc.circle,gc.printf,gc.draw
+local setColor,setLineWidth,rect,line,circle,arc,printf,draw=gc.setColor,gc.setLineWidth,gc.rectangle,gc.line,gc.circle,gc.arc,gc.printf,gc.draw
 
 local tau=2*math.pi
 local atkAnimTMax=.5
@@ -9,20 +9,20 @@ local recvAnimTMax=.2
 local cooldownAnimTMax=.25
 local dangerAnimTMax=.2
 local gts
-function simple.init(player)
+function theme.init(player)
     gts=user.lang.game.theme.simple
-    simple.next=gc.newText(font.JB,"NEXT") simple.hold=gc.newText(font.JB,"HOLD")
-    simple.nextW,simple.nextH=simple.next:getWidth(),simple.next:getHeight()
-    simple.holdW,simple.holdH=simple.hold:getWidth(),simple.hold:getHeight()
+    theme.next=gc.newText(font.JB,"NEXT") theme.hold=gc.newText(font.JB,"HOLD")
+    theme.nextW,theme.nextH=theme.next:getWidth(),theme.next:getHeight()
+    theme.holdW,theme.holdH=theme.hold:getWidth(),theme.hold:getHeight()
 
-    simple.winTxt=gc.newText(font.Bender_B,gts.win) 
-    simple.wtW,simple.wtH=simple.winTxt:getWidth(),simple.winTxt:getHeight()
+    theme.winTxt=gc.newText(font.Bender_B,gts.win) 
+    theme.wtW,theme.wtH=theme.winTxt:getWidth(),theme.winTxt:getHeight()
 
-    simple.loseTxt=gc.newText(font.Bender_B,gts.lose)
-    simple.ltW,simple.ltH=simple.loseTxt:getWidth(),simple.loseTxt:getHeight()
+    theme.loseTxt=gc.newText(font.Bender_B,gts.lose)
+    theme.ltW,theme.ltH=theme.loseTxt:getWidth(),theme.loseTxt:getHeight()
 
-    simple.newRecordTxt=gc.newText(font.Bender_B,gts.newRecord)
-    simple.nrtW,simple.nrtH=simple.newRecordTxt:getWidth(),simple.newRecordTxt:getHeight()
+    theme.newRecordTxt=gc.newText(font.Bender_B,gts.newRecord)
+    theme.nrtW,theme.nrtH=theme.newRecordTxt:getWidth(),theme.newRecordTxt:getHeight()
 
     player.clearInfo=T.copy(player.history)
     player.clearTxt=gc.newText(font.Bender)
@@ -34,16 +34,22 @@ function simple.init(player)
 
     player.summonAnimTimer=1e99
 
-    simple.NRSFXDelay=.8--破纪录音效多长时间后播放
+    theme.NRSFXDelay=.8--破纪录音效多长时间后播放
 end
 local W,H,timeTxt
-function simple.getNextPos(player)
-    return 18*player.w+90+20,-18*max(player.h,20)-50,100
+function theme.getNextPos(player)
+    local o=max(1-player.summonAnimTimer/.1,0)
+    return 18*player.w+90+20,-18*max(player.h,20)-50+100*o,100
 end
-function simple.getHoldPos(player)
+function theme.nextDrawArea(player)
+    W,H=36*player.w,36*player.h
+    local aH=36*max(player.h,20)
+    rect('fill',W/2+20,-aH/2,180,100*player.preview-1)
+end
+function theme.getHoldPos(player)
     return -18*player.w-90-20,-18*max(player.h,20)+50
 end
-function simple.fieldDraw(player,mino)
+function theme.fieldDraw(player,mino)
     --[[
     setColor(1,1,1)
     setLineWidth(4)
@@ -66,26 +72,49 @@ function simple.fieldDraw(player,mino)
     rect('line',W/2+20,-aH/2,180,100*player.preview)
     rect('line',-W/2-200,-aH/2,180,100)
 
-    setColor(1,1-.8*darg,1-.8*darg)
     setLineWidth(2)
+    setColor(.3,.3-.24*darg,.3-.24*darg)
     line(-W/2-1,-H/2,-W/2-1,H/2+1,W/2+1,H/2+1,W/2+1,-H/2)
+    setColor(1,1-.8*darg,1-.8*darg)
     line(-W/2-19,-H/2,-W/2-19,H/2+1,W/2+19,H/2+1,W/2+19,-H/2)
+    for x=-.5*player.w+1,.5*player.w-1 do
+        circle('fill',36*x,-H/2-36,6,4)
+    end
+    arc('fill',-W/2,-H/2-36,6,-math.pi/2,math.pi/2,2)
+    arc('fill', W/2,-H/2-36,6,math.pi/2,3*math.pi/2,2)
+    for i=1,player.h do
+        if i%5==0 then
+            line(-W/2-19,H/2-36*i,-W/2-1,H/2-36*i)
+            line( W/2+19,H/2-36*i, W/2+1,H/2-36*i)
+        else
+            line(-W/2-19,H/2-36*i,-W/2-15,H/2-36*i)
+            line( W/2+19,H/2-36*i, W/2+15,H/2-36*i)
+        end
+    end
+    setColor(1,1,1,.5)
+    for i=5,player.h,5 do
+        printf(i,font.JB_B,-W/2+2,H/2-36*i,800,'left',0,1/6,1/6,0,0)
+        printf(i,font.JB_B, W/2-2,H/2-36*i,800,'right',0,1/6,1/6,800,0)
+    end
 
     setColor(1,1,1,.18)
-    draw(simple.hold,-W/2-205,-aH/2+50,-math.pi/2,.3,.3,simple.holdW/2,0)
-    draw(simple.next, W/2+205,-aH/2+50,math.pi/2,.3,.3,simple.nextW/2,0)
+    draw(theme.hold,-W/2-205,-aH/2+50,-math.pi/2,.3,.3,theme.holdW/2,0)
+    draw(theme.next, W/2+205,-aH/2+50,math.pi/2,.3,.3,theme.nextW/2,0)
 
     for i=1,player.preview do
         printf(tostring(i),font.JB_L,W/2+25,-aH/2+100*i-100,800,'left',0,.25,.25,0,0)
     end
     setLineWidth(2)
-    setColor(1,1-.8*darg,1-.8*darg,.1)
+    setColor(.3,.3-.24*darg,.3-.24*darg)
     --网格
     for y=-.5*player.h+1,.5*player.h-1 do
-        line(-W/2,36*y,W/2,36*y)
+        line(-W/2+1,36*y,W/2-1,36*y)
     end
     for x=-.5*player.w+1,.5*player.w-1 do
-        line(36*x,-H/2,36*x,H/2)
+        line(36*x,-H/2+1,36*x,H/2-1)
+        for y=-.5*player.h+1,.5*player.h-1 do
+        rect('fill',36*x-4,36*y-4,8,8)
+        end
     end
     --锁延重置&次数
     setColor(.25,.5,.4375,.4)
@@ -111,18 +140,18 @@ function simple.fieldDraw(player,mino)
     printf(timeTxt,font.JB_B,-W/2-28,H/2-16,800,'right',0,.25,.25,800,font.height.JB_B/2)
 end
 
-function simple.updateDefenseAnim(player,defList)
+function theme.updateDefenseAnim(player,defList)
     local dal=player.defAnimList
     for i=1,#defList do
         dal[#dal+1]=defList[i]
         dal[#dal].t=0
     end
 end
-function simple.updateRecvAnim(player,atk)
+function theme.updateRecvAnim(player,atk)
     local ral=player.recvAnimList
     ral[#ral+1]={amount=atk.amount,t=0}
 end
-function simple.garbageDraw(player,mino)
+function theme.garbageDraw(player,mino)
     local W,H=36*player.w,36*player.h
     local t,rt
     local dal=player.defAnimList
@@ -184,7 +213,7 @@ local spikeColor={
     {1,.5,.7,1}, --36
     {1,.4,.4,1}, --40
 }
-function simple.overFieldDraw(player)
+function theme.overFieldDraw(player)
     local aal=player.atkAnimList
     if aal then
     for i=1,#aal do
@@ -230,7 +259,7 @@ function simple.overFieldDraw(player)
     end
 end
 
-function simple.readyDraw(t)
+function theme.readyDraw(t)
     if t>1 then
     elseif t>.5 then setColor(1,1,1,min((t-.5)/.25,1))
         printf("READY",font.Bender_B,0,0,1000,'center',0,.9,.9,500,72)
@@ -241,7 +270,7 @@ function simple.readyDraw(t)
     end
 end
 
-function simple.onPieceSummon(player)
+function theme.onPieceSummon(player)
     player.summonAnimTimer=0
 end
 
@@ -260,7 +289,7 @@ local clearClr={
     {1,1,1},{1,1,1},{1,0,0},{.64,.6,1},
     {.75,1,.5},{1,.5,.96},{.7,.6,1},{1,.5,.4},
 }
-function simple.updateClearInfo(player,mino)
+function theme.updateClearInfo(player,mino)
     local his=player.history
     if his.line>0 or his.spin then player.clearInfo=T.copy(player.history)
         player.clearTxtTMax=his.line>0 and (his.line>=4 and 1 or his.spin and .8 or .5) or .5
@@ -283,7 +312,7 @@ function simple.updateClearInfo(player,mino)
     if his.PC then player.PCInfo[#player.PCInfo+1]=2.5 end
 end
 local ctxt,btxt
-function simple.clearTextDraw(player,mino)
+function theme.clearTextDraw(player,mino)
     W,H=36*player.w,36*player.h
     local aH=36*max(player.h,20)
     local CInfo=player.clearInfo
@@ -426,7 +455,7 @@ local function checkDanger(player)
     end
     return false
 end
-function simple.update(player,dt)
+function theme.update(player,dt)
     local PCInfo=player.PCInfo
     for i=#PCInfo,1,-1 do PCInfo[i]=PCInfo[i]-dt
         if PCInfo[i]<=0 then rem(PCInfo,i) end
@@ -493,7 +522,7 @@ end
 
 local tw,th
 local function recordAnim(time)
-    tw,th=simple.nrtW,simple.nrtH
+    tw,th=theme.nrtW,theme.nrtH
 
     if time>.8 then
     local s=time>=1 and 1 or ((time-.8)/.2)^4
@@ -504,7 +533,7 @@ local function recordAnim(time)
     draw(c1,0,-128+th*.3+2,0,(80+tw*.6)/250*s,4,125,.5)
 
     setColor(1,1,1)
-    draw(simple.newRecordTxt,0,-128,0,.6*s,.6,tw/2,th/2)
+    draw(theme.newRecordTxt,0,-128,0,.6*s,.6,tw/2,th/2)
     end
 
     if time>=1 then
@@ -518,26 +547,26 @@ local function recordAnim(time)
 end
 
 gc.setCanvas()
-function simple.loseAnim(player,stacker)
+function theme.loseAnim(player,stacker)
     setColor(1,1,1,player.deadTimer*4)
-    draw(simple.loseTxt,-simple.ltW/2,-simple.ltH/2)
+    draw(theme.loseTxt,-theme.ltW/2,-theme.ltH/2)
 
     if stacker.newRecord then
         recordAnim(player.deadTimer)
     end
 end
-function simple.winAnim(player,stacker)
+function theme.winAnim(player,stacker)
     setColor(1,1,1,1-player.winTimer*4)
-    draw(simple.winTxt,0,0,0,1+player.winTimer*4,1+player.winTimer*4,simple.wtW/2,simple.wtH/2)
+    draw(theme.winTxt,0,0,0,1+player.winTimer*4,1+player.winTimer*4,theme.wtW/2,theme.wtH/2)
     setColor(1,1,1)
-    draw(simple.winTxt,0,0,0,1,1,simple.wtW/2,simple.wtH/2)
+    draw(theme.winTxt,0,0,0,1,1,theme.wtW/2,theme.wtH/2)
 
     if stacker.newRecord then
         recordAnim(player.winTimer)
     end
 end
 
-function simple.getResultShowDelay(stacker)
+function theme.getResultShowDelay(stacker)
     return stacker.newRecord and 2.5 or 1.5
 end
-return simple
+return theme

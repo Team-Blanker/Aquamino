@@ -28,21 +28,23 @@ function rule.init(P,mino)
     mino.rule.loosen.fallTPL=.1
     for k,v in pairs(P) do
         v.w=10
-        v.h=0
+        --v.h=0
         v.LDRInit=1e99 v.FDelay=5 v.LDelay=1e99 v.LDR=1e99
 
         v.sqAnimList={}
     end
+
+    rule.colorTimer=0
 end
 
-local b=require'mino/blocks'
+local block=require'mino/blocks'
 --[[function rule.onPieceSummon(player)
     local c=player.cur
     if rand()<1/2 then
         table.remove(c.piece,rand(#c.piece))
     end
     if c.name~='I6' and rand()<1/14 then
-        c.piece=b.giant(c.piece)
+        c.piece=block.giant(c.piece)
     end
 end]]
 
@@ -96,7 +98,14 @@ local sq=player.sqAnimList
     end
 end
 ]]
-
+local colorH={Z=5.75,S=1.75,J=3.5,L=.5,T=4.75,O=1,I=2.75}
+function rule.gameUpdate(P,dt,mino)
+    rule.colorTimer=rule.colorTimer+dt
+    for k,v in pairs(colorH) do
+        local h=rule.colorTimer*2+v
+        mino.color[k][1],mino.color[k][2],mino.color[k][3]=COLOR.hsv(h,.8,1)
+    end
+end
 function rule.update(player,dt)
     local sq=player.sqAnimList
     for i=#sq,1,-1 do

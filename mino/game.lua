@@ -134,6 +134,7 @@ function mino.nextIns(player)
     if player.next[1] then
         T.combine(player.cur,table.remove(player.next,1))
         if mino.rule.onPieceSummon then mino.rule.onPieceSummon(player,mino) end
+        if mino.theme.onPieceSummon then mino.theme.onPieceSummon(player,mino) end
         fLib.setEntryPos(player)
 
         A.prePiece,A.drawPiece=T.copy(C.piece),T.copy(C.piece)
@@ -1360,6 +1361,10 @@ function mino.update(dt)
 end
 
 local x,y
+local tempPlayer
+local function nextStencil()
+    mino.theme.nextDrawArea(tempPlayer)
+end
 function mino.draw()
     if mino.unableBG then gc.setColor(.06,.06,.06)
     gc.rectangle('fill',-1000,-600,2000,1200)
@@ -1440,6 +1445,7 @@ function mino.draw()
             local nx,ny,nd
             if mino.theme.getNextPos then nx,ny,nd=mino.theme.getNextPos(P[i]) end
             --预览
+            if mino.theme.nextDrawArea then tempPlayer=P[i] gc.stencil(nextStencil, 'replace', 1) gc.setStencilTest('greater', 0) end
             for j=1,#P[i].next do
                 if P[i].next[j].piece then
                 w,h,x,y=B.size(P[i].next[j].piece)
@@ -1452,6 +1458,7 @@ function mino.draw()
                 gc.pop()
                 end
             end
+            if mino.theme.nextDrawArea then gc.setStencilTest() end
 
             if mino.theme.overFieldDraw then mino.theme.overFieldDraw(P[i],mino) end
             --消行文本
