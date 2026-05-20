@@ -152,7 +152,6 @@ return {
             vsyncTxt="Sincronizza la frequenza dei fotogrammi con la frequenza di aggiornamento del monitor.",
             discardAfterDraw="Aumento della VRAM",
             DADTxt="Elimina il contenuto dello schermo dopo aver disegnato ciascun fotogramma. Se la schermata presenta problemi, non abilitare questa opzione.",
-            moreParticle="Effetti particellari",
             frameLim="FPS Massimi",frameTxt="Si consiglia un valore pari alla frequenza di aggiornamento del monitor.",
             sysCursor="Cursore esterno",
         },

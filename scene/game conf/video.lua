@@ -8,7 +8,7 @@ function video.read()
     video.info={
         unableBG=false,BGBrightness=1,
         vsync=false,fullscr=false,frameLim=isMobile and 60 or 120,
-        discardAfterDraw=false,moreParticle=false,
+        discardAfterDraw=false,
         sysCursor=true
     }
     local info=file.read('conf/video')
@@ -54,7 +54,6 @@ function video.init()
     video.ubgTxt=gc.newText(font.Bender_B,cf.video.unableBG)
     video.fscrTxt=gc.newText(font.Bender_B,cf.video.fullScr)
     video.VRAMTxt=gc.newText(font.Bender_B,cf.video.discardAfterDraw)
-    video.mpTxt=gc.newText(font.Bender_B,cf.video.moreParticle)
     video.scTxt=gc.newText(font.Bender_B,cf.video.sysCursor)
 
     video.VSDTxt=gc.newText(font.Bender_B)
@@ -203,35 +202,6 @@ function video.init()
             video.info.discardAfterDraw=not video.info.discardAfterDraw
             win.discardAfterDraw=video.info.discardAfterDraw
             sfx.play(video.info.discardAfterDraw and 'cOn' or 'cOff')
-        end
-    },.2)
-    BUTTON.create('moreParticle',{
-        x=-180,y=-40,type='rect',w=80,h=80,
-        draw=function(bt,t,ct)
-            local animArg=video.info.moreParticle and min(ct/.2,1) or max(1-ct/.2,0)
-            local w,h=bt.w,bt.h
-            local r=M.lerp(1,.5,animArg)
-            local g=1
-            local b=M.lerp(1,.875,animArg)
-            gc.setColor(.5,1,.875,.4)
-            gc.rectangle('fill',w/2,-h/2,360*animArg,h)
-            gc.setColor(1,1,1,.4)
-            gc.rectangle('fill',w/2+360*animArg,-h/2,360*(1-animArg),h)
-            gc.setColor(r,g,b)
-            gc.setLineWidth(6)
-            gc.rectangle('line',-w/2+3,-h/2+3,w-6,h-6)
-            if video.info.moreParticle then
-                gc.line(-w*3/8,0,-w/8,h/4,w*3/8,-h/4)
-            end
-            gc.setColor(r,g,b,2*t)
-            gc.rectangle('fill',-w/2,-h/2,h,h)
-            gc.setColor(1,1,1)
-            local s=min(min(280/video.mpTxt:getWidth(),bt.h/video.mpTxt:getHeight()),1/3)
-            gc.draw(video.mpTxt,w/2+20,0,0,s,s,0,video.mpTxt:getHeight()/2)
-        end,
-        event=function()
-            video.info.moreParticle=not video.info.moreParticle
-            sfx.play(video.info.moreParticle and 'cOn' or 'cOff')
         end
     },.2)
     BUTTON.create('sysCursor',{

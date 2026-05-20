@@ -304,7 +304,7 @@ function simple.clearTextDraw(player,mino)
         if player.chargeAnimType=='charge' and player.charge>0 then
             local h=2.75+min(max(player.charge-10,0)*.125,2.25)
             setColor(COLOR.hsv(h,.5,1,.4))
-            local sz=1+.2*max(.05-abs(2*player.chargeAnimTimer-.05),0)/.05
+            local sz=1+.4*max(.05-abs(2*player.chargeAnimTimer-.05),0)/.05
             gc.arc('fill','closed',-90,120,min(30+1*max(player.charge-5,0),45)*sz,0,.75*tau,3)
             setColor(COLOR.hsv(h,1,.25,1))
             for i=1,8 do

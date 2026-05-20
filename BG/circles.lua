@@ -86,22 +86,23 @@ end
 function bg.update(dt)
     bg.time=bg.time+dt
 end
+rng.newGenerator('circlesBG',123456789)
 local lightAmount=128
 local lightSize={}
 for i=1,lightAmount do
-    lightSize[i]=.4+7.6*rand()
+    lightSize[i]=.4+7.6*rng.random('circlesBG')
 end
 local lightWidth={}
 for i=1,lightAmount do
-    lightWidth[i]=1+2*rand()
+    lightWidth[i]=1+2*rng.random('circlesBG')
 end
 local lightAngle={}
 for i=1,lightAmount do
-    lightAngle[i]=rand()
+    lightAngle[i]=rng.random('circlesBG')
 end
 local lightPhase={}
 for i=1,lightAmount do
-    lightPhase[i]=rand()
+    lightPhase[i]=rng.random('circlesBG')
 end
 local circleMode=1
 function bg.draw()

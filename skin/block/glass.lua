@@ -46,33 +46,29 @@ function skin.keyP(player,k,mino)
         player.spinAct=player.cur.spin
         player.skinSpinTimer=0
 
-        if mino.moreParticle then
-            c=player.cur p=c.piece
+        c=player.cur p=c.piece
 
-            for i=1,#c.piece do
-                local mx=k=='CW' and p[i][1]+p[i][2] or k=='CCW' and p[i][1]-p[i][2] or k=='flip' and p[i][1]*2^.5
-                local my=k=='CW' and p[i][2]-p[i][1] or k=='CCW' and p[i][2]+p[i][1] or k=='flip' and p[i][2]*2^.5
-                for j=1,3 do
-                    vel=.5+1*rand() angle=2*math.pi*rand()
-                    ins(player.pList,{name='spin',x=p[i][1]+c.x+rand()-.5,y=p[i][2]+c.y+rand()-.5,vx=vel*cos(angle)+4*mx,vy=vel*sin(angle)+4*my,t=0})
-                end
+        for i=1,#c.piece do
+            local mx=k=='CW' and p[i][1]+p[i][2] or k=='CCW' and p[i][1]-p[i][2] or k=='flip' and p[i][1]*2^.5
+            local my=k=='CW' and p[i][2]-p[i][1] or k=='CCW' and p[i][2]+p[i][1] or k=='flip' and p[i][2]*2^.5
+            for j=1,3 do
+                vel=.5+1*rand() angle=2*math.pi*rand()
+                ins(player.pList,{name='spin',x=p[i][1]+c.x+rand()-.5,y=p[i][2]+c.y+rand()-.5,vx=vel*cos(angle)+4*mx,vy=vel*sin(angle)+4*my,t=0})
             end
         end
     end
 end
 function skin.onLineClear(player,mino)
-    if mino.moreParticle then
-        for k,v in pairs(player.history.clearLine) do
-            for i=1,#v do
-                for j=1,4 do
-                    vel=.5+1*rand() angle=2*math.pi*rand()
-                    ins(player.pList,{name=v[i].name,x=i+rand()-.5,y=k+rand()-.5,vx=vel*cos(angle),vy=vel*sin(angle),t=0})
-                end
-                if v[i].bomb then
-                    for j=1,16 do
-                        vel=1+1*rand() angle=2*math.pi*rand()
-                        ins(player.pList,{name='bomb',x=i+.5*cos(angle),y=k+rand()-.5,vx=5*vel*cos(angle),vy=5*vel*sin(angle),t=0})
-                    end
+    for k,v in pairs(player.history.clearLine) do
+        for i=1,#v do
+            for j=1,4 do
+                vel=.5+1*rand() angle=2*math.pi*rand()
+                ins(player.pList,{name=v[i].name,x=i+rand()-.5,y=k+rand()-.5,vx=vel*cos(angle),vy=vel*sin(angle),t=0})
+            end
+            if v[i].bomb then
+                for j=1,16 do
+                    vel=1+1*rand() angle=2*math.pi*rand()
+                    ins(player.pList,{name='bomb',x=i+.5*cos(angle),y=k+rand()-.5,vx=5*vel*cos(angle),vy=5*vel*sin(angle),t=0})
                 end
             end
         end
@@ -80,13 +76,11 @@ function skin.onLineClear(player,mino)
 end
 local his,p
 function skin.onPieceDrop(player,mino)
-    if mino.moreParticle then
-        his=player.history p=his.piece
-        for i=1,#his.piece do
-            for j=1,2 do
-                vel=.5+1*rand() angle=2*math.pi*rand()
-                ins(player.pList,{name=his.name,x=p[i][1]+his.x+rand()-.5,y=p[i][2]+his.y+rand()-.5,vx=vel*cos(angle),vy=vel*sin(angle),t=0})
-            end
+    his=player.history p=his.piece
+    for i=1,#his.piece do
+        for j=1,2 do
+            vel=.5+1*rand() angle=2*math.pi*rand()
+            ins(player.pList,{name=his.name,x=p[i][1]+his.x+rand()-.5,y=p[i][2]+his.y+rand()-.5,vx=vel*cos(angle),vy=vel*sin(angle),t=0})
         end
     end
 end

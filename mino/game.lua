@@ -712,11 +712,10 @@ function mino.init(isReset)
 
         fLib.setRS(P[1],pf.RS)
 
-        local vi={unableBG=false,moreParticle=false}
+        local vi={unableBG=false,BGBrightness=1}
         T.combine(vi,file.read('conf/video'))
         mino.unableBG=vi.unableBG
         mino.BGBrightness=vi.BGBrightness
-        mino.moreParticle=vi.moreParticle
 
         mino.color={
             Z={.9,.15,.3},S={.45,.9,0},J={0,.6,.9},L={.9,.6,.3},T={.75,.18,.9},O={.9,.9,0},I={.15,.9,.67},
