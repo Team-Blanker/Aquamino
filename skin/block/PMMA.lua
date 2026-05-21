@@ -48,11 +48,12 @@ function skin.keyP(player,k,mino)
     end
     if (k=='ML' or k=='MR') and not c.moveSuccess then
         local d=k=='ML' and -1 or 1
+        local ay=(mino.smoothAnimAct and mino.smoothFallType==2 and player.FDelay~=0) and player.FTimer/player.FDelay or 0
         for i=1,#p do
             if not fLib.isAir(player,c.x+p[i][1]+d,c.y+p[i][2]) then
-                for j=1,1+rand(0,1) do
+                for j=1,rand(2) do
                     vel=1*rand() angle=2*math.pi*rand()
-                    ins(player.pList,{x=p[i][1]+c.x+.5*d,y=p[i][2]+c.y+rand()-.5,vx=vel*cos(angle)-d,vy=vel*sin(angle),t=0})
+                    ins(player.pList,{x=p[i][1]+c.x+.5*d,y=p[i][2]+c.y-ay+rand()-.5,vx=vel*cos(angle)-d,vy=vel*sin(angle),t=0})
                 end
             end
         end
