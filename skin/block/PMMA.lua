@@ -1,9 +1,10 @@
-local fadeTime=1/3
+local fadeTime=.75
 
 local skin={}
 local COLOR=require('framework/color')
+local fLib=require'mino/fieldLib'
 local M=myMath
-local setColor,draw,setShader=gc.setColor,gc.draw,gc.setShader
+local setColor,setLineWidth,draw,setShader=gc.setColor,gc.setLineWidth,gc.draw,gc.setShader
 local arc,circle,rect=gc.arc,gc.circle,gc.rectangle
 function skin.setDropAnimTTL(player)
     return .25
@@ -14,13 +15,11 @@ skin.edgepic=gc.newImage('skin/block/PMMA/edge.png')
 skin.basepic:setFilter('nearest')
 skin.edgepic:setFilter('nearest')
 
-skin.bombpic=gc.newImage('skin/block/PMMA/bomb.png')
 skin.sd=gc.newShader('shader/grayscale stain.glsl')
 
-local bb=gc.newCanvas(36,36)
+local bb=gc.newCanvas(4,4)
 gc.setCanvas(bb)
-setColor(1,1,1)
-rect('fill',0,0,36,36)
+gc.clear(1,1,1)
 gc.setCanvas()
 function skin.init(player)
     player.laTimer=0
@@ -33,18 +32,121 @@ end
 local c,p
 local vel,angle
 function skin.keyP(player,k,mino)
+    c=player.cur p=c.piece
     if (k=='CW' or k=='CCW' or k=='flip') and player.cur.kickOrder and player.cur.spin then
         player.spinAct=player.cur.spin
         player.skinSpinTimer=0
 
-        c=player.cur p=c.piece
-
         for i=1,#c.piece do
             local mx=k=='CW' and p[i][1]+p[i][2] or k=='CCW' and p[i][1]-p[i][2] or k=='flip' and p[i][1]*2^.5
             local my=k=='CW' and p[i][2]-p[i][1] or k=='CCW' and p[i][2]+p[i][1] or k=='flip' and p[i][2]*2^.5
-            for j=1,3 do
-                vel=.5+1*rand() angle=2*math.pi*rand()
-                ins(player.pList,{name=c.name,x=p[i][1]+c.x+rand()-.5,y=p[i][2]+c.y+rand()-.5,vx=vel*cos(angle)+4*mx,vy=vel*sin(angle)+4*my,t=0})
+            for j=1,8 do
+                vel=8*rand()-4 angle=2*math.pi*rand()
+                ins(player.pList,{x=p[i][1]+c.x+rand()-.5,y=p[i][2]+c.y+rand()-.5,vx=vel*cos(angle)+4*mx,vy=vel*sin(angle)+4*my,t=0})
+            end
+        end
+    end
+    if (k=='ML' or k=='MR') and not c.moveSuccess then
+        local d=k=='ML' and -1 or 1
+        for i=1,#p do
+            if not fLib.isAir(player,c.x+p[i][1]+d,c.y+p[i][2]) then
+                for j=1,1+rand(0,1) do
+                    vel=1*rand() angle=2*math.pi*rand()
+                    ins(player.pList,{x=p[i][1]+c.x+.5*d,y=p[i][2]+c.y+rand()-.5,vx=vel*cos(angle)-d,vy=vel*sin(angle),t=0})
+                end
+            end
+        end
+    end
+end
+function skin.onPieceMove(player,mino,dx,dy,landed)
+    if dx~=0 then
+        c=player.cur p=c.piece
+        for i=1,#p do
+            --下方摩擦
+            if not fLib.isAir(player,c.x+p[i][1],c.y+p[i][2]-1) then
+                for j=1,rand(2) do
+                    vel=1+1*rand() angle=2*math.pi*rand()
+                    ins(player.pList,{x=p[i][1]+c.x+rand()-.5,y=p[i][2]+c.y-.5,vx=dx*8+vel*cos(angle),vy=vel*sin(angle)+.25,t=0})
+                end
+            end
+            if not fLib.isAir(player,c.x+p[i][1]-dx,c.y+p[i][2]-1) then
+                for j=1,rand(2) do
+                    vel=1+1*rand() angle=2*math.pi*rand()
+                    ins(player.pList,{x=p[i][1]+c.x-dx+rand()-.5,y=p[i][2]+c.y-.5,vx=dx*8+vel*cos(angle),vy=vel*sin(angle)+.25,t=0})
+                end
+            end
+            --上方摩擦
+            --[[if not fLib.isAir(player,c.x+p[i][1],c.y+p[i][2]+1) then
+                for j=1,rand(2) do
+                    vel=1+1*rand() angle=2*math.pi*rand()
+                    ins(player.pList,{x=p[i][1]+c.x+rand()-.5,y=p[i][2]+c.y+.5,vx=dx*8+vel*cos(angle),vy=vel*sin(angle)-.25,t=0})
+                end
+            end
+            if not fLib.isAir(player,c.x+p[i][1]-dx,c.y+p[i][2]+1) then
+                for j=1,rand(2) do
+                    vel=2+2*rand() angle=2*math.pi*rand()
+                    ins(player.pList,{x=p[i][1]+c.x-dx+rand()-.5,y=p[i][2]+c.y+.5,vx=dx*8+vel*cos(angle),vy=vel*sin(angle)-.25,t=0})
+                end
+            end]]
+        end
+    end
+    --[[if dy~=0 then
+        c=player.cur p=c.piece
+        for i=1,#p do
+            --左侧摩擦
+            if not fLib.isAir(player,c.x+p[i][1]-1,c.y+p[i][2]) then
+                for j=1,2 do
+                    vel=1+1*rand() angle=2*math.pi*rand()
+                    ins(player.pList,{x=p[i][1]+c.x-.5,y=p[i][2]+c.y+rand()-.5,vx=vel*cos(angle)+.25,vy=dy*8+vel*sin(angle),t=0})
+                end
+            end
+            if not fLib.isAir(player,c.x+p[i][1]-1,c.y+p[i][2]-dy) then
+                for j=1,2 do
+                    vel=1+1*rand() angle=2*math.pi*rand()
+                    ins(player.pList,{x=p[i][1]+c.x-.5,y=p[i][2]+c.y-dy+rand()-.5,vx=vel*cos(angle)+.25,vy=dy*8+vel*sin(angle),t=0})
+                end
+            end
+            --右侧摩擦
+            if not fLib.isAir(player,c.x+p[i][1]+1,c.y+p[i][2]) then
+                for j=1,2 do
+                    vel=1+1*rand() angle=2*math.pi*rand()
+                    ins(player.pList,{x=p[i][1]+c.x+.5,y=p[i][2]+c.y+rand()-.5,vx=vel*cos(angle)-.25,vy=dy*8+vel*sin(angle),t=0})
+                end
+            end
+            if not fLib.isAir(player,c.x+p[i][1]+1,c.y+p[i][2]-dy) then
+                for j=1,2 do
+                    vel=2+2*rand() angle=2*math.pi*rand()
+                    ins(player.pList,{x=p[i][1]+c.x+.5,y=p[i][2]+c.y-dy+rand()-.5,vx=vel*cos(angle)-.25,vy=dy*6+vel*sin(angle),t=0})
+                end
+            end
+        end
+    end]]
+end
+local his,p
+function skin.onPieceDrop(player,mino)
+    his=player.history p=his.piece
+    for i=1,#his.piece do
+        local bt=fLib.blockType(player,p[i][1]+his.x,p[i][2]+his.y-1)
+        if next(bt) and bt.id~=player.stat.block then
+            for j=1,2+rand(0,2) do
+                vel=4*rand() angle=2*math.pi*rand()
+                ins(player.pList,{x=p[i][1]+his.x+rand()-.5,y=p[i][2]+his.y-.5,vx=vel*cos(angle),vy=vel*sin(angle)+2,t=0})
+            end
+        end
+    end
+end
+function skin.onLineClear(player,mino)
+    for k,v in pairs(player.history.clearLine) do
+        for i=1,#v do
+            for j=1,4 do
+                vel=4*rand() angle=2*math.pi*rand()
+                ins(player.pList,{x=i+rand()-.5,y=k+rand()-.5,vx=vel*cos(angle),vy=vel*sin(angle),t=0})
+            end
+            if v[i].bomb then
+                for j=1,32 do
+                    vel=24*rand() angle=2*math.pi*rand()
+                    ins(player.pList,{x=i+.5*cos(angle),y=k+rand()-.5,vx=vel*cos(angle),vy=vel*sin(angle),t=0})
+                end
             end
         end
     end
@@ -58,6 +160,9 @@ function skin.update(player,dt)
     local pList=player.pList
     for i=#pList,1,-1 do
         pList[i].t=pList[i].t+dt
+        pList[i].vy=pList[i].vy-6*dt
+        pList[i].x=pList[i].x+pList[i].vx*dt
+        pList[i].y=pList[i].y+pList[i].vy*dt
         if pList[i].t>fadeTime then rem(pList,i) end
     end
 end
@@ -95,10 +200,11 @@ function skin.fieldDraw(player,mino)
     h=0
     for y=1,#F do
         if F[y][1] then h=h+1
+        setColor(1,1,1)
+        setLineWidth(3)
         for x=1,player.w do
             if F[y][x] and F[y][x].bomb then
-                setColor(1,1,1)
-                draw(skin.bombpic,36*x,-36*h,0,.5,.5,36,36)
+                circle('line',36*x,-36*h,12,4)
             end
         end
         else h=h+1
@@ -130,12 +236,15 @@ function skin.overFieldDraw(player,mino)
     for i=1,#pList do
         arg=min(1-pList[i].t/fadeTime,1)
 
-        local sx=pList[i].x+pList[i].vx*pList[i].t
-        local sy=pList[i].y+pList[i].vy*pList[i].t
         if pList[i].color then setColor(pList[i].color)
-        else c=mino.color[pList[i].name] setColor(.5+.5*c[1],.5+.5*c[2],.5+.5*c[3],1-pList[i].t/fadeTime)
+        else setColor(1,1,1)
         end
-        circle('fill',36*sx,-36*sy,6,4)
+        local s=1-pList[i].t/fadeTime
+        circle('fill',36*pList[i].x,-36*pList[i].y,s^.5*2)
+        if pList[i].color then setColor(pList[i].color[1],pList[i].color[2],pList[i].color[3],.5)
+        else setColor(1,1,1,.5)
+        end
+        circle('fill',36*pList[i].x,-36*pList[i].y,s^.5*3)
     end
 end
 local t

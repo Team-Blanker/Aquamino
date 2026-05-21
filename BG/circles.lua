@@ -86,7 +86,7 @@ end
 function bg.update(dt)
     bg.time=bg.time+dt
 end
-rng.newGenerator('circlesBG',123456789)
+rng.newGenerator('circlesBG',-987654321)
 local lightAmount=128
 local lightSize={}
 for i=1,lightAmount do

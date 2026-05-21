@@ -1,6 +1,6 @@
 local rule={}
 function rule.init(P,mino)
-    scene.BG=require'BG/circles' --scene.BG.init()
+    scene.BG=require'BG/settings' --scene.BG.init()
     mino.resetStopMusic=false
     mino.rule.allowSpin={T=true}
     mino.waitTime=.5

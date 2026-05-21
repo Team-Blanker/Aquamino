@@ -392,10 +392,14 @@ mino.operate={
         C=OP.cur
         if success then mino.setAnimPrePiece(OP) OP.smoothAnim.timer=mino.smoothTime
             C.x=C.x-1 C.spin=false
+            C.moveSuccess=true
             if landed and OP.LDR>0 then OP.LTimer=0 OP.LDR=OP.LDR-1 end
             OP.cur.ghostY=fLib.getGhostY(OP)
+            if mino.rule.onPieceMove then mino.rule.onPieceMove(OP,mino,-1,0,landed) end
+            if mino.blockSkin.onPieceMove then mino.blockSkin.onPieceMove(OP,mino,-1,0,landed) end
         else
             OP.MTimer=S.ctrl.ASD
+            C.moveSuccess=false
         end
 
         OP.moveDir='L'
@@ -409,10 +413,14 @@ mino.operate={
         C=OP.cur
         if success then mino.setAnimPrePiece(OP) OP.smoothAnim.timer=mino.smoothTime
             C.x=C.x+1 C.spin=false
+            C.moveSuccess=true
             if landed and OP.LDR>0 then OP.LTimer=0 OP.LDR=OP.LDR-1 end
             OP.cur.ghostY=fLib.getGhostY(OP)
+            if mino.rule.onPieceMove then mino.rule.onPieceMove(OP,mino,1,0,landed) end
+            if mino.blockSkin.onPieceMove then mino.blockSkin.onPieceMove(OP,mino,1,0,landed) end
         else
             OP.MTimer=S.ctrl.ASD
+            C.moveSuccess=false
         end
 
         OP.moveDir='R'
@@ -543,11 +551,15 @@ mino.operate={
                 --print('while2')
                 mino.setAnimPrePiece(OP) OP.smoothAnim.timer=mino.smoothTime
                 C.y=C.y-1 h=h+1 C.spin=false success=true
+                if mino.rule.onPieceMove then mino.rule.onPieceMove(OP,mino,0,-1) end
+                if mino.blockSkin.onPieceMove then mino.blockSkin.onPieceMove(OP,mino,0,-1) end
                 if mino.sfxPlay.SD then mino.sfxPlay.SD(OP,fLib.getSourcePos(OP,mino.stereo,'cur')) end
             end
         elseif not coincide(OP,0,-1) then
             mino.setAnimPrePiece(OP) OP.smoothAnim.timer=mino.smoothTime
             C.y=C.y-1 C.spin=false success=true
+            if mino.rule.onPieceMove then mino.rule.onPieceMove(OP,mino,0,-1) end
+            if mino.blockSkin.onPieceMove then mino.blockSkin.onPieceMove(OP,mino,0,-1) end
             if playSFX and mino.sfxPlay.SD then mino.sfxPlay.SD(OP,fLib.getSourcePos(OP,mino.stereo,'cur')) end
         end
         if success and mino.smoothFallType==2 and coincide(OP,0,-1) then
@@ -566,6 +578,8 @@ mino.operate={
             --print('while3')
             mino.setAnimPrePiece(OP) OP.smoothAnim.timer=mino.smoothTime
             C.y=C.y-1 h=h+1 C.spin=false
+            if mino.rule.onPieceMove then mino.rule.onPieceMove(OP,mino,0,-1) end
+            if mino.blockSkin.onPieceMove then mino.blockSkin.onPieceMove(OP,mino,0,-1) end
             if mino.sfxPlay.SD then mino.sfxPlay.SD(OP,fLib.getSourcePos(OP,mino.stereo,'cur')) end
         end
         mino.sfxPlay.touch(OP,coincide(OP,0,-1),fLib.getSourcePos(OP,mino.stereo,'cur'))
@@ -1009,6 +1023,8 @@ function mino.inputPress(k)
                     while not coincide(OP,0,-1) do
                         --print('while4')
                         C.y=C.y-1 h=h+1 C.spin=false
+                        if mino.rule.onPieceMove then mino.rule.onPieceMove(OP,mino,0,-1) end
+                        if mino.blockSkin.onPieceMove then mino.blockSkin.onPieceMove(OP,mino,0,-1) end
                     end
                     if h>0 then mino.sfxPlay.touch(OP,true,fLib.getSourcePos(OP,mino.stereo,'cur')) end
                 end
@@ -1113,16 +1129,22 @@ function mino.gameUpdate(dt)
 
             while OP.MTimer>=ctrl.ASD and OP.moveDir=='L' and not coincide(OP,-1,0) do
                 --print('block DAS moving left')
+                landed=coincide(OP,0,-1)
                 C.x=C.x-1 C.spin=false m=m+1
                 OP.MTimer=OP.MTimer-ctrl.ASP
-                if coincide(OP,0,-1) and OP.LDR>0 then OP.LTimer=0 OP.LDR=OP.LDR-1 end
+                if landed and OP.LDR>0 then OP.LTimer=0 OP.LDR=OP.LDR-1 end
+                if coincide(OP,0,-1) then OP.FTimer=0 end
+                if mino.rule.onPieceMove then mino.rule.onPieceMove(OP,mino,-1,0,landed) end
+                if mino.blockSkin.onPieceMove then mino.blockSkin.onPieceMove(OP,mino,-1,0,landed) end
 
-                if S.ctrl.ASP~=0 or m==1 then mino.sfxPlay.move(OP,true,coincide(OP,0,-1),fLib.getSourcePos(OP,mino.stereo,'cur')) end
+                if S.ctrl.ASP~=0 or m==1 then mino.sfxPlay.move(OP,true,landed,fLib.getSourcePos(OP,mino.stereo,'cur')) end
 
                 if OP.FDelay==0 then
                     while not coincide(OP,0,-1) do
                         --print('while5')
                         C.y=C.y-1
+                        if mino.rule.onPieceMove then mino.rule.onPieceMove(OP,mino,0,-1) end
+                        if mino.blockSkin.onPieceMove then mino.blockSkin.onPieceMove(OP,mino,0,-1) end
                     end
                 else
                     if S.keyDown.SD then
@@ -1147,17 +1169,23 @@ function mino.gameUpdate(dt)
 
             while OP.MTimer>=ctrl.ASD and OP.moveDir=='R' and not coincide(OP,1,0) do
                 --print('block DAS moving right')
+                landed=coincide(OP,0,-1)
                 C.x=C.x+1 C.spin=false m=m+1
                 OP.cur.ghostY=fLib.getGhostY(OP)
                 OP.MTimer=OP.MTimer-ctrl.ASP
-                if coincide(OP,0,-1) and OP.LDR>0 then OP.LTimer=0 OP.LDR=OP.LDR-1 end
+                if landed and OP.LDR>0 then OP.LTimer=0 OP.LDR=OP.LDR-1 end
+                if coincide(OP,0,-1) then OP.FTimer=0 end
+                if mino.rule.onPieceMove then mino.rule.onPieceMove(OP,mino,1,0,landed) end
+                if mino.blockSkin.onPieceMove then mino.blockSkin.onPieceMove(OP,mino,1,0,landed) end
 
-                if S.ctrl.ASP~=0 or m==1 then mino.sfxPlay.move(OP,true,coincide(OP,0,-1),fLib.getSourcePos(OP,mino.stereo,'cur')) end
+                if S.ctrl.ASP~=0 or m==1 then mino.sfxPlay.move(OP,true,landed,fLib.getSourcePos(OP,mino.stereo,'cur')) end
 
                 if OP.FDelay==0 then
-                    while not coincide(OP,0,-1) do 
+                    while not coincide(OP,0,-1) do
                         --print('while6')
                         C.y=C.y-1
+                        if mino.rule.onPieceMove then mino.rule.onPieceMove(OP,mino,0,-1) end
+                        if mino.blockSkin.onPieceMove then mino.blockSkin.onPieceMove(OP,mino,0,-1) end
                     end
                 else
                     if S.keyDown.SD then

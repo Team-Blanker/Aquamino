@@ -262,11 +262,11 @@ end
 function theme.readyDraw(t)
     if t>1 then
     elseif t>.5 then setColor(1,1,1,min((t-.5)/.25,1))
-        printf("READY",font.Bender_B,0,0,1000,'center',0,.9,.9,500,72)
+        printf("READY",font.Bender_B,0,0,1000,'center',0,.9,.9,500,font.height.Bender_B/2)
     elseif t>0 then setColor(1,1,1,min(t/.25,1))
-        printf("SET",font.Bender_B,0,0,1000,'center',0,.9,.9,500,72)
+        printf("SET",font.Bender_B,0,0,1000,'center',0,.9,.9,500,font.height.Bender_B/2)
     elseif t>-.5 then setColor(1,1,1,min((t+.5)/.25,1))
-        printf("GO!",font.Bender_B,0,0,1000,'center',0,1.2,1.2,500,72)
+        printf("GO!",font.Bender_B,0,0,1000,'center',0,1.2,1.2,500,font.height.Bender_B/2)
     end
 end
 
@@ -376,7 +376,7 @@ function theme.clearTextDraw(player,mino)
     local r,g,b
 
     if CInfo.line>20 then
-        if player.clearTxtTimer%.12<.06 then
+        if player.clearTxtTimer%.1<.05 then
             r,g,b=1,1,1
         else
             r,g,b=1,.9,.6
