@@ -244,7 +244,7 @@ scene={
 --win.watermark=false win.showPerformance=false
 
 --scene.cur=require('minigame/tracks/tracks')
-scene.cur=require('minigame/square grid battle/battle')
+--scene.cur=require('minigame/square grid battle/battle')
 --scene.cur=require('scene/test/BG_Test')
 --scene.cur=require('scene/test/clock')
 --scene.cur=require('mino/game') scene.cur.mode='map_test'
