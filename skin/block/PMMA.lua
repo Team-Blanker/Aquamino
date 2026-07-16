@@ -40,7 +40,7 @@ function skin.keyP(player,k,mino)
         for i=1,#c.piece do
             local mx=k=='CW' and p[i][1]+p[i][2] or k=='CCW' and p[i][1]-p[i][2] or k=='flip' and p[i][1]*2^.5
             local my=k=='CW' and p[i][2]-p[i][1] or k=='CCW' and p[i][2]+p[i][1] or k=='flip' and p[i][2]*2^.5
-            for j=1,8 do
+            for j=1,4 do
                 vel=8*rand()-4 angle=2*math.pi*rand()
                 ins(player.pList,{x=p[i][1]+c.x+rand()-.5,y=p[i][2]+c.y+rand()-.5,vx=vel*cos(angle)+4*mx,vy=vel*sin(angle)+4*my,t=0})
             end
@@ -65,63 +65,63 @@ function skin.onPieceMove(player,mino,dx,dy,landed)
         for i=1,#p do
             --下方摩擦
             if not fLib.isAir(player,c.x+p[i][1],c.y+p[i][2]-1) then
-                for j=1,rand(2) do
+                for j=1,1 do
                     vel=1+1*rand() angle=2*math.pi*rand()
-                    ins(player.pList,{x=p[i][1]+c.x+rand()-.5,y=p[i][2]+c.y-.5,vx=dx*8+vel*cos(angle),vy=vel*sin(angle)+.25,t=0})
+                    ins(player.pList,{x=p[i][1]+c.x+rand()-.5,y=p[i][2]+c.y-.5,vx=dx*5+vel*cos(angle),vy=vel*sin(angle),t=0})
                 end
             end
             if not fLib.isAir(player,c.x+p[i][1]-dx,c.y+p[i][2]-1) then
-                for j=1,rand(2) do
+                for j=1,1 do
                     vel=1+1*rand() angle=2*math.pi*rand()
-                    ins(player.pList,{x=p[i][1]+c.x-dx+rand()-.5,y=p[i][2]+c.y-.5,vx=dx*8+vel*cos(angle),vy=vel*sin(angle)+.25,t=0})
+                    ins(player.pList,{x=p[i][1]+c.x-dx+rand()-.5,y=p[i][2]+c.y-.5,vx=dx*5+vel*cos(angle),vy=vel*sin(angle),t=0})
                 end
             end
             --上方摩擦
-            --[[if not fLib.isAir(player,c.x+p[i][1],c.y+p[i][2]+1) then
-                for j=1,rand(2) do
+            if not fLib.isAir(player,c.x+p[i][1],c.y+p[i][2]+1) then
+                for j=1,(rand()<.25 and 1 or 0) do
                     vel=1+1*rand() angle=2*math.pi*rand()
-                    ins(player.pList,{x=p[i][1]+c.x+rand()-.5,y=p[i][2]+c.y+.5,vx=dx*8+vel*cos(angle),vy=vel*sin(angle)-.25,t=0})
+                    ins(player.pList,{x=p[i][1]+c.x+rand()-.5,y=p[i][2]+c.y+.5,vx=dx*5+vel*cos(angle),vy=vel*sin(angle),t=0})
                 end
             end
             if not fLib.isAir(player,c.x+p[i][1]-dx,c.y+p[i][2]+1) then
-                for j=1,rand(2) do
+                for j=1,(rand()<.25 and 1 or 0) do
                     vel=2+2*rand() angle=2*math.pi*rand()
-                    ins(player.pList,{x=p[i][1]+c.x-dx+rand()-.5,y=p[i][2]+c.y+.5,vx=dx*8+vel*cos(angle),vy=vel*sin(angle)-.25,t=0})
+                    ins(player.pList,{x=p[i][1]+c.x-dx+rand()-.5,y=p[i][2]+c.y+.5,vx=dx*5+vel*cos(angle),vy=vel*sin(angle),t=0})
                 end
-            end]]
+            end
         end
     end
-    --[[if dy~=0 then
+    if dy~=0 then
         c=player.cur p=c.piece
         for i=1,#p do
             --左侧摩擦
             if not fLib.isAir(player,c.x+p[i][1]-1,c.y+p[i][2]) then
-                for j=1,2 do
+                for j=1,(rand()<.25 and 1 or 0) do
                     vel=1+1*rand() angle=2*math.pi*rand()
                     ins(player.pList,{x=p[i][1]+c.x-.5,y=p[i][2]+c.y+rand()-.5,vx=vel*cos(angle)+.25,vy=dy*8+vel*sin(angle),t=0})
                 end
             end
             if not fLib.isAir(player,c.x+p[i][1]-1,c.y+p[i][2]-dy) then
-                for j=1,2 do
+                for j=1,(rand()<.25 and 1 or 0) do
                     vel=1+1*rand() angle=2*math.pi*rand()
                     ins(player.pList,{x=p[i][1]+c.x-.5,y=p[i][2]+c.y-dy+rand()-.5,vx=vel*cos(angle)+.25,vy=dy*8+vel*sin(angle),t=0})
                 end
             end
             --右侧摩擦
             if not fLib.isAir(player,c.x+p[i][1]+1,c.y+p[i][2]) then
-                for j=1,2 do
+                for j=1,(rand()<.25 and 1 or 0) do
                     vel=1+1*rand() angle=2*math.pi*rand()
                     ins(player.pList,{x=p[i][1]+c.x+.5,y=p[i][2]+c.y+rand()-.5,vx=vel*cos(angle)-.25,vy=dy*8+vel*sin(angle),t=0})
                 end
             end
             if not fLib.isAir(player,c.x+p[i][1]+1,c.y+p[i][2]-dy) then
-                for j=1,2 do
+                for j=1,(rand()<.25 and 1 or 0) do
                     vel=2+2*rand() angle=2*math.pi*rand()
                     ins(player.pList,{x=p[i][1]+c.x+.5,y=p[i][2]+c.y-dy+rand()-.5,vx=vel*cos(angle)-.25,vy=dy*6+vel*sin(angle),t=0})
                 end
             end
         end
-    end]]
+    end
 end
 local his,p
 function skin.onPieceDrop(player,mino)
@@ -131,7 +131,7 @@ function skin.onPieceDrop(player,mino)
         if next(bt) and bt.id~=player.stat.block then
             for j=1,2+rand(0,2) do
                 vel=4*rand() angle=2*math.pi*rand()
-                ins(player.pList,{x=p[i][1]+his.x+rand()-.5,y=p[i][2]+his.y-.5,vx=vel*cos(angle),vy=vel*sin(angle)+2,t=0})
+                ins(player.pList,{x=p[i][1]+his.x+rand()-.5,y=p[i][2]+his.y-.5,vx=vel*cos(angle),vy=vel*sin(angle)+1,t=0})
             end
         end
     end
@@ -145,7 +145,7 @@ function skin.onLineClear(player,mino)
             end
             if v[i].bomb then
                 for j=1,32 do
-                    vel=24*rand() angle=2*math.pi*rand()
+                    vel=16*rand() angle=2*math.pi*rand()
                     ins(player.pList,{x=i+.5*cos(angle),y=k+rand()-.5,vx=vel*cos(angle),vy=vel*sin(angle),t=0})
                 end
             end

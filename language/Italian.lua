@@ -191,7 +191,7 @@ return {
             }
         },
         keys={
-            keyName={"Muovi a Sinistra","Muovi a Destra","Ruota in senso\norario","Ruota in senso\nantiorario","Ruota a 180°",'Soft drop','Hard Drop','Riserva','Riavvia','Pausa','Funzione 1','Funzione 2'},
+            keyName={"Muovi a Sinistra","Muovi a Destra","Ruota in senso\norario","Ruota in senso\nantiorario","Ruota a 180°",'Soft drop','Soft drop (1 cell)','Hard Drop','Riserva','Riavvia','Pausa','Funzione 1','Funzione 2'},
             kScale=.25,
             info="- Fai clic associare i tuoi controlli.\n- Premi Backspace per cancellare il set di controlli selezionato.\n- Premi un tasto associato per rimuoverlo dai controlli.",
             virtualKey="Impostazioni touchscreen..."

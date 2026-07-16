@@ -292,7 +292,9 @@ function rule.underFieldDraw(player)
         font.JB,0,180,1000,'center',0,.25,.25,500,font.height.JB_B/2)
         if player.smashCombo>1 then
             setColor(1,1,1,.25+.25*max(player.smashCombo-2,1)/8*(1-player.scAnimTimer%.25/.25))
-            printf(player.smashCombo>16 and "MAX" or "x"..player.smashCombo,font.JB,0,0,5000,'center',0,1/3,1/3,2500,font.height.JB_B/2)
+            printf("x"..player.smashCombo,font.JB,0,0,5000,'center',0,1/3,1/3,2500,font.height.JB/2)
+            printf("BONUS",font.JB_B,0,-35,5000,'center',0,1/6,1/6,2500,font.height.JB_B/2)
+            printf(string.format("+%d%%",getmtp(player.smashCombo)*100-100),font.JB_B,0,35,5000,'center',0,1/6,1/6,2500,font.height.JB_B/2)
         end
     gc.pop()
 end

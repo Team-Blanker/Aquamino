@@ -991,7 +991,7 @@ local c,t0,t1,t2
 function zb.draw()
     gc.clear(0,0,0)
     setColor(1,1,1,.5)
-    gc.draw(bgpic,0,0,0,1,1,975,225)
+    draw(bgpic,0,0,0,1,1,975,225)
     gc.push()
     gc.scale(1.2)
     setColor(.6,.6,.6)

@@ -2,7 +2,7 @@ local cfk=user.lang.conf.keys
 
 local BUTTON=scene.button
 
-local keyName={'ML','MR','CW','CCW','flip','SD','HD','hold','R','pause','F1','F2'}
+local keyName={'ML','MR','CW','CCW','flip','SD','SD1','HD','hold','R','pause','F1','F2'}
 local key={
     keySet={},
     banned={'f1','f2','f3','f4','f5','f6','f7','f8','f9','f10','f11','f12', 'f17','f18',
@@ -17,7 +17,7 @@ function key.read()
     key.keySet={
         ML={'left'},MR={'right'},
         CW={'x'},CCW={'c'},flip={'d'},
-        SD={'down'},HD={'up'},hold={'z'},
+        SD={'down'},SD1={},HD={'up'},hold={'z'},
         R={'r'},pause={'escape','p'},
         F1={'a'},F2={'s'},
     }

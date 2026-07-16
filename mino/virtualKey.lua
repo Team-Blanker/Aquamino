@@ -1,6 +1,6 @@
 --用于方块游戏的虚拟按键模块，适配移动端用
 
-local keyName={'ML','MR','CW','CCW','flip','SD','HD','hold','R','pause','F1','F2'}
+local keyName={'ML','MR','CW','CCW','flip','SD','SD1','HD','hold','R','pause','F1','F2'}
 local keyIcon={}
 for i=1,#keyName do
     keyIcon[keyName[i]]=gc.newImage('pic/virtual key/'..keyName[i]..'.png')--200*200

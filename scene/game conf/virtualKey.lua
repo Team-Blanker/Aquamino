@@ -3,7 +3,7 @@ local M,T=myMath,myTable
 
 local cfv
 
-local keyName={'ML','MR','CW','CCW','flip','SD','HD','hold','R','pause','F1','F2'}
+local keyName={'ML','MR','CW','CCW','flip','SD','SD1','HD','hold','R','pause','F1','F2'}
 
 local attachList={[0]=0,30,40,50,60,90,120}
 local attachIndex=4
@@ -25,6 +25,7 @@ local defaultPreset={
         ML=   {x= 420,y= 180,r=120,tolerance=60},
         MR=   {x= 780,y= 180,r=120,tolerance=60},
         SD=   {x= 600,y= 360,r=120,tolerance=60},
+        SD1=  {x= 840,y= 420,r= 60,tolerance=60},
         HD=   {x= 600,y=   0,r=120,tolerance=60},
         CW=   {x=-420,y= 180,r=120,tolerance=60},
         CCW=  {x=-780,y= 180,r=120,tolerance=60},
@@ -40,6 +41,7 @@ local defaultPreset={
         ML=   {x=-780,y= 180,r=120,tolerance=60},
         MR=   {x=-420,y= 180,r=120,tolerance=60},
         SD=   {x=-600,y= 360,r=120,tolerance=60},
+        SD1=  {x=-840,y= 420,r= 60,tolerance=60},
         HD=   {x=-600,y=   0,r=120,tolerance=60},
         CW=   {x= 780,y= 180,r=120,tolerance=60},
         CCW=  {x= 420,y= 180,r=120,tolerance=60},
@@ -55,6 +57,7 @@ local defaultPreset={
         ML=   {x=-840,y= 420,r=120,tolerance=60},
         MR=   {x=-600,y= 420,r=120,tolerance=60},
         SD=   {x= 840,y= 180,r=120,tolerance=60},
+        SD1=  {x= 600,y=- 60,r= 60,tolerance=60},
         HD=   {x= 840,y= 420,r=120,tolerance=60},
         CW=   {x= 600,y= 420,r=120,tolerance=60},
         CCW=  {x= 360,y= 420,r=120,tolerance=60},
@@ -70,6 +73,7 @@ local defaultPreset={
         ML=   {x= 360,y= 420,r=120,tolerance=60},
         MR=   {x= 840,y= 420,r=120,tolerance=60},
         SD=   {x= 600,y= 420,r=120,tolerance=60},
+        SD1=  {x= 840,y= 180,r= 60,tolerance=60},
         HD=   {x= 600,y= 180,r=120,tolerance=60},
         CW=   {x=-600,y= 420,r=120,tolerance=60},
         CCW=  {x=-840,y= 420,r=120,tolerance=60},
@@ -80,26 +84,28 @@ local defaultPreset={
         F1=   {x=-840,y= 180,r=120,tolerance=60},
         F2=   {x=-840,y= -60,r=120,tolerance=60},
     },
-    --纯展示用的那种
+    --纯展示用
     {
-        ML=   {x=-600,y=-480,r= 60,tolerance=60},
-        MR=   {x=-480,y=-480,r= 60,tolerance=60},
-        SD=   {x=-360,y=-480,r= 60,tolerance=60},
-        HD=   {x=-240,y=-480,r= 60,tolerance=60},
-        CW=   {x=- 60,y=-480,r= 60,tolerance=60},
-        CCW=  {x=  60,y=-480,r= 60,tolerance=60},
-        flip= {x= 180,y=-480,r= 60,tolerance=60},
-        hold= {x= 300,y=-480,r= 60,tolerance=60},
+        ML=   {x=-660,y=-480,r= 60,tolerance=60},
+        MR=   {x=-540,y=-480,r= 60,tolerance=60},
+        SD=   {x=-420,y=-480,r= 60,tolerance=60},
+        SD1=  {x=-300,y=-480,r= 60,tolerance=60},
+        HD=   {x=-180,y=-480,r= 60,tolerance=60},
+        CW=   {x=   0,y=-480,r= 60,tolerance=60},
+        CCW=  {x= 120,y=-480,r= 60,tolerance=60},
+        flip= {x= 240,y=-480,r= 60,tolerance=60},
+        hold= {x= 360,y=-480,r= 60,tolerance=60},
         R=    {x=-900,y=-480,r= 60,tolerance=30},
         pause={x= 900,y=-480,r= 60,tolerance=30},
-        F1=   {x= 480,y=-480,r= 60,tolerance=60},
-        F2=   {x= 600,y=-480,r= 60,tolerance=60},
+        F1=   {x= 540,y=-480,r= 60,tolerance=60},
+        F2=   {x= 660,y=-480,r= 60,tolerance=60},
     },
     --maimai
     {
         ML=   {x= 200,y=-500,r=120,tolerance=60},
         MR=   {x= 500,y=-200,r=120,tolerance=60},
         SD=   {x= 500,y= 200,r=120,tolerance=60},
+        SD1=  {x= 750,y= 200,r= 60,tolerance=60},
         HD=   {x= 200,y= 500,r=120,tolerance=60},
         CW=   {x=-200,y= 500,r=120,tolerance=60},
         CCW=  {x=-500,y= 200,r=120,tolerance=60},

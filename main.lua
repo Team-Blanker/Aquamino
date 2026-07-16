@@ -60,6 +60,11 @@ for k,v in pairs(love.graphics) do
     gc[k]=v
 end
 
+gcExtend=require'framework/graphicsExtend'
+for k,v in pairs(gcExtend) do
+    gc[k]=v
+end
+
 function gc.setCanvas(cv)
     if cv then love.graphics.setCanvas(cv) gc.setBlendMode('alpha','premultiplied')
     else love.graphics.setCanvas() gc.setBlendMode('alpha','alphamultiply') end
@@ -79,7 +84,6 @@ anim=require'scene/swapAnim'
 COLOR=require'framework/color'
 
 file=require'framework/fileExtend'
-gcExtend=require'framework/graphicsExtend'
 
 rand=math.random
 sin=math.sin cos=math.cos
@@ -108,12 +112,10 @@ font={
     JB_B=gc.newFont('font/JetBrainsMono-Bold.ttf',120),
     JB_L=gc.newFont('font/JetBrainsMono-Light.ttf',120),
     JB_EL=gc.newFont('font/JetBrainsMono-ExtraLight.ttf',120),
-    --JB=gc.newFont('font/Oxanium-Regular.ttf',120),
-    --JB_B=gc.newFont('font/Oxanium-Bold.ttf',120),
-    --JB_L=gc.newFont('font/Oxanium-Light.ttf',120),
-    --这里是纯偷懒测试用
-
-    LED=gc.newFont('font/UniDreamLED.ttf',120)
+    OX=gc.newFont('font/Oxanium-Medium.ttf',120),
+    --OX_B=gc.newFont('font/Oxanium-Bold.ttf',120),
+    OX_SB=gc.newFont('font/Oxanium-SemiBold.ttf',120),
+    --OX_L=gc.newFont('font/Oxanium-Light.ttf',120),
 }
 for k,v in pairs(font) do
     if k~='height' then
@@ -123,8 +125,7 @@ for k,v in pairs(font) do
 end
 font.Bender:setFallbacks(font.ALBBPHT) font.Bender_B:setFallbacks(font.ALBBPHT_SB) font.Bender_L:setFallbacks(font.ALBBPHT)
 font.JB:setFallbacks(font.ALBBPHT) font.JB_B:setFallbacks(font.ALBBPHT_SB)
---font.DIN:setFallbacks(font.ALBBPHT) font.DIN_B:setFallbacks(font.ALBBPHT)
-
+font.OX:setFallbacks(font.ALBBPHT) font.OX_SB:setFallbacks(font.ALBBPHT_SB)
 canop=true--决定玩家是否能操作场景的变量
 
 love.window.setMode(love.window.getMode()) --看似废话，但是如果去掉的话在我的框架里窗口颜色就会出神秘问题（至少Love 11.4如此）
@@ -243,7 +244,7 @@ scene={
 --win.watermark=false win.showPerformance=false
 
 --scene.cur=require('minigame/tracks/tracks')
---scene.cur=require('minigame/zombie battle/zombie battle')
+scene.cur=require('minigame/square grid battle/battle')
 --scene.cur=require('scene/test/BG_Test')
 --scene.cur=require('scene/test/clock')
 --scene.cur=require('mino/game') scene.cur.mode='map_test'
@@ -489,23 +490,19 @@ function love.draw()
 
     gc.setColor(1,1,1)
     if win.showInfo then
-        --local infoL="Current scene: "..scene.pos.."\nCursor pos:"..("%.2f,%.2f"):format(rx,ry)
-        --[[if canop then infoL=infoL.."\nYou can operate now"
-        else infoL=infoL.."\nYou can\'t operate now" end
-        infoR="You\'ve stayed here for "..string.format("%.2f",scene.time).."s".."\nRes:"..win.W.."*"..win.H.."\nReal res:"..rw.."*"..rh.."\nWindow mode position:"..win.x_win..","..win.y_win.."\n"..drawCtrl.timer.."/"..drawCtrl.dtRestrict.."\n"..(lastkeyP and lastkeyP or "")
-        gc.print(infoL,font.Bender,10,25,0,.15,.15)
-        gc.printf(infoR,font.Bender,win.W-10-114514*.15,25,114514,'right',0,.15,.15)]]
-        gc.printf(("%.2f,%.2f"):format(rx,ry),font.Bender,rx,ry-16,2000,'center',0,.15,.15,1000,72)
-        gc.printf(("%d × %d"):format(win.W,win.H),font.Bender,-950,-520,2000,'left',0,.25,.25,0,72)
+        gc.printf(("%.2f,%.2f"):format(rx,ry),font.OX_SB,rx,ry-16,2000,'center',0,.15,.15,1000,font.height.OX_SB/3)
+        gc.printf(("%dx%d"):format(win.W,win.H),font.OX_SB,-950,-520,2000,'left',0,.25,.25,0,font.height.OX_SB/3)
     end
     if win.showPerformance then
     gc.setColor(1,1,1,.5)
-    gc.print("TPS: "..love.timer.getFPS()..", FPS: "..drawCtrl.FPS..", gcinfo: "..gcinfo(),font.Bender_B,-950,505,0,.25,.25)
+    gc.print("TPS: "..love.timer.getFPS()..", FPS: "..drawCtrl.FPS..", gcinfo: "..gcinfo(),font.OX_SB,-950,510,0,.25,.25)
     end
     if win.watermark and not fs.isFused() then
         gc.setColor(.5,1,.875,.15+.0*sin(scene.totalTime*5*math.pi))
-        gc.printf("开发:Team Blanker",font.JB_B,480*sin(scene.totalTime/2*math.pi),-440,5000,'center',0,.5,.5,2500,84)
-        gc.printf("Author:Team Blanker",font.JB_B,-480*sin(scene.totalTime/2*math.pi), 440,5000,'center',0,.5,.5,2500,84)
+        gc.printf("开发:Team Blanker",font.OX_SB,480*sin(scene.totalTime/2*math.pi),-440,5000,'center',0,.5,.5,2500,font.height.OX_SB/3)
+        gc.printf("Author:Team Blanker",font.OX_SB,-480*sin(scene.totalTime/2*math.pi), 440,5000,'center',0,.5,.5,2500,font.height.OX_SB/3)
+        --gc.printf("开发:Team Blanker",font.JB_B,480*sin(scene.totalTime/2*math.pi),-440,5000,'center',0,.5,.5,2500,font.height.JB_B/2)
+        --gc.printf("Author:Team Blanker",font.JB_B,-480*sin(scene.totalTime/2*math.pi), 440,5000,'center',0,.5,.5,2500,font.height.JB_B/2)
     end
     gc.origin()
 

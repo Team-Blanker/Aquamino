@@ -571,6 +571,26 @@ mino.operate={
         end
         mino.sfxPlay.touch(OP,coincide(OP,0,-1),fLib.getSourcePos(OP,mino.stereo,'cur'))
     end,
+    SD1=function(OP,playSFX)--软降一格
+        C=OP.cur
+        local A=OP.smoothAnim
+        local success
+        if not coincide(OP,0,-1) then
+            mino.setAnimPrePiece(OP) OP.smoothAnim.timer=mino.smoothTime
+            C.y=C.y-1 C.spin=false success=true
+            if mino.rule.onPieceMove then mino.rule.onPieceMove(OP,mino,0,-1) end
+            if mino.blockSkin.onPieceMove then mino.blockSkin.onPieceMove(OP,mino,0,-1) end
+            if playSFX and mino.sfxPlay.SD then mino.sfxPlay.SD(OP,fLib.getSourcePos(OP,mino.stereo,'cur')) end
+        end
+        if success and mino.smoothFallType==2 and coincide(OP,0,-1) then
+            local f=(OP.FDelay==0 and 0 or OP.FTimer/OP.FDelay)
+            for i=1,#C.piece do
+                A.prePiece[i][2]=A.prePiece[i][2]-f
+            end
+            A.preCenter[2]=A.preCenter[2]-f
+        end
+        mino.sfxPlay.touch(OP,coincide(OP,0,-1),fLib.getSourcePos(OP,mino.stereo,'cur'))
+    end,
     SD_drop=function(OP,playSFX)--软降到底
         C=OP.cur
         local h=0
@@ -584,7 +604,7 @@ mino.operate={
         end
         mino.sfxPlay.touch(OP,coincide(OP,0,-1),fLib.getSourcePos(OP,mino.stereo,'cur'))
     end,
-    fall=function(OP,playSFX)--软降一格
+    fall=function(OP,playSFX)--自然下落
         C=OP.cur
         if not coincide(OP,0,-1) then
             if mino.smoothFallType==1 then mino.setAnimPrePiece(OP) OP.smoothAnim.timer=mino.smoothTime
@@ -776,7 +796,7 @@ function mino.init(isReset)
     S.keySet=next(ks) and ks or {
         ML={'left'},MR={'right'},
         CW={'x'},CCW={'c'},flip={'d'},
-        SD={'down'},HD={'up'},hold={'z'},
+        SD={'down'},SD1={},HD={'up'},hold={'z'},
         R={'r'},pause={'escape','p'}
     }
 
@@ -978,6 +998,7 @@ function mino.inputPress(k)
                 elseif k=='flip' then mino.operate.rotate180(OP,true,true)
                 elseif k=='HD'   then mino.operate.HD(OP,true)
                 elseif k=='SD'   then mino.operate.SD(OP,true)
+                elseif k=='SD1'  then mino.operate.SD1(OP,true)
                 elseif k=='hold' and OP.canHold then mino.operate.hold(OP,true)
                 end
                 --推土机！

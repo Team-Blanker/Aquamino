@@ -1,6 +1,6 @@
 return {
     warning={
-        title="Photosensitive Seizure Warning",
+        title="Photosensitive Warning",
         txt="A very small percent of people may experience epilepsy symptoms when exposed to specific visual images, including flashing lights or patterns that may appear in video games. \nThese symptoms include dizziness, blurred vision, eye or face twitching,\nlimb twitching, disorientation, confusion, or even loss of consciousness. \nEven people have no history of seizures or epilepsy may experience such symptoms while playing. \n\nIf you experience any symptoms, please stop playing immediately and consult your doctor.",
         txtScale=40/128,txtWidth=4500
     },
@@ -52,7 +52,7 @@ return {
         ['mech heart detector']={{1,1,1},"I made a Mech Hearts detector.\n7-Bag, no any punishment.\n",{1,1,0},"This mode does not record any score"},
     },
     intro={
-        start="Press any key",
+        start="Press any key to start",
     },
     menu={
         bestScore="Best score",
@@ -191,7 +191,7 @@ return {
             }
         },
         keys={
-            keyName={"Move Left","Move Right","Rotate CW","Rotate CCW","Rotate 180",'Soft drop','Hard Drop','Hold piece','Restart','Pause','Function 1','Function 2'},
+            keyName={"Move Left","Move Right","Rotate CW","Rotate CCW","Rotate 180",'Soft drop','Soft drop (1 cell)','Hard Drop','Hold piece','Restart','Pause','Function 1','Function 2'},
             kScale=.25,
             info="Click a key set to bind your keys.\nHit backspace to erase selected key set.\nHit a bound key to remove this bind.",
             virtualKey="Touch settings..."

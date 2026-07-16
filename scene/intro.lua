@@ -3,7 +3,8 @@ local BUTTON=scene.button
 local banned={'f1','f2','f3','f4','f5','f6','f7','f8','f9','f10','f11','f12', 'f17','f18',
 'audiomute','audioplay','volumeup','volumedown',
 'numlock','capslock','scrolllock',
-'printscreen'
+'printscreen',
+'lgui','rgui',
 }
 local intro={}
 local fl=gc.newCanvas(5,5)

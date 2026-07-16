@@ -15,6 +15,7 @@ function rule.init(P,mino)
         --mino.rule.allowPush[v]=true
     end
     P[1].line=0 P[1].LDRInit=32 P[1].LDR=32
+    --P[1].w=13 P[1].h=26
 end
 function rule.onLineClear(player,mino)
     player.line=player.line+player.history.line
