@@ -11,7 +11,7 @@ local devList={
     music={
         --{},
         hurtRecord={
-            {'たかゆき','R-side','T-Malu','守己','カモキング','龍飛'},
+            {'たかゆき','R-side','T-Malu','守已','カモキング','龍飛'},
             {'Syun Nakano','Naoki Hirai','つかスタジオ'},
             {'アキハバラ所司代','georhythm','Teada','Mikiya Komaba'},
             {'ミレラ','周藤三日月','DiscreetDragon'}

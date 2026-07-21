@@ -206,9 +206,9 @@ local function miniBulletSummon(team,x,y,angle,color)
                 oud=other:getUserData()
                 if oud then
                     if oud.base then
-                        gb.targetHP[oud.base]=gb.targetHP[oud.base]-2
+                        gb.targetHP[oud.base]=gb.targetHP[oud.base]-4
                     elseif oud.HP then
-                        oud.HP=oud.HP-10
+                        oud.HP=oud.HP-20
                     end
                 end
                 die(this)
@@ -233,7 +233,7 @@ local function bombSummon(team,x,y,angle,color)
     bl.fixture:setSensor(true)
     bl.fixture:setUserData({
         initRadius=16,
-        scaleSpeed=480,
+        scaleSpeed=640,
         triggered=false,
         triggerTime=0,
         liveTime=.25,
@@ -275,7 +275,7 @@ local function miniBombSummon(team,x,y,angle,color)
         bl.fixture:setSensor(true)
         bl.fixture:setUserData({
             initRadius=12,
-            scaleSpeed=360,
+            scaleSpeed=480,
             triggered=false,
             triggerTime=0,
             liveTime=.25,
@@ -318,7 +318,7 @@ local function arrowSummon(team,x,y,angle,color,ug)
     bl.fixture:setSensor(true)
     bl.fixture:setUserData({
         upgraded=ug,
-        damage=ug and 5 or 2.5,
+        damage=ug and 6 or 3,
         collideList={},
         onCollide=function (this,other)
             tud=this:getUserData()
@@ -348,6 +348,28 @@ local function getCannonCount(team)
         end
     end
     return count
+end
+local function getWeightedCannonCount(team)
+    local count=0
+    for i=1,8 do
+        for j=1,#gb.cannonField[team][i] do
+            if gb.cannonField[team][i][j].type~='garbage' then
+                ud=gb.cannonField[team][i][j].entity.fixture:getUserData()
+                count=count+1
+                if isInSquare(team,i,j) then count=count+1.5 end
+            else
+                count=count-.5
+            end
+        end
+    end
+    return count
+end
+local function changeCmdColor()
+    --local cList={1,1,2,2}
+    for i=1,4 do
+        --gb.cmdColorType[i]=rem(cList,rand(#cList))
+        gb.cmdColorType[i]=rand(2)
+    end
 end
 
 function gb.init()
@@ -936,9 +958,7 @@ function gb.init()
     gb.targetAnimTime={L=0,R=0}
     gb.loseTimer={L=0,R=0}
     gb.cmdColorType={}
-    for i=1,4 do
-        gb.cmdColorType[i]=rand(2)
-    end
+    changeCmdColor()
     gb.changeColorTimer=0
     gb.changeColorPeriod=8*60/BPM
 
@@ -953,6 +973,7 @@ function gb.init()
     gb.cmdPos=1
 
     gb.cannonCount={L=0,R=0}
+    gb.weightedCannonCount={L=0,R=0}
     gb.crisisMeter={L=0,R=0,max=100}
     gb.crisisTime={L=0,R=0,max=15}
     gb.crisisDecreaseTime={L=0,R=0}
@@ -1134,18 +1155,18 @@ function gb.gameUpdate(dt)
     for k,v in pairs(gb.cmdMarbleSummon) do
         if gb.targetHP[k]>0 then
         v.timer=v.timer+dt
-            if v.timer>=v.period*(gb.crisisTime[k]>0 and .4 or 1) then
+            if v.timer>=v.period then
                 cmdMarbleSummon(k)
-                v.timer=v.timer-v.period*(gb.crisisTime[k]>0 and .4 or 1)
+                v.timer=v.timer-v.period*(gb.crisisTime[k]>0 and .25 or 1)
             end
         end
     end
     for k,v in pairs(gb.atkMarbleSummon) do
         if gb.targetHP[k]>0 then
             v.timer=v.timer+dt
-            if v.timer>=v.period*(gb.crisisTime[k]>0 and .5 or 1) then
+            if v.timer>=v.period then
                 atkMarbleSummon(k)
-                v.timer=v.timer-v.period*(gb.crisisTime[k]>0 and .5 or 1)
+                v.timer=v.timer-v.period*(gb.crisisTime[k]>0 and .75 or 1)
             end
         end
     end
@@ -1233,9 +1254,9 @@ function gb.gameUpdate(dt)
             ud=b.entity.fixture:getUserData()
             if ud.HP<=0 then
                 ins(gb.cannonDiePar,{x=s*(570-60*i),y=280-60*b.h,team=k,c=b.c,t=0})
+                if b.type~='garbage' then diedCannon[k]=diedCannon[k]+1 end
                 b.entity.body:destroy()
                 rem(v[i],j)
-                diedCannon[k]=diedCannon[k]+1
             end
         end  end
     end
@@ -1252,31 +1273,31 @@ function gb.gameUpdate(dt)
     gb.changeColorTimer=gb.changeColorTimer+dt
     if gb.changeColorTimer>=gb.changeColorPeriod then
         gb.changeColorTimer=gb.changeColorTimer-gb.changeColorPeriod
-        for i=1,4 do
-        gb.cmdColorType[i]=rand(2)
-        end
+        changeCmdColor()
     end
 
     gb.cannonCount.L=getCannonCount('L')
     gb.cannonCount.R=getCannonCount('R')
-    if gb.cannonCount.L<gb.cannonCount.R then--左侧炮塔少，偏袒左侧
-        gb.crisisMeter.L=gb.crisisMeter.L+.075*(diedCannon.L)*(.75+.25*(gb.cannonCount.R-gb.cannonCount.L))
+    gb.weightedCannonCount.L=getWeightedCannonCount('L')
+    gb.weightedCannonCount.R=getWeightedCannonCount('R')
+    if gb.weightedCannonCount.L<gb.weightedCannonCount.R then--左侧炮塔少，偏袒左侧
+        gb.crisisMeter.L=gb.crisisMeter.L+.075*(diedCannon.L)*(.75+.25*(gb.weightedCannonCount.R-gb.weightedCannonCount.L))
         if diedCannon.L>0 then gb.crisisDecreaseTime.L=0 end
-    elseif gb.cannonCount.R<gb.cannonCount.L then--右侧炮塔少，偏袒右侧
-        gb.crisisMeter.R=gb.crisisMeter.R+.075*diedCannon.R*(.75+.25*(gb.cannonCount.L-gb.cannonCount.R))
+    elseif gb.weightedCannonCount.R<gb.weightedCannonCount.L then--右侧炮塔少，偏袒右侧
+        gb.crisisMeter.R=gb.crisisMeter.R+.075*diedCannon.R*(.75+.25*(gb.weightedCannonCount.L-gb.weightedCannonCount.R))
         if diedCannon.R>0 then gb.crisisDecreaseTime.R=0 end
     end
     for k,v in pairs(preHP) do
         local diff=preHP[k]-gb.targetHP[k]
-        if diff>0 and (gb.cannonCount[k=='L' and 'R' or 'L']-gb.cannonCount[k])>0 then
-            gb.crisisMeter[k]=gb.crisisMeter[k]+diff*.075*max(1,.75+.25*(gb.cannonCount[k=='L' and 'R' or 'L']-gb.cannonCount[k]))
+        if diff>0 and (gb.weightedCannonCount[k=='L' and 'R' or 'L']-gb.weightedCannonCount[k])>0 then
+            gb.crisisMeter[k]=gb.crisisMeter[k]+diff*.075*max(1,.75+.25*(gb.weightedCannonCount[k=='L' and 'R' or 'L']-gb.weightedCannonCount[k]))
             gb.crisisDecreaseTime[k]=0
         end
     end
 
     for k,v in pairs(gb.crisisDecreaseTime) do
         gb.crisisDecreaseTime[k]=gb.crisisDecreaseTime[k]+dt
-        if gb.crisisDecreaseTime[k]>=1 then
+        if gb.crisisDecreaseTime[k]>=1.5 then
             gb.crisisMeter[k]=max(gb.crisisMeter[k]-10*dt,0)
         end
     end
@@ -1511,8 +1532,10 @@ function gb.draw()
         setLineWidth(50)
         setColor(1,1,1,gb.targetAnimTime.L*.6)
         line(-565,250,-565,250-600*max(0,gb.targetHP.L)/gb.targetHP.max)
+        setColor(COLOR.hsl(LColorH[1]/60,1,.2,.5))
+        printf(""..floor(max(0,gb.targetHP.L)).." HP",font.OX_SB,-565+1,240-1,2000,'left',-math.pi/2,.4,.4,0,font.height.OX_SB/3)
         setColor(1,1,1)
-        printf(""..floor(max(0,gb.targetHP.L)).." HP",font.OX_SB,-565,240,2000,'left',-math.pi/2,.4,.4,0,font.height.OX_SB/3)
+        printf(""..floor(max(0,gb.targetHP.L)).." HP",font.OX_SB,-565-1,240+1,2000,'left',-math.pi/2,.4,.4,0,font.height.OX_SB/3)
     end
     if gb.targetHP.R>0 then
         setColor(COLOR.hsl(RColorH[1]/60,1,.2))
@@ -1525,8 +1548,10 @@ function gb.draw()
         setLineWidth(50)
         setColor(1,1,1,gb.targetAnimTime.R*.6)
         line( 565,250, 565,250-600*max(0,gb.targetHP.R)/gb.targetHP.max)
+        setColor(COLOR.hsl(RColorH[1]/60,1,.2,.5))
+        printf(""..floor(max(0,gb.targetHP.R)).." HP",font.OX_SB, 565+1,240-1,2000,'left',-math.pi/2,.4,.4,0,font.height.OX_SB/3)
         setColor(1,1,1)
-        printf(""..floor(max(0,gb.targetHP.R)).." HP",font.OX_SB, 565,240,2000,'left',-math.pi/2,.4,.4,0,font.height.OX_SB/3)
+        printf(""..floor(max(0,gb.targetHP.R)).." HP",font.OX_SB, 565-1,240+1,2000,'left',-math.pi/2,.4,.4,0,font.height.OX_SB/3)
     end
 
     for i=0,3 do
@@ -1817,7 +1842,7 @@ function gb.draw()
     for i=1,#gb.healNumPar do
         u=gb.healNumPar[i]
         setColor(1,1,1,1-u.t)
-        printf((u.dmg and "-" or "+")..u.heal,font.OX_SB,u.x,u.y-10*u.t,2000,'center',0,1/6,1/6,1000,font.height.OX_SB/3)
+        printf((u.dmg and "-" or "+")..u.heal,font.OX_SB,u.x,u.y+(u.dmg and 10 or -10)*u.t,2000,'center',0,1/6,1/6,1000,font.height.OX_SB/3)
     end
     setLineWidth(10)
     for i=1,#gb.healEffectPar do

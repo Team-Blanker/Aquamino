@@ -103,6 +103,7 @@ end
 font={
     height={},
 
+    --ADFYH=gc.newFont('font/adfyh.ttf',120),--爱点风雅体，很符合游戏视觉风格，但是繁体和日文都没有
     ALBBPHT=gc.newFont('font/AlibabaPuHuiTi-Regular.otf',120),
     ALBBPHT_SB=gc.newFont('font/AlibabaPuHuiTi-SemiBold.otf',120),
     Bender=gc.newFont('font/Bender.otf',120),
@@ -123,6 +124,10 @@ for k,v in pairs(font) do
         print(k,font.height[k])
     end
 end
+--font.ADFYH:setFallbacks(font.ALBBPHT)
+--font.Bender:setFallbacks(font.ADFYH) font.Bender_B:setFallbacks(font.ADFYH) font.Bender_L:setFallbacks(font.ADFYH)
+--font.JB:setFallbacks(font.ADFYH) font.JB_B:setFallbacks(font.ADFYH)
+--font.OX:setFallbacks(font.ADFYH) font.OX_SB:setFallbacks(font.ADFYH)
 font.Bender:setFallbacks(font.ALBBPHT) font.Bender_B:setFallbacks(font.ALBBPHT_SB) font.Bender_L:setFallbacks(font.ALBBPHT)
 font.JB:setFallbacks(font.ALBBPHT) font.JB_B:setFallbacks(font.ALBBPHT_SB)
 font.OX:setFallbacks(font.ALBBPHT) font.OX_SB:setFallbacks(font.ALBBPHT_SB)
