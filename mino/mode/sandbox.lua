@@ -18,7 +18,7 @@ function sb.init(P,mino)
         elseif m<9 then--秋
             mus.add('music/Hurt Record/Got Of The Wind','parts','ogg')
         else           --冬
-            mus.add('music/Hurt Record/Winter Satellite','parts','ogg')
+            mus.add('music/Hurt Record/Winter Satellite','whole','ogg',65.686,156*60/111)
         end
         mus.setTag(musTag)
     end
