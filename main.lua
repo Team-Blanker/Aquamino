@@ -80,7 +80,7 @@ touch=love.touch
 
 myMath=require'framework/mathExtend' myTable=require'framework/tableExtend'
 rng=require'framework/random'
-anim=require'scene/swapAnim'
+anim=require'framework/swapAnim'
 COLOR=require'framework/color'
 
 file=require'framework/fileExtend'
@@ -248,7 +248,7 @@ scene={
 
 --win.watermark=false win.showPerformance=false
 
---scene.cur=require('minigame/tracks/tracks')
+--scene.cur=require('minigame/zombie/zombie')
 --scene.cur=require('minigame/square grid battle/battle')
 --scene.cur=require('scene/test/BG_Test')
 --scene.cur=require('scene/test/clock')
