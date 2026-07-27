@@ -235,7 +235,7 @@ return {
             square="Square Grid Battle",
         },
         desc={
-            territory="Classic Multiply or Release battle\nDestroy other's cannon",
+            territory="Classic Multiply or Release battle\nDestroy other's cannon to win",
             tracks="Fight for tracks and receive bonus balls\nWho will get higher score?",
             zombie="Release zombies on lanes to attack opponent's base\n D u e l   C h a n n e l",
             square="Deploy cannons to destroy opponent's base\nWhen 4 cannons in same color formed a square...",
