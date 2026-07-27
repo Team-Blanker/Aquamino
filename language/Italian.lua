@@ -224,6 +224,22 @@ return {
         laser={punish="Penalità"},
         square={time="Tempo",amount="Punti",record="Record",remainTime={"2 minuti","1 minuto","30 SECONDI"}}
     },
-    territory={info="Spazio,Enter=Pausa/run\nesc=Esci"},
-    tracks={info="Spazio,Enter=Pausa/run\nesc=Esci"}
+
+    AquaMarbler={
+        title={{1,1,1},"Welcome to ",{.5,1,.875},"AquaMarbler"},
+        info="Miko of Aqua and Luminous    Presents",
+        name={
+            territory="Territory War",
+            tracks="Occupying & Scoring",
+            zombie="Zombie Tower Defense",
+            square="Square Grid Battle",
+        },
+        desc={
+            territory="Classic Multiply or Release battle\nDestroy other's cannon",
+            tracks="Fight for tracks and receive bonus balls\nWho will get higher score?",
+            zombie="Release zombies on lanes to attack opponent's base\n D u e l   C h a n n e l",
+            square="Deploy cannons to destroy opponent's base\nWhen 4 cannons in same color formed a square...",
+        },
+        keyInfo="In simulation: Press space to pause/simulate, Press Esc to quit",
+    },
 }

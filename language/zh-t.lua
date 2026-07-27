@@ -221,6 +221,22 @@ return {
         laser={punish="拖延懲罰"},
         square={time="剩餘时间",amount="分數",record="最佳",remainTime={"2 分鐘","1 分鐘","30 秒"}}
     },
-    territory={info="空格/Enter 切換暫停/運轉狀態\nesc 退出"},
-    tracks={info="空格/Enter 切換暫停/運轉狀態\nesc 退出"}
+
+    AquaMarbler={
+        title={{1,1,1},"歡迎來到",{.5,1,.875},"AquaMarbler"},
+        info="水與光輝之貓又巫女 傾情呈獻",
+        name={
+            territory="領土戰爭",
+            tracks="搶軌得分賽",
+            zombie="僵尸塔防戰",
+            square="方塊塔防戰",
+        },
+        desc={
+            territory="經典的四色炮臺領土戰爭\n翻倍 or 釋放，發射炮彈，摧毀其它炮臺",
+            tracks="爭奪軌道，接收小球\n分數高者勝",
+            zombie="在軌道上釋放僵尸，摧毀敵方基地\n←我尋思這邊能行!    顯然是這邊厲害!→",
+            square="部署炮塔，摧毀敵方基地\n儅四個同色炮塔形成正方形的時候……",
+        },
+        keyInfo="進入擬真：按空格切換暫停/運行狀態，按Esc退出",
+    },
 }
