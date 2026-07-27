@@ -22,7 +22,6 @@ local logo_bili=gc.newImage('pic/assets/bilibili.png')
 
 local musTag={'AquaMarbler'}
 function am.init()
-    scene.BG=require'BG/settings'
     if not mus.checkTag('AquaMarbler') then
         mus.add('music/Hurt Record/seidou','whole','ogg',12,122.88)
         mus.start()
@@ -30,7 +29,8 @@ function am.init()
         mus.setTag(musTag)
     end
 
-    if not scene.BG.time then scene.BG.init() end
+    scene.BG=require'BG/settings'
+    if scene.BG.init then scene.BG.init() end
 
     if not am.mode then am.mode=1 end--注意为了做动画用的是是浮点数
 
