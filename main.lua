@@ -189,7 +189,7 @@ win={
     UI={
         back=gc.newImage('pic/UI/sign/back.png'),     --120*70
         lang=gc.newImage('pic/UI/sign/language.png'), --200*200
-        link=gc.newImage('pic/UI/sign/link.png'), --200*200
+        link=gc.newImage('pic/UI/sign/link.png'),     --200*200
 
         sysCursor=true,
         mouse={
@@ -248,10 +248,8 @@ scene={
 
 --win.watermark=false win.showPerformance=false
 
---scene.cur=require('minigame/zombie/zombie')
---scene.cur=require('minigame/square grid battle/battle')
+--scene.cur=require('scene/secret/AquaMarbler')
 --scene.cur=require('scene/test/BG_Test')
---scene.cur=require('scene/test/clock')
 --scene.cur=require('mino/game') scene.cur.mode='map_test'
 
 win.x,win.y=love.window.getPosition()

@@ -15,5 +15,3 @@ Icon?
 !bin/cold_clear.so
 *.dylib
 !bin/cold_clear.dylib
-mino/mode/mech heart detector.lua
-pic/mode icon/mech heart detector.png

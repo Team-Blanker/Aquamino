@@ -573,7 +573,7 @@ function track.keyP(k)
     if k=='space' or k=='return' then track.sim=not track.sim
     elseif k=='escape' then
         scene.switch({
-            dest='intro',destScene=require('scene/intro'),swapT=.6,outT=.2,
+            dest='intro',destScene=require('scene/secret/AquaMarbler'),swapT=.6,outT=.2,
             anim=function() anim.cover(.2,.4,.2,0,0,0) end
         })
     end

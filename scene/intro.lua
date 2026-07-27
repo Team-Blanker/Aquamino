@@ -45,7 +45,7 @@ function intro.init()
     end
 end
 
-local tchar='territory' local cnum=1
+local secretChar='aquamarbler' local cnum=1
 function intro.keyP(k)
     if k=='escape' then love.event.quit()
     elseif not myTable.include(banned,k) then
@@ -57,11 +57,11 @@ function intro.keyP(k)
             function scene.cur.send()
                 scene.cur.exitScene='scene/intro'
             end
-        elseif k==tchar:sub(cnum,cnum) then cnum=cnum+1
-            if cnum==tchar:len()+1 then
+        elseif k==secretChar:sub(cnum,cnum) then cnum=cnum+1
+            if cnum==secretChar:len()+1 then
                 cnum=1
                 scene.switch({
-                    dest='territory',destScene=require('minigame/territory/territory'),swapT=.6,outT=.2,
+                    dest='territory',destScene=require('scene/secret/AquaMarbler'),swapT=.6,outT=.2,
                     anim=function() anim.cover(.2,.4,.2,0,0,0) end
                 })
             end
@@ -95,7 +95,7 @@ function intro.draw()
     gc.setColor(r,g,b)
     gc.printf(user.lang.intro.start,font.Bender,0,360,4000,'center',0,.625,.625,2000,84)
 
-    gc.setColor(r,g,b,.3)
-    gc.printf(win.versionTxt,font.Bender,950,540,10000,'right',0,.3,.3,10000,160)
+    gc.setColor(r,g,b,.5)
+    gc.printf(win.versionTxt,font.OX_SB,950,510,1000,'right',0,.25,.25,1000,0)
 end
 return intro

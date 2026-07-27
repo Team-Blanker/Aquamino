@@ -92,7 +92,7 @@ function track.init()
 
     track.sim=false
     track.time=0 track.updateTimer=0
-    track.gameTime=450 track.readyTime=5
+    track.gameTime=360 track.readyTime=3
 
     track.world=LP.newWorld(0,1500,false)
     track.world:setCallbacks(beginContact,nil,nil,nil)
@@ -552,7 +552,7 @@ function track.keyP(k)
     if k=='space' or k=='return' then track.sim=not track.sim
     elseif k=='escape' then
         scene.switch({
-            dest='intro',destScene=require('scene/intro'),swapT=.6,outT=.2,
+            dest='intro',destScene=require('scene/secret/AquaMarbler'),swapT=.6,outT=.2,
             anim=function() anim.cover(.2,.4,.2,0,0,0) end
         })
     end
@@ -616,7 +616,7 @@ function track.gameUpdate(dt)
         if track.ctrl1.tempMarble[i].body:isDestroyed() then table.remove(track.ctrl1.tempMarble,i) end
     end
 
-    track.trackSpeed=(max(track.gameTime-90,0)/360*14+1)/15
+    track.trackSpeed=(max(track.gameTime-90,0)/270*14+1)/15
     for i=1,6 do
         local t=track.track[i]
         for j=#t,1,-1 do
@@ -670,13 +670,18 @@ for i=1,100 do
 end
 gc.setCanvas()
 
+local bgpic=gc.newImage('pic/AquaMarbler/AquaMarbler.png') --1950x450
+
 local c,u,ud,t
 function track.draw()
     --gc.push()
     --gc.scale(1.25)
-    gc.setColor(1,1,1)
+    gc.clear(0,0,0)
+    setColor(1,1,1,.4)
+    draw(bgpic,0,0,0,1,1,975,225)
+    --setColor(1,1,1)
     --for i=-50,50 do circle('fill',30*i,0,4,4) circle('fill',0,30*i,4,4) end
-    gc.setColor(1,1,1)
+    --setColor(1,1,1)
     --for i=-10,10 do circle('fill',150*i,0,8,4) circle('fill',0,150*i,8,4) end
     setColor(.8,.8,.8)
     for i=1,#track.edge do

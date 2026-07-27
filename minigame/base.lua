@@ -43,7 +43,7 @@ function gb.keyP(k)
     if k=='space' or k=='return' then gb.sim=not gb.sim
     elseif k=='escape' then
         scene.switch({
-            dest='intro',destScene=require('scene/intro'),swapT=.6,outT=.2,
+            dest='intro',destScene=require('scene/secret/AquaMarbler'),swapT=.6,outT=.2,
             anim=function() anim.cover(.2,.4,.2,0,0,0) end
         })
     end
@@ -81,7 +81,7 @@ function gb.gameUpdate(dt)
         gb.dieList[i]=nil
     end
 end
-local bgpic=gc.newImage('minigame/aquamarbler.png') --1950x450
+local bgpic=gc.newImage('pic/AquaMarbler/AquaMarbler.png') --1950x450
 function gb.draw()
     gc.clear(0,0,0)
     setColor(1,1,1,.5)

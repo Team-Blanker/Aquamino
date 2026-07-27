@@ -479,7 +479,7 @@ function zb.keyP(k)
     if k=='space' or k=='return' then zb.sim=not zb.sim
     elseif k=='escape' then
         scene.switch({
-            dest='intro',destScene=require('scene/intro'),swapT=.6,outT=.2,
+            dest='intro',destScene=require('scene/secret/AquaMarbler'),swapT=.6,outT=.2,
             anim=function() anim.cover(.2,.4,.2,0,0,0) end
         })
     end
@@ -811,7 +811,7 @@ local ENText={
 
     death="Deaths",
 }
-local bgpic=gc.newImage('minigame/aquamarbler.png') --1950x450
+local bgpic=gc.newImage('pic/AquaMarbler/AquaMarbler.png') --1950x450
 local zombieDraw={
     normal=function (z,track,team)
         local a=z.atkAnimTimer/z.atkAnimTMax

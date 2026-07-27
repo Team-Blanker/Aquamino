@@ -38,22 +38,22 @@ local BPM=128
 local cannonType={'normal','bomber','shield','pierce'}
 local cannonIcon={}
 for k,v in pairs(cannonType) do
-    cannonIcon[v]=gc.newImage('minigame/square grid battle/pic/icon_'..v..'.png')
+    cannonIcon[v]=gc.newImage('minigame/square/pic/icon_'..v..'.png')
 end
 local entityPic={
     normal={},
     upgrade={},
 }
 for k,v in pairs(cannonType) do
-    entityPic.normal[v]=gc.newImage('minigame/square grid battle/pic/entity_'..v..'.png')
+    entityPic.normal[v]=gc.newImage('minigame/square/pic/entity_'..v..'.png')
     --entityPic.normal[v]:setFilter('nearest')
-    entityPic.upgrade[v]=gc.newImage('minigame/square grid battle/pic/entity_'..v..'2.png')
+    entityPic.upgrade[v]=gc.newImage('minigame/square/pic/entity_'..v..'2.png')
     --entityPic.upgrade[v]:setFilter('nearest')
 end
 
-local base=gc.newImage('minigame/square grid battle/pic/base.png')
-local square=gc.newImage('minigame/square grid battle/pic/square.png')
-local garbage=gc.newImage('minigame/square grid battle/pic/garbage.png')
+local base=gc.newImage('minigame/square/pic/base.png')
+local square=gc.newImage('minigame/square/pic/square.png')
+local garbage=gc.newImage('minigame/square/pic/garbage.png')
 
 --[[
 分类设定：
@@ -1004,7 +1004,7 @@ function gb.keyP(k)
     if k=='space' or k=='return' then gb.sim=not gb.sim
     elseif k=='escape' then
         scene.switch({
-            dest='intro',destScene=require('scene/intro'),swapT=.6,outT=.2,
+            dest='intro',destScene=require('scene/secret/AquaMarbler'),swapT=.6,outT=.2,
             anim=function() anim.cover(.2,.4,.2,0,0,0) end
         })
     end
@@ -1429,10 +1429,10 @@ function gb.gameUpdate(dt)
 end
 
 local s
-local bgpic=gc.newImage('minigame/aquamarbler.png') --1950x450
+local bgpic=gc.newImage('pic/AquaMarbler/AquaMarbler.png') --1950x450
 local arrowPic={
-    normal=gc.newImage('minigame/square grid battle/pic/arrow.png'),
-    upgrade=gc.newImage('minigame/square grid battle/pic/arrow2.png'),
+    normal=gc.newImage('minigame/square/pic/arrow.png'),
+    upgrade=gc.newImage('minigame/square/pic/arrow2.png'),
 }
 
 local cannonDraw={
