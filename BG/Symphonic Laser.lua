@@ -223,6 +223,6 @@ function bg.draw()
             end
         end
     end
-    --gc.setColor(1,1,1) gc.printf(floor(beat),font.JB,0,420,800,'center',0,.625,.625,400,84)
+    --gc.setColor(1,1,1) gc.printf(floor(beat),font.JB,0,420,800,'center',0,.625,.625,400,font.height.JB/2)
 end
 return bg

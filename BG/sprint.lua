@@ -42,7 +42,7 @@ function bg.draw()
             end
         end
     else
-        gc.setColor(1,1,1,(2*m-1)*.15)
+        if bg.pc==1 then gc.setColor(1,.96,.6,(2*m-1)*.15) else gc.setColor(1,1,1,(2*m-1)*.15) end
         gc.rectangle('fill',-960,-540,1920,1080)
         if bg.pc==1 then gc.setColor(1,.96,.6) else gc.setColor(1,1,1) end
         k=math.log(beat%4+1,2)
