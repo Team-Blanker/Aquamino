@@ -224,7 +224,7 @@ function fieldLib.coincideKick(player,mode)
                 end
             end
         else
-            if not fieldLib.coincide(player,gb.cmdPos,y) then return 1,{0,0} end
+            if not fieldLib.coincide(player,x,y) then return 1,{0,0} end
         end
     end
     --cur.piece,cur.O=T.copy(originPiece),originO
