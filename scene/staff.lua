@@ -17,7 +17,7 @@ local devList={
             {'ミレラ','周藤三日月','DiscreetDragon'}
         }
     },
-    translate={'Izumi Kairan (简中/繁中/English)','Sunday (繁中)','DJ Asriel (Italiano)'},
+    translate={'Izumi Kairan (简中/繁中/English)','Sunday (繁中)','DJ Asriel (Italiano)','Ost Tanako (Portuguese)'},
     multiPlatform={
         {'Izumi Kairan (Windows & Android)','Sennoma (MacOS & Linux)'},
         {'滑稽2369 (Android)'}
@@ -26,7 +26,8 @@ local devList={
         {'XMiao小渺 (Hoshizuki Kasuka)','User670','MianSoft','沙盒子',},
         {'Sunday','滑稽2369 (huaji2369)','沙丁子 (5sdac)','默默颗です',},
         {'風洛霊flore','farter','Sennoma','大叔Rex'},
-        {'DJ Asriel','Not-A-Robot','SweetSea','nekonaomii (MelloBoo44)',}
+        {'DJ Asriel','Not-A-Robot','SweetSea','nekonaomii (MelloBoo44)',},
+        {'Ost Tanako',},
     }
 }
 
