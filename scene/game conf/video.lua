@@ -293,7 +293,22 @@ function video.init()
         release=function(pos)
             video.info.frameLim=math.floor(30.5+pos*270)
             drawCtrl.dtRestrict=1/video.info.frameLim
-        end
+        end,
+        sideButton={
+            distance=40,
+            sz={32,32},
+            draw=function(v,id)
+                gc.setColor(1,1,1)
+                gc.setLineWidth(4)
+                gc.line((v.sz[1]/2+v.sideButton.distance)*id-10,0,(v.sz[1]/2+v.sideButton.distance)*id+10,0)
+                if id==1 then
+                gc.line((v.sz[1]/2+v.sideButton.distance)*id,-10,(v.sz[1]/2+v.sideButton.distance)*id,10)
+                end
+            end,
+            event=function(v,id)
+                SLIDER.setPosWithEvent(v,max(min(v.pos+id/270,1),0),'release')
+            end
+        },
     })
     SLIDER.create('BGBrightness',{
         x=-600,y=-40,type='hori',sz={440,32},button={32,32},
@@ -314,7 +329,22 @@ function video.init()
         end,
         release=function(pos)
             video.info.BGBrightness=pos
-        end
+        end,
+        sideButton={
+            distance=40,
+            sz={32,32},
+            draw=function(v,id)
+                gc.setColor(1,1,1)
+                gc.setLineWidth(4)
+                gc.line((v.sz[1]/2+v.sideButton.distance)*id-10,0,(v.sz[1]/2+v.sideButton.distance)*id+10,0)
+                if id==1 then
+                gc.line((v.sz[1]/2+v.sideButton.distance)*id,-10,(v.sz[1]/2+v.sideButton.distance)*id,10)
+                end
+            end,
+            event=function(v,id)
+                SLIDER.setPosWithEvent(v,max(min(v.pos+id/100,1),0))
+            end
+        },
     })
 end
 function video.detectKeyP(k)

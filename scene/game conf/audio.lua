@@ -118,7 +118,22 @@ function audio.init()
         always=function(pos)
             audio.info.mus=pos
             mus.setMasterVolume(pos)
-        end
+        end,
+        sideButton={
+            distance=40,
+            sz={32,32},
+            draw=function(v,id)
+                gc.setColor(1,1,1)
+                gc.setLineWidth(4)
+                gc.line((v.sz[1]/2+v.sideButton.distance)*id-10,0,(v.sz[1]/2+v.sideButton.distance)*id+10,0)
+                if id==1 then
+                gc.line((v.sz[1]/2+v.sideButton.distance)*id,-10,(v.sz[1]/2+v.sideButton.distance)*id,10)
+                end
+            end,
+            event=function(v,id)
+                SLIDER.setPosWithEvent(v,max(min(v.pos+.01*id,1),0))
+            end
+        },
     })
     SLIDER.create('sfx_volume',{
         x=-480,y=-125,type='hori',sz={800,32},button={32,32},
@@ -140,10 +155,26 @@ function audio.init()
         release=function(pos)
             audio.info.sfx,sfx.volume=pos,pos
             sfx.play('test')
-        end
+        end,
+        sideButton={
+            distance=40,
+            sz={32,32},
+            draw=function(v,id)
+                gc.setColor(1,1,1)
+                gc.setLineWidth(4)
+                gc.line((v.sz[1]/2+v.sideButton.distance)*id-10,0,(v.sz[1]/2+v.sideButton.distance)*id+10,0)
+                if id==1 then
+                gc.line((v.sz[1]/2+v.sideButton.distance)*id,-10,(v.sz[1]/2+v.sideButton.distance)*id,10)
+                end
+            end,
+            event=function(v,id)
+                SLIDER.setPosWithEvent(v,max(min(v.pos+.01*id,1),0))
+                sfx.play('test')
+            end
+        },
     })
     SLIDER.create('sfx_stereo',{
-        x=240,y=-125,type='hori',sz={400,32},button={32,32},
+        x=270,y=-125,type='hori',sz={400,32},button={32,32},
         gear=0,pos=(audio.info.stereo+1)/2,
         sliderDraw=function(g,sz)
             gc.setColor(.5,.5,.5,.8)
@@ -161,7 +192,22 @@ function audio.init()
         end,
         release=function(pos)
             audio.info.stereo=pos*2-1
-        end
+        end,
+        sideButton={
+            distance=40,
+            sz={32,32},
+            draw=function(v,id)
+                gc.setColor(1,1,1)
+                gc.setLineWidth(4)
+                gc.line((v.sz[1]/2+v.sideButton.distance)*id-10,0,(v.sz[1]/2+v.sideButton.distance)*id+10,0)
+                if id==1 then
+                gc.line((v.sz[1]/2+v.sideButton.distance)*id,-10,(v.sz[1]/2+v.sideButton.distance)*id,10)
+                end
+            end,
+            event=function(v,id)
+                SLIDER.setPosWithEvent(v,max(min(v.pos+.005*id,1),0))
+            end
+        },
     })
 end
 function audio.keyP(k)

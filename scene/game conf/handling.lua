@@ -110,7 +110,22 @@ function hand.init()
         end,
         always=function(pos)
             hand.ctrl.ASD=.2*pos
-        end
+        end,
+        sideButton={
+            distance=40,
+            sz={32,32},
+            draw=function(v,id)
+                gc.setColor(1,1,1)
+                gc.setLineWidth(4)
+                gc.line((v.sz[1]/2+v.sideButton.distance)*id-10,0,(v.sz[1]/2+v.sideButton.distance)*id+10,0)
+                if id==1 then
+                gc.line((v.sz[1]/2+v.sideButton.distance)*id,-10,(v.sz[1]/2+v.sideButton.distance)*id,10)
+                end
+            end,
+            event=function(v,id)
+                SLIDER.setPosWithEvent(v,max(min(v.pos+id/1200,1),0))
+            end
+        },
     })
     SLIDER.create('ASP',{
         x=-360,y=-125,type='hori',sz={1000,32},button={32,32},
@@ -131,7 +146,22 @@ function hand.init()
         end,
         always=function(pos)
             hand.ctrl.ASP=.1*pos
-        end
+        end,
+        sideButton={
+            distance=40,
+            sz={32,32},
+            draw=function(v,id)
+                gc.setColor(1,1,1)
+                gc.setLineWidth(4)
+                gc.line((v.sz[1]/2+v.sideButton.distance)*id-10,0,(v.sz[1]/2+v.sideButton.distance)*id+10,0)
+                if id==1 then
+                gc.line((v.sz[1]/2+v.sideButton.distance)*id,-10,(v.sz[1]/2+v.sideButton.distance)*id,10)
+                end
+            end,
+            event=function(v,id)
+                SLIDER.setPosWithEvent(v,max(min(v.pos+id/600,1),0))
+            end
+        },
     })
     SLIDER.create('SD_ASD',{
         x=-360,y=0,type='hori',sz={1000,32},button={32,32},
@@ -152,7 +182,22 @@ function hand.init()
         end,
         always=function(pos)
             hand.ctrl.SD_ASD=.2*pos
-        end
+        end,
+        sideButton={
+            distance=40,
+            sz={32,32},
+            draw=function(v,id)
+                gc.setColor(1,1,1)
+                gc.setLineWidth(4)
+                gc.line((v.sz[1]/2+v.sideButton.distance)*id-10,0,(v.sz[1]/2+v.sideButton.distance)*id+10,0)
+                if id==1 then
+                gc.line((v.sz[1]/2+v.sideButton.distance)*id,-10,(v.sz[1]/2+v.sideButton.distance)*id,10)
+                end
+            end,
+            event=function(v,id)
+                SLIDER.setPosWithEvent(v,max(min(v.pos+id/1200,1),0))
+            end
+        },
     })
     SLIDER.create('SD_ASP',{
         x=-360,y=125,type='hori',sz={1000,32},button={32,32},
@@ -173,11 +218,26 @@ function hand.init()
         end,
         always=function(pos)
             hand.ctrl.SD_ASP=.1*pos
-        end
+        end,
+        sideButton={
+            distance=40,
+            sz={32,32},
+            draw=function(v,id)
+                gc.setColor(1,1,1)
+                gc.setLineWidth(4)
+                gc.line((v.sz[1]/2+v.sideButton.distance)*id-10,0,(v.sz[1]/2+v.sideButton.distance)*id+10,0)
+                if id==1 then
+                gc.line((v.sz[1]/2+v.sideButton.distance)*id,-10,(v.sz[1]/2+v.sideButton.distance)*id,10)
+                end
+            end,
+            event=function(v,id)
+                SLIDER.setPosWithEvent(v,max(min(v.pos+id/600,1),0))
+            end
+        },
     })
 
     BUTTON.create('IMStap',{
-        x=330,y=-250,type='rect',w=54,h=54,
+        x=400,y=-250,type='rect',w=54,h=54,
         draw=function(bt,t,ct)
             local animArg=hand.ctrl.IMS.tap and min(ct/.2,1) or max(1-ct/.2,0)
             local w,h=bt.w,bt.h
@@ -217,7 +277,7 @@ function hand.init()
         end
     },.2)
     BUTTON.create('IRStap',{
-        x=330,y=-125,type='rect',w=54,h=54,
+        x=400,y=-125,type='rect',w=54,h=54,
         draw=function(bt,t,ct)
             local animArg=hand.ctrl.IRS.tap and min(ct/.2,1) or max(1-ct/.2,0)
             local w,h=bt.w,bt.h
@@ -257,7 +317,7 @@ function hand.init()
         end
     },.2)
     BUTTON.create('IHStap',{
-        x=330,y=0,type='rect',w=54,h=54,
+        x=400,y=0,type='rect',w=54,h=54,
         draw=function(bt,t,ct)
             local animArg=hand.ctrl.IHS.tap and min(ct/.2,1) or max(1-ct/.2,0)
             local w,h=bt.w,bt.h
@@ -298,7 +358,7 @@ function hand.init()
     },.2)
 
     BUTTON.create('IMSInfo',{
-        x=240,y=-250,type='rect',w=96,h=64,
+        x=300,y=-250,type='rect',w=96,h=64,
         draw=function(bt,t,ct)
             gc.setColor(1,1,1)
             gc.printf("IM",font.Bender_B,0,0,5000,'center',0,.4,.4,2500,font.height.Bender_B/2)
@@ -313,7 +373,7 @@ function hand.init()
         end
     },.1)
     BUTTON.create('IRSInfo',{
-        x=240,y=-125,type='rect',w=96,h=64,
+        x=300,y=-125,type='rect',w=96,h=64,
         draw=function(bt,t,ct)
             gc.setColor(1,1,1)
             gc.printf("IR",font.Bender_B,0,0,5000,'center',0,.4,.4,2500,font.height.Bender_B/2)
@@ -328,7 +388,7 @@ function hand.init()
         end
     },.1)
     BUTTON.create('IHSInfo',{
-        x=240,y=0,type='rect',w=96,h=64,
+        x=300,y=0,type='rect',w=96,h=64,
         draw=function(bt,t,ct)
             gc.setColor(1,1,1)
             gc.printf("IH",font.Bender_B,0,0,5000,'center',0,.4,.4,2500,font.height.Bender_B/2)

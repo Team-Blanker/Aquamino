@@ -87,7 +87,26 @@ function lst.slider(menu)
             if menu.lvl==2 and menu.selectedMode=='battle' then
             opt.battle.bot_PPS=floor((8*pos)*100+.5)/100
             end
-        end
+        end,
+        sideButton={
+            distance=40,
+            sz={32,32},
+            draw=function(v,id)
+                if menu.lvl==2 and menu.selectedMode=='battle' then
+                    gc.setColor(1,1,1)
+                    gc.setLineWidth(4)
+                    gc.line((v.sz[1]/2+v.sideButton.distance)*id-10,0,(v.sz[1]/2+v.sideButton.distance)*id+10,0)
+                    if id==1 then
+                    gc.line((v.sz[1]/2+v.sideButton.distance)*id,-10,(v.sz[1]/2+v.sideButton.distance)*id,10)
+                    end
+                end
+            end,
+            event=function(v,id)
+                if menu.lvl==2 and menu.selectedMode=='battle' then
+                    SLIDER.setPosWithEvent(v,max(min(v.pos+.01*id/8,1),0))
+                end
+            end
+        },
     })
     local ppl,ppr=argTxt.battle.player.pos..":"..argTxt.battle.player.left,argTxt.battle.player.pos..":"..argTxt.battle.player.right
     SLIDER.create('battle_playerPos',{
@@ -172,9 +191,28 @@ function lst.slider(menu)
         end,
         always=function(pos)
             if menu.lvl==2 and menu.selectedMode=='tower defense' then
-            opt['tower defense'].bot_PPS=floor((8*pos+.2)*100+.5)/100
+            opt['tower defense'].bot_PPS=floor((8*pos)*100+.5)/100
             end
-        end
+        end,
+        sideButton={
+            distance=40,
+            sz={32,32},
+            draw=function(v,id)
+                if menu.lvl==2 and menu.selectedMode=='tower defense' then
+                    gc.setColor(1,1,1)
+                    gc.setLineWidth(4)
+                    gc.line((v.sz[1]/2+v.sideButton.distance)*id-10,0,(v.sz[1]/2+v.sideButton.distance)*id+10,0)
+                    if id==1 then
+                    gc.line((v.sz[1]/2+v.sideButton.distance)*id,-10,(v.sz[1]/2+v.sideButton.distance)*id,10)
+                    end
+                end
+            end,
+            event=function(v,id)
+                if menu.lvl==2 and menu.selectedMode=='tower defense' then
+                    SLIDER.setPosWithEvent(v,max(min(v.pos+.01*id/8,1),0))
+                end
+            end
+        },
     })
     SLIDER.create('IceStorm_iceOpacity',{
         x=0,y=0,type='hori',sz={800,32},button={32,32},
@@ -205,7 +243,26 @@ function lst.slider(menu)
             if menu.lvl==2 and menu.selectedMode=='ice storm' then
             opt['ice storm'].iceOpacity=pos/2+.5
             end
-        end
+        end,
+        sideButton={
+            distance=40,
+            sz={32,32},
+            draw=function(v,id)
+                if menu.lvl==2 and menu.selectedMode=='ice storm' then
+                    gc.setColor(1,1,1)
+                    gc.setLineWidth(4)
+                    gc.line((v.sz[1]/2+v.sideButton.distance)*id-10,0,(v.sz[1]/2+v.sideButton.distance)*id+10,0)
+                    if id==1 then
+                    gc.line((v.sz[1]/2+v.sideButton.distance)*id,-10,(v.sz[1]/2+v.sideButton.distance)*id,10)
+                    end
+                end
+            end,
+            event=function(v,id)
+                if menu.lvl==2 and menu.selectedMode=='ice storm' then
+                    SLIDER.setPosWithEvent(v,max(min(v.pos+.02*id,1),0))
+                end
+            end
+        },
     })
 end
 return lst

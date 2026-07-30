@@ -190,7 +190,23 @@ local sliderList={
         end,
         click=function ()
             bb.boardBounce.custom=true
-        end
+        end,
+        sideButton={
+            distance=40,
+            sz={32,32},
+            draw=function(v,id)
+                gc.setColor(1,1,1)
+                gc.setLineWidth(4)
+                gc.line((v.sz[1]/2+v.sideButton.distance)*id-10,0,(v.sz[1]/2+v.sideButton.distance)*id+10,0)
+                if id==1 then
+                gc.line((v.sz[1]/2+v.sideButton.distance)*id,-10,(v.sz[1]/2+v.sideButton.distance)*id,10)
+                end
+            end,
+            event=function(v,id)
+                SLIDER.setPosWithEvent(v,max(min(v.pos+id/10000,1),0))
+                bb.boardBounce.custom=true
+            end
+        },
     },
     dropVel={
         x=-480,y=-80,type='hori',sz={800,32},button={32,32},
@@ -217,7 +233,23 @@ local sliderList={
         end,
         click=function ()
             bb.boardBounce.custom=true
-        end
+        end,
+        sideButton={
+            distance=40,
+            sz={32,32},
+            draw=function(v,id)
+                gc.setColor(1,1,1)
+                gc.setLineWidth(4)
+                gc.line((v.sz[1]/2+v.sideButton.distance)*id-10,0,(v.sz[1]/2+v.sideButton.distance)*id+10,0)
+                if id==1 then
+                gc.line((v.sz[1]/2+v.sideButton.distance)*id,-10,(v.sz[1]/2+v.sideButton.distance)*id,10)
+                end
+            end,
+            event=function(v,id)
+                SLIDER.setPosWithEvent(v,max(min(v.pos+id/1000,1),0))
+                bb.boardBounce.custom=true
+            end
+        },
     },
     velDamping={
         x=-480,y=80,type='hori',sz={800,32},button={32,32},
@@ -244,7 +276,23 @@ local sliderList={
         end,
         click=function ()
             bb.boardBounce.custom=true
-        end
+        end,
+        sideButton={
+            distance=40,
+            sz={32,32},
+            draw=function(v,id)
+                gc.setColor(1,1,1)
+                gc.setLineWidth(4)
+                gc.line((v.sz[1]/2+v.sideButton.distance)*id-10,0,(v.sz[1]/2+v.sideButton.distance)*id+10,0)
+                if id==1 then
+                gc.line((v.sz[1]/2+v.sideButton.distance)*id,-10,(v.sz[1]/2+v.sideButton.distance)*id,10)
+                end
+            end,
+            event=function(v,id)
+                SLIDER.setPosWithEvent(v,max(min(v.pos+id/1000,1),0))
+                bb.boardBounce.custom=true
+            end
+        },
     },
     elasticFactor={
         x=-480,y=240,type='hori',sz={800,32},button={32,32},
@@ -271,7 +319,23 @@ local sliderList={
         end,
         click=function ()
             bb.boardBounce.custom=true
-        end
+        end,
+        sideButton={
+            distance=40,
+            sz={32,32},
+            draw=function(v,id)
+                gc.setColor(1,1,1)
+                gc.setLineWidth(4)
+                gc.line((v.sz[1]/2+v.sideButton.distance)*id-10,0,(v.sz[1]/2+v.sideButton.distance)*id+10,0)
+                if id==1 then
+                gc.line((v.sz[1]/2+v.sideButton.distance)*id,-10,(v.sz[1]/2+v.sideButton.distance)*id,10)
+                end
+            end,
+            event=function(v,id)
+                SLIDER.setPosWithEvent(v,max(min(v.pos+id/1000,1),0))
+                bb.boardBounce.custom=true
+            end
+        },
     },
     clearFactor={
         x=480,y=-240,type='hori',sz={800,32},button={32,32},
@@ -298,7 +362,23 @@ local sliderList={
         end,
         click=function ()
             bb.boardBounce.custom=true
-        end
+        end,
+        sideButton={
+            distance=40,
+            sz={32,32},
+            draw=function(v,id)
+                gc.setColor(1,1,1)
+                gc.setLineWidth(4)
+                gc.line((v.sz[1]/2+v.sideButton.distance)*id-10,0,(v.sz[1]/2+v.sideButton.distance)*id+10,0)
+                if id==1 then
+                gc.line((v.sz[1]/2+v.sideButton.distance)*id,-10,(v.sz[1]/2+v.sideButton.distance)*id,10)
+                end
+            end,
+            event=function(v,id)
+                SLIDER.setPosWithEvent(v,max(min(v.pos+id/1000,1),0))
+                bb.boardBounce.custom=true
+            end
+        },
     },
 
     spinAngvel={
@@ -326,7 +406,23 @@ local sliderList={
         end,
         click=function ()
             bb.boardBounce.custom=true
-        end
+        end,
+        sideButton={
+            distance=40,
+            sz={32,32},
+            draw=function(v,id)
+                gc.setColor(1,1,1)
+                gc.setLineWidth(4)
+                gc.line((v.sz[1]/2+v.sideButton.distance)*id-10,0,(v.sz[1]/2+v.sideButton.distance)*id+10,0)
+                if id==1 then
+                gc.line((v.sz[1]/2+v.sideButton.distance)*id,-10,(v.sz[1]/2+v.sideButton.distance)*id,10)
+                end
+            end,
+            event=function(v,id)
+                SLIDER.setPosWithEvent(v,max(min(v.pos+id/1000,1),0))
+                bb.boardBounce.custom=true
+            end
+        },
     },
     angDamping={
         x=480,y=80,type='hori',sz={800,32},button={32,32},
@@ -353,7 +449,23 @@ local sliderList={
         end,
         click=function ()
             bb.boardBounce.custom=true
-        end
+        end,
+        sideButton={
+            distance=40,
+            sz={32,32},
+            draw=function(v,id)
+                gc.setColor(1,1,1)
+                gc.setLineWidth(4)
+                gc.line((v.sz[1]/2+v.sideButton.distance)*id-10,0,(v.sz[1]/2+v.sideButton.distance)*id+10,0)
+                if id==1 then
+                gc.line((v.sz[1]/2+v.sideButton.distance)*id,-10,(v.sz[1]/2+v.sideButton.distance)*id,10)
+                end
+            end,
+            event=function(v,id)
+                SLIDER.setPosWithEvent(v,max(min(v.pos+id/1000,1),0))
+                bb.boardBounce.custom=true
+            end
+        },
     },
     spinFactor={
         x=480,y=240,type='hori',sz={800,32},button={32,32},
@@ -380,7 +492,23 @@ local sliderList={
         end,
         click=function ()
             bb.boardBounce.custom=true
-        end
+        end,
+        sideButton={
+            distance=40,
+            sz={32,32},
+            draw=function(v,id)
+                gc.setColor(1,1,1)
+                gc.setLineWidth(4)
+                gc.line((v.sz[1]/2+v.sideButton.distance)*id-10,0,(v.sz[1]/2+v.sideButton.distance)*id+10,0)
+                if id==1 then
+                gc.line((v.sz[1]/2+v.sideButton.distance)*id,-10,(v.sz[1]/2+v.sideButton.distance)*id,10)
+                end
+            end,
+            event=function(v,id)
+                SLIDER.setPosWithEvent(v,max(min(v.pos+id/1000,1),0))
+                bb.boardBounce.custom=true
+            end
+        },
     }
 }
 local tt

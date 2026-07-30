@@ -231,7 +231,22 @@ function bc.init()
         end,
         always=function(pos)
             bc.color[bList[bc.blockIndex]][1]=pos
-        end
+        end,
+        sideButton={
+            distance=40,
+            sz={32,32},
+            draw=function(v,id)
+                gc.setColor(1,1,1)
+                gc.setLineWidth(4)
+                gc.line((v.sz[1]/2+v.sideButton.distance)*id-10,0,(v.sz[1]/2+v.sideButton.distance)*id+10,0)
+                if id==1 then
+                gc.line((v.sz[1]/2+v.sideButton.distance)*id,-10,(v.sz[1]/2+v.sideButton.distance)*id,10)
+                end
+            end,
+            event=function(v,id)
+                SLIDER.setPosWithEvent(v,max(min(v.pos+id/256,1),0))
+            end
+        },
     })
     SLIDER.create('colorG',{
         x=0,y=250,type='hori',sz={400,32},button={32,32},
@@ -249,7 +264,22 @@ function bc.init()
         end,
         always=function(pos)
             bc.color[bList[bc.blockIndex]][2]=pos
-        end
+        end,
+        sideButton={
+            distance=40,
+            sz={32,32},
+            draw=function(v,id)
+                gc.setColor(1,1,1)
+                gc.setLineWidth(4)
+                gc.line((v.sz[1]/2+v.sideButton.distance)*id-10,0,(v.sz[1]/2+v.sideButton.distance)*id+10,0)
+                if id==1 then
+                gc.line((v.sz[1]/2+v.sideButton.distance)*id,-10,(v.sz[1]/2+v.sideButton.distance)*id,10)
+                end
+            end,
+            event=function(v,id)
+                SLIDER.setPosWithEvent(v,max(min(v.pos+id/256,1),0))
+            end
+        },
     })
     SLIDER.create('colorB',{
         x=560,y=250,type='hori',sz={400,32},button={32,32},
@@ -267,7 +297,22 @@ function bc.init()
         end,
         always=function(pos)
             bc.color[bList[bc.blockIndex]][3]=pos
-        end
+        end,
+        sideButton={
+            distance=40,
+            sz={32,32},
+            draw=function(v,id)
+                gc.setColor(1,1,1)
+                gc.setLineWidth(4)
+                gc.line((v.sz[1]/2+v.sideButton.distance)*id-10,0,(v.sz[1]/2+v.sideButton.distance)*id+10,0)
+                if id==1 then
+                gc.line((v.sz[1]/2+v.sideButton.distance)*id,-10,(v.sz[1]/2+v.sideButton.distance)*id,10)
+                end
+            end,
+            event=function(v,id)
+                SLIDER.setPosWithEvent(v,max(min(v.pos+id/256,1),0))
+            end
+        },
     })
 end
 function bc.keyP(k)
