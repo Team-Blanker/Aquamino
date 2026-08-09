@@ -155,6 +155,7 @@ win={
     watermark=true,
     showPerformance=true,
     fullscr=false,discardAfterDraw=false,
+    blackEdge=false,
     distractTime=0,
     date=os.date('*t'),
     W=gc.getWidth(),
@@ -509,12 +510,14 @@ function love.draw()
     end
     gc.origin()
 
-    local aw,ah=win.H/win.W<9/16 and win.H*16/9 or win.W,win.H/win.W<9/16 and win.H or win.W*9/16
-    gc.setColor(0,0,0)
-    gc.rectangle('fill',0,0,(win.W-aw)/2,win.H)
-    gc.rectangle('fill',(win.W+aw)/2,0,(win.W-aw)/2,win.H)
-    gc.rectangle('fill',0,0,win.W,(win.H-ah)/2)
-    gc.rectangle('fill',0,(win.H+ah)/2,win.W,(win.H-ah)/2)
+    if win.blackEdge then
+        local aw,ah=win.H/win.W<9/16 and win.H*16/9 or win.W,win.H/win.W<9/16 and win.H or win.W*9/16
+        gc.setColor(0,0,0)
+        gc.rectangle('fill',0,0,(win.W-aw)/2,win.H)
+        gc.rectangle('fill',(win.W+aw)/2,0,(win.W-aw)/2,win.H)
+        gc.rectangle('fill',0,0,win.W,(win.H-ah)/2)
+        gc.rectangle('fill',0,(win.H+ah)/2,win.W,(win.H-ah)/2)
+    end
 end
 
 function love.quit()

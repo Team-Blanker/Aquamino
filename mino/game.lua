@@ -1530,7 +1530,7 @@ function mino.draw()
 
     --暂停
     gc.setColor(.04,.04,.04,min(mino.pauseAnimTimer*(S.winState==0 and 4 or 2),S.winState==0 and 1 or .5))
-    gc.rectangle('fill',-1000,-1000,2000,2000)
+    gc.rectangle('fill',-960,-540,1920,1080)
     if mino.paused then
         BUTTON.draw()
         gc.setColor(1,1,1)
