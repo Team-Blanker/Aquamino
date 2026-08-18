@@ -1157,7 +1157,7 @@ function gb.gameUpdate(dt)
         v.timer=v.timer+dt
             if v.timer>=v.period then
                 cmdMarbleSummon(k)
-                v.timer=v.timer-v.period*(gb.crisisTime[k]>0 and .25 or 1)
+                v.timer=v.timer-v.period*(gb.crisisTime[k]>0 and 1/3 or 1)
             end
         end
     end
@@ -1459,9 +1459,7 @@ local cannonDraw={
             centerRect('fill',x,y,15*2^.5)
         else
             setColor(COLOR.hsl(c[color]/60,1,.6))
-            circle('fill',x,y,15)
-            setLineWidth(30)
-            line(x,y,x+30*cos(a*s)*s,y+30*sin(a*s)*s)
+            draw(entityPic.normal.bomber,x,y,a*s,.5*s,.5,60,60)
             setColor(1,1,1)
             circle('fill',x,y,12,4)
             centerRect('fill',x,y,12*2^.5)
