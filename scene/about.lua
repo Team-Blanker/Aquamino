@@ -127,7 +127,8 @@ function about.init()
     }
     about.obs2.fixture=LP.newFixture(about.obs2.body,about.obs2.shape,1)
 
-    about.loveBallTrail={}
+    about.loveTrail1=trail.create(.5,ballR,.5)
+    about.loveTrail2=trail.create(.5,ballR,.5)
 end
 function about.keyP(k)
     if k=='escape' then
@@ -155,20 +156,24 @@ function about.update(dt)
     BUTTON.update(dt,mx,my)
 
     simdt=simdt+dt
-    if simdt>1/256 then
-        about.world:update(1/256)
-        simdt=simdt-1/256
+    if simdt>1/128 then
+        about.world:update(1/128)
+        simdt=simdt-1/128
 
         if ms.isDown(1) and drag then
             about.loveBall.body:applyForce(400*(mx-about.loveBall.body:getX()),400*(my-about.loveBall.body:getY()))
         end
 
-        --[[if about.loveBall.body:isAwake(true) then
-            ins(about.loveBallTrail,{x=about.loveBall.body:getX(),y=about.loveBall.body:getY(),r=about.loveBall.body:getAngle()})
-            if #about.loveBallTrail>128 then
-                rem(about.loveBallTrail,1)
-            end
-        end]]
+        if about.loveBall.body:isAwake(true) then
+            trail.addPos(about.loveTrail1,
+                about.loveBall.body:getX()+ballR/2*cos(about.loveBall.body:getAngle()-3*math.pi/4),
+                about.loveBall.body:getY()+ballR/2*sin(about.loveBall.body:getAngle()-3*math.pi/4))
+            trail.update(about.loveTrail1,1/128)
+            trail.addPos(about.loveTrail2,
+                about.loveBall.body:getX()+ballR/2*cos(about.loveBall.body:getAngle()+math.pi/4),
+                about.loveBall.body:getY()+ballR/2*sin(about.loveBall.body:getAngle()+math.pi/4))
+            trail.update(about.loveTrail2,1/128)
+        end
     end
 end
 function about.draw()
@@ -186,14 +191,8 @@ function about.draw()
         --font.Bender,-700,400,10000,'center',0,1/3,1/3,5000,144)
     BUTTON.draw()
 
-    local t=#about.loveBallTrail
-    local lbt=about.loveBallTrail
-    local s
-    for i=1,t do
-        s=(128-t+i)/128
-        gc.setColor(1,1,1,.25*s^.5)
-        gc.draw(loveLogo,lbt[i].x,lbt[i].y,lbt[i].r,ballR*2/lw*s,ballR*2/lh*s,lw/2,lh/2)
-    end
+    trail.drawLine(about.loveTrail1,.91,.29,.6)
+    trail.drawLine(about.loveTrail2,.16,.67,.89)
 
     gc.setColor(1,1,1)
     gc.draw(loveLogo,about.loveBall.body:getX(),about.loveBall.body:getY(),about.loveBall.body:getAngle(),ballR*2/lw,ballR*2/lh,lw/2,lh/2)

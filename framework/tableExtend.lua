@@ -1,5 +1,6 @@
 local T={}
 function T.attend(list,atd)
+    local l=#list
     for i=1,#atd do list[l+i]=atd[i] end
 end
 function T.combine(a,b)--b中所有元素放入a
@@ -26,11 +27,12 @@ function T.include(a,b)--检测a中有无b元素
         end
     end
 end
-function T.isEqual(a,b)--两列表是否相等
+function T.isEqual(a,b,depth)--两列表是否相等
+    if not depth then depth=0 end
     for k,va in pairs(a) do
         local vb=b[k]
         if not va==vb and type(va)=='table' and type(vb)=='table' and depth>0 then
-            if not T.isEqual(va,vb) then return false end
+            if not T.isEqual(va,vb,depth-1) then return false end
         elseif va~=vb then return false end
     end
     return true

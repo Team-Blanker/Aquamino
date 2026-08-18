@@ -85,6 +85,8 @@ COLOR=require'framework/color'
 
 file=require'framework/fileExtend'
 
+trail=require'framework/trail'
+
 rand=math.random
 sin=math.sin cos=math.cos
 floor=math.floor ceil=math.ceil
@@ -250,7 +252,7 @@ scene={
 --win.watermark=false win.showPerformance=false
 
 --scene.cur=require('scene/secret/AquaMarbler')
---scene.cur=require('scene/test/BG_Test')
+--scene.cur=require('scene/test/trail')
 --scene.cur=require('mino/game') scene.cur.mode='map_test'
 
 win.x,win.y=love.window.getPosition()
